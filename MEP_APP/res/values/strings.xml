@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">MEP APP</string>
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
+    <string name="fragment_login_screen_login_button_text">Bejelentkezés</string>
+    
+    <string name="contact_address">4031 Debrecen, Kishegyesi út 187.</string>
+    <string name="contact_phone_number">06-70/604-54-64</string>
+	<string name="contact_mail">info@megujuloenergiapark.hu</string>
+	<string name="contact_opening_hours">Minden hétköznap 8:00 - 16:00-ig</string>
+	
+	<string name="fragment_main_screen_title">Kezdőlap</string>
+	
+    <string-array name="first_activity_drawer_items_list">
+        <item>Belépés</item>
+        <item>Bemutatópark</item>
+        <item>Kutatóközpont</item>
+        <item>Távfelügyeletről</item>
+        <item>Elérhetőségek</item>
+    </string-array>
+
+</resources>

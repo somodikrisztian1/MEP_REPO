@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <ImageView
+        android:id="@+id/fragment_main_screen_logo_imageview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignRight="@+id/contact_mail_textview"
+        android:layout_marginTop="26dp"
+        android:src="@drawable/mep_logo" />
+
+    <TextView
+        android:id="@+id/contact_address_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/fragment_main_screen_logo_imageview"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:text="@string/contact_address"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <TextView
+        android:id="@+id/contact_phone_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/contact_address_textview"
+        android:layout_below="@+id/contact_address_textview"
+        android:layout_marginTop="20dp"
+        android:text="@string/contact_phone_number"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <TextView
+        android:id="@+id/contact_mail_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/contact_phone_textview"
+        android:layout_below="@+id/contact_phone_textview"
+        android:layout_marginTop="20dp"
+        android:text="@string/contact_mail"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <TextView
+        android:id="@+id/contact_mail_opening_hours_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/contact_mail_textview"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:text="@string/contact_opening_hours"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <ImageView
+        android:id="@+id/contact_map_imageview"
+        android:layout_width="250dp"
+        android:layout_height="250dp"
+        android:layout_below="@+id/contact_mail_opening_hours_textview"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/mep_map" />
+
+</RelativeLayout>
