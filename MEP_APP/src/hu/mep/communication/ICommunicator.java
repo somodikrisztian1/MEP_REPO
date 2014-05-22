@@ -1,5 +1,9 @@
 package hu.mep.communication;
 
+import hu.mep.datamodells.User;
+
 public interface ICommunicator {
-	public boolean authenticateUser(String username, String password);
+	
+	
+	public User authenticateUser(String username, String password);
 }
