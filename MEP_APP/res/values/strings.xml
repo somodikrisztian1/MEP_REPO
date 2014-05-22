@@ -13,6 +13,9 @@
 	
 	<string name="fragment_main_screen_title">Kezdőlap</string>
 	
+	<string name="hint_for_login_activity_username_textview">Felhasználónév</string>
+	<string name="hint_for_login_activity_password_textview">Jelszó</string>
+    
     <string-array name="first_activity_drawer_items_list">
         <item>Belépés</item>
         <item>Bemutatópark</item>

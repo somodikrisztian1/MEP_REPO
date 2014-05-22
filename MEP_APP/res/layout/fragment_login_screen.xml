@@ -8,12 +8,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="85dp"
-        android:hint="Felhasználónév"
-        android:nextFocusDown="@+id/fragment_login_screen_password_edittext"
-        android:ems="10" >
-        <requestFocus />
+        android:layout_alignRight="@+id/fragment_login_screen_password_edittext"
+        android:layout_marginTop="30dp"
+        android:ems="10"
+        android:hint="@string/hint_for_login_activity_username_textview"
+        android:inputType="textVisiblePassword"
+        android:imeOptions="actionNext"
+        android:nextFocusDown="@+id/fragment_login_screen_password_edittext" >
     </EditText>
 
     <EditText
@@ -22,17 +23,19 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/fragment_login_screen_username_edittext"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="36dp"
+        android:layout_marginTop="22dp"
         android:ems="10"
-        android:hint="Jelszó"
+        android:hint="@string/hint_for_login_activity_password_textview"
+        android:imeOptions="actionDone"
         android:inputType="textPassword" />
 
     <Button
         android:id="@+id/fragment_login_screen_login_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/fragment_login_screen_password_edittext"
         android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
+        android:layout_marginTop="30dp"
         android:text="@string/fragment_login_screen_login_button_text" />
 
 </RelativeLayout>
