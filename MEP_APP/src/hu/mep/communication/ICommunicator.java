@@ -5,5 +5,5 @@ import hu.mep.datamodells.User;
 public interface ICommunicator {
 	
 	
-	public User authenticateUser(String username, String password);
+	public void authenticateUser(String username, String password);
 }

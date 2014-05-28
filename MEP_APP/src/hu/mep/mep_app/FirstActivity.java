@@ -1,7 +1,10 @@
 package hu.mep.mep_app;
 
-import org.apache.http.impl.conn.tsccm.WaitingThread;
-
+import hu.mep.communication.ICommunicator;
+import hu.mep.communication.RealCommunicator;
+import hu.mep.communication.NetThread;
+import hu.mep.datamodells.Session;
+import android.app.Activity;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -12,11 +15,9 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -254,7 +255,15 @@ public class FirstActivity extends FragmentActivity implements FragmentEventHand
 	}
 	
 	@Override
-	public boolean onLoginButtonPressed(String username, String password) {
+	public boolean onLoginButtonPressed(final String username, final String password) {
+		
+        Runnable r = new Runnable() {
+            @Override
+            public void run() {
+                Session.getInstance().getActualCommunicationInterface().authenticateUser(username, password);
+           }
+        };
+        new NetThread(this, r).start();
 		Toast toast = Toast.makeText(c, "Bejelentkezés folyamatban...", Toast.LENGTH_SHORT);
 		toast.show();
 		return false;

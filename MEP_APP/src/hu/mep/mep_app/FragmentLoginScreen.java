@@ -1,25 +1,18 @@
 package hu.mep.mep_app;
 
 import hu.mep.communication.ICommunicator;
-import hu.mep.communication.SillyCommunicator;
+import hu.mep.communication.RealCommunicator;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.text.Layout.Directions;
 import android.util.Log;
-import android.view.Gravity;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
-import android.webkit.WebView.FindListener;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.Toast;
 
 public class FragmentLoginScreen extends Fragment implements OnClickListener{
 
@@ -48,7 +41,7 @@ public class FragmentLoginScreen extends Fragment implements OnClickListener{
 		super.onCreate(savedInstanceState);
 		context = getActivity().getApplicationContext();
 		Log.d(TAG, " after onCreate");
-		comm = SillyCommunicator.getInstance();
+		comm = RealCommunicator.getInstance();
 	}
 
 	@Override
@@ -120,8 +113,6 @@ public class FragmentLoginScreen extends Fragment implements OnClickListener{
 			String password_for_send = passwordEdittext.getText()
 					.toString();
 
-			// !TODO Kommunikáció - bejelentkeztetés!!!!!
-			comm.authenticateUser(username_for_send, password_for_send);
 			fragmentEventHandler.onLoginButtonPressed(
 					username_for_send, password_for_send);
 
