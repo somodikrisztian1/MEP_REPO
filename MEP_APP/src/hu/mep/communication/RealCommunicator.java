@@ -4,11 +4,11 @@ import hu.mep.datamodells.Place;
 import hu.mep.datamodells.User;
 import hu.mep.datamodells.Session;
 
-import java.io.BufferedInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -24,7 +24,6 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -73,22 +72,18 @@ public class RealCommunicator implements ICommunicator {
 		Log.d("AUTHENTICATE - USERNAME", username);
 		Log.d("AUTHENTICATE - PASSWORD", password);
 		HashMap<String, String> post = new HashMap<String, String>();
-		//post.put("action", "GET");
-		post.put("username", username);
-		post.put("password", password);
-		
+
 		String data = null;
 		
 		
 		try {
-				data = httpPost("iphonelogin_do.php", post);
-				} catch (ClientProtocolException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			} catch (IOException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
+			//data = httpPost("iphonelogin_do.php?username=" + username + "&password=" + encodePasswordWithMD5(password), post);
+			data = httpPost("iphonelogin_do.php?username=" + username + "&password=" + password, post);
+		} catch (ClientProtocolException e1) {
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
 			
 			//JSONArray jsonArray = null;
 			User newUser = null;
@@ -128,6 +123,27 @@ public class RealCommunicator implements ICommunicator {
 
 			Session.getInstance().setActualUser(newUser);
 			return;
+	}
+	
+	private String encodePasswordWithMD5(String originalPassword) {
+		
+		try {
+		
+		// Create MD5 Hash
+        MessageDigest digest = java.security.MessageDigest.getInstance("MD5");
+        digest.update(originalPassword.getBytes());
+        byte messageDigest[] = digest.digest();
+ 
+         // Create Hex String
+         StringBuffer cryptedHexPassword = new StringBuffer();
+         for (int i=0; i<messageDigest.length; i++)
+             cryptedHexPassword.append(Integer.toHexString(0xFF & messageDigest[i]));
+         return cryptedHexPassword.toString();
+ 
+     } catch (NoSuchAlgorithmException e) {
+         e.printStackTrace();
+     }
+     return "";
 	}
 	
 	private ArrayList<Place> processPlacesFromJSON(int count,String data) {

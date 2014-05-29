@@ -45,6 +45,7 @@ public class FirstActivity extends FragmentActivity implements FragmentEventHand
 	private static final int DRAWER_LIST_CONTACTS_NUMBER = 4;
 	
 	private int actualFragmentNumber;
+	private FragmentManager fragmentManager;
 	public EditText usernameEdittext;
 	public EditText passwordEdittext;
 	public Button loginButton;
@@ -53,33 +54,34 @@ public class FirstActivity extends FragmentActivity implements FragmentEventHand
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		Log.e(TAG, "onCreate 1");
+		//Log.e(TAG, "onCreate 1");
 		super.onCreate(savedInstanceState);
 		c = getApplicationContext();
+		fragmentManager = getSupportFragmentManager();
 		setContentView(R.layout.activity_first);
 
 		mainTitle = getResources().getString(
 				R.string.fragment_main_screen_title);
-		Log.e("FirstActivity", "onCreate 2");
+		//Log.e("FirstActivity", "onCreate 2");
 		drawerTitle = getTitle();
 		firstActivityDrawerStrings = getResources().getStringArray(
 				R.array.first_activity_drawer_items_list);
-		
+		/*
 		for (String act : firstActivityDrawerStrings) { 
 			Log.e("Strings:", act); 
 		}
-		
+		*/
 		firstActivityDrawerLayout = (DrawerLayout) findViewById(R.id.first_activity_drawer_layout);
 		firstActivityDrawerListView = (ListView) findViewById(R.id.first_activity_drawer_listview);
-		Log.e("FirstActivity", "onCreate 3");
+		//Log.e("FirstActivity", "onCreate 3");
 		firstActivityDrawerListView.setAdapter(new ArrayAdapter<String>(this,
 				R.layout.drawer_list_item, firstActivityDrawerStrings));
 
 		firstActivityDrawerListView
 				.setOnItemClickListener(new DrawerItemClickListener());
-		Log.e(TAG, "onCreate 4");
+		//Log.e(TAG, "onCreate 4");
 		drawerToggle = new ActionBarDrawerToggle(this,
-				firstActivityDrawerLayout, R.drawable.ic_launcher,
+				firstActivityDrawerLayout, R.drawable.ic_drawer,
 				R.string.drawer_open, R.string.drawer_close) {
 
 			/** Called when a drawer has settled in a completely closed state. */
@@ -93,7 +95,7 @@ public class FirstActivity extends FragmentActivity implements FragmentEventHand
 			public void onDrawerOpened(View drawerView) {
 				super.onDrawerOpened(drawerView);
 				getActionBar().setTitle(drawerTitle);
-				Log.e(TAG, "onDrawerOpened");
+				//Log.e(TAG, "onDrawerOpened");
 			}
 
 		};
@@ -103,16 +105,17 @@ public class FirstActivity extends FragmentActivity implements FragmentEventHand
 		
 		
 
-		Log.e(TAG, "onCreate 5");
-		getActionBar().setDisplayHomeAsUpEnabled(true);
+		//Log.e(TAG, "onCreate 5");
 		getActionBar().setHomeButtonEnabled(true);
+		getActionBar().setDisplayHomeAsUpEnabled(true);
+
 
 		if (savedInstanceState == null) {
-			Log.e(TAG, "onCreate 6");
+			//Log.e(TAG, "onCreate 6");
 			actualFragmentNumber = DRAWER_LIST_MAIN_PAGE_NUMBER;
 			handleDrawerClick(actualFragmentNumber);
 		}
-		Log.e(TAG, "onCreate 7");
+		//Log.e(TAG, "onCreate 7");
 	}
 
 	/* The click listener for ListView in the navigation drawer */
@@ -122,19 +125,26 @@ public class FirstActivity extends FragmentActivity implements FragmentEventHand
 		public void onItemClick(AdapterView<?> parent, View view, int position,
 				long id) {
 			handleDrawerClick(position);
-			Log.e(TAG, "onItemClick 1");
+			//Log.e(TAG, "onItemClick 1");
 		}
 	}
 
+	@Override
+	public void onBackPressed() {
+		super.onBackPressed();
+		if(actualFragmentNumber == DRAWER_LIST_LOGIN_NUMBER) {
+			fragmentManager.popBackStack("login", 0);
+		}
+	}
+	
 	private void handleDrawerClick(int position) {
 		/**
-		 * EGY�B ACTIVITYK MEGNYIT�SA, A DRAWER ELEMEIRE KATTINT�S LOGIK�JA
-		 * KER�L IDE!!!!
+		 * EGYÉB ACTIVITYK MEGNYITÁSA, A DRAWER ELEMEIRE KATTINTÁS LOGIKÁJA
+		 * KERÜL IDE!!!!
 		 */
 		actualFragmentNumber = position;
 		Fragment newFragment = null;
 		Bundle args;
-		FragmentManager fragmentManager = getSupportFragmentManager();
 		FragmentTransaction ft = fragmentManager.beginTransaction();
 		Toast waitForIt = Toast.makeText(c, "Under construction...Try it later! :)", Toast.LENGTH_SHORT);
 		boolean readyForFragmentLoading = false;
@@ -146,28 +156,29 @@ public class FirstActivity extends FragmentActivity implements FragmentEventHand
 			args.putInt(FragmentMainScreen.CLICKED_DRAWER_ITEM_NUMBER, actualFragmentNumber);
 
 			newFragment.setArguments(args);
+			ft.addToBackStack("login");
 			readyForFragmentLoading = true;
-			Log.e("FirstActivity", "handleDrawerClick 1");
+			//Log.e("FirstActivity", "handleDrawerClick 1");
 			break;
 		case DRAWER_LIST_PRESENTATION_PARK_NUMBER:
 			/* !TODO */
 			waitForIt.show();
-			Log.e("FirstActivity", "handleDrawerClick 2");
+			//Log.e("FirstActivity", "handleDrawerClick 2");
 			break;
 		case DRAWER_LIST_RESEARCH_CENTER_NUMBER:
 			/* !TODO */
 			waitForIt.show();
-			Log.e("FirstActivity", "handleDrawerClick 3");
+			//Log.e("FirstActivity", "handleDrawerClick 3");
 			break;
 		case DRAWER_LIST_ABOUT_REMOTE_NUMBER:
 			/* !TODO */
 			waitForIt.show();
-			Log.e("FirstActivity", "handleDrawerClick 4");
+			//Log.e("FirstActivity", "handleDrawerClick 4");
 			break;
 		case DRAWER_LIST_CONTACTS_NUMBER:
 			/* !TODO */
 			waitForIt.show();
-			Log.e("FirstActivity", "handleDrawerClick 5");
+			//Log.e("FirstActivity", "handleDrawerClick 5");
 			break;
 		case DRAWER_LIST_MAIN_PAGE_NUMBER:
 			newFragment = new FragmentMainScreen();
@@ -178,7 +189,8 @@ public class FirstActivity extends FragmentActivity implements FragmentEventHand
 			
 			newFragment.setArguments(args);
 			readyForFragmentLoading = true;
-			Log.e("FirstActivity", "handleDrawerClick -1");
+			//ft.addToBackStack("mainpage");
+			//Log.e("FirstActivity", "handleDrawerClick -1");
 			break;
 		default:
 			break;
@@ -196,10 +208,9 @@ public class FirstActivity extends FragmentActivity implements FragmentEventHand
 		Log.e("FirstActivity", "handleDrawerClick finish");
 	}
 
-	/* Ennek hat�s�ra az Activity helyett az ActionBar c�m�t �ll�tjuk �t. */
 	@Override
 	public void setTitle(CharSequence title) {
-		Log.e("FirstActivity", "setTitle");
+		//Log.e("FirstActivity", "setTitle");
 		getActionBar().setTitle(title);
 	}
 
@@ -208,7 +219,7 @@ public class FirstActivity extends FragmentActivity implements FragmentEventHand
 		super.onPostCreate(savedInstanceState);
 		// Sync the toggle state after onRestoreInstanceState has occurred.
 		drawerToggle.syncState();
-		Log.e("FirstActivity", "onPostCreate");
+		//Log.e("FirstActivity", "onPostCreate");
 	}
 
 	@Override
@@ -216,7 +227,7 @@ public class FirstActivity extends FragmentActivity implements FragmentEventHand
 		super.onConfigurationChanged(newConfig);
 		// Pass any configuration change to the drawer toggls
 		drawerToggle.onConfigurationChanged(newConfig);
-		Log.e("FirstActivity", "onConfigurationChanged");
+		//Log.e("FirstActivity", "onConfigurationChanged");
 	}
 
 	/*
@@ -227,20 +238,15 @@ public class FirstActivity extends FragmentActivity implements FragmentEventHand
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// MenuInflater inflater = getMenuInflater();
 		// inflater.inflate(R.menu.main, menu);
-		Log.e("FirstActivity", "onCreateOptionsMenu");
+		//Log.e("FirstActivity", "onCreateOptionsMenu");
 		return super.onCreateOptionsMenu(menu);
 	}
 
-	/*
-	 * B�rmilyen gomb lenne az ActionBar-on, a drawer kinyit�sakor el kell
-	 * t�ntetni. Az invalidateOptionsMenu() hat�s�ra h�v�dik meg. If the nav
-	 * drawer is open, hide action items related to the content view
-	 */
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
 		//boolean drawerOpen = firstActivityDrawerLayout.isDrawerOpen(firstActivityDrawerListView);
 		// menu.findItem(R.id.action_websearch).setVisible(!drawerOpen);
-		Log.e("FirstActivity", "onPrepareOptionsMenu");
+		//Log.e("FirstActivity", "onPrepareOptionsMenu");
 		return super.onPrepareOptionsMenu(menu);
 	}
 	

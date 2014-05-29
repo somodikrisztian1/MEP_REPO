@@ -104,10 +104,10 @@ public class FragmentLoginScreen extends Fragment implements OnClickListener{
 
 	@Override
 	public void onClick(View v) {
-		Log.d(TAG, "before onClick");
+		//Log.d(TAG, "before onClick");
 		switch (v.getId()) {
 		case R.id.fragment_login_screen_login_button:
-			Log.d(TAG, "onClick - loginbutton");
+			//Log.d(TAG, "onClick - loginbutton");
 			String username_for_send = usernameEdittext.getText()
 					.toString();
 			String password_for_send = passwordEdittext.getText()
@@ -119,9 +119,10 @@ public class FragmentLoginScreen extends Fragment implements OnClickListener{
 			break;
 
 		default:
-			Log.d(TAG, "onClick - default");
+			//Log.d(TAG, "onClick - default");
 			break;
 		}
-		Log.d(TAG, "after onClick");
+		//Log.d(TAG, "after onClick");
 	}
+	
 }
