@@ -6,11 +6,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class FragmentMainScreen extends Fragment {
+public class FragmentLevel1MainScreen extends Fragment {
 	
 	public static final String CLICKED_DRAWER_ITEM_NUMBER = "options_number";
 
-    public FragmentMainScreen() {
+    public FragmentLevel1MainScreen() {
         // Empty constructor required for fragment subclasses
     }
 

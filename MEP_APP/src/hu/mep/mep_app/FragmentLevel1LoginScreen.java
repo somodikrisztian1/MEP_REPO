@@ -14,10 +14,10 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
-public class FragmentLoginScreen extends Fragment implements OnClickListener{
+public class FragmentLevel1LoginScreen extends Fragment implements OnClickListener{
 
 	private static final String TAG = "FragmentLoginScreen";
-	private FragmentEventHandler fragmentEventHandler;
+	private FragmentLevel1EventHandler fragmentEventHandler;
 	private EditText usernameEdittext;
 	private EditText passwordEdittext;
 	private Button loginButton;
@@ -25,7 +25,7 @@ public class FragmentLoginScreen extends Fragment implements OnClickListener{
 
 	private Context context;
 
-	public FragmentLoginScreen() {
+	public FragmentLevel1LoginScreen() {
 	}
 
 	@Override
@@ -51,7 +51,7 @@ public class FragmentLoginScreen extends Fragment implements OnClickListener{
 		View rootView = inflater.inflate(R.layout.fragment_login_screen,
 				container, false);
 		int index = getArguments().getInt(
-				FragmentMainScreen.CLICKED_DRAWER_ITEM_NUMBER);
+				FragmentLevel1MainScreen.CLICKED_DRAWER_ITEM_NUMBER);
 		String newTitle = getResources().getStringArray(
 				R.array.first_activity_drawer_items_list)[index];
 		Log.d(TAG, " inside onCreateView 1");
@@ -96,7 +96,7 @@ public class FragmentLoginScreen extends Fragment implements OnClickListener{
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
 		try {
-			fragmentEventHandler = (FragmentEventHandler) activity;
+			fragmentEventHandler = (FragmentLevel1EventHandler) activity;
 		} catch (ClassCastException e) {
 			throw new ClassCastException(activity.toString() + " must implement FragmentEventHandler interface...");
 		}

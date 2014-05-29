@@ -37,6 +37,16 @@ public class User {
 	boolean mekut;
 	boolean teacher;
 	boolean moderator;
+	public List<Place> getUsersPlaces() {
+		return usersPlaces;
+	}
+
+
+	public void setUsersPlaces(List<Place> usersPlaces) {
+		this.usersPlaces = usersPlaces;
+	}
+
+
 	List<Place> usersPlaces;
 	
 	

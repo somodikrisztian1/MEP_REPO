@@ -6,6 +6,7 @@ import hu.mep.communication.NetThread;
 import hu.mep.datamodells.Session;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
@@ -25,7 +26,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
-public class FirstActivity extends FragmentActivity implements FragmentEventHandler {
+public class ActivityLevel1 extends FragmentActivity implements FragmentLevel1EventHandler {
 
 	private static final String TAG = "FirstActivity";
 	
@@ -150,10 +151,10 @@ public class FirstActivity extends FragmentActivity implements FragmentEventHand
 		boolean readyForFragmentLoading = false;
 		switch (actualFragmentNumber) {
 		case DRAWER_LIST_LOGIN_NUMBER:
-			newFragment = new FragmentLoginScreen();
+			newFragment = new FragmentLevel1LoginScreen();
 
 			args = new Bundle();
-			args.putInt(FragmentMainScreen.CLICKED_DRAWER_ITEM_NUMBER, actualFragmentNumber);
+			args.putInt(FragmentLevel1MainScreen.CLICKED_DRAWER_ITEM_NUMBER, actualFragmentNumber);
 
 			newFragment.setArguments(args);
 			ft.addToBackStack("login");
@@ -181,10 +182,10 @@ public class FirstActivity extends FragmentActivity implements FragmentEventHand
 			//Log.e("FirstActivity", "handleDrawerClick 5");
 			break;
 		case DRAWER_LIST_MAIN_PAGE_NUMBER:
-			newFragment = new FragmentMainScreen();
+			newFragment = new FragmentLevel1MainScreen();
 
 			args = new Bundle();
-			args.putInt(FragmentMainScreen.CLICKED_DRAWER_ITEM_NUMBER,
+			args.putInt(FragmentLevel1MainScreen.CLICKED_DRAWER_ITEM_NUMBER,
 					DRAWER_LIST_MAIN_PAGE_NUMBER);
 			
 			newFragment.setArguments(args);
@@ -270,8 +271,11 @@ public class FirstActivity extends FragmentActivity implements FragmentEventHand
            }
         };
         new NetThread(this, r).start();
+        
 		Toast toast = Toast.makeText(c, "Bejelentkezés folyamatban...", Toast.LENGTH_SHORT);
 		toast.show();
+		Intent i = new Intent(this, ActivityLevel2.class);
+		startActivity(i);
 		return false;
 	}
 	

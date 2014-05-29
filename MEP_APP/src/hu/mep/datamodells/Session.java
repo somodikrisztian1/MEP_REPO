@@ -1,5 +1,6 @@
 package hu.mep.datamodells;
 
+import android.app.ProgressDialog;
 import hu.mep.communication.ICommunicator;
 import hu.mep.communication.RealCommunicator;
 
@@ -8,6 +9,7 @@ public class Session {
 	private static Session instance;
 	private static User actualUser;
 	private static ICommunicator actualCommunicationInterface;
+	private static ProgressDialog progressDialog;
 	
 	
 	private Session() {
@@ -34,6 +36,21 @@ public class Session {
 			actualCommunicationInterface = RealCommunicator.getInstance();
 		}
 		return actualCommunicationInterface;
+	}
+
+	public static void setProgressDialog(ProgressDialog progressDialog) {
+		Session.progressDialog = progressDialog;
+	}
+	
+	public static void dismissProgressDialog() {
+		 if (progressDialog != null) {
+	            progressDialog.dismiss();
+	            progressDialog = null;
+	        }
+	}
+
+	public static void showProgressDialog() {
+		progressDialog.show();
 	}
 	
 }
