@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center_horizontal"
+    android:orientation="horizontal"
+    android:weightSum="100" >
+
+    <ImageView
+        android:id="@+id/activity_secondlevel_chat_imageview_for_profile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="20"
+        android:background="@drawable/ic_action_chat"
+        android:paddingLeft="20dp"
+        android:paddingTop="10dp" />
+
+    <TextView
+        android:id="@+id/activity_secondlevel_char_textview_for_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="80"
+        android:paddingLeft="10dp"
+        android:paddingTop="10dp"
+        android:text="Helloka! Szia-szia! :)"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+</LinearLayout>

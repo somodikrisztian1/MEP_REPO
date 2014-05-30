@@ -16,12 +16,27 @@ public class Place {
 	
 	private static final String TAG = "Place.java";
 	
-	String name;
-	String ID;
-	String description;
-	String location;
+	private String name;
+	private String ID;
+	private String description;
+	private String location;
 	
 	
+	public String getName() {
+		return name;
+	}
+
+
+	public String getDescription() {
+		return description;
+	}
+
+
+	public String getLocation() {
+		return location;
+	}
+
+
 	public static final String nameTag = "nev";
 	public static final String idTag = "tsz1_id";
 	public static final String descriptionTag = "leiras";

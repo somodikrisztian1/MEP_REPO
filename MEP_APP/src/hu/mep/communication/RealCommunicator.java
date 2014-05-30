@@ -74,81 +74,94 @@ public class RealCommunicator implements ICommunicator {
 		HashMap<String, String> post = new HashMap<String, String>();
 
 		String data = null;
-		
-		
+
 		try {
-			//data = httpPost("iphonelogin_do.php?username=" + username + "&password=" + encodePasswordWithMD5(password), post);
-			data = httpPost("iphonelogin_do.php?username=" + username + "&password=" + password, post);
+			// data = httpPost("iphonelogin_do.php?username=" + username +
+			// "&password=" + encodePasswordWithMD5(password), post);
+			data = httpPost("iphonelogin_do.php?username=" + username
+					+ "&password=" + password, post);
 		} catch (ClientProtocolException e1) {
 			e1.printStackTrace();
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
-			
-			//JSONArray jsonArray = null;
-			User newUser = null;
-			try {
-				//jsonArray = new JSONArray(data);
+
+		// JSONArray jsonArray = null;
+		User newUser = null;
+		try {
+			// jsonArray = new JSONArray(data);
+			if (!(data.equals("null"))) {
 				JSONObject jsonObject = new JSONObject(data);
-				
-				int newMepID = Integer.parseInt(jsonObject.getString(User.mepIDTag));
-				
+
+				int newMepID = Integer.parseInt(jsonObject
+						.getString(User.mepIDTag));
+
 				String newName = jsonObject.getString(User.nameTag);
-				
+
 				URL imageURL = new URL(jsonObject.getString(User.imageURLTag));
-				
-				int mekutINT = Integer.parseInt(jsonObject.getString(User.mekutTag));
+
+				int mekutINT = Integer.parseInt(jsonObject
+						.getString(User.mekutTag));
 				boolean mekut = (mekutINT != 0);
-				
-				int teacherINT = Integer.parseInt(jsonObject.getString(User.teacherTag));
+
+				int teacherINT = Integer.parseInt(jsonObject
+						.getString(User.teacherTag));
 				boolean teacher = (teacherINT != 0);
-				
-				int moderatorINT = Integer.parseInt(jsonObject.getString(User.moderatorTag));
+
+				int moderatorINT = Integer.parseInt(jsonObject
+						.getString(User.moderatorTag));
 				boolean moderator = (moderatorINT != 0);
-				
+
 				String placesString = jsonObject.getString(User.placesTag);
 
 				int placesCount = jsonObject.getInt(User.placesCountTag);
-				
-				newUser = new User(newMepID, newName, imageURL, mekut, teacher, moderator, processPlacesFromJSON(placesCount, placesString));
-				
-				
-			} catch (MalformedURLException e) {
-					Log.e(TAG, "Malformed image URL in the JSON catched during authentication...");
-					e.printStackTrace();
-			} catch (JSONException e1) {
-					Log.e(TAG, "Something happened while processing the JSON catched during authentication...");
-				e1.printStackTrace();
+
+				newUser = new User(newMepID, newName, imageURL, mekut, teacher,
+						moderator, processPlacesFromJSON(placesCount,
+								placesString));
+				Session.getInstance().setActualUser(newUser);
+			} else {
+				Session.getInstance().setActualUser(null);
+				return;
 			}
 
-			Session.getInstance().setActualUser(newUser);
-			return;
+		} catch (MalformedURLException e) {
+			Log.e(TAG,
+					"Malformed image URL in the JSON catched during authentication...");
+			e.printStackTrace();
+		} catch (JSONException e1) {
+			Log.e(TAG,
+					"Something happened while processing the JSON catched during authentication...");
+			e1.printStackTrace();
+		}
 	}
-	
+
 	private String encodePasswordWithMD5(String originalPassword) {
-		
+
 		try {
-		
-		// Create MD5 Hash
-        MessageDigest digest = java.security.MessageDigest.getInstance("MD5");
-        digest.update(originalPassword.getBytes());
-        byte messageDigest[] = digest.digest();
- 
-         // Create Hex String
-         StringBuffer cryptedHexPassword = new StringBuffer();
-         for (int i=0; i<messageDigest.length; i++)
-             cryptedHexPassword.append(Integer.toHexString(0xFF & messageDigest[i]));
-         return cryptedHexPassword.toString();
- 
-     } catch (NoSuchAlgorithmException e) {
-         e.printStackTrace();
-     }
-     return "";
+
+			// Create MD5 Hash
+			MessageDigest digest = java.security.MessageDigest
+					.getInstance("MD5");
+			digest.update(originalPassword.getBytes());
+			byte messageDigest[] = digest.digest();
+
+			// Create Hex String
+			StringBuffer cryptedHexPassword = new StringBuffer();
+			for (int i = 0; i < messageDigest.length; i++)
+				cryptedHexPassword.append(Integer
+						.toHexString(0xFF & messageDigest[i]));
+			return cryptedHexPassword.toString();
+
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		}
+		return "";
 	}
-	
-	private ArrayList<Place> processPlacesFromJSON(int count,String data) {
+
+	private ArrayList<Place> processPlacesFromJSON(int count, String data) {
 		ArrayList<Place> result = new ArrayList<Place>();
-		
+
 		try {
 			JSONObject allPlaces = new JSONObject(data);
 			JSONObject actPlace = null;
@@ -156,23 +169,22 @@ public class RealCommunicator implements ICommunicator {
 			String newPlaceID;
 			String newPlaceDescription;
 			String newPlaceLocation;
-			
-			for(Integer i = 1; i <= count; ++i) {
+
+			for (Integer i = 1; i <= count; ++i) {
 				actPlace = new JSONObject(allPlaces.getString(i.toString()));
 				newPlaceName = actPlace.getString(Place.nameTag);
 				newPlaceID = actPlace.getString(Place.idTag);
 				newPlaceDescription = actPlace.getString(Place.descriptionTag);
 				newPlaceLocation = actPlace.getString(Place.locationTag);
-				result.add(new Place(newPlaceName, newPlaceID, newPlaceDescription, newPlaceLocation));
+				result.add(new Place(newPlaceName, newPlaceID,
+						newPlaceDescription, newPlaceLocation));
 			}
-			
+
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
-		
-		
-		
+
 		return result;
 	}
-	
+
 }

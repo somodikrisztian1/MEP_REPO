@@ -1,5 +1,8 @@
 package hu.mep.mep_app;
 
+import java.lang.Thread.State;
+
+import hu.mep.communication.AuthenticationRunnable;
 import hu.mep.communication.ICommunicator;
 import hu.mep.communication.RealCommunicator;
 import hu.mep.communication.NetThread;
@@ -26,10 +29,11 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
-public class ActivityLevel1 extends FragmentActivity implements FragmentLevel1EventHandler {
+public class ActivityLevel1 extends FragmentActivity implements
+		FragmentLevel1EventHandler {
 
 	private static final String TAG = "FirstActivity";
-	
+
 	private String[] firstActivityDrawerStrings;
 	private DrawerLayout firstActivityDrawerLayout;
 	private ListView firstActivityDrawerListView;
@@ -44,7 +48,7 @@ public class ActivityLevel1 extends FragmentActivity implements FragmentLevel1Ev
 	private static final int DRAWER_LIST_RESEARCH_CENTER_NUMBER = 2;
 	private static final int DRAWER_LIST_ABOUT_REMOTE_NUMBER = 3;
 	private static final int DRAWER_LIST_CONTACTS_NUMBER = 4;
-	
+
 	private int actualFragmentNumber;
 	private FragmentManager fragmentManager;
 	public EditText usernameEdittext;
@@ -55,7 +59,7 @@ public class ActivityLevel1 extends FragmentActivity implements FragmentLevel1Ev
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		//Log.e(TAG, "onCreate 1");
+		// Log.e(TAG, "onCreate 1");
 		super.onCreate(savedInstanceState);
 		c = getApplicationContext();
 		fragmentManager = getSupportFragmentManager();
@@ -63,24 +67,23 @@ public class ActivityLevel1 extends FragmentActivity implements FragmentLevel1Ev
 
 		mainTitle = getResources().getString(
 				R.string.fragment_main_screen_title);
-		//Log.e("FirstActivity", "onCreate 2");
+		// Log.e("FirstActivity", "onCreate 2");
 		drawerTitle = getTitle();
 		firstActivityDrawerStrings = getResources().getStringArray(
 				R.array.first_activity_drawer_items_list);
 		/*
-		for (String act : firstActivityDrawerStrings) { 
-			Log.e("Strings:", act); 
-		}
-		*/
+		 * for (String act : firstActivityDrawerStrings) { Log.e("Strings:",
+		 * act); }
+		 */
 		firstActivityDrawerLayout = (DrawerLayout) findViewById(R.id.first_activity_drawer_layout);
 		firstActivityDrawerListView = (ListView) findViewById(R.id.first_activity_drawer_listview);
-		//Log.e("FirstActivity", "onCreate 3");
+		// Log.e("FirstActivity", "onCreate 3");
 		firstActivityDrawerListView.setAdapter(new ArrayAdapter<String>(this,
 				R.layout.drawer_list_item, firstActivityDrawerStrings));
 
 		firstActivityDrawerListView
 				.setOnItemClickListener(new DrawerItemClickListener());
-		//Log.e(TAG, "onCreate 4");
+		// Log.e(TAG, "onCreate 4");
 		drawerToggle = new ActionBarDrawerToggle(this,
 				firstActivityDrawerLayout, R.drawable.ic_drawer,
 				R.string.drawer_open, R.string.drawer_close) {
@@ -96,27 +99,24 @@ public class ActivityLevel1 extends FragmentActivity implements FragmentLevel1Ev
 			public void onDrawerOpened(View drawerView) {
 				super.onDrawerOpened(drawerView);
 				getActionBar().setTitle(drawerTitle);
-				//Log.e(TAG, "onDrawerOpened");
+				// Log.e(TAG, "onDrawerOpened");
 			}
 
 		};
 
 		// Set the drawer toggle as the DrawerListener
 		firstActivityDrawerLayout.setDrawerListener(drawerToggle);
-		
-		
 
-		//Log.e(TAG, "onCreate 5");
+		// Log.e(TAG, "onCreate 5");
 		getActionBar().setHomeButtonEnabled(true);
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 
-
 		if (savedInstanceState == null) {
-			//Log.e(TAG, "onCreate 6");
+			// Log.e(TAG, "onCreate 6");
 			actualFragmentNumber = DRAWER_LIST_MAIN_PAGE_NUMBER;
 			handleDrawerClick(actualFragmentNumber);
 		}
-		//Log.e(TAG, "onCreate 7");
+		// Log.e(TAG, "onCreate 7");
 	}
 
 	/* The click listener for ListView in the navigation drawer */
@@ -126,18 +126,18 @@ public class ActivityLevel1 extends FragmentActivity implements FragmentLevel1Ev
 		public void onItemClick(AdapterView<?> parent, View view, int position,
 				long id) {
 			handleDrawerClick(position);
-			//Log.e(TAG, "onItemClick 1");
+			// Log.e(TAG, "onItemClick 1");
 		}
 	}
 
 	@Override
 	public void onBackPressed() {
 		super.onBackPressed();
-		if(actualFragmentNumber == DRAWER_LIST_LOGIN_NUMBER) {
+		if (actualFragmentNumber == DRAWER_LIST_LOGIN_NUMBER) {
 			fragmentManager.popBackStack("login", 0);
 		}
 	}
-	
+
 	private void handleDrawerClick(int position) {
 		/**
 		 * EGYÉB ACTIVITYK MEGNYITÁSA, A DRAWER ELEMEIRE KATTINTÁS LOGIKÁJA
@@ -147,39 +147,41 @@ public class ActivityLevel1 extends FragmentActivity implements FragmentLevel1Ev
 		Fragment newFragment = null;
 		Bundle args;
 		FragmentTransaction ft = fragmentManager.beginTransaction();
-		Toast waitForIt = Toast.makeText(c, "Under construction...Try it later! :)", Toast.LENGTH_SHORT);
+		Toast waitForIt = Toast.makeText(c,
+				"Under construction...Try it later! :)", Toast.LENGTH_SHORT);
 		boolean readyForFragmentLoading = false;
 		switch (actualFragmentNumber) {
 		case DRAWER_LIST_LOGIN_NUMBER:
 			newFragment = new FragmentLevel1LoginScreen();
 
 			args = new Bundle();
-			args.putInt(FragmentLevel1MainScreen.CLICKED_DRAWER_ITEM_NUMBER, actualFragmentNumber);
+			args.putInt(FragmentLevel1MainScreen.CLICKED_DRAWER_ITEM_NUMBER,
+					actualFragmentNumber);
 
 			newFragment.setArguments(args);
 			ft.addToBackStack("login");
 			readyForFragmentLoading = true;
-			//Log.e("FirstActivity", "handleDrawerClick 1");
+			// Log.e("FirstActivity", "handleDrawerClick 1");
 			break;
 		case DRAWER_LIST_PRESENTATION_PARK_NUMBER:
 			/* !TODO */
 			waitForIt.show();
-			//Log.e("FirstActivity", "handleDrawerClick 2");
+			// Log.e("FirstActivity", "handleDrawerClick 2");
 			break;
 		case DRAWER_LIST_RESEARCH_CENTER_NUMBER:
 			/* !TODO */
 			waitForIt.show();
-			//Log.e("FirstActivity", "handleDrawerClick 3");
+			// Log.e("FirstActivity", "handleDrawerClick 3");
 			break;
 		case DRAWER_LIST_ABOUT_REMOTE_NUMBER:
 			/* !TODO */
 			waitForIt.show();
-			//Log.e("FirstActivity", "handleDrawerClick 4");
+			// Log.e("FirstActivity", "handleDrawerClick 4");
 			break;
 		case DRAWER_LIST_CONTACTS_NUMBER:
 			/* !TODO */
 			waitForIt.show();
-			//Log.e("FirstActivity", "handleDrawerClick 5");
+			// Log.e("FirstActivity", "handleDrawerClick 5");
 			break;
 		case DRAWER_LIST_MAIN_PAGE_NUMBER:
 			newFragment = new FragmentLevel1MainScreen();
@@ -187,16 +189,16 @@ public class ActivityLevel1 extends FragmentActivity implements FragmentLevel1Ev
 			args = new Bundle();
 			args.putInt(FragmentLevel1MainScreen.CLICKED_DRAWER_ITEM_NUMBER,
 					DRAWER_LIST_MAIN_PAGE_NUMBER);
-			
+
 			newFragment.setArguments(args);
 			readyForFragmentLoading = true;
-			//ft.addToBackStack("mainpage");
-			//Log.e("FirstActivity", "handleDrawerClick -1");
+			// ft.addToBackStack("mainpage");
+			// Log.e("FirstActivity", "handleDrawerClick -1");
 			break;
 		default:
 			break;
 		}
-		if(readyForFragmentLoading) {
+		if (readyForFragmentLoading) {
 			ft.replace(R.id.first_activity_frame, newFragment);
 			ft.commit();
 		}
@@ -211,7 +213,7 @@ public class ActivityLevel1 extends FragmentActivity implements FragmentLevel1Ev
 
 	@Override
 	public void setTitle(CharSequence title) {
-		//Log.e("FirstActivity", "setTitle");
+		// Log.e("FirstActivity", "setTitle");
 		getActionBar().setTitle(title);
 	}
 
@@ -220,7 +222,7 @@ public class ActivityLevel1 extends FragmentActivity implements FragmentLevel1Ev
 		super.onPostCreate(savedInstanceState);
 		// Sync the toggle state after onRestoreInstanceState has occurred.
 		drawerToggle.syncState();
-		//Log.e("FirstActivity", "onPostCreate");
+		// Log.e("FirstActivity", "onPostCreate");
 	}
 
 	@Override
@@ -228,7 +230,7 @@ public class ActivityLevel1 extends FragmentActivity implements FragmentLevel1Ev
 		super.onConfigurationChanged(newConfig);
 		// Pass any configuration change to the drawer toggls
 		drawerToggle.onConfigurationChanged(newConfig);
-		//Log.e("FirstActivity", "onConfigurationChanged");
+		// Log.e("FirstActivity", "onConfigurationChanged");
 	}
 
 	/*
@@ -239,45 +241,63 @@ public class ActivityLevel1 extends FragmentActivity implements FragmentLevel1Ev
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// MenuInflater inflater = getMenuInflater();
 		// inflater.inflate(R.menu.main, menu);
-		//Log.e("FirstActivity", "onCreateOptionsMenu");
+		// Log.e("FirstActivity", "onCreateOptionsMenu");
 		return super.onCreateOptionsMenu(menu);
 	}
 
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
-		//boolean drawerOpen = firstActivityDrawerLayout.isDrawerOpen(firstActivityDrawerListView);
+		// boolean drawerOpen =
+		// firstActivityDrawerLayout.isDrawerOpen(firstActivityDrawerListView);
 		// menu.findItem(R.id.action_websearch).setVisible(!drawerOpen);
-		//Log.e("FirstActivity", "onPrepareOptionsMenu");
+		// Log.e("FirstActivity", "onPrepareOptionsMenu");
 		return super.onPrepareOptionsMenu(menu);
 	}
-	
+
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		Log.e("FirstActivity", "onOptionsItemSelected");
-		if( drawerToggle.onOptionsItemSelected(item) ) {
-			//handleDrawerClick(DRAWER_LIST_MAIN_PAGE_NUMBER);
+		if (drawerToggle.onOptionsItemSelected(item)) {
+			// handleDrawerClick(DRAWER_LIST_MAIN_PAGE_NUMBER);
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
 	}
-	
+
 	@Override
-	public boolean onLoginButtonPressed(final String username, final String password) {
-		
-        Runnable r = new Runnable() {
-            @Override
-            public void run() {
-                Session.getInstance().getActualCommunicationInterface().authenticateUser(username, password);
-           }
-        };
-        new NetThread(this, r).start();
-        
-		Toast toast = Toast.makeText(c, "Bejelentkezés folyamatban...", Toast.LENGTH_SHORT);
+	public boolean onLoginButtonPressed(final String username,
+			final String password) {
+		/*
+		 * Runnable r = new Runnable() {
+		 * 
+		 * @Override public void run() {
+		 * Session.getInstance().getActualCommunicationInterface
+		 * ().authenticateUser(username, password); } };
+		 * 
+		 * Runnable runnable = new AuthenticationThread(c, username, password);
+		 * runnable.run(); new NetThread(this, r).start();
+		 */
+
+		Toast toast = Toast.makeText(c,
+				"Bejelentkezés folyamatban...\nKérem várjon!",
+				Toast.LENGTH_SHORT);
 		toast.show();
-		Intent i = new Intent(this, ActivityLevel2.class);
-		startActivity(i);
+
+		Thread t = new Thread(new AuthenticationRunnable(c, username, password));
+		t.start();
+		while (!t.getState().equals(State.TERMINATED)) {
+			Log.d(TAG, "Waiting for datas from authentication");
+		}
+		if (Session.getInstance().getActualUser() == null) {
+			Toast.makeText(
+					c,
+					"Sikertelen bejelentkezés!\nEllenőrizze a beírt adatok helyességét!",
+					Toast.LENGTH_LONG).show();
+		} else {
+			Intent i = new Intent(this, ActivityLevel2.class);
+			startActivity(i);
+		}
 		return false;
 	}
-	
 
 }

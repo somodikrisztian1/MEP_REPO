@@ -1,7 +1,7 @@
 package hu.mep.mep_app;
 
 import hu.mep.datamodells.Session;
-import hu.mep.utils.MyListarrayAdapter;
+import hu.mep.utils.MyPlaceListAdapter;
 import android.app.ActionBar;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -22,8 +22,12 @@ public class ActivityLevel2 extends FragmentActivity implements
 	public static final int TAB_REMOTE_MONITORINGS = 2;
 	public static final int TAB_CHAT_NUMBER = 3;
 
-	// private int actualFragmentNumber;
-	// private FragmentManager fragmentManager;
+	private int actualFragmentNumber;
+	private FragmentManager fragmentManager;
+
+	public void setActualFragmentNumber(int actualFragmentNumber) {
+		this.actualFragmentNumber = actualFragmentNumber;
+	}
 
 	private ListView listview;
 
@@ -36,12 +40,14 @@ public class ActivityLevel2 extends FragmentActivity implements
 		ActionBar ab = getActionBar();
 		ab.setCustomView(R.layout.actionbar_secondlevel);
 		ab.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+
 		this.listview = (ListView) findViewById(R.id.activity_secondlevel_listview);
-		
-		/* ITT MÉG NINCS MEGTÖLTVE A USERSPLACE BAZZEG! :D
-		 * MEG KELL VÁRNI A HÁTTÉRSZÁLON FUTÓ ADATLEKÉRÉST
-		 * KÜLÖNBEN NULLPOINTEREXCEPTION LESZ! */
-		MyListarrayAdapter adapter = new MyListarrayAdapter(
+
+		/*
+		 * ITT MÉG NINCS MEGTÖLTVE A USERSPLACE BAZZEG! :D MEG KELL VÁRNI A
+		 * HÁTTÉRSZÁLON FUTÓ ADATLEKÉRÉST KÜLÖNBEN NULLPOINTEREXCEPTION LESZ!
+		 */
+		MyPlaceListAdapter adapter = new MyPlaceListAdapter(
 				getApplicationContext(), R.id.activity_secondlevel_listview,
 				Session.getInstance().getActualUser().getUsersPlaces());
 
@@ -51,10 +57,11 @@ public class ActivityLevel2 extends FragmentActivity implements
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
-				Log.d("TÁVFELÜGYELETEK", "Hely jól megtapicskolva: " + position);
-				
+				Log.d("ActivityLevel2.java", "Távfelügyelet  #" + position
+						+ " jól megtapicskolva! :)");
+
 			}
-			
+
 		});
 	}
 
