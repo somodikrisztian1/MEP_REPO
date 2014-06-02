@@ -9,9 +9,18 @@ public class Session {
 	private static Session instance;
 	private static User actualUser;
 	private static ICommunicator actualCommunicationInterface;
+	private static ChatContactList actualChatContactList;
 	private static ProgressDialog progressDialog;
 	
-	
+	public static ChatContactList getActualChatContactList() {
+		return actualChatContactList;
+	}
+
+	public static void setActualChatContactList(
+			ChatContactList actualChatContactList) {
+		Session.actualChatContactList = actualChatContactList;
+	}
+
 	private Session() {
 		actualCommunicationInterface = RealCommunicator.getInstance();
 	}
@@ -29,6 +38,8 @@ public class Session {
 	
 	public static void setActualUser(User newUser) {
 		actualUser = newUser;
+		if(newUser != null)
+			actualUser.downloadProfilePicture();
 	}
 	
 	public static ICommunicator getActualCommunicationInterface() {

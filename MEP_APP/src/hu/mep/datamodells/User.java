@@ -1,8 +1,15 @@
 package hu.mep.datamodells;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.List;
 
+import com.google.gson.annotations.SerializedName;
+
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.util.Log;
 
 /**
@@ -30,30 +37,37 @@ public class User {
 	public static final String placesCountTag = "tavfelugyeletek_count";
 	public static final String placesTag = "tavfelugyeletek";
 
+	@SerializedName("mep_id")
 	private int mepID;
+	@SerializedName("nev")
 	String fullName;
+	@SerializedName("imageUrl")
 	URL imageURL;
+	@SerializedName("mekut")
 	boolean mekut;
+	@SerializedName("tanar")
 	boolean teacher;
-
+	@SerializedName("moderator")
+	boolean moderator;
+	@SerializedName("tavfelugyeletek")
+	PlaceList usersPlaces;
+	
+	Bitmap profilePicture;
+	
 	public int getMepID() {
 		return mepID;
 	}
 
-	boolean moderator;
-
-	public List<Place> getUsersPlaces() {
+	public PlaceList getUsersPlaces() {
 		return usersPlaces;
 	}
 
-	public void setUsersPlaces(List<Place> usersPlaces) {
+	public void setUsersPlaces(PlaceList usersPlaces) {
 		this.usersPlaces = usersPlaces;
 	}
 
-	List<Place> usersPlaces;
-
 	public User(int mepID, String fullName, URL imageURL, boolean mekut,
-			boolean teacher, boolean moderator, List<Place> usersPlaces) {
+			boolean teacher, boolean moderator, PlaceList usersPlaces) {
 		super();
 		this.mepID = mepID;
 		this.fullName = fullName;
@@ -72,5 +86,21 @@ public class User {
 		Log.d(TAG, "moderator=" + moderator);
 
 	}
+	
+	public void downloadProfilePicture() {
+		    try {
+		        
+		        HttpURLConnection connection = (HttpURLConnection) this.imageURL
+		                .openConnection();
+		        connection.setDoInput(true);
+		        connection.connect();
+		        InputStream input = connection.getInputStream();
+		        this.profilePicture = BitmapFactory.decodeStream(input);
 
+		    } catch (IOException e) {
+		        e.printStackTrace();
+		        Log.e("getBmpFromUrl error: ", e.getMessage().toString());
+		        return;
+		    }
+		}
 }

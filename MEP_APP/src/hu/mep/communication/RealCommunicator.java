@@ -1,10 +1,17 @@
 package hu.mep.communication;
 
+import hu.mep.datamodells.ChatContact;
+import hu.mep.datamodells.ChatContactList;
 import hu.mep.datamodells.Place;
+import hu.mep.datamodells.PlaceList;
 import hu.mep.datamodells.User;
 import hu.mep.datamodells.Session;
+import hu.mep.utils.ChatContactListDeserializer;
+import hu.mep.utils.PlaceListDeserializer;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.security.MessageDigest;
@@ -24,9 +31,12 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
-import org.json.JSONException;
-import org.json.JSONObject;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.util.Log;
 
 public class RealCommunicator implements ICommunicator {
@@ -69,78 +79,26 @@ public class RealCommunicator implements ICommunicator {
 
 	@Override
 	public void authenticateUser(String username, String password) {
-		// Log.d("AUTHENTICATE - USERNAME", username);
-		// Log.d("AUTHENTICATE - PASSWORD", password);
 		HashMap<String, String> post = new HashMap<String, String>();
-
 		String data = null;
-
 		try {
 			String link = "iphonelogin_do.php?username=" + username
 					+ "&password=" + encodePasswordWithMD5(password);
-			Log.e("LOGIN link=", link);
-			Log.e("ONLY PASSWORD=", "#" + encodePasswordWithMD5(password) + "#");
 			data = httpPost(link, post);
-			/*
-			 * data = httpPost("iphonelogin_do.php?username=" + username +
-			 * "&password=" + password, post);
-			 */
+
 		} catch (ClientProtocolException e1) {
 			e1.printStackTrace();
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
-
-		// JSONArray jsonArray = null;
-		User newUser = null;
-		try {
-			// jsonArray = new JSONArray(data);
-			if (!(data.equals("null"))) {
-				JSONObject jsonObject = new JSONObject(data);
-
-				int newMepID = Integer.parseInt(jsonObject
-						.getString(User.mepIDTag));
-
-				String newName = jsonObject.getString(User.nameTag);
-
-				URL imageURL = new URL(jsonObject.getString(User.imageURLTag));
-
-				int mekutINT = Integer.parseInt(jsonObject
-						.getString(User.mekutTag));
-				boolean mekut = (mekutINT != 0);
-
-				int teacherINT = Integer.parseInt(jsonObject
-						.getString(User.teacherTag));
-				boolean teacher = (teacherINT != 0);
-
-				int moderatorINT = Integer.parseInt(jsonObject
-						.getString(User.moderatorTag));
-				boolean moderator = (moderatorINT != 0);
-
-				String placesString = jsonObject.getString(User.placesTag);
-
-				int placesCount = jsonObject.getInt(User.placesCountTag);
-
-				newUser = new User(newMepID, newName, imageURL, mekut, teacher,
-						moderator, processPlacesFromJSON(placesCount,
-								placesString));
-				Session.getInstance().setActualUser(newUser);
-			} else {
-				Session.getInstance().setActualUser(null);
-				return;
-			}
-
-		} catch (MalformedURLException e) {
-			Log.e(TAG,
-					"Malformed image URL in the JSON catched during authentication...");
-			e.printStackTrace();
-		} catch (JSONException e1) {
-			Log.e(TAG,
-					"Something happened while processing the JSON catched during authentication...");
-			e1.printStackTrace();
-		}
+		
+		GsonBuilder gsonBuilder = new GsonBuilder();
+		gsonBuilder.registerTypeAdapter(PlaceList.class, new PlaceListDeserializer());
+		Gson gson = gsonBuilder.create();
+		User newUser = gson.fromJson(data, User.class);
+		Session.getInstance().setActualUser(newUser);
 	}
-
+	
 	private String encodePasswordWithMD5(String originalPassword) {
 		
 		final String MD5 = "MD5"; 
@@ -163,36 +121,8 @@ public class RealCommunicator implements ICommunicator {
 			e.printStackTrace(); 
 		} 
 		return "";
-	}
-
-	private ArrayList<Place> processPlacesFromJSON(int count, String data) {
-		ArrayList<Place> result = new ArrayList<Place>();
-
-		try {
-			JSONObject allPlaces = new JSONObject(data);
-			JSONObject actPlace = null;
-			String newPlaceName;
-			String newPlaceID;
-			String newPlaceDescription;
-			String newPlaceLocation;
-
-			for (Integer i = 1; i <= count; ++i) {
-				actPlace = new JSONObject(allPlaces.getString(i.toString()));
-				newPlaceName = actPlace.getString(Place.nameTag);
-				newPlaceID = actPlace.getString(Place.idTag);
-				newPlaceDescription = actPlace.getString(Place.descriptionTag);
-				newPlaceLocation = actPlace.getString(Place.locationTag);
-				result.add(new Place(newPlaceName, newPlaceID,
-						newPlaceDescription, newPlaceLocation));
-			}
-
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
-
-		return result;
-	}
-
+	}	
+	
 	@Override
 	public void getChatPartners() {
 		HashMap<String, String> post = new HashMap<String, String>();
@@ -202,16 +132,26 @@ public class RealCommunicator implements ICommunicator {
 		try {
 			data = httpPost("ios_getContactList.php?userId="
 					+ Session.getInstance().getActualUser().getMepID(), post);
-			// Log.e(TAG, MainURL + "ios_getContactList.php?userId=" +
-			// Session.getInstance().getActualUser().getMepID());
-		} catch (ClientProtocolException e1) {
+			
+			Log.e(TAG, MainURL + "ios_getContactList.php?userId=" +
+					Session.getInstance().getActualUser().getMepID());
+			
+			Log.d(TAG, "getChatPartners() ==>" + data);
+				} catch (ClientProtocolException e1) {
 			e1.printStackTrace();
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
-
-		Log.d(TAG, "getChatPartners() ==>" + data);
-
+	
+	
+	GsonBuilder gsonBuilder = new GsonBuilder();
+	gsonBuilder.registerTypeAdapter(ChatContactList.class, new ChatContactListDeserializer());
+	Gson gson = gsonBuilder.create();
+	ChatContactList contacts = gson.fromJson(data, ChatContactList.class);
+	Session.getInstance().setActualChatContactList(contacts);
+	
+	for (ChatContact actContact : Session.getInstance().getActualChatContactList().getContacts()) {
+		Log.e("CHATTÁRSAK TESZT!!!!", actContact.getName());
 	}
-
+	}
 }

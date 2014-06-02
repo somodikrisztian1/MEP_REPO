@@ -1,8 +1,5 @@
 package hu.mep.communication;
 
-import java.lang.Thread.State;
-
-import hu.mep.datamodells.Session;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -33,16 +30,7 @@ public class NetThread extends Thread implements Runnable {
 		}
 		super.run();
 	}
-/*
-	@Override
-	public synchronized void start() {
-		if (!isOnline(context)) {
-			Toast.makeText(context, "Nincs internetkapcsolat!", Toast.LENGTH_LONG).show();
-			return;
-		}
-		super.start();
-	}
-*/
+
 	public static boolean isOnline(Context context) {
 		ConnectivityManager cm = (ConnectivityManager) context
 				.getSystemService(Context.CONNECTIVITY_SERVICE);

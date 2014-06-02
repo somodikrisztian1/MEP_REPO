@@ -2,24 +2,33 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_gravity="center_horizontal"
+    android:layout_gravity="center"
     android:orientation="horizontal"
     android:weightSum="100" >
 
     <ImageView
-        android:id="@+id/activity_secondlevel_chat_imageview_for_profile"
+        android:id="@+id/activity_secondlevel_chat_imageview_for_state"
+   		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:paddingRight="10dp"
+		android:background="@drawable/ic_action_accounts"
+		android:layout_weight="10"
+		/>
+    
+    <ImageView
+        android:id="@+id/activity_secondlevel_chat_imageview_for_profile_picture"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="20"
+        android:layout_weight="30"
         android:background="@drawable/ic_action_chat"
         android:paddingLeft="20dp"
         android:paddingTop="10dp" />
 
     <TextView
-        android:id="@+id/activity_secondlevel_char_textview_for_name"
+        android:id="@+id/activity_secondlevel_chat_textview_for_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="80"
+        android:layout_weight="60"
         android:paddingLeft="10dp"
         android:paddingTop="10dp"
         android:text="Helloka! Szia-szia! :)"

@@ -2,7 +2,7 @@ package hu.mep.mep_app;
 
 import hu.mep.communication.GetContactListRunnable;
 import hu.mep.datamodells.Session;
-import hu.mep.utils.MyPlaceListAdapter;
+import hu.mep.utils.PlaceListAdapter;
 
 import java.lang.Thread.State;
 
@@ -63,15 +63,10 @@ public class ActivityLevel2 extends FragmentActivity {
 
 		});
 	}
-/*
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		//getMenuInflater().inflate(R.menu.main, menu);
-		return super.onCreateOptionsMenu(menu);
-	}*/
 
 	public void menuItemClickListener(View v) {
 
+		Thread t;
 		switch (v.getId()) {
 		case R.id.actionbar_secondlevel_button_menu:
 			actualFragmentNumber = TAB_MENU_NUMBER;
@@ -91,13 +86,13 @@ public class ActivityLevel2 extends FragmentActivity {
 					"Chat partnerek betöltése...\nKérem várjon!",
 					Toast.LENGTH_SHORT).show();
 
-			Thread t = new Thread(new GetContactListRunnable(
+			t = new Thread(new GetContactListRunnable(
 					getApplicationContext()));
 			t.start();
 			while (!t.getState().equals(State.TERMINATED)) {
 				Log.d(TAG, "Waiting for datas from chat partners...");
 			}
-
+			Log.e(TAG, "menuItemClickListener: chat gomb megnyomva!");
 			/*
 			 * TODO! ITT JÖN A LÉNYEG! A LISTAADAPTERT MEGTÖLTENI A HELYEK
 			 * ADATAI HELYETT A CHAT PARTNEREK LISTÁJÁVAL!!!!!!
@@ -118,9 +113,9 @@ public class ActivityLevel2 extends FragmentActivity {
 		case TAB_TOPICS_NUMBER:
 			break;
 		case TAB_REMOTE_MONITORINGS:
-			resultAdapter = new MyPlaceListAdapter(getApplicationContext(),
+			resultAdapter = new PlaceListAdapter(getApplicationContext(),
 					R.id.activity_secondlevel_listview, Session.getInstance()
-							.getActualUser().getUsersPlaces());
+							.getActualUser().getUsersPlaces().getPlaces());
 			break;
 		case TAB_CHAT_NUMBER:
 			break;

@@ -1,5 +1,7 @@
 package hu.mep.datamodells;
 
+import com.google.gson.annotations.SerializedName;
+
 import android.util.Log;
 
 /** This class represent the places for remote monitoring of the user.
@@ -16,9 +18,16 @@ public class Place {
 	
 	private static final String TAG = "Place.java";
 	
+	@SerializedName("nev")
 	private String name;
+	
+	@SerializedName("tsz1_id")
 	private String ID;
+	
+	@SerializedName("leiras")
 	private String description;
+	
+	@SerializedName("helyszin")
 	private String location;
 	
 	
