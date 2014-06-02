@@ -69,17 +69,22 @@ public class RealCommunicator implements ICommunicator {
 
 	@Override
 	public void authenticateUser(String username, String password) {
-		Log.d("AUTHENTICATE - USERNAME", username);
-		Log.d("AUTHENTICATE - PASSWORD", password);
+		// Log.d("AUTHENTICATE - USERNAME", username);
+		// Log.d("AUTHENTICATE - PASSWORD", password);
 		HashMap<String, String> post = new HashMap<String, String>();
 
 		String data = null;
 
 		try {
-			// data = httpPost("iphonelogin_do.php?username=" + username +
-			// "&password=" + encodePasswordWithMD5(password), post);
-			data = httpPost("iphonelogin_do.php?username=" + username
-					+ "&password=" + password, post);
+			String link = "iphonelogin_do.php?username=" + username
+					+ "&password=" + encodePasswordWithMD5(password);
+			Log.e("LOGIN link=", link);
+			Log.e("ONLY PASSWORD=", "#" + encodePasswordWithMD5(password) + "#");
+			data = httpPost(link, post);
+			/*
+			 * data = httpPost("iphonelogin_do.php?username=" + username +
+			 * "&password=" + password, post);
+			 */
 		} catch (ClientProtocolException e1) {
 			e1.printStackTrace();
 		} catch (IOException e1) {
@@ -137,25 +142,26 @@ public class RealCommunicator implements ICommunicator {
 	}
 
 	private String encodePasswordWithMD5(String originalPassword) {
-
+		
+		final String MD5 = "MD5"; 
 		try {
-
-			// Create MD5 Hash
-			MessageDigest digest = java.security.MessageDigest
-					.getInstance("MD5");
-			digest.update(originalPassword.getBytes());
-			byte messageDigest[] = digest.digest();
-
-			// Create Hex String
-			StringBuffer cryptedHexPassword = new StringBuffer();
-			for (int i = 0; i < messageDigest.length; i++)
-				cryptedHexPassword.append(Integer
-						.toHexString(0xFF & messageDigest[i]));
-			return cryptedHexPassword.toString();
-
-		} catch (NoSuchAlgorithmException e) {
-			e.printStackTrace();
-		}
+			MessageDigest digest = java.security.MessageDigest .getInstance(MD5);
+			digest.update(originalPassword.getBytes()); 
+			byte messageDigest[] = digest.digest(); 
+			
+			StringBuilder hexString = new StringBuilder(); 
+			for (byte aMessageDigest : messageDigest) { 
+				String h = Integer.toHexString(0xFF & aMessageDigest); 
+				while (h.length() < 2) 
+					h= "0" + h; 
+					hexString.append(h); 
+				} 
+			return hexString.toString(); 
+			} 
+		catch (NoSuchAlgorithmException e) 
+		{ 
+			e.printStackTrace(); 
+		} 
 		return "";
 	}
 
@@ -185,6 +191,27 @@ public class RealCommunicator implements ICommunicator {
 		}
 
 		return result;
+	}
+
+	@Override
+	public void getChatPartners() {
+		HashMap<String, String> post = new HashMap<String, String>();
+
+		String data = null;
+
+		try {
+			data = httpPost("ios_getContactList.php?userId="
+					+ Session.getInstance().getActualUser().getMepID(), post);
+			// Log.e(TAG, MainURL + "ios_getContactList.php?userId=" +
+			// Session.getInstance().getActualUser().getMepID());
+		} catch (ClientProtocolException e1) {
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+
+		Log.d(TAG, "getChatPartners() ==>" + data);
+
 	}
 
 }

@@ -4,6 +4,7 @@ import hu.mep.datamodells.Session;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.widget.Toast;
 
 public class AuthenticationRunnable implements Runnable {
 
@@ -19,19 +20,11 @@ public class AuthenticationRunnable implements Runnable {
 	
 	@Override
 	public void run() {
-		if(isOnline(context)) {
+		if(NetThread.isOnline(context)) {
 			Session.getInstance().getActualCommunicationInterface().authenticateUser(username, password);
 		}
+
 	}
 
-	public static boolean isOnline(Context context) {
-		ConnectivityManager cm = (ConnectivityManager) context
-				.getSystemService(Context.CONNECTIVITY_SERVICE);
-		NetworkInfo netInfo = cm.getActiveNetworkInfo();
-		if (netInfo != null && netInfo.isConnected()) {
-			return true;
-		}
-		return false;
-	}
 	
 }

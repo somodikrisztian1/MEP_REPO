@@ -267,35 +267,28 @@ public class ActivityLevel1 extends FragmentActivity implements
 	@Override
 	public boolean onLoginButtonPressed(final String username,
 			final String password) {
-		/*
-		 * Runnable r = new Runnable() {
-		 * 
-		 * @Override public void run() {
-		 * Session.getInstance().getActualCommunicationInterface
-		 * ().authenticateUser(username, password); } };
-		 * 
-		 * Runnable runnable = new AuthenticationThread(c, username, password);
-		 * runnable.run(); new NetThread(this, r).start();
-		 */
 
-		Toast toast = Toast.makeText(c,
-				"Bejelentkezés folyamatban...\nKérem várjon!",
-				Toast.LENGTH_SHORT);
-		toast.show();
-
-		Thread t = new Thread(new AuthenticationRunnable(c, username, password));
-		t.start();
-		while (!t.getState().equals(State.TERMINATED)) {
-			Log.d(TAG, "Waiting for datas from authentication");
+		if (NetThread.isOnline(c)) {
+			/*Toast.makeText(c, "Bejelentkezés folyamatban...\nKérem várjon!",
+					Toast.LENGTH_SHORT).show(); */
+			Thread t = new Thread(new AuthenticationRunnable(c, username,
+					password));
+			t.start();
+			while (!t.getState().equals(State.TERMINATED)) {
+				Log.d(TAG, "Waiting for datas from authentication");
+			}
+			if (Session.getInstance().getActualUser() == null) {
+				Toast.makeText(
+						c,
+						"Sikertelen bejelentkezés!\nEllenőrizze a beírt adatok helyességét!",
+						Toast.LENGTH_LONG).show();
+			} else {
+				Intent i = new Intent(this, ActivityLevel2.class);
+				startActivity(i);
+			}
 		}
-		if (Session.getInstance().getActualUser() == null) {
-			Toast.makeText(
-					c,
-					"Sikertelen bejelentkezés!\nEllenőrizze a beírt adatok helyességét!",
-					Toast.LENGTH_LONG).show();
-		} else {
-			Intent i = new Intent(this, ActivityLevel2.class);
-			startActivity(i);
+		else {
+			Toast.makeText(c, "Nincs internet kapcsolat!", Toast.LENGTH_SHORT).show();
 		}
 		return false;
 	}
