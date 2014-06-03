@@ -18,7 +18,6 @@ public class GetContactListRunnable implements Runnable {
 
 	@Override
 	public void run() {
-		Log.d("GetContactListRunnable","isOnline() -->" + NetThread.isOnline(context));
 		if (NetThread.isOnline(context)) {
 			Session.getInstance().getActualCommunicationInterface()
 					.getChatPartners();

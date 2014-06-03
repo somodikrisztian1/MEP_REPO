@@ -6,4 +6,5 @@ public interface ICommunicator {
 	
 	public void authenticateUser(String username, String password);
 	public void getChatPartners();
+	public void getChatMessages();
 }

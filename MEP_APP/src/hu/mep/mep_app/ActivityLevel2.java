@@ -1,5 +1,6 @@
 package hu.mep.mep_app;
 
+import hu.mep.communication.GetChatMessagesListRunnable;
 import hu.mep.communication.GetContactListRunnable;
 import hu.mep.datamodells.Session;
 import hu.mep.utils.ChatContactListAdapter;
@@ -20,7 +21,7 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
-public class ActivityLevel2 extends FragmentActivity {
+public class ActivityLevel2 extends FragmentActivity implements OnItemClickListener {
 
 	public static final int TAB_MENU_NUMBER = 0;
 	public static final int TAB_TOPICS_NUMBER = 1;
@@ -79,8 +80,9 @@ public class ActivityLevel2 extends FragmentActivity {
 			break;
 		case R.id.actionbar_secondlevel_button_remote_monitorings:
 			actualFragmentNumber = TAB_REMOTE_MONITORINGS;
-			// TODO Kérdés kell-e mindig újratölteni a távfelügyeletet a szerverről?
-			// Annyira sűrűn nem változik a lista, viszont nem túl sok idő. 
+			// TODO Kérdés kell-e mindig újratölteni a távfelügyeletet a
+			// szerverről?
+			// Annyira sűrűn nem változik a lista, viszont nem túl sok idő.
 			listview.setAdapter(getActualAdapter());
 			break;
 		case R.id.actionbar_secondlevel_button_chat:
@@ -91,6 +93,7 @@ public class ActivityLevel2 extends FragmentActivity {
 				Log.d(TAG, "Waiting for datas from chat partners...");
 			}
 			listview.setAdapter(getActualAdapter());
+			listview.setOnItemClickListener(this);
 			break;
 
 		default:
@@ -120,6 +123,25 @@ public class ActivityLevel2 extends FragmentActivity {
 			break;
 		}
 		return resultAdapter;
+	}
+
+	@Override
+	public void onItemClick(AdapterView<?> parent, View view, int position,
+			long id) {
+		Log.e("CLICKED POSITION", "#" + position);
+		// Log.e("CLICKED ID", "#" + id);
+		Session.getInstance().setActualChatPartner(
+				Session.getInstance().getActualChatContactList()
+						.getContacts().get(position));
+		Log.e("ONCLICKLISTENER", "Before the new thread..." );
+		Thread t2 = new Thread(new GetChatMessagesListRunnable(
+				getApplicationContext()));
+		t2.run();
+		while (!t2.getState().equals(State.TERMINATED)) {
+			Log.d("GetChatMessagesListRunnable running...",
+					"waitforit! :D");
+		}
+		
 	}
 
 }

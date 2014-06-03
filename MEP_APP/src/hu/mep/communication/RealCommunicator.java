@@ -2,11 +2,14 @@ package hu.mep.communication;
 
 import hu.mep.datamodells.ChatContact;
 import hu.mep.datamodells.ChatContactList;
+import hu.mep.datamodells.ChatMessage;
+import hu.mep.datamodells.ChatMessagesList;
 import hu.mep.datamodells.Place;
 import hu.mep.datamodells.PlaceList;
 import hu.mep.datamodells.User;
 import hu.mep.datamodells.Session;
 import hu.mep.utils.ChatContactListDeserializer;
+import hu.mep.utils.ChatMessagesListDeserializer;
 import hu.mep.utils.PlaceListDeserializer;
 
 import java.io.IOException;
@@ -93,39 +96,38 @@ public class RealCommunicator implements ICommunicator {
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
-		
+
 		GsonBuilder gsonBuilder = new GsonBuilder();
-		gsonBuilder.registerTypeAdapter(PlaceList.class, new PlaceListDeserializer());
+		gsonBuilder.registerTypeAdapter(PlaceList.class,
+				new PlaceListDeserializer());
 		Gson gson = gsonBuilder.create();
 		User newUser = gson.fromJson(data, User.class);
 		Session.getInstance().setActualUser(newUser);
 		downloadProfilePictureForActualUser();
 	}
-	
+
 	private String encodePasswordWithMD5(String originalPassword) {
-		
-		final String MD5 = "MD5"; 
+
+		final String MD5 = "MD5";
 		try {
-			MessageDigest digest = java.security.MessageDigest .getInstance(MD5);
-			digest.update(originalPassword.getBytes()); 
-			byte messageDigest[] = digest.digest(); 
-			
-			StringBuilder hexString = new StringBuilder(); 
-			for (byte aMessageDigest : messageDigest) { 
-				String h = Integer.toHexString(0xFF & aMessageDigest); 
-				while (h.length() < 2) 
-					h= "0" + h; 
-					hexString.append(h); 
-				} 
-			return hexString.toString(); 
-			} 
-		catch (NoSuchAlgorithmException e) 
-		{ 
-			e.printStackTrace(); 
-		} 
+			MessageDigest digest = java.security.MessageDigest.getInstance(MD5);
+			digest.update(originalPassword.getBytes());
+			byte messageDigest[] = digest.digest();
+
+			StringBuilder hexString = new StringBuilder();
+			for (byte aMessageDigest : messageDigest) {
+				String h = Integer.toHexString(0xFF & aMessageDigest);
+				while (h.length() < 2)
+					h = "0" + h;
+				hexString.append(h);
+			}
+			return hexString.toString();
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		}
 		return "";
-	}	
-	
+	}
+
 	@Override
 	public void getChatPartners() {
 		HashMap<String, String> post = new HashMap<String, String>();
@@ -135,11 +137,106 @@ public class RealCommunicator implements ICommunicator {
 		try {
 			data = httpPost("ios_getContactList.php?userId="
 					+ Session.getInstance().getActualUser().getMepID(), post);
-			
-			Log.e(TAG, MainURL + "ios_getContactList.php?userId=" +
-					Session.getInstance().getActualUser().getMepID());
-			
+
+			Log.e(TAG, MainURL + "ios_getContactList.php?userId="
+					+ Session.getInstance().getActualUser().getMepID());
+
 			Log.d(TAG, "getChatPartners() ==>" + data);
+		} catch (ClientProtocolException e1) {
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+
+		GsonBuilder gsonBuilder = new GsonBuilder();
+		gsonBuilder.registerTypeAdapter(ChatContactList.class,
+				new ChatContactListDeserializer());
+		Gson gson = gsonBuilder.create();
+		ChatContactList contacts = gson.fromJson(data, ChatContactList.class);
+		Session.getInstance().setActualChatContactList(contacts);
+
+		for (ChatContact actContact : Session.getInstance()
+				.getActualChatContactList().getContacts()) {
+			Log.e("CHATTÁRSAK!", actContact.getName());
+			Log.e("CHATTÁRSAK!", "Kép letöltése...");
+			downloadProfilePictureForChatContact(actContact);
+		}
+
+	}
+
+	public void downloadProfilePictureForActualUser() {
+		try {
+
+			HttpURLConnection connection = (HttpURLConnection) Session
+					.getInstance().getActualUser().getImageURL()
+					.openConnection();
+			connection.setDoInput(true);
+			connection.connect();
+			InputStream input = connection.getInputStream();
+			Session.getInstance().getActualUser()
+					.setProfilePicture(BitmapFactory.decodeStream(input));
+
+		} catch (IOException e) {
+			e.printStackTrace();
+			Log.e("getBmpFromUrl error: ", e.getMessage().toString());
+			return;
+		}
+		return;
+	}
+
+	public void downloadProfilePictureForChatContact(ChatContact contact) {
+		try {
+			Bitmap bmp;
+			URL imgURL = new URL(contact.getImageURL());
+			HttpURLConnection connection = (HttpURLConnection) imgURL
+					.openConnection();
+			connection.setDoInput(true);
+			connection.connect();
+			InputStream input = connection.getInputStream();
+			bmp = BitmapFactory.decodeStream(input);
+			int fixSize = (bmp.getWidth() < bmp.getHeight() ? bmp.getWidth()
+					: bmp.getHeight()); // Megnézzük, álló vagy fekvő
+										// tájolású-e.
+			bmp = Bitmap.createBitmap(bmp, 0, 0, fixSize, fixSize); // A
+																	// rövidebb
+																	// oldal
+																	// szerint
+																	// vágunk
+																	// egy nagy
+																	// négyzetre.
+			bmp = Bitmap.createScaledBitmap(bmp, 200, 200, true); // Skálázás
+																	// 200×200-as
+																	// négyzetre.
+			contact.setProfilePicture(bmp);
+
+		} catch (IOException e) {
+			e.printStackTrace();
+			Log.e("getBmpFromUrl error: ", e.getMessage().toString());
+			return;
+		}
+		return;
+	}
+
+
+	@Override
+	public void getChatMessages() {
+		
+		HashMap<String, String> post = new HashMap<String, String>();
+
+		String data = null;
+		/*String link = "ios_getLastMessages.php?userId=" + Session.getInstance().getActualUser().getMepID()
+				+ "&contactId=" + Session.getInstance().getActualChatPartner().getUserID()
+				+ "&lastDate="	+ Session.getInstance().getLastChatMessageDate();
+		*/
+		String link = "http://www.megujuloenergiapark.hu/ios_getLastMessages.php?userId=8&contactId=16&lastDate=1970-01-01_00:00:00";
+		try {
+			Log.e("RealCommunicator", "before httpPost");
+			Log.e(TAG, MainURL + link);
+			data = httpPost(link, post);
+			
+			
+			
+			//Log.d(TAG, "getChatMessages() ==>" + data);
 				} catch (ClientProtocolException e1) {
 			e1.printStackTrace();
 		} catch (IOException e1) {
@@ -148,59 +245,16 @@ public class RealCommunicator implements ICommunicator {
 	
 	
 	GsonBuilder gsonBuilder = new GsonBuilder();
-	gsonBuilder.registerTypeAdapter(ChatContactList.class, new ChatContactListDeserializer());
+	gsonBuilder.registerTypeAdapter(ChatMessagesList.class, new ChatMessagesListDeserializer());
 	Gson gson = gsonBuilder.create();
-	ChatContactList contacts = gson.fromJson(data, ChatContactList.class);
-	Session.getInstance().setActualChatContactList(contacts);
-	
-	for (ChatContact actContact : Session.getInstance().getActualChatContactList().getContacts()) {
-		Log.e("CHATTÁRSAK!", actContact.getName());
-		Log.e("CHATTÁRSAK!", "Kép letöltése...");
-		downloadProfilePictureForChatContact(actContact);
+	ChatMessagesList messages = gson.fromJson(data, ChatMessagesList.class);
+	Session.getInstance().setChatMessagesList(messages);
+	/*
+	for (ChatMessage actMessage : Session.getInstance().getChatMessagesList().getChatMessagesList()) {
+		Log.e("CHATTÁRSAK!", actMessage.getMessage());
+	}*/
 	}
 	
 	
-	}
-	
-	public void downloadProfilePictureForActualUser() {
-	    try {
-	        
-	        HttpURLConnection connection = (HttpURLConnection) Session.getInstance().getActualUser().getImageURL().openConnection();
-	        connection.setDoInput(true);
-	        connection.connect();
-	        InputStream input = connection.getInputStream();
-	        Session.getInstance().getActualUser().setProfilePicture(BitmapFactory.decodeStream(input));
 
-	    } catch (IOException e) {
-	        e.printStackTrace();
-	        Log.e("getBmpFromUrl error: ", e.getMessage().toString());
-	        return;
-	    }
-	    return;
-	}
-	
-	public void downloadProfilePictureForChatContact(ChatContact contact) {
-	    try {
-	    	Bitmap bmp;
-	        URL imgURL = new URL(contact.getImageURL());
-	        HttpURLConnection connection = (HttpURLConnection) imgURL.openConnection();
-	        connection.setDoInput(true);
-	        connection.connect();
-	        InputStream input = connection.getInputStream();
-	        bmp = BitmapFactory.decodeStream(input);
-	        int fixSize = ( bmp.getWidth() < bmp.getHeight() ? bmp.getWidth() : bmp.getHeight()); //Megnézzük, álló vagy fekvő tájolású-e.
-	        bmp = Bitmap.createBitmap(bmp, 0, 0, fixSize, fixSize);	//A rövidebb oldal szerint vágunk egy nagy négyzetre.
-	        bmp = Bitmap.createScaledBitmap(bmp, 200, 200, true);	//Skálázás 200×200-as négyzetre.
-	        contact.setProfilePicture(bmp);
-
-	    } catch (IOException e) {
-	        e.printStackTrace();
-	        Log.e("getBmpFromUrl error: ", e.getMessage().toString());
-	        return;
-	    }
-	    return;
-	}
-	
-	
-	
 }

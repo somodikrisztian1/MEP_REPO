@@ -43,4 +43,9 @@ public class ChatContactListAdapter extends ArrayAdapter<ChatContact> {
 		return newRow;
 	}
 	
+	@Override
+	public long getItemId(int position) {
+		return listOfContacts.get(position).getUserID();
+	}
+	
 }
