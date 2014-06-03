@@ -21,6 +21,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Formatter.BigDecimalLayoutForm;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -36,6 +37,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import android.graphics.Bitmap;
+import android.graphics.Bitmap.Config;
 import android.graphics.BitmapFactory;
 import android.util.Log;
 
@@ -97,6 +99,7 @@ public class RealCommunicator implements ICommunicator {
 		Gson gson = gsonBuilder.create();
 		User newUser = gson.fromJson(data, User.class);
 		Session.getInstance().setActualUser(newUser);
+		downloadProfilePictureForActualUser();
 	}
 	
 	private String encodePasswordWithMD5(String originalPassword) {
@@ -151,7 +154,53 @@ public class RealCommunicator implements ICommunicator {
 	Session.getInstance().setActualChatContactList(contacts);
 	
 	for (ChatContact actContact : Session.getInstance().getActualChatContactList().getContacts()) {
-		Log.e("CHATTÁRSAK TESZT!!!!", actContact.getName());
+		Log.e("CHATTÁRSAK!", actContact.getName());
+		Log.e("CHATTÁRSAK!", "Kép letöltése...");
+		downloadProfilePictureForChatContact(actContact);
 	}
+	
+	
 	}
+	
+	public void downloadProfilePictureForActualUser() {
+	    try {
+	        
+	        HttpURLConnection connection = (HttpURLConnection) Session.getInstance().getActualUser().getImageURL().openConnection();
+	        connection.setDoInput(true);
+	        connection.connect();
+	        InputStream input = connection.getInputStream();
+	        Session.getInstance().getActualUser().setProfilePicture(BitmapFactory.decodeStream(input));
+
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	        Log.e("getBmpFromUrl error: ", e.getMessage().toString());
+	        return;
+	    }
+	    return;
+	}
+	
+	public void downloadProfilePictureForChatContact(ChatContact contact) {
+	    try {
+	    	Bitmap bmp;
+	        URL imgURL = new URL(contact.getImageURL());
+	        HttpURLConnection connection = (HttpURLConnection) imgURL.openConnection();
+	        connection.setDoInput(true);
+	        connection.connect();
+	        InputStream input = connection.getInputStream();
+	        bmp = BitmapFactory.decodeStream(input);
+	        int fixSize = ( bmp.getWidth() < bmp.getHeight() ? bmp.getWidth() : bmp.getHeight()); //Megnézzük, álló vagy fekvő tájolású-e.
+	        bmp = Bitmap.createBitmap(bmp, 0, 0, fixSize, fixSize);	//A rövidebb oldal szerint vágunk egy nagy négyzetre.
+	        bmp = Bitmap.createScaledBitmap(bmp, 200, 200, true);	//Skálázás 200×200-as négyzetre.
+	        contact.setProfilePicture(bmp);
+
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	        Log.e("getBmpFromUrl error: ", e.getMessage().toString());
+	        return;
+	    }
+	    return;
+	}
+	
+	
+	
 }

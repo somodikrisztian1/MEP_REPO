@@ -41,8 +41,8 @@ public class PlaceListAdapter extends ArrayAdapter<Place> {
 	public View getView(int position, View convertView, ViewGroup parent) {
 	
 		LayoutInflater li = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		View newRow = li.inflate(R.layout.activity_secondlevel_list_item_picture_and_textview, parent, false);
-		TextView textview = (TextView) newRow.findViewById(R.id.activity_secondlevel_lis);
+		View newRow = li.inflate(R.layout.activity_secondlevel_list_item_only_a_textview, parent, false);
+		TextView textview = (TextView) newRow.findViewById(R.id.activity_secondlevel_list_item_textview);
 		textview.setText(listOfPlaces.get(position).getName());
 		return newRow;
 	}

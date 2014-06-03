@@ -1,16 +1,11 @@
 package hu.mep.datamodells;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.List;
-
-import com.google.gson.annotations.SerializedName;
 
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.util.Log;
+
+import com.google.gson.annotations.SerializedName;
 
 /**
  * This class represent the user, after successful login. After authorization we
@@ -66,6 +61,20 @@ public class User {
 		this.usersPlaces = usersPlaces;
 	}
 
+	
+	
+	public Bitmap getProfilePicture() {
+		return profilePicture;
+	}
+
+	public void setProfilePicture(Bitmap profilePicture) {
+		this.profilePicture = profilePicture;
+	}
+
+	public URL getImageURL() {
+		return imageURL;
+	}
+
 	public User(int mepID, String fullName, URL imageURL, boolean mekut,
 			boolean teacher, boolean moderator, PlaceList usersPlaces) {
 		super();
@@ -87,20 +96,5 @@ public class User {
 
 	}
 	
-	public void downloadProfilePicture() {
-		    try {
-		        
-		        HttpURLConnection connection = (HttpURLConnection) this.imageURL
-		                .openConnection();
-		        connection.setDoInput(true);
-		        connection.connect();
-		        InputStream input = connection.getInputStream();
-		        this.profilePicture = BitmapFactory.decodeStream(input);
 
-		    } catch (IOException e) {
-		        e.printStackTrace();
-		        Log.e("getBmpFromUrl error: ", e.getMessage().toString());
-		        return;
-		    }
-		}
 }

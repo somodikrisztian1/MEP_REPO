@@ -8,30 +8,30 @@
 
     <ImageView
         android:id="@+id/activity_secondlevel_chat_imageview_for_state"
-   		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:paddingRight="10dp"
-		android:background="@drawable/ic_action_accounts"
+   		android:layout_width="40dp"
+		android:layout_height="40dp"
+		android:paddingLeft="10dp"
 		android:layout_weight="10"
+		android:layout_gravity="center_vertical"
 		/>
     
     <ImageView
         android:id="@+id/activity_secondlevel_chat_imageview_for_profile_picture"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:layout_weight="30"
-        android:background="@drawable/ic_action_chat"
-        android:paddingLeft="20dp"
-        android:paddingTop="10dp" />
-
+        android:paddingLeft="5dp"
+        android:layout_gravity="center_vertical"
+ 	/>
     <TextView
         android:id="@+id/activity_secondlevel_chat_textview_for_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="60"
+        android:layout_gravity="center_vertical"
         android:paddingLeft="10dp"
-        android:paddingTop="10dp"
         android:text="Helloka! Szia-szia! :)"
+        android:textColor="#000000"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
 </LinearLayout>

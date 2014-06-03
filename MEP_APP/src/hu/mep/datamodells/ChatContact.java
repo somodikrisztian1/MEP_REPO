@@ -1,6 +1,8 @@
 package hu.mep.datamodells;
 
+import hu.mep.mep_app.R;
 import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -66,6 +68,14 @@ public class ChatContact {
 		this.imageURL = imageURL;
 		this.unreadedMessageNumber = unreadedMessageNumber;
 		this.isOnline = isOnline;
+	}
+
+
+	public int getStatePictureResID() {
+		if(isOnline != 0) {
+			return R.drawable.state_picture_online;
+		}
+		return R.drawable.state_picture_offline;
 	}
 
 

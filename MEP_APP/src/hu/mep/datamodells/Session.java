@@ -38,8 +38,6 @@ public class Session {
 	
 	public static void setActualUser(User newUser) {
 		actualUser = newUser;
-		if(newUser != null)
-			actualUser.downloadProfilePicture();
 	}
 	
 	public static ICommunicator getActualCommunicationInterface() {
