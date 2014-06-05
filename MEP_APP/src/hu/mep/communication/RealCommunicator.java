@@ -25,6 +25,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Formatter.BigDecimalLayoutForm;
+import java.util.concurrent.ExecutionException;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -39,26 +40,30 @@ import org.apache.http.message.BasicNameValuePair;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 import android.graphics.BitmapFactory;
+import android.os.AsyncTask.Status;
 import android.util.Log;
 
 public class RealCommunicator implements ICommunicator {
 
 	private static final String TAG = "RealCommunicator.java";
 	HttpClient httpclient;
+	Context context;
 	final String MainURL = "http://www.megujuloenergiapark.hu/";
 
 	private static RealCommunicator instance = null;
 
-	private RealCommunicator() {
-		httpclient = new DefaultHttpClient();
+	private RealCommunicator(Context context) {
+		this.httpclient = new DefaultHttpClient(); // szükségtelen lesz az Asynctaskok után
+		this.context = context;						//szükséges az AsyncTaskokhoz
 	}
 
-	public static synchronized RealCommunicator getInstance() {
+	public static synchronized RealCommunicator getInstance(Context ctx) {
 		if (instance == null) {
-			instance = new RealCommunicator();
+			instance = new RealCommunicator(ctx);
 		}
 		return instance;
 	}
@@ -83,6 +88,27 @@ public class RealCommunicator implements ICommunicator {
 	}
 
 	@Override
+	public void getChatMessages() {
+		
+		GetChatMessagesListAsyncTask getMessagesAsyncTask = new GetChatMessagesListAsyncTask(context, MainURL);
+
+		try {
+			getMessagesAsyncTask.execute("").get();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ExecutionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		/* Az aktuális üzenetlista kiíratása... tesztkiíratás */
+		if(!Session.getChatMessagesList().getChatMessagesList().isEmpty())
+		for (ChatMessage actMessage : Session.getInstance(context).getChatMessagesList().getChatMessagesList()) {
+			Log.e("CHATÜZENETEK!", actMessage.toString());
+		}
+	}
+	
+	@Override
 	public void authenticateUser(String username, String password) {
 		HashMap<String, String> post = new HashMap<String, String>();
 		String data = null;
@@ -102,7 +128,7 @@ public class RealCommunicator implements ICommunicator {
 				new PlaceListDeserializer());
 		Gson gson = gsonBuilder.create();
 		User newUser = gson.fromJson(data, User.class);
-		Session.getInstance().setActualUser(newUser);
+		Session.getInstance(context).setActualUser(newUser);
 		downloadProfilePictureForActualUser();
 	}
 
@@ -136,10 +162,10 @@ public class RealCommunicator implements ICommunicator {
 
 		try {
 			data = httpPost("ios_getContactList.php?userId="
-					+ Session.getInstance().getActualUser().getMepID(), post);
+					+ Session.getInstance(context).getActualUser().getMepID(), post);
 
 			Log.e(TAG, MainURL + "ios_getContactList.php?userId="
-					+ Session.getInstance().getActualUser().getMepID());
+					+ Session.getInstance(context).getActualUser().getMepID());
 
 			Log.d(TAG, "getChatPartners() ==>" + data);
 		} catch (ClientProtocolException e1) {
@@ -153,12 +179,12 @@ public class RealCommunicator implements ICommunicator {
 				new ChatContactListDeserializer());
 		Gson gson = gsonBuilder.create();
 		ChatContactList contacts = gson.fromJson(data, ChatContactList.class);
-		Session.getInstance().setActualChatContactList(contacts);
+		Session.getInstance(context).setActualChatContactList(contacts);
 
-		for (ChatContact actContact : Session.getInstance()
+		for (ChatContact actContact : Session.getInstance(context)
 				.getActualChatContactList().getContacts()) {
-			Log.e("CHATTÁRSAK!", actContact.getName());
-			Log.e("CHATTÁRSAK!", "Kép letöltése...");
+			//Log.e("CHATTÁRSAK!", actContact.getName());
+			//Log.e("CHATTÁRSAK!", "Kép letöltése...");
 			downloadProfilePictureForChatContact(actContact);
 		}
 
@@ -168,12 +194,12 @@ public class RealCommunicator implements ICommunicator {
 		try {
 
 			HttpURLConnection connection = (HttpURLConnection) Session
-					.getInstance().getActualUser().getImageURL()
+					.getInstance(context).getActualUser().getImageURL()
 					.openConnection();
 			connection.setDoInput(true);
 			connection.connect();
 			InputStream input = connection.getInputStream();
-			Session.getInstance().getActualUser()
+			Session.getInstance(context).getActualUser()
 					.setProfilePicture(BitmapFactory.decodeStream(input));
 
 		} catch (IOException e) {
@@ -218,42 +244,7 @@ public class RealCommunicator implements ICommunicator {
 	}
 
 
-	@Override
-	public void getChatMessages() {
-		
-		HashMap<String, String> post = new HashMap<String, String>();
-
-		String data = null;
-		/*String link = "ios_getLastMessages.php?userId=" + Session.getInstance().getActualUser().getMepID()
-				+ "&contactId=" + Session.getInstance().getActualChatPartner().getUserID()
-				+ "&lastDate="	+ Session.getInstance().getLastChatMessageDate();
-		*/
-		String link = "http://www.megujuloenergiapark.hu/ios_getLastMessages.php?userId=8&contactId=16&lastDate=1970-01-01_00:00:00";
-		try {
-			Log.e("RealCommunicator", "before httpPost");
-			Log.e(TAG, MainURL + link);
-			data = httpPost(link, post);
-			
-			
-			
-			//Log.d(TAG, "getChatMessages() ==>" + data);
-				} catch (ClientProtocolException e1) {
-			e1.printStackTrace();
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}
 	
-	
-	GsonBuilder gsonBuilder = new GsonBuilder();
-	gsonBuilder.registerTypeAdapter(ChatMessagesList.class, new ChatMessagesListDeserializer());
-	Gson gson = gsonBuilder.create();
-	ChatMessagesList messages = gson.fromJson(data, ChatMessagesList.class);
-	Session.getInstance().setChatMessagesList(messages);
-	/*
-	for (ChatMessage actMessage : Session.getInstance().getChatMessagesList().getChatMessagesList()) {
-		Log.e("CHATTÁRSAK!", actMessage.getMessage());
-	}*/
-	}
 	
 	
 

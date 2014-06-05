@@ -78,6 +78,11 @@ public class ChatContact {
 		return R.drawable.state_picture_offline;
 	}
 
+	
+	@Override
+	public String toString() {
+		return "(#" + userID + ")" + name + (isOnline == 0 ? " [off] "  : " [on] " ) + "olvasatlan: " + unreadedMessageNumber;
+	}
 
 	
 

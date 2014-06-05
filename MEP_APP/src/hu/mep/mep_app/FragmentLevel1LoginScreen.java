@@ -41,7 +41,7 @@ public class FragmentLevel1LoginScreen extends Fragment implements OnClickListen
 		super.onCreate(savedInstanceState);
 		context = getActivity().getApplicationContext();
 		Log.d(TAG, " after onCreate");
-		comm = RealCommunicator.getInstance();
+		comm = RealCommunicator.getInstance(context);
 	}
 
 	@Override

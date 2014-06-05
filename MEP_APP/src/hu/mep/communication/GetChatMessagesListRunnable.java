@@ -16,9 +16,9 @@ public class GetChatMessagesListRunnable implements Runnable {
 	@Override
 	public void run() {
 		if (NetThread.isOnline(context)) {
-			Log.e("GetChatMessagesListRunnable", "before");
-			Session.getInstance().getActualCommunicationInterface().getChatMessages();
-			Log.e("GetChatMessagesListRunnable", "after");			
+			//Log.e("GetChatMessagesListRunnable", "before");
+			Session.getInstance(context).getActualCommunicationInterface().getChatMessages();
+			//Log.e("GetChatMessagesListRunnable", "after");			
 		}
 	}
 

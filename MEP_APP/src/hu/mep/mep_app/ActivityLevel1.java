@@ -55,13 +55,13 @@ public class ActivityLevel1 extends FragmentActivity implements
 	public EditText passwordEdittext;
 	public Button loginButton;
 
-	private Context c;
+	private Context context;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// Log.e(TAG, "onCreate 1");
 		super.onCreate(savedInstanceState);
-		c = getApplicationContext();
+		context = getApplicationContext();
 		fragmentManager = getSupportFragmentManager();
 		setContentView(R.layout.activity_first);
 
@@ -147,7 +147,7 @@ public class ActivityLevel1 extends FragmentActivity implements
 		Fragment newFragment = null;
 		Bundle args;
 		FragmentTransaction ft = fragmentManager.beginTransaction();
-		Toast waitForIt = Toast.makeText(c,
+		Toast waitForIt = Toast.makeText(context,
 				"Under construction...Try it later! :)", Toast.LENGTH_SHORT);
 		boolean readyForFragmentLoading = false;
 		switch (actualFragmentNumber) {
@@ -268,18 +268,18 @@ public class ActivityLevel1 extends FragmentActivity implements
 	public boolean onLoginButtonPressed(final String username,
 			final String password) {
 
-		if (NetThread.isOnline(c)) {
+		if (NetThread.isOnline(context)) {
 			/*Toast.makeText(c, "Bejelentkezés folyamatban...\nKérem várjon!",
 					Toast.LENGTH_SHORT).show(); */
-			Thread t = new Thread(new AuthenticationRunnable(c, username,
+			Thread t = new Thread(new AuthenticationRunnable(context, username,
 					password));
 			t.start();
 			while (!t.getState().equals(State.TERMINATED)) {
 				Log.d(TAG, "Waiting for datas from authentication");
 			}
-			if (Session.getInstance().getActualUser() == null) {
+			if (Session.getInstance(context).getActualUser() == null) {
 				Toast.makeText(
-						c,
+						context,
 						"Sikertelen bejelentkezés!\nEllenőrizze a beírt adatok helyességét!",
 						Toast.LENGTH_LONG).show();
 			} else {
@@ -288,7 +288,7 @@ public class ActivityLevel1 extends FragmentActivity implements
 			}
 		}
 		else {
-			Toast.makeText(c, "Nincs internet kapcsolat!", Toast.LENGTH_SHORT).show();
+			Toast.makeText(context, "Nincs internet kapcsolat!", Toast.LENGTH_SHORT).show();
 		}
 		return false;
 	}

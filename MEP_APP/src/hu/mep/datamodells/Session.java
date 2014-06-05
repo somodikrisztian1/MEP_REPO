@@ -1,8 +1,12 @@
 package hu.mep.datamodells;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.util.Log;
 import hu.mep.communication.ICommunicator;
 import hu.mep.communication.RealCommunicator;
 
@@ -13,15 +17,18 @@ public class Session {
 	private static ICommunicator actualCommunicationInterface;
 	private static ChatContactList actualChatContactList;
 	private static ChatContact actualChatPartner;
-	private static ChatMessagesList chatMessagesList;
+	
+	/* Megtöltjük az üzenetlistát jó nagy semmivel, hogy ne legyen nullpointerexception... */
+	private static ChatMessagesList chatMessagesList; 
 	private static ProgressDialog progressDialog;
+	private static Context context;
 
-	public static String getLastChatMessageDate() {
+	public static int getLastChatMessageOrder() {
 		if (chatMessagesList == null || chatMessagesList.chatMessagesList.isEmpty()) {
-			return "1970-01-01_00:00:00";
+			return 0;
 		} else {
 			return chatMessagesList.getChatMessagesList().get(
-					chatMessagesList.getChatMessagesList().size() - 1).date;
+					chatMessagesList.getChatMessagesList().size() - 1).order;
 		}
 	}
 
@@ -29,8 +36,9 @@ public class Session {
 		return chatMessagesList;
 	}
 
-	public static void setChatMessagesList(ChatMessagesList chatMessagesList) {
-		Session.chatMessagesList = chatMessagesList;
+	public static void setChatMessagesList(ChatMessagesList newChatMessagesList) {
+		Log.e("Session", "setChatMessagesList()");
+		chatMessagesList = newChatMessagesList;
 		Session.sortChatMessagesList();
 	}
 
@@ -43,6 +51,10 @@ public class Session {
 			ChatContactList actualChatContactList) {
 		Session.actualChatContactList = actualChatContactList;
 	}
+	
+	public static void emptyChatMessagesList() {
+		chatMessagesList = new ChatMessagesList(new ArrayList<ChatMessage>());
+	}
 
 	public ChatContact getActualChatPartner() {
 		return this.actualChatPartner;
@@ -52,13 +64,15 @@ public class Session {
 		Session.actualChatPartner = newPartner;
 	}
 
-	private Session() {
-		actualCommunicationInterface = RealCommunicator.getInstance();
+	private Session(Context context) {
+		this.context = context;
+		actualCommunicationInterface = RealCommunicator.getInstance(context);
+		emptyChatMessagesList();
 	}
 
-	public static Session getInstance() {
+	public static Session getInstance(Context context) {
 		if (instance == null) {
-			instance = new Session();
+			instance = new Session(context);
 		}
 		return instance;
 	}
@@ -73,7 +87,7 @@ public class Session {
 
 	public static ICommunicator getActualCommunicationInterface() {
 		if (actualCommunicationInterface == null) {
-			actualCommunicationInterface = RealCommunicator.getInstance();
+			actualCommunicationInterface = RealCommunicator.getInstance(context);
 		}
 		return actualCommunicationInterface;
 	}
@@ -95,6 +109,7 @@ public class Session {
 
 
 	public static void sortChatMessagesList() {
+		Log.e("Session", "sortChatMessagesList()");
 		Collections.sort(Session.chatMessagesList.chatMessagesList);
 	}
 }

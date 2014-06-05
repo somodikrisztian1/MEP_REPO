@@ -19,7 +19,7 @@ public class GetContactListRunnable implements Runnable {
 	@Override
 	public void run() {
 		if (NetThread.isOnline(context)) {
-			Session.getInstance().getActualCommunicationInterface()
+			Session.getInstance(context).getActualCommunicationInterface()
 					.getChatPartners();
 			
 		}

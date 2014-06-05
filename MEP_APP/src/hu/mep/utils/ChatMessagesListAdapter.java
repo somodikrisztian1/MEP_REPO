@@ -37,7 +37,7 @@ public class ChatMessagesListAdapter extends BaseAdapter {
 	
 	@Override
 	public int getCount() {
-		return Session.getInstance().getChatMessagesList().getChatMessagesList().size();
+		return Session.getChatMessagesList().getChatMessagesList().size();
 	}
 
 	@Override

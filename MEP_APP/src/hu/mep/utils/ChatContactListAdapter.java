@@ -36,10 +36,10 @@ public class ChatContactListAdapter extends ArrayAdapter<ChatContact> {
 		textview.setText(listOfContacts.get(position).getName());
 		
 		ImageView profilePictureView = (ImageView) newRow.findViewById(R.id.activity_secondlevel_chat_imageview_for_profile_picture);
-		profilePictureView.setImageBitmap(Session.getInstance().getActualChatContactList().getContacts().get(position).getProfilePicture());
+		profilePictureView.setImageBitmap(Session.getInstance(context).getActualChatContactList().getContacts().get(position).getProfilePicture());
 		
 		ImageView statePictureView = (ImageView) newRow.findViewById(R.id.activity_secondlevel_chat_imageview_for_state);
-		statePictureView.setImageResource(Session.getInstance().getActualChatContactList().getContacts().get(position).getStatePictureResID());
+		statePictureView.setImageResource(Session.getInstance(context).getActualChatContactList().getContacts().get(position).getStatePictureResID());
 		return newRow;
 	}
 	

@@ -21,7 +21,7 @@ public class AuthenticationRunnable implements Runnable {
 	@Override
 	public void run() {
 		if(NetThread.isOnline(context)) {
-			Session.getInstance().getActualCommunicationInterface().authenticateUser(username, password);
+			Session.getInstance(context).getActualCommunicationInterface().authenticateUser(username, password);
 		}
 
 	}

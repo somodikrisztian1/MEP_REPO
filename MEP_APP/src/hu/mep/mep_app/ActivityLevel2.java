@@ -111,12 +111,12 @@ public class ActivityLevel2 extends FragmentActivity implements OnItemClickListe
 			break;
 		case TAB_REMOTE_MONITORINGS:
 			resultAdapter = new PlaceListAdapter(getApplicationContext(),
-					R.id.activity_secondlevel_listview, Session.getInstance()
+					R.id.activity_secondlevel_listview, Session.getInstance(getApplicationContext())
 							.getActualUser().getUsersPlaces().getPlaces());
 			break;
 		case TAB_CHAT_NUMBER:
 			resultAdapter = new ChatContactListAdapter(getApplicationContext(),
-					R.id.activity_secondlevel_listview, Session.getInstance()
+					R.id.activity_secondlevel_listview, Session.getInstance(getApplicationContext())
 							.getActualChatContactList().getContacts());
 			break;
 		default:
@@ -130,9 +130,12 @@ public class ActivityLevel2 extends FragmentActivity implements OnItemClickListe
 			long id) {
 		Log.e("CLICKED POSITION", "#" + position);
 		// Log.e("CLICKED ID", "#" + id);
-		Session.getInstance().setActualChatPartner(
-				Session.getInstance().getActualChatContactList()
+		Session.getInstance(getApplicationContext()).setActualChatPartner(
+				Session.getInstance(getApplicationContext()).getActualChatContactList()
 						.getContacts().get(position));
+		
+		Log.e("Actual Chat Partner Is:" , Session.getInstance(getApplicationContext()).getActualChatPartner().toString());
+		/*
 		Log.e("ONCLICKLISTENER", "Before the new thread..." );
 		Thread t2 = new Thread(new GetChatMessagesListRunnable(
 				getApplicationContext()));
@@ -140,7 +143,8 @@ public class ActivityLevel2 extends FragmentActivity implements OnItemClickListe
 		while (!t2.getState().equals(State.TERMINATED)) {
 			Log.d("GetChatMessagesListRunnable running...",
 					"waitforit! :D");
-		}
+		}*/
+		Session.getActualCommunicationInterface().getChatMessages();
 		
 	}
 
