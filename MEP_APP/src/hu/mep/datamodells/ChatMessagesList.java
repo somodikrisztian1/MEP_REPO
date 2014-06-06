@@ -19,6 +19,9 @@ public class ChatMessagesList {
 		this.chatMessagesList = chatMessagesList;
 	}
 	
-
+	public void addFurtherMessages(ChatMessagesList newChatMessagesList) {
+		//this.chatMessagesList.removeAll(newChatMessagesList.getChatMessagesList());
+		this.chatMessagesList.addAll(newChatMessagesList.getChatMessagesList());
+	}
 	
 }

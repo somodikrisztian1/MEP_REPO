@@ -2,6 +2,7 @@ package hu.mep.mep_app;
 
 import java.lang.Thread.State;
 
+import hu.mep.communication.AuthenticationAsyncTask;
 import hu.mep.communication.AuthenticationRunnable;
 import hu.mep.communication.ICommunicator;
 import hu.mep.communication.RealCommunicator;
@@ -271,12 +272,13 @@ public class ActivityLevel1 extends FragmentActivity implements
 		if (NetThread.isOnline(context)) {
 			/*Toast.makeText(c, "Bejelentkezés folyamatban...\nKérem várjon!",
 					Toast.LENGTH_SHORT).show(); */
-			Thread t = new Thread(new AuthenticationRunnable(context, username,
+			/*Thread t = new Thread(new AuthenticationRunnable(context, username,
 					password));
 			t.start();
 			while (!t.getState().equals(State.TERMINATED)) {
 				Log.d(TAG, "Waiting for datas from authentication");
-			}
+			}*/
+			Session.getInstance(context).getActualCommunicationInterface().authenticateUser(username, password);
 			if (Session.getInstance(context).getActualUser() == null) {
 				Toast.makeText(
 						context,

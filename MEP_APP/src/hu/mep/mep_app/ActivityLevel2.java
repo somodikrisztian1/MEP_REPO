@@ -1,6 +1,7 @@
 package hu.mep.mep_app;
 
 import hu.mep.communication.GetChatMessagesListRunnable;
+import hu.mep.communication.GetContactListAsyncTask;
 import hu.mep.communication.GetContactListRunnable;
 import hu.mep.datamodells.Session;
 import hu.mep.utils.ChatContactListAdapter;
@@ -80,18 +81,16 @@ public class ActivityLevel2 extends FragmentActivity implements OnItemClickListe
 			break;
 		case R.id.actionbar_secondlevel_button_remote_monitorings:
 			actualFragmentNumber = TAB_REMOTE_MONITORINGS;
-			// TODO Kérdés kell-e mindig újratölteni a távfelügyeletet a
+			// TODO! Kérdés kell-e mindig újratölteni a távfelügyeletet a
 			// szerverről?
 			// Annyira sűrűn nem változik a lista, viszont nem túl sok idő.
 			listview.setAdapter(getActualAdapter());
 			break;
 		case R.id.actionbar_secondlevel_button_chat:
+			// TODO! Ez nem csupán egyszeri alkalom. A chat partnerek listáját
+			// egy erre dedikált szálon időközönként frissíteni kell, mondjuk. 5 másodpercenként.
 			actualFragmentNumber = TAB_CHAT_NUMBER;
-			t = new Thread(new GetContactListRunnable(getApplicationContext()));
-			t.start();
-			while (!t.getState().equals(State.TERMINATED)) {
-				Log.d(TAG, "Waiting for datas from chat partners...");
-			}
+			Session.getActualCommunicationInterface().getChatPartners();
 			listview.setAdapter(getActualAdapter());
 			listview.setOnItemClickListener(this);
 			break;
@@ -129,23 +128,19 @@ public class ActivityLevel2 extends FragmentActivity implements OnItemClickListe
 	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
 		Log.e("CLICKED POSITION", "#" + position);
-		// Log.e("CLICKED ID", "#" + id);
+		if(actualFragmentNumber == TAB_CHAT_NUMBER) {
 		Session.getInstance(getApplicationContext()).setActualChatPartner(
 				Session.getInstance(getApplicationContext()).getActualChatContactList()
 						.getContacts().get(position));
 		
 		Log.e("Actual Chat Partner Is:" , Session.getInstance(getApplicationContext()).getActualChatPartner().toString());
-		/*
-		Log.e("ONCLICKLISTENER", "Before the new thread..." );
-		Thread t2 = new Thread(new GetChatMessagesListRunnable(
-				getApplicationContext()));
-		t2.run();
-		while (!t2.getState().equals(State.TERMINATED)) {
-			Log.d("GetChatMessagesListRunnable running...",
-					"waitforit! :D");
-		}*/
+		// TODO! Ez nem egyszeri alkalom! A chat üzeneteket folyamatosan kell lekérni egy háttérszálon
+		// bizonyos időközönként, mondjuk 1-2 másodpercenként.
 		Session.getActualCommunicationInterface().getChatMessages();
-		
+		}
+		else if(actualFragmentNumber == TAB_REMOTE_MONITORINGS) {
+			
+		}
 	}
 
 }

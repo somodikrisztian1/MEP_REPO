@@ -21,7 +21,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 public class GetChatMessagesListAsyncTask extends
-		AsyncTask<String, Void, String> {
+		AsyncTask<Void, Void, String> {
 
 	String hostURI;
 	String resourceURI;
@@ -44,7 +44,7 @@ public class GetChatMessagesListAsyncTask extends
 	}
 
 	@Override
-	protected String doInBackground(String... nothing) {
+	protected String doInBackground(Void... nothing) {
 		//Log.e("ASYNCTASK", "doInBackground() running");
 		String response = "";
 		String fullURI = hostURI + resourceURI;
@@ -73,10 +73,16 @@ public class GetChatMessagesListAsyncTask extends
 			Gson gson = gsonBuilder.create();
 			ChatMessagesList messages = gson.fromJson(response,
 					ChatMessagesList.class);
-			Log.e("GSON...", "beérkezett üzenetek száma: "
-					+ messages.getChatMessagesList().size());
+			/*Log.e("GSON...", "beérkezett üzenetek száma: "
+					+ messages.getChatMessagesList().size());*/
 			Session.getInstance(context).setChatMessagesList(messages);
 		}
 		return response;
+	}
+	
+	@Override
+	protected void onPostExecute(String result) {
+		// ITT KELLENE ÚJ ACTIVITY-T INDÍTANI A CHAT BESZÉLGETÉSHEZ!
+		super.onPostExecute(result);
 	}
 }
