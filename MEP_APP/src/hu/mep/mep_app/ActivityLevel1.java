@@ -1,14 +1,7 @@
 package hu.mep.mep_app;
 
-import java.lang.Thread.State;
-
-import hu.mep.communication.AuthenticationAsyncTask;
-import hu.mep.communication.AuthenticationRunnable;
-import hu.mep.communication.ICommunicator;
-import hu.mep.communication.RealCommunicator;
 import hu.mep.communication.NetThread;
 import hu.mep.datamodells.Session;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -44,11 +37,13 @@ public class ActivityLevel1 extends FragmentActivity implements
 	private CharSequence mainTitle;
 
 	private static final int DRAWER_LIST_MAIN_PAGE_NUMBER = -1;
-	private static final int DRAWER_LIST_LOGIN_NUMBER = 0;
+	private static final int DRAWER_LIST_LOGIN_LOGOUT_NUMBER = 0;
 	private static final int DRAWER_LIST_PRESENTATION_PARK_NUMBER = 1;
 	private static final int DRAWER_LIST_RESEARCH_CENTER_NUMBER = 2;
 	private static final int DRAWER_LIST_ABOUT_REMOTE_NUMBER = 3;
 	private static final int DRAWER_LIST_CONTACTS_NUMBER = 4;
+
+	private boolean isLoggedOnAnyUser = false;
 
 	private int actualFragmentNumber;
 	private FragmentManager fragmentManager;
@@ -58,6 +53,16 @@ public class ActivityLevel1 extends FragmentActivity implements
 
 	private Context context;
 
+	public void refreshDrawerStrings() {
+		if (isLoggedOnAnyUser) {
+			firstActivityDrawerStrings = getResources().getStringArray(
+					R.array.logged_in_drawer_items_list);
+		} else {
+			firstActivityDrawerStrings = getResources().getStringArray(
+					R.array.logged_off_drawer_items_list);
+		}
+	}
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// Log.e(TAG, "onCreate 1");
@@ -70,12 +75,7 @@ public class ActivityLevel1 extends FragmentActivity implements
 				R.string.fragment_main_screen_title);
 		// Log.e("FirstActivity", "onCreate 2");
 		drawerTitle = getTitle();
-		firstActivityDrawerStrings = getResources().getStringArray(
-				R.array.first_activity_drawer_items_list);
-		/*
-		 * for (String act : firstActivityDrawerStrings) { Log.e("Strings:",
-		 * act); }
-		 */
+		refreshDrawerStrings();
 		firstActivityDrawerLayout = (DrawerLayout) findViewById(R.id.first_activity_drawer_layout);
 		firstActivityDrawerListView = (ListView) findViewById(R.id.first_activity_drawer_listview);
 		// Log.e("FirstActivity", "onCreate 3");
@@ -99,6 +99,7 @@ public class ActivityLevel1 extends FragmentActivity implements
 			/** Called when a drawer has settled in a completely open state. */
 			public void onDrawerOpened(View drawerView) {
 				super.onDrawerOpened(drawerView);
+				refreshDrawerStrings();
 				getActionBar().setTitle(drawerTitle);
 				// Log.e(TAG, "onDrawerOpened");
 			}
@@ -134,7 +135,7 @@ public class ActivityLevel1 extends FragmentActivity implements
 	@Override
 	public void onBackPressed() {
 		super.onBackPressed();
-		if (actualFragmentNumber == DRAWER_LIST_LOGIN_NUMBER) {
+		if (actualFragmentNumber == DRAWER_LIST_LOGIN_LOGOUT_NUMBER) {
 			fragmentManager.popBackStack("login", 0);
 		}
 	}
@@ -152,17 +153,30 @@ public class ActivityLevel1 extends FragmentActivity implements
 				"Under construction...Try it later! :)", Toast.LENGTH_SHORT);
 		boolean readyForFragmentLoading = false;
 		switch (actualFragmentNumber) {
-		case DRAWER_LIST_LOGIN_NUMBER:
-			newFragment = new FragmentLevel1LoginScreen();
+		case DRAWER_LIST_LOGIN_LOGOUT_NUMBER:
+			if (!isLoggedOnAnyUser) {
+				newFragment = new FragmentLevel1LoginScreen();
 
-			args = new Bundle();
-			args.putInt(FragmentLevel1MainScreen.CLICKED_DRAWER_ITEM_NUMBER,
-					actualFragmentNumber);
+				args = new Bundle();
+				args.putInt(
+						FragmentLevel1MainScreen.CLICKED_DRAWER_ITEM_NUMBER,
+						actualFragmentNumber);
 
-			newFragment.setArguments(args);
-			ft.addToBackStack("login");
-			readyForFragmentLoading = true;
-			// Log.e("FirstActivity", "handleDrawerClick 1");
+				newFragment.setArguments(args);
+				ft.addToBackStack("login");
+				readyForFragmentLoading = true;
+				// Log.e("FirstActivity", "handleDrawerClick 1");
+			} else {
+				isLoggedOnAnyUser = false;
+				newFragment = new FragmentLevel1MainScreen();
+
+				args = new Bundle();
+				args.putInt(FragmentLevel1MainScreen.CLICKED_DRAWER_ITEM_NUMBER,
+						DRAWER_LIST_MAIN_PAGE_NUMBER);
+
+				newFragment.setArguments(args);
+				readyForFragmentLoading = true;
+			}
 			break;
 		case DRAWER_LIST_PRESENTATION_PARK_NUMBER:
 			/* !TODO */
@@ -270,27 +284,21 @@ public class ActivityLevel1 extends FragmentActivity implements
 			final String password) {
 
 		if (NetThread.isOnline(context)) {
-			/*Toast.makeText(c, "Bejelentkezés folyamatban...\nKérem várjon!",
-					Toast.LENGTH_SHORT).show(); */
-			/*Thread t = new Thread(new AuthenticationRunnable(context, username,
-					password));
-			t.start();
-			while (!t.getState().equals(State.TERMINATED)) {
-				Log.d(TAG, "Waiting for datas from authentication");
-			}*/
-			Session.getInstance(context).getActualCommunicationInterface().authenticateUser(username, password);
+			Session.getInstance(context).getActualCommunicationInterface()
+					.authenticateUser(username, password);
 			if (Session.getInstance(context).getActualUser() == null) {
 				Toast.makeText(
 						context,
 						"Sikertelen bejelentkezés!\nEllenőrizze a beírt adatok helyességét!",
 						Toast.LENGTH_LONG).show();
 			} else {
+				isLoggedOnAnyUser = true;
 				Intent i = new Intent(this, ActivityLevel2.class);
 				startActivity(i);
 			}
-		}
-		else {
-			Toast.makeText(context, "Nincs internet kapcsolat!", Toast.LENGTH_SHORT).show();
+		} else {
+			Toast.makeText(context, "Nincs internet kapcsolat!",
+					Toast.LENGTH_SHORT).show();
 		}
 		return false;
 	}

@@ -16,7 +16,7 @@
 	<string name="hint_for_login_activity_username_textview">Felhasználónév</string>
 	<string name="hint_for_login_activity_password_textview">Jelszó</string>
     
-    <string-array name="first_activity_drawer_items_list">
+    <string-array name="logged_off_drawer_items_list">
         <item>Belépés</item>
         <item>Bemutatópark</item>
         <item>Kutatóközpont</item>
@@ -24,7 +24,7 @@
         <item>Elérhetőségek</item>
     </string-array>
 
-    <string-array name="second_activity_drawer_items_list">
+    <string-array name="logged_in_drawer_items_list">
         <item>Kilépés</item>
         <item>Bemutatópark</item>
         <item>Kutatóközpont</item>

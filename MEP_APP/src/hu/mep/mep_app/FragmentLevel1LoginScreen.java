@@ -53,7 +53,7 @@ public class FragmentLevel1LoginScreen extends Fragment implements OnClickListen
 		int index = getArguments().getInt(
 				FragmentLevel1MainScreen.CLICKED_DRAWER_ITEM_NUMBER);
 		String newTitle = getResources().getStringArray(
-				R.array.first_activity_drawer_items_list)[index];
+				R.array.logged_off_drawer_items_list)[index];
 		Log.d(TAG, " inside onCreateView 1");
 
 		getActivity().setTitle(newTitle);
