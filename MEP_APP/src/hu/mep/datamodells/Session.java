@@ -92,8 +92,8 @@ public class Session {
 		}
 	}
 
-	public ChatContact getActualChatPartner() {
-		return this.actualChatPartner;
+	public static ChatContact getActualChatPartner() {
+		return actualChatPartner;
 	}
 
 	/**

@@ -1,14 +1,6 @@
 package hu.mep.datamodells;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-
-import hu.mep.communication.ICommunicator;
-
-
-
-
 
 import com.google.gson.annotations.SerializedName;
 
@@ -87,6 +79,10 @@ public class ChatMessage implements Comparable<ChatMessage> {
 
 	public String getDate() {
 		return date;
+	}
+
+	public int getOrder() {
+		return order;
 	}
 
 

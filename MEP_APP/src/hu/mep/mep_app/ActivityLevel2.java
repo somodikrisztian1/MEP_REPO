@@ -1,26 +1,20 @@
 package hu.mep.mep_app;
 
-import hu.mep.communication.GetChatMessagesListRunnable;
-import hu.mep.communication.GetContactListAsyncTask;
-import hu.mep.communication.GetContactListRunnable;
 import hu.mep.datamodells.Session;
 import hu.mep.utils.ChatContactListAdapter;
+import hu.mep.utils.ChatMessagesRefresherService;
 import hu.mep.utils.PlaceListAdapter;
-
-import java.lang.Thread.State;
-
 import android.app.ActionBar;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
-import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
 public class ActivityLevel2 extends FragmentActivity implements OnItemClickListener {
 
@@ -61,7 +55,6 @@ public class ActivityLevel2 extends FragmentActivity implements OnItemClickListe
 					int position, long id) {
 				Log.d("ActivityLevel2.java", "Távfelügyelet  #" + position
 						+ " jól megtapicskolva! :)");
-
 			}
 
 		});
@@ -136,7 +129,13 @@ public class ActivityLevel2 extends FragmentActivity implements OnItemClickListe
 		Log.e("Actual Chat Partner Is:" , Session.getInstance(getApplicationContext()).getActualChatPartner().toString());
 		// TODO! Ez nem egyszeri alkalom! A chat üzeneteket folyamatosan kell lekérni egy háttérszálon
 		// bizonyos időközönként, mondjuk 1-2 másodpercenként.
-		Session.getActualCommunicationInterface().getChatMessages();
+		
+		
+		/* Session.getActualCommunicationInterface().getChatMessages(); */
+		Log.d(TAG, "Before creating Intent");
+		Intent i2 = new Intent(getApplicationContext(), ActivityLevel3Chat.class);
+		Log.d(TAG, "Before starting chat activity");
+		startActivity(i2);
 		}
 		else if(actualFragmentNumber == TAB_REMOTE_MONITORINGS) {
 			

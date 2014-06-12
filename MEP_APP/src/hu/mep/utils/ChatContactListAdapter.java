@@ -18,20 +18,21 @@ public class ChatContactListAdapter extends ArrayAdapter<ChatContact> {
 
 	private Context context;
 	private List<ChatContact> listOfContacts;
+	private LayoutInflater inflater;
 	
 	public ChatContactListAdapter(Context context, int listviewID,
 			List<ChatContact> listOfContacts) {
 		super(context, listviewID, listOfContacts);
 		this.context = context;
 		this.listOfContacts = listOfContacts;
+		inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		HashMap<String, Integer> mIDMap = new HashMap<String, Integer>();
 	}
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 	
-		LayoutInflater li = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		View newRow = li.inflate(R.layout.activity_secondlevel_list_item_picture_and_textview, parent, false);
+		View newRow = inflater.inflate(R.layout.activity_secondlevel_list_item_picture_and_textview, parent, false);
 		TextView textview = (TextView) newRow.findViewById(R.id.activity_secondlevel_chat_textview_for_name);
 		textview.setText(listOfContacts.get(position).getName());
 		
