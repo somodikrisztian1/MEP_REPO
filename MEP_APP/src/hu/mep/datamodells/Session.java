@@ -63,7 +63,6 @@ public class Session {
 				|| chatMessagesList.getChatMessagesList().isEmpty()) {
 			chatMessagesList = newChatMessagesList;
 		} else {
-			Session.emptyChatMessagesList();
 			chatMessagesList.addFurtherMessages(newChatMessagesList);
 		}
 		Session.sortChatMessagesList();

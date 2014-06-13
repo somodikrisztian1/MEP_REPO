@@ -1,8 +1,8 @@
 package hu.mep.communication;
 
-import hu.mep.datamodells.ChatMessage;
 import hu.mep.datamodells.ChatMessagesList;
 import hu.mep.datamodells.Session;
+import hu.mep.mep_app.ActivityLevel3Chat;
 import hu.mep.utils.ChatMessagesListDeserializer;
 
 import java.io.BufferedReader;
@@ -15,7 +15,6 @@ import org.apache.http.impl.client.DefaultHttpClient;
 
 import android.content.Context;
 import android.os.AsyncTask;
-import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -82,7 +81,7 @@ public class GetChatMessagesListAsyncTask extends
 	
 	@Override
 	protected void onPostExecute(String result) {
-		// ITT KELLENE ÚJ ACTIVITY-T INDÍTANI A CHAT BESZÉLGETÉSHEZ!
+		ActivityLevel3Chat.adapter.notifyDataSetChanged();
 		super.onPostExecute(result);
 	}
 }

@@ -8,6 +8,7 @@ import hu.mep.datamodells.Place;
 import hu.mep.datamodells.PlaceList;
 import hu.mep.datamodells.User;
 import hu.mep.datamodells.Session;
+import hu.mep.mep_app.ActivityLevel3Chat;
 import hu.mep.utils.ChatContactListDeserializer;
 import hu.mep.utils.ChatMessagesListDeserializer;
 import hu.mep.utils.MD5Encoder;
@@ -20,7 +21,11 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.sql.Date;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -46,6 +51,7 @@ import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask.Status;
+import android.support.v7.app.ActionBar;
 import android.util.Log;
 
 public class RealCommunicator implements ICommunicator {
@@ -93,8 +99,7 @@ public class RealCommunicator implements ICommunicator {
 		
 		GetChatMessagesListAsyncTask getMessagesAsyncTask = new GetChatMessagesListAsyncTask(context, MainURL);
 
-		try { // TODO! Ez a .get nem biztos, hogy kell a végére. Meg fogja fagyasztani az UIThread-et.
-			// TODO! Ha a szálak onPostExecute() metódusa rendesen implementálva leszenk, a .get() nem kell!!!
+		try {
 			getMessagesAsyncTask.execute().get();
 		} catch (InterruptedException e) {
 			e.printStackTrace();
@@ -108,29 +113,11 @@ public class RealCommunicator implements ICommunicator {
 			Log.e("RealCommunicator.getChatMessages()", actMessage.toString());
 		}
 	}
-	
+
+	// TODO! Az internet kapcsolat ellenőrzést megoldani.
 	@Override
 	public void authenticateUser(String username, String password) {
-		/*HashMap<String, String> post = new HashMap<String, String>();
-		String data = null;
-		try {
-			String link = "iphonelogin_do.php?username=" + username
-					+ "&password=" + MD5Encoder.encodePasswordWithMD5(password);
-			data = httpPost(link, post);
 
-		} catch (ClientProtocolException e1) {
-			e1.printStackTrace();
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}
-
-		GsonBuilder gsonBuilder = new GsonBuilder();
-		gsonBuilder.registerTypeAdapter(PlaceList.class,
-				new PlaceListDeserializer());
-		Gson gson = gsonBuilder.create();
-		User newUser = gson.fromJson(data, User.class);
-		Session.getInstance(context).setActualUser(newUser);
-		downloadProfilePictureForActualUser();*/
 		if(NetThread.isOnline(context)) {
 			Log.e("RealCommunicator", "ONLINE!!!!!!!!!");
 		}
@@ -153,37 +140,6 @@ public class RealCommunicator implements ICommunicator {
 
 	@Override
 	public void getChatPartners() {
-		/*HashMap<String, String> post = new HashMap<String, String>();
-
-		String data = null;
-
-		try {
-			data = httpPost("ios_getContactList.php?userId="
-					+ Session.getInstance(context).getActualUser().getMepID(), post);
-
-			Log.e(TAG, MainURL + "ios_getContactList.php?userId="
-					+ Session.getInstance(context).getActualUser().getMepID());
-
-			Log.d(TAG, "getChatPartners() ==>" + data);
-		} catch (ClientProtocolException e1) {
-			e1.printStackTrace();
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}
-
-		GsonBuilder gsonBuilder = new GsonBuilder();
-		gsonBuilder.registerTypeAdapter(ChatContactList.class,
-				new ChatContactListDeserializer());
-		Gson gson = gsonBuilder.create();
-		ChatContactList contacts = gson.fromJson(data, ChatContactList.class);
-		Session.getInstance(context).setActualChatContactList(contacts);
-
-		for (ChatContact actContact : Session.getInstance(context)
-				.getActualChatContactList().getContacts()) {
-			//Log.e("CHATTÁRSAK!", actContact.getName());
-			//Log.e("CHATTÁRSAK!", "Kép letöltése...");
-			downloadProfilePictureForChatContact(actContact);
-		}*/
 		GetContactListAsyncTask getContactListAsyncTask = new GetContactListAsyncTask(context, MainURL);
 		// TODO! Ide sem kell majd a .get() Most azért van ott, mert logolni akarom az eredményt, muszáj megvárni
 		// a szál végrehajtódását!
@@ -202,60 +158,28 @@ public class RealCommunicator implements ICommunicator {
 			Log.e("RealCommunicator.getChatPartners()", actContacs.toString());
 		}
 	}
-/*
 
-
-	public void downloadProfilePictureForChatContact(ChatContact contact) {
+	@Override
+	public void sendChatMessage(String messageText) {
+		HashMap<String, String> postDatas = new HashMap<String, String>();
+		Date date;
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		
+		postDatas.put("userId", "" + Session.getActualUser().getMepID());
+		postDatas.put("toId", "" + Session.getActualChatPartner().getUserID());
+		postDatas.put("msg", messageText);
+		postDatas.put("date", dateFormat.format(Calendar.getInstance().getTime()));
+		
+		SendChatMessageAsyncTask sendChatMessage = new SendChatMessageAsyncTask(context, MainURL, postDatas);
 		try {
-			Bitmap bmp;
-			URL imgURL = new URL(contact.getImageURL());
-			HttpURLConnection connection = (HttpURLConnection) imgURL
-					.openConnection();
-			connection.setDoInput(true);
-			connection.connect();
-			InputStream input = connection.getInputStream();
-			bmp = BitmapFactory.decodeStream(input);
-			int fixSize = (bmp.getWidth() < bmp.getHeight() ? bmp.getWidth()
-					: bmp.getHeight()); // Megnézzük, álló vagy fekvő
-										// tájolású-e.
-			bmp = Bitmap.createBitmap(bmp, 0, 0, fixSize, fixSize); // A
-																	// rövidebb
-																	// oldal
-																	// szerint
-																	// vágunk
-																	// egy nagy
-																	// négyzetre.
-			bmp = Bitmap.createScaledBitmap(bmp, 200, 200, true); // Skálázás
-																	// 200×200-as
-																	// négyzetre.
-			contact.setProfilePicture(bmp);
-
-		} catch (IOException e) {
+			sendChatMessage.execute().get();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
-			Log.e("getBmpFromUrl error: ", e.getMessage().toString());
-			return;
-		}
-		return;
-	}
-*/
-	
-	public void downloadProfilePictureForActualUser() {
-		try {
-
-			HttpURLConnection connection = (HttpURLConnection) Session
-					.getInstance(context).getActualUser().getImageURL()
-					.openConnection();
-			connection.setDoInput(true);
-			connection.connect();
-			InputStream input = connection.getInputStream();
-			Session.getInstance(context).getActualUser()
-					.setProfilePicture(BitmapFactory.decodeStream(input));
-
-		} catch (IOException e) {
+		} catch (ExecutionException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
-			Log.e("getBmpFromUrl error: ", e.getMessage().toString());
-			return;
 		}
-		return;
+		
 	}
 }

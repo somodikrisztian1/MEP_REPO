@@ -1,6 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ListView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/activity_thirdlevel_chat_listview"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/activity_thirdlevel_linear_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-</ListView>
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+
+        <ListView
+            android:id="@+id/activity_thirdlevel_chat_listview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/activity_thirdlevel_chat_input_edittext">
+        </ListView>
+
+    <EditText
+        android:id="@+id/activity_thirdlevel_chat_input_edittext"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:hint="Ide írja az üzenetét...">
+    </EditText>
+
+</RelativeLayout>

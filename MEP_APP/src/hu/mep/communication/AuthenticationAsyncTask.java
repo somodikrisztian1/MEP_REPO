@@ -66,7 +66,7 @@ public class AuthenticationAsyncTask extends AsyncTask<Void, Void, String>{
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		Log.e("response:", response);
+		// Log.e("response:", response);
 		GsonBuilder gsonBuilder = new GsonBuilder();
 		gsonBuilder.registerTypeAdapter(PlaceList.class,
 				new PlaceListDeserializer());
