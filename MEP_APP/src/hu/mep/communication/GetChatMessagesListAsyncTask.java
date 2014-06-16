@@ -13,6 +13,7 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 
@@ -25,21 +26,31 @@ public class GetChatMessagesListAsyncTask extends
 	String hostURI;
 	String resourceURI;
 	Context context;
+//	ProgressDialog pd;
 
 	public GetChatMessagesListAsyncTask(Context context, String hostURI) {
 		this.context = context;
 		this.hostURI = hostURI;
+		/*pd = new ProgressDialog(context.getApplicationContext());
+		pd.setTitle("Üzenetek letöltése");
+		pd.setCancelable(false);
+		pd.setMessage("Kérem várjon!\nLetöltés folyamatban...");
+		pd.setProgressStyle(ProgressDialog.STYLE_SPINNER);*/
 	}
 
 	@Override
 	protected void onPreExecute() {
 		//Log.e("ASYNCTASK", "onPreExecute() running");
+	//	pd.show();
+		/*Session.getInstance(context).setProgressDialog(pd);
+		Session.getInstance(context).showProgressDialog();
+		*/
 		resourceURI = "ios_getLastMessages.php?userId="
-				+ Session.getInstance(context).getActualUser().getMepID()
+				+ Session.getActualUser().getMepID()
 				+ "&contactId="
-				+ Session.getInstance(context).getActualChatPartner()
+				+ Session.getActualChatPartner()
 						.getUserID() + "&lastDate="
-				+ Session.getInstance(context).getLastChatMessageOrder();
+				+ Session.getLastChatMessageOrder();
 	}
 
 	@Override
@@ -81,6 +92,7 @@ public class GetChatMessagesListAsyncTask extends
 	
 	@Override
 	protected void onPostExecute(String result) {
+		//pd.dismiss();
 		ActivityLevel3Chat.adapter.notifyDataSetChanged();
 		super.onPostExecute(result);
 	}

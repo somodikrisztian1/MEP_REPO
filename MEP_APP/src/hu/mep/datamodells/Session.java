@@ -12,16 +12,23 @@ import hu.mep.communication.RealCommunicator;
 
 public class Session {
 
+	private static final String TAG = "Session";
 	private static Session instance;
 	private static User actualUser;
+	private static Context context;
+
 	private static ICommunicator actualCommunicationInterface;
+	
 	private static ChatContactList actualChatContactList;
 	private static ChatContact actualChatPartner;
 
 	private static ChatMessagesList chatMessagesList;
-	private static ProgressDialog progressDialog;
-	private static Context context;
+	private static Place actualRemoteMonitoring;
+	
+	
 
+	private static ProgressDialog progressDialog;
+	
 	/**
 	 * This method gives back the order value of the last ChatMessage object
 	 * from chatMessagesList or zero if the chatMessagesList is empty.
@@ -124,6 +131,9 @@ public class Session {
 		if (instance == null) {
 			instance = new Session(context);
 		}
+		else if( instance.context != context) {
+			instance.context = context;
+		}
 		return instance;
 	}
 
@@ -133,6 +143,14 @@ public class Session {
 
 	public static void setActualUser(User newUser) {
 		actualUser = newUser;
+	}
+	
+	public static Place getActualRemoteMonitoring() {
+		return actualRemoteMonitoring;
+	}
+
+	public static void setActualRemoteMonitoring(Place actualRemoteMonitoring) {
+		Session.actualRemoteMonitoring = actualRemoteMonitoring;
 	}
 
 	public static ICommunicator getActualCommunicationInterface() {
@@ -144,17 +162,20 @@ public class Session {
 	}
 
 	public static void setProgressDialog(ProgressDialog progressDialog) {
+		Log.d(TAG, "Set progress dialog");
 		Session.progressDialog = progressDialog;
 	}
 
 	public static void dismissProgressDialog() {
 		if (progressDialog != null) {
+			Log.d(TAG, "Dismiss progress dialog");
 			progressDialog.dismiss();
 			progressDialog = null;
 		}
 	}
 
 	public static void showProgressDialog() {
+		Log.d(TAG, "Show progress dialog");
 		progressDialog.show();
 	}
 

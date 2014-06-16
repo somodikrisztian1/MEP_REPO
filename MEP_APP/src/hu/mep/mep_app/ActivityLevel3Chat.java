@@ -25,6 +25,7 @@ public class ActivityLevel3Chat extends Activity {
 	private static EditText chatInputTextView;
 	private static final String TAG = "ActivityLevel3Chat";
 	public static ArrayAdapter<ChatMessage> adapter;
+	private static final long MESSAGE_REFRESH_TIME_INTERVAL = 1000;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +34,8 @@ public class ActivityLevel3Chat extends Activity {
 		setContentView(R.layout.activity_thirdlevel_chat);
 		chatMessagesListview = (ListView) findViewById(R.id.activity_thirdlevel_chat_listview);
 
-		Session.getActualCommunicationInterface().getChatMessages();
+		Session.getInstance(getApplicationContext())
+				.getActualCommunicationInterface().getChatMessages();
 
 		adapter = new ChatMessagesListAdapter(this,
 				R.id.activity_thirdlevel_chat_listview, Session
@@ -43,43 +45,37 @@ public class ActivityLevel3Chat extends Activity {
 		chatMessagesListview.setAdapter(adapter);
 
 		chatInputTextView = (EditText) findViewById(R.id.activity_thirdlevel_chat_input_edittext);
-		/*
-		 * chatInputTextView.setOnEditorActionListener(new
-		 * OnEditorActionListener() {
-		 * 
-		 * @Override public boolean onEditorAction(TextView v, int actionId,
-		 * KeyEvent event) { if(actionId == EditorInfo.IME_ACTION_SEND) {
-		 * Session
-		 * .getActualCommunicationInterface().sendChatMessage(chatInputTextView
-		 * .getText().toString()); } return false; } });
-		 */
 
 		chatInputTextView.setOnKeyListener(new OnKeyListener() {
 
-			//TODO Ellenőrizni az üres sztring küldését más módon!
 			@Override
 			public boolean onKey(View v, int keyCode, KeyEvent event) {
 				if (keyCode == KeyEvent.KEYCODE_ENTER) {
 					String message = chatInputTextView.getText().toString();
-					if (message != null && message.length() != 0) {
+					if ((message != null) && (checkChatMessage(message))) {
 						Session.getActualCommunicationInterface()
 								.sendChatMessage(message);
 						chatInputTextView.setText(null);
-						Session.getActualCommunicationInterface().getChatMessages();
+						Session.getActualCommunicationInterface()
+								.getChatMessages();
 					}
 				}
 				return false;
 			}
 		});
+
+		messageRefresher = new ChatMessagesRefresherAsyncTask();
+		messageRefresher.execute(MESSAGE_REFRESH_TIME_INTERVAL);
+		
 	}
 
 	@Override
 	protected void onResume() {
 		super.onResume();
 		Log.e(TAG, "onResume running");
-		if(messageRefresher == null) {
+		if (messageRefresher == null) {
 			messageRefresher = new ChatMessagesRefresherAsyncTask();
-			messageRefresher.execute(Long.valueOf(1000));
+			messageRefresher.execute(MESSAGE_REFRESH_TIME_INTERVAL);
 		}
 	}
 
@@ -89,6 +85,19 @@ public class ActivityLevel3Chat extends Activity {
 		Log.e(TAG, "onPause running");
 		messageRefresher.cancel(true);
 		messageRefresher = null;
+	}
+
+	/**
+	 * Check the chat message before sending, if it has any alphabetic
+	 * character, so it does not contain only whitespaces.
+	 */
+	private boolean checkChatMessage(String message) {
+		for (Character actChar : message.toCharArray()) {
+			if (Character.isLetterOrDigit(actChar)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 }

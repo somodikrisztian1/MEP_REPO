@@ -17,6 +17,7 @@ import com.google.gson.GsonBuilder;
 import hu.mep.datamodells.ChatContact;
 import hu.mep.datamodells.ChatContactList;
 import hu.mep.datamodells.Session;
+import hu.mep.mep_app.ActivityLevel2;
 import hu.mep.utils.ChatContactListDeserializer;
 import hu.mep.utils.MD5Encoder;
 import android.content.Context;
@@ -48,7 +49,7 @@ public class GetContactListAsyncTask extends AsyncTask<Void, Void, String> {
 		// Log.e("ASYNCTASK", "doInBackground() running");
 		String response = "";
 		String fullURI = hostURI + resourceURI;
-		 Log.e("ASYNCTASK", "fullURI: " + fullURI);
+		Log.e("ASYNCTASK", "fullURI: " + fullURI);
 		DefaultHttpClient client = new DefaultHttpClient();
 		HttpGet httpGet = new HttpGet(fullURI);
 		try {
@@ -67,7 +68,7 @@ public class GetContactListAsyncTask extends AsyncTask<Void, Void, String> {
 		}
 
 		Log.e("GetContactListAsyncTask.doInBackground()", response);
-		
+
 		GsonBuilder gsonBuilder = new GsonBuilder();
 		gsonBuilder.registerTypeAdapter(ChatContactList.class,
 				new ChatContactListDeserializer());
@@ -78,9 +79,11 @@ public class GetContactListAsyncTask extends AsyncTask<Void, Void, String> {
 
 		for (ChatContact actContact : Session.getInstance(context)
 				.getActualChatContactList().getContacts()) {
-			Log.e("GetContactListAsyncTask", actContact.getName());
-			Log.e("GetContactListAsyncTask", "Kép letöltése...");
-			downloadProfilePictureForChatContact(actContact);
+			if (actContact.getProfilePicture() == null) {
+				Log.e("GetContactListAsyncTask", actContact.getName());
+				Log.e("GetContactListAsyncTask", "Kép letöltése...");
+				downloadProfilePictureForChatContact(actContact);
+			}
 		}
 
 		return response;
@@ -113,4 +116,10 @@ public class GetContactListAsyncTask extends AsyncTask<Void, Void, String> {
 		return;
 	}
 
+	@Override
+	protected void onPostExecute(String result) {
+		ActivityLevel2.actualAdapter.notifyDataSetChanged();
+		super.onPostExecute(result);
+	}
+	
 }

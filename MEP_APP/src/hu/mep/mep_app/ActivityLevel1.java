@@ -249,7 +249,7 @@ public class ActivityLevel1 extends FragmentActivity implements
 	}
 
 	/*
-	 * Ha a k�s�bbiekben gombokat akarunk tenni az ActionBar options men�j�ben
+	 * Ha a későbbiekben gombokat akarunk tenni az ActionBar options menüjében
 	 * akkor itt kell megtenni.
 	 */
 	@Override

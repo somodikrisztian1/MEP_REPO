@@ -1,6 +1,11 @@
 package hu.mep.mep_app;
 
+import hu.mep.communication.ContactListRefresherAsyncTask;
+import hu.mep.datamodells.ChatContact;
+import hu.mep.datamodells.ChatMessage;
+import hu.mep.datamodells.Place;
 import hu.mep.datamodells.Session;
+import hu.mep.datamodells.Topic;
 import hu.mep.utils.ChatContactListAdapter;
 import hu.mep.utils.PlaceListAdapter;
 import android.app.ActionBar;
@@ -12,10 +17,12 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
-public class ActivityLevel2 extends FragmentActivity implements OnItemClickListener {
+public class ActivityLevel2 extends FragmentActivity implements
+		OnItemClickListener {
 
 	public static final int TAB_MENU_NUMBER = 0;
 	public static final int TAB_TOPICS_NUMBER = 1;
@@ -23,14 +30,15 @@ public class ActivityLevel2 extends FragmentActivity implements OnItemClickListe
 	public static final int TAB_CHAT_NUMBER = 3;
 	private static final String TAG = "ActivityLevel2";
 
-	private int actualFragmentNumber;
-	private FragmentManager fragmentManager;
+	private static final long CONTACTS_REFRESH_TIME_INTERVAL = 5000;
 
-	public void setActualFragmentNumber(int actualFragmentNumber) {
-		this.actualFragmentNumber = actualFragmentNumber;
-	}
+	private static ContactListRefresherAsyncTask contactRefresher = new ContactListRefresherAsyncTask();
 
 	private ListView listview;
+	public static ArrayAdapter<?> actualAdapter;
+
+	private int actualFragmentNumber;
+	private FragmentManager fragmentManager;
 
 	@Override
 	protected void onCreate(Bundle arg0) {
@@ -45,8 +53,9 @@ public class ActivityLevel2 extends FragmentActivity implements OnItemClickListe
 		ab.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
 
 		this.listview = (ListView) findViewById(R.id.activity_secondlevel_listview);
-
-		listview.setAdapter(getActualAdapter());
+		Session.getInstance(getApplicationContext());
+		Session.getActualCommunicationInterface().getChatPartners();
+		refreshActualAdapter();
 		listview.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
@@ -57,6 +66,27 @@ public class ActivityLevel2 extends FragmentActivity implements OnItemClickListe
 			}
 
 		});
+
+	}
+
+	@Override
+	protected void onPause() {
+		super.onPause();
+		if (contactRefresher != null) {
+			contactRefresher.cancel(true);
+			contactRefresher = null;
+		}
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		if (actualFragmentNumber == TAB_CHAT_NUMBER) {
+			if (contactRefresher == null) {
+				contactRefresher = new ContactListRefresherAsyncTask();
+				contactRefresher.execute(CONTACTS_REFRESH_TIME_INTERVAL);
+			}
+		}
 	}
 
 	public void menuItemClickListener(View v) {
@@ -76,14 +106,14 @@ public class ActivityLevel2 extends FragmentActivity implements OnItemClickListe
 			// TODO! Kérdés kell-e mindig újratölteni a távfelügyeletet a
 			// szerverről?
 			// Annyira sűrűn nem változik a lista, viszont nem túl sok idő.
-			listview.setAdapter(getActualAdapter());
+			refreshActualAdapter();
 			break;
 		case R.id.actionbar_secondlevel_button_chat:
 			// TODO! Ez nem csupán egyszeri alkalom. A chat partnerek listáját
-			// egy erre dedikált szálon időközönként frissíteni kell, mondjuk. 5 másodpercenként.
+			// egy erre dedikált szálon időközönként frissíteni kell, mondjuk. 5
+			// másodpercenként.
 			actualFragmentNumber = TAB_CHAT_NUMBER;
-			Session.getActualCommunicationInterface().getChatPartners();
-			listview.setAdapter(getActualAdapter());
+			refreshActualAdapter();
 			listview.setOnItemClickListener(this);
 			break;
 
@@ -92,8 +122,7 @@ public class ActivityLevel2 extends FragmentActivity implements OnItemClickListe
 		}
 	}
 
-	private ListAdapter getActualAdapter() {
-		ListAdapter resultAdapter = null;
+	private void refreshActualAdapter() {
 		switch (actualFragmentNumber) {
 		case TAB_MENU_NUMBER:
 
@@ -101,38 +130,51 @@ public class ActivityLevel2 extends FragmentActivity implements OnItemClickListe
 		case TAB_TOPICS_NUMBER:
 			break;
 		case TAB_REMOTE_MONITORINGS:
-			resultAdapter = new PlaceListAdapter(getApplicationContext(),
-					R.id.activity_secondlevel_listview, Session.getInstance(getApplicationContext())
+			actualAdapter = new PlaceListAdapter(getApplicationContext(),
+					R.id.activity_secondlevel_listview, Session
+							.getInstance(getApplicationContext())
 							.getActualUser().getUsersPlaces().getPlaces());
 			break;
 		case TAB_CHAT_NUMBER:
-			resultAdapter = new ChatContactListAdapter(getApplicationContext(),
-					R.id.activity_secondlevel_listview, Session.getInstance(getApplicationContext())
+			actualAdapter = new ChatContactListAdapter(getApplicationContext(),
+					R.id.activity_secondlevel_listview, Session
+							.getInstance(getApplicationContext())
 							.getActualChatContactList().getContacts());
+			if (contactRefresher == null) {
+				contactRefresher = new ContactListRefresherAsyncTask();
+				contactRefresher.execute(CONTACTS_REFRESH_TIME_INTERVAL);
+			}
 			break;
 		default:
 			break;
 		}
-		return resultAdapter;
+		listview.setAdapter(actualAdapter);
 	}
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
 		Log.e("CLICKED POSITION", "#" + position);
-		if(actualFragmentNumber == TAB_CHAT_NUMBER) {
-		Session.getInstance(getApplicationContext()).setActualChatPartner(
-				Session.getInstance(getApplicationContext()).getActualChatContactList()
-						.getContacts().get(position));
-		
-		Log.e("Actual Chat Partner Is:" , Session.getInstance(getApplicationContext()).getActualChatPartner().toString());
+		if (actualFragmentNumber == TAB_CHAT_NUMBER) {
+			Session.getInstance(getApplicationContext()).setActualChatPartner(
+					Session.getInstance(getApplicationContext())
+							.getActualChatContactList().getContacts()
+							.get(position));
 
-		Intent i2 = new Intent(getApplicationContext(), ActivityLevel3Chat.class);
-		startActivity(i2);
+			Log.e("Actual Chat Partner Is:",
+					Session.getInstance(getApplicationContext())
+							.getActualChatPartner().toString());
+
+			Intent i = new Intent(getApplicationContext(),
+					ActivityLevel3Chat.class);
+			startActivity(i);
+		} else if (actualFragmentNumber == TAB_REMOTE_MONITORINGS) {
+
 		}
-		else if(actualFragmentNumber == TAB_REMOTE_MONITORINGS) {
-			
-		}
+	}
+
+	public void setActualFragmentNumber(int actualFragmentNumber) {
+		this.actualFragmentNumber = actualFragmentNumber;
 	}
 
 }

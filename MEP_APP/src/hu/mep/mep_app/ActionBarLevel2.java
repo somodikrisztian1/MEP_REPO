@@ -1,12 +1,8 @@
 package hu.mep.mep_app;
 
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
 
 public class ActionBarLevel2 implements OnClickListener {
 

@@ -72,6 +72,7 @@ public class RealCommunicator implements ICommunicator {
 		if (instance == null) {
 			instance = new RealCommunicator(ctx);
 		}
+		
 		return instance;
 	}
 
@@ -108,10 +109,10 @@ public class RealCommunicator implements ICommunicator {
 		}
 
 		/* Az aktuális üzenetlista kiíratása... tesztkiíratás */
-		Log.e("RealCommunicator.getChatMessages()","Minden bejövő üzenet:");
+		/*Log.e("RealCommunicator.getChatMessages()","Minden bejövő üzenet:");
 		for (ChatMessage actMessage : Session.getInstance(context).getChatMessagesList().getChatMessagesList()) {
 			Log.e("RealCommunicator.getChatMessages()", actMessage.toString());
-		}
+		}*/
 	}
 
 	// TODO! Az internet kapcsolat ellenőrzést megoldani.
@@ -134,7 +135,7 @@ public class RealCommunicator implements ICommunicator {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		Log.e("RealCommunicator.authenticateUser()", "finished");
+		/*Log.e("RealCommunicator.authenticateUser()", "finished");*/
 		
 	}
 
@@ -153,10 +154,10 @@ public class RealCommunicator implements ICommunicator {
 			e.printStackTrace();
 		}
 		
-		Log.e("RealCommunicator.getChatPartners()","Minden chatpartner:");
-		for (ChatContact actContacs : Session.getActualChatContactList().getContacts()) {
+		Log.e("RealCommunicator.getChatPartners()","Chat partnerek frissítése...");
+		/*for (ChatContact actContacs : Session.getActualChatContactList().getContacts()) {
 			Log.e("RealCommunicator.getChatPartners()", actContacs.toString());
-		}
+		}*/
 	}
 
 	@Override
