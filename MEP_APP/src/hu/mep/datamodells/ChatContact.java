@@ -70,14 +70,6 @@ public class ChatContact {
 		this.isOnline = isOnline;
 	}
 
-
-	public int getStatePictureResID() {
-		if(isOnline != 0) {
-			return R.drawable.state_picture_online;
-		}
-		return R.drawable.state_picture_offline;
-	}
-
 	
 	@Override
 	public String toString() {

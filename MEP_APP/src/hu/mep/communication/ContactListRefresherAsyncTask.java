@@ -2,7 +2,7 @@ package hu.mep.communication;
 
 import hu.mep.datamodells.ChatContact;
 import hu.mep.datamodells.Session;
-import hu.mep.mep_app.ActivityLevel2;
+import hu.mep.mep_app.FragmentLevel2Chat;
 
 import java.util.List;
 
@@ -22,7 +22,7 @@ public class ContactListRefresherAsyncTask extends AsyncTask<Long, Void, Void> {
 	@Override
 	protected Void doInBackground(Long... params) {
 		WAIT_TIME = params[0];
-		Log.d(TAG, "WAIT_TIME = " + WAIT_TIME);
+		//Log.d(TAG, "WAIT_TIME = " + WAIT_TIME);
 		Thread t = new Thread(new Runnable() {
 			
 			@Override
@@ -32,13 +32,13 @@ public class ContactListRefresherAsyncTask extends AsyncTask<Long, Void, Void> {
 					Session.getActualCommunicationInterface().getChatPartners();
 					List<ChatContact> after = Session.getActualChatContactList().getContacts();
 					if(after.containsAll(before)) { 
-						Log.d(TAG, "NO PARTNERS CHANGED SINCE LAST REFRESH.");
+						//Log.d(TAG, "NO PARTNERS CHANGED SINCE LAST REFRESH.");
 					} else {
-						Log.d(TAG, "PARTNERS HAS CHANGED SINCE LAST REFRESH.");
+						//Log.d(TAG, "PARTNERS HAS CHANGED SINCE LAST REFRESH.");
 						//ActivityLevel2.actualAdapter.notifyDataSetChanged();
 					}
 					try {
-						Log.e(TAG, "WAITING...");
+						//Log.e(TAG, "WAITING...");
 						Thread.sleep(WAIT_TIME);
 					} catch (InterruptedException e) {
 						// TODO Auto-generated catch block
@@ -54,5 +54,7 @@ public class ContactListRefresherAsyncTask extends AsyncTask<Long, Void, Void> {
 	@Override
 	protected void onPostExecute(Void result) {
 		super.onPostExecute(result);
+		FragmentLevel2Chat.contactAdapter.notifyDataSetChanged();
+		//FragmentLevel2Chat.listview.invalidateViews();
 	}
 }

@@ -43,13 +43,14 @@ public class ActivityLevel1 extends FragmentActivity implements
 	private static final int DRAWER_LIST_ABOUT_REMOTE_NUMBER = 3;
 	private static final int DRAWER_LIST_CONTACTS_NUMBER = 4;
 
-	private boolean isLoggedOnAnyUser = false;
+	private static boolean isLoggedOnAnyUser = false;
 
 	private int actualFragmentNumber;
 	private FragmentManager fragmentManager;
 	public EditText usernameEdittext;
 	public EditText passwordEdittext;
 	public Button loginButton;
+	private ArrayAdapter<String> drawerAdapter;
 
 	private Context context;
 
@@ -57,15 +58,16 @@ public class ActivityLevel1 extends FragmentActivity implements
 		if (isLoggedOnAnyUser) {
 			firstActivityDrawerStrings = getResources().getStringArray(
 					R.array.logged_in_drawer_items_list);
+			drawerAdapter.notifyDataSetChanged();
 		} else {
 			firstActivityDrawerStrings = getResources().getStringArray(
 					R.array.logged_off_drawer_items_list);
+			drawerAdapter.notifyDataSetChanged();
 		}
 	}
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		// Log.e(TAG, "onCreate 1");
 		super.onCreate(savedInstanceState);
 		context = getApplicationContext();
 		fragmentManager = getSupportFragmentManager();
@@ -75,16 +77,20 @@ public class ActivityLevel1 extends FragmentActivity implements
 				R.string.fragment_main_screen_title);
 		// Log.e("FirstActivity", "onCreate 2");
 		drawerTitle = getTitle();
-		refreshDrawerStrings();
 		firstActivityDrawerLayout = (DrawerLayout) findViewById(R.id.first_activity_drawer_layout);
 		firstActivityDrawerListView = (ListView) findViewById(R.id.first_activity_drawer_listview);
-		// Log.e("FirstActivity", "onCreate 3");
-		firstActivityDrawerListView.setAdapter(new ArrayAdapter<String>(this,
-				R.layout.drawer_list_item, firstActivityDrawerStrings));
-
+		
+		firstActivityDrawerStrings = getResources().getStringArray(
+				R.array.logged_off_drawer_items_list);
+		
+		drawerAdapter = new ArrayAdapter<String>(this,
+				R.layout.drawer_list_item, firstActivityDrawerStrings);
+		firstActivityDrawerListView.setAdapter(drawerAdapter);
+		refreshDrawerStrings();
+		
 		firstActivityDrawerListView
 				.setOnItemClickListener(new DrawerItemClickListener());
-		// Log.e(TAG, "onCreate 4");
+
 		drawerToggle = new ActionBarDrawerToggle(this,
 				firstActivityDrawerLayout, R.drawable.ic_drawer,
 				R.string.drawer_open, R.string.drawer_close) {
@@ -171,7 +177,8 @@ public class ActivityLevel1 extends FragmentActivity implements
 				newFragment = new FragmentLevel1MainScreen();
 
 				args = new Bundle();
-				args.putInt(FragmentLevel1MainScreen.CLICKED_DRAWER_ITEM_NUMBER,
+				args.putInt(
+						FragmentLevel1MainScreen.CLICKED_DRAWER_ITEM_NUMBER,
 						DRAWER_LIST_MAIN_PAGE_NUMBER);
 
 				newFragment.setArguments(args);
@@ -293,7 +300,7 @@ public class ActivityLevel1 extends FragmentActivity implements
 						Toast.LENGTH_LONG).show();
 			} else {
 				isLoggedOnAnyUser = true;
-				Intent i = new Intent(this, ActivityLevel2.class);
+				Intent i = new Intent(this, ActivityLevel2NEW.class);
 				startActivity(i);
 			}
 		} else {

@@ -8,10 +8,13 @@ import android.view.ViewGroup;
 
 public class FragmentLevel2Topics extends Fragment {
 
+	public FragmentLevel2Topics() {
+	}
+	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		View v = inflater.inflate(R.layout.fragment_topics, container);
+		View v = inflater.inflate(R.layout.fragment_topics, container, false);
 		return v;
 	}
 	

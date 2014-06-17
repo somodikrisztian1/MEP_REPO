@@ -49,7 +49,7 @@ public class AuthenticationAsyncTask extends AsyncTask<Void, Void, String>{
 	protected String doInBackground(Void... nothing) {
 		String response = "";
 		String fullURI = hostURI + resourceURI;
-		Log.e("fullURI is: ", fullURI);
+		//Log.e("fullURI is: ", fullURI);
 		DefaultHttpClient client = new DefaultHttpClient();
 		HttpGet httpGet = new HttpGet(fullURI);
 		try {

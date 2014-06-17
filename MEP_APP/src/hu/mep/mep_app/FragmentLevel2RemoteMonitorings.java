@@ -1,5 +1,6 @@
 package hu.mep.mep_app;
 
+import hu.mep.communication.ContactListRefresherAsyncTask;
 import hu.mep.datamodells.ChatContact;
 import hu.mep.datamodells.Place;
 import hu.mep.datamodells.Session;
@@ -20,6 +21,9 @@ public class FragmentLevel2RemoteMonitorings extends Fragment implements OnItemC
 	private static ListView listview;
 	public static ArrayAdapter<Place> placeAdapter;
 	
+	public FragmentLevel2RemoteMonitorings() {
+	}
+	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -32,6 +36,8 @@ public class FragmentLevel2RemoteMonitorings extends Fragment implements OnItemC
 		
 		listview = (ListView) v.findViewById(R.id.fragment_remote_monitorings_listview);
 		listview.setOnItemClickListener(this);
+		listview.setAdapter(placeAdapter);
+		
 		return v;
 	}
 

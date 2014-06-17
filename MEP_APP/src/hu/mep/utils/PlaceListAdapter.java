@@ -1,10 +1,11 @@
 package hu.mep.utils;
 
+import hu.mep.datamodells.Place;
+import hu.mep.mep_app.R;
+
 import java.util.HashMap;
 import java.util.List;
 
-import hu.mep.datamodells.Place;
-import hu.mep.mep_app.R;
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -24,11 +25,11 @@ public class PlaceListAdapter extends ArrayAdapter<Place> {
 		super(context, listviewID, listOfPlaces);
 		this.context = context;
 		this.listOfPlaces = listOfPlaces;
-		HashMap<String, Integer> mIDMap = new HashMap<String, Integer>();
+	/*	HashMap<String, Integer> mIDMap = new HashMap<String, Integer>();
 
-		for (int i = 0; i < listOfPlaces.size(); ++i) {
+		for (int i = 0; i < listOfPlaces.size(); ++i) { 
 			mIDMap.put(listOfPlaces.get(i).nameTag, i);
-		}
+		}*/
 	}
 	
 	@Override

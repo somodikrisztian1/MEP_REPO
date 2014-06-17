@@ -40,8 +40,10 @@ public class ActivityLevel3Chat extends Activity {
 		adapter = new ChatMessagesListAdapter(this,
 				R.id.activity_thirdlevel_chat_listview, Session
 						.getChatMessagesList().getChatMessagesList());
+		
 		chatMessagesListview
 				.setTranscriptMode(AbsListView.TRANSCRIPT_MODE_ALWAYS_SCROLL);
+		chatMessagesListview.setStackFromBottom(true);
 		chatMessagesListview.setAdapter(adapter);
 
 		chatInputTextView = (EditText) findViewById(R.id.activity_thirdlevel_chat_input_edittext);
@@ -77,6 +79,8 @@ public class ActivityLevel3Chat extends Activity {
 			messageRefresher = new ChatMessagesRefresherAsyncTask();
 			messageRefresher.execute(MESSAGE_REFRESH_TIME_INTERVAL);
 		}
+		chatMessagesListview
+		.setTranscriptMode(AbsListView.TRANSCRIPT_MODE_NORMAL);
 	}
 
 	@Override

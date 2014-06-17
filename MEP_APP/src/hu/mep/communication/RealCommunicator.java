@@ -120,19 +120,17 @@ public class RealCommunicator implements ICommunicator {
 	public void authenticateUser(String username, String password) {
 
 		if(NetThread.isOnline(context)) {
-			Log.e("RealCommunicator", "ONLINE!!!!!!!!!");
+			//Log.e("RealCommunicator", "ONLINE!!!!!!!!!");
 		}
 		else {
-			Log.e("RealCommunicator", "OFFLINE!!!!!!!!!");
+			//Log.e("RealCommunicator", "OFFLINE!!!!!!!!!");
 		}
 		AuthenticationAsyncTask authenticationAsyncTask = new AuthenticationAsyncTask(context, username, password, MainURL);
 		try {
 			authenticationAsyncTask.execute().get();
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (ExecutionException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		/*Log.e("RealCommunicator.authenticateUser()", "finished");*/
@@ -153,11 +151,7 @@ public class RealCommunicator implements ICommunicator {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		Log.e("RealCommunicator.getChatPartners()","Chat partnerek frissítése...");
-		/*for (ChatContact actContacs : Session.getActualChatContactList().getContacts()) {
-			Log.e("RealCommunicator.getChatPartners()", actContacs.toString());
-		}*/
+		//Log.e("RealCommunicator.getChatPartners()","Chat partnerek frissítése...");
 	}
 
 	@Override
