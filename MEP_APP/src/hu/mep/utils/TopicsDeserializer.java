@@ -1,7 +1,7 @@
 package hu.mep.utils;
 
-import hu.mep.datamodells.ChatMessage;
-import hu.mep.datamodells.ChatMessagesList;
+import hu.mep.datamodells.AllTopicsList;
+import hu.mep.datamodells.TopicCategory;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -14,21 +14,22 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 
-public class ChatMessagesListDeserializer implements
-		JsonDeserializer<ChatMessagesList> {
+public class TopicsDeserializer implements JsonDeserializer<AllTopicsList>{
 
 	@Override
-	public ChatMessagesList deserialize(JsonElement element, Type type,
+	public AllTopicsList deserialize(JsonElement element, Type type,
 			JsonDeserializationContext context) throws JsonParseException {
+		
 		JsonObject jsonObject = element.getAsJsonObject();
-		List<ChatMessage> messages = new ArrayList<ChatMessage>();
+		
+		List<TopicCategory> allTopicCategories = new ArrayList<TopicCategory>();
+		
 		for (Map.Entry<String, JsonElement> entry : jsonObject.entrySet()) {
-			ChatMessage message = context.deserialize(entry.getValue(),
-					ChatMessage.class);
-			messages.add(message);
+			TopicCategory newTopicCategory = context.deserialize(entry.getValue(),
+					TopicCategory.class);
+			allTopicCategories.add(newTopicCategory);
 		}
-		return new ChatMessagesList(messages);
-
+		return new AllTopicsList(allTopicCategories);
 	}
 
 }

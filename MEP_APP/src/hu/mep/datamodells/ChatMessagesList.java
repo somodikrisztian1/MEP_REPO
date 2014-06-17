@@ -1,6 +1,5 @@
 package hu.mep.datamodells;
 
-import java.util.Collections;
 import java.util.List;
 
 public class ChatMessagesList {
