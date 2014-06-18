@@ -26,7 +26,7 @@ public class Session {
 	private static Place actualRemoteMonitoring;
 
 	private static ProgressDialog progressDialog;
-	private static AllTopicsList allTopicsList;
+	private static List<TopicCategory> allTopicsList;
 	
 	/**
 	 * This method gives back the order value of the last ChatMessage object
@@ -191,10 +191,10 @@ public class Session {
 				counter++;
 			}	
 		}*/
-		return allTopicsList.getAllTopics();
+		return allTopicsList;
 	}
 
-	public static void setAllTopicsList(AllTopicsList allTopicsList) {
+	public static void setAllTopicsList(List<TopicCategory> allTopicsList) {
 		Session.allTopicsList = allTopicsList;
 		/*int counter = 0;
 		for (TopicCategory actTopicCategory : allTopicsList.getAllTopics()) {

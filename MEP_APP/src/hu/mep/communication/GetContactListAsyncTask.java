@@ -106,7 +106,7 @@ public class GetContactListAsyncTask extends AsyncTask<Void, Void, String> {
 				// A rövidebb oldal szerint vágunk egy nagy négyzetre.
 				bmp = Bitmap.createBitmap(bmp, 0, 0, fixSize, fixSize);
 				// Skálázás 200×200-as négyzetre.
-				bmp = Bitmap.createScaledBitmap(bmp, 200, 200, true);
+				bmp = Bitmap.createScaledBitmap(bmp, 250, 250, true);
 				contact.setProfilePicture(bmp);
 			}
 		} catch (IOException e) {

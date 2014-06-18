@@ -4,4 +4,5 @@
     android:id="@+id/activity_secondlevel_pager"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="hu.mep.mep_app.ActivityLevel2NEW" />
+    tools:context="hu.mep.mep_app.ActivityLevel2NEW"
+    android:background="#FFFFFF"/>

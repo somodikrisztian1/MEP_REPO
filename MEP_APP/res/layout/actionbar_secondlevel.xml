@@ -15,7 +15,6 @@
         android:layout_weight="1"
         android:onClick="menuItemClickListener"
         android:scaleType="centerInside"
-        android:src="@drawable/mep_icon"
         android:text="menu" />
 
     <ImageView
@@ -25,7 +24,6 @@
         android:layout_weight="1"
         android:onClick="menuItemClickListener"
         android:scaleType="centerInside"
-        android:src="@drawable/ic_action_view_as_list"
         android:text="topics" />
 
     <ImageView
@@ -35,7 +33,6 @@
         android:layout_weight="1"
         android:onClick="menuItemClickListener"
         android:scaleType="centerInside"
-        android:src="@drawable/ic_action_accounts"
         android:text="remote" />
 
     <ImageView
@@ -45,7 +42,6 @@
         android:layout_weight="1"
         android:onClick="menuItemClickListener"
         android:scaleType="centerInside"
-        android:src="@drawable/ic_action_chat"
         android:text="chat" />
 
 </LinearLayout>

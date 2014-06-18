@@ -1,9 +1,11 @@
 package hu.mep.mep_app;
 
 import hu.mep.datamodells.Session;
+import hu.mep.utils.FragmentLevel2EventHandler;
 
 import java.util.Locale;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -15,7 +17,7 @@ import android.support.v7.app.ActionBar.Tab;
 import android.support.v7.app.ActionBarActivity;
 
 public class ActivityLevel2NEW extends ActionBarActivity implements
-		ActionBar.TabListener {
+		ActionBar.TabListener, FragmentLevel2EventHandler {
 
 	ActionBar mActionBar;
 	Tab tabTopics;
@@ -36,7 +38,8 @@ public class ActivityLevel2NEW extends ActionBarActivity implements
 		mViewPager = (ViewPager) findViewById(R.id.activity_secondlevel_pager);
 		mViewPager.setAdapter(mSectionsPagerAdapter);
 
-		mViewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+		mViewPager
+				.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
 					@Override
 					public void onPageSelected(int position) {
 						mActionBar.setSelectedNavigationItem(position);
@@ -51,11 +54,12 @@ public class ActivityLevel2NEW extends ActionBarActivity implements
 		for (int i = 0; i < mSectionsPagerAdapter.getCount(); i++) {
 
 			mActionBar.addTab(mActionBar.newTab()
-					.setText(mSectionsPagerAdapter.getPageTitle(i))
+					//.setText(mSectionsPagerAdapter.getPageTitle(i))
+					.setIcon(mSectionsPagerAdapter.getPageIcon(i))
 					.setTabListener(this));
 		}
-		Session.getInstance(getApplicationContext()).getActualCommunicationInterface()
-		.getTopicList();
+		Session.getInstance(getApplicationContext())
+				.getActualCommunicationInterface().getTopicList();
 	}
 
 	public class SectionsPagerAdapter extends FragmentPagerAdapter {
@@ -105,6 +109,20 @@ public class ActivityLevel2NEW extends ActionBarActivity implements
 			}
 			return null;
 		}
+
+		public int getPageIcon(int position) {
+			switch (position) {
+			case 0:
+				return R.drawable.topics_icon;
+			case 1:
+				return R.drawable.remote_monitorings_icon;
+			case 2:
+				return R.drawable.chat_icon;
+			default:
+				break;
+			}
+			return 0;
+		}
 	}
 
 	@Override
@@ -122,5 +140,12 @@ public class ActivityLevel2NEW extends ActionBarActivity implements
 	public void onTabUnselected(Tab tab, FragmentTransaction ft) {
 		// TODO Auto-generated method stub
 
+	}
+
+	@Override
+	public void onTopicSelected() {
+		Intent i = new Intent(getApplicationContext(), ActivityLevel3ShowTopic.class);
+		startActivity(i);
+		
 	}
 }

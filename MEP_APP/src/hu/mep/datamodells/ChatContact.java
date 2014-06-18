@@ -1,8 +1,6 @@
 package hu.mep.datamodells;
 
-import hu.mep.mep_app.R;
 import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
 
 import com.google.gson.annotations.SerializedName;
 

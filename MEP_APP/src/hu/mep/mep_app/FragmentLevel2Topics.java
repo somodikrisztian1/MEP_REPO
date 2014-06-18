@@ -1,7 +1,9 @@
 package hu.mep.mep_app;
 
 import hu.mep.datamodells.Session;
+import hu.mep.utils.FragmentLevel2EventHandler;
 import hu.mep.utils.TopicsExpandableListAdapter;
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -12,6 +14,7 @@ import android.widget.ExpandableListView;
 public class FragmentLevel2Topics extends Fragment {
 
 	public static TopicsExpandableListAdapter adapter;
+	private static FragmentLevel2EventHandler fragmentEventHandler;
 
 	public FragmentLevel2Topics() {
 	}
@@ -25,10 +28,21 @@ public class FragmentLevel2Topics extends Fragment {
 				.findViewById(R.id.fragment_topics_expandable_listview);
 
 		adapter = new TopicsExpandableListAdapter(getActivity(),
-				Session.getInstance(getActivity()).getTopicsList());
+				Session.getInstance(getActivity()).getTopicsList(),
+				fragmentEventHandler);
 		listview.setAdapter(adapter);
 
 		return v;
+	}
+	
+	@Override
+	public void onAttach(Activity activity) {
+		super.onAttach(activity);
+		try {
+			fragmentEventHandler = (FragmentLevel2EventHandler) activity;
+		} catch (ClassCastException e) {
+			throw new ClassCastException(activity.toString() + " must implement FragmentEventHandler interface...");
+		}
 	}
 
 }

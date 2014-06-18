@@ -2,11 +2,15 @@ package hu.mep.utils;
 
 import hu.mep.datamodells.Topic;
 import hu.mep.datamodells.TopicCategory;
+import hu.mep.mep_app.ActivityLevel2NEW;
+import hu.mep.mep_app.ActivityLevel3ShowTopic;
 import hu.mep.mep_app.R;
 
 import java.util.List;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.sax.StartElementListener;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,12 +26,15 @@ public class TopicsExpandableListAdapter extends BaseExpandableListAdapter {
 	private final List<TopicCategory> groups;
 	public LayoutInflater inflater;
 	public Activity activity;
+	private FragmentLevel2EventHandler fragmentEventHandler;
 
 	public TopicsExpandableListAdapter(Activity activity,
-			List<TopicCategory> groups) {
+			List<TopicCategory> groups, 
+			FragmentLevel2EventHandler fragmentEventHandler) {
 		this.activity = activity;
 		this.inflater = activity.getLayoutInflater();
 		this.groups = groups;
+		this.fragmentEventHandler = fragmentEventHandler;
 	}
 
 	@Override
@@ -57,6 +64,12 @@ public class TopicsExpandableListAdapter extends BaseExpandableListAdapter {
 			public void onClick(View v) {
 				Toast.makeText(activity, children.getTopicName(),
 						Toast.LENGTH_SHORT).show();
+				//TODO! Interfészen keresztül küldeni egy üzit, hogy 
+				//lehet indítani az ActivityLevel3ShowTopic activity-t.
+				fragmentEventHandler.onTopicSelected();
+				
+				
+				
 			}
 		});
 		return convertView;

@@ -2,11 +2,13 @@ package hu.mep.communication;
 
 import hu.mep.datamodells.AllTopicsList;
 import hu.mep.datamodells.Session;
-import hu.mep.utils.TopicsDeserializer;
+import hu.mep.datamodells.TopicCategory;
+import hu.mep.utils.TopicListDeserializer;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.List;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -62,10 +64,11 @@ public class GetTopicListAsyncTask extends AsyncTask<Void, Void, Void> {
 		//Log.e("GetContactListAsyncTask.doInBackground()", response);
 
 		GsonBuilder gsonBuilder = new GsonBuilder();
-		gsonBuilder.registerTypeAdapter(AllTopicsList.class, new TopicsDeserializer());
+		gsonBuilder.registerTypeAdapter(AllTopicsList.class, new TopicListDeserializer());
 		Gson gson = gsonBuilder.create();
 		AllTopicsList topics = gson.fromJson(response, AllTopicsList.class);
-		Session.getInstance(context).setAllTopicsList(topics);
+		Session.getInstance(context).setAllTopicsList(topics.getAllTopics());
+		topics = null;
 		return null;
 	}
 
