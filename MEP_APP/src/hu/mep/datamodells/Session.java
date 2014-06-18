@@ -24,10 +24,9 @@ public class Session {
 
 	private static ChatMessagesList chatMessagesList;
 	private static Place actualRemoteMonitoring;
-	
-	
 
 	private static ProgressDialog progressDialog;
+	private static AllTopicsList allTopicsList;
 	
 	/**
 	 * This method gives back the order value of the last ChatMessage object
@@ -183,4 +182,29 @@ public class Session {
 		Log.e("Session", "sortChatMessagesList()");
 		Collections.sort(Session.chatMessagesList.chatMessagesList);
 	}
+
+	public static List<TopicCategory> getTopicsList() {
+		/*int counter = 0;
+		for (TopicCategory actTopicCategory : allTopicsList.getAllTopics()) {
+			for (Topic actTopic : actTopicCategory.getTopics()) {
+				Log.d(TAG, "Topic#" + counter + "= " + actTopic.getTopicName());
+				counter++;
+			}	
+		}*/
+		return allTopicsList.getAllTopics();
+	}
+
+	public static void setAllTopicsList(AllTopicsList allTopicsList) {
+		Session.allTopicsList = allTopicsList;
+		/*int counter = 0;
+		for (TopicCategory actTopicCategory : allTopicsList.getAllTopics()) {
+			for (Topic actTopic : actTopicCategory.getTopics()) {
+				Log.e(TAG, "Topic#" + counter + "= " + actTopic.getTopicName());
+				counter++;
+			}	
+		}
+		Log.e(TAG, "Összesen megkapott témakörök száma: " + counter);*/
+	}
+	
+	
 }

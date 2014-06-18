@@ -19,6 +19,14 @@ public class TopicCategory {
 	public List<Topic> getTopics() {
 		return topics;
 	}
+
+	public TopicCategory(String categoryName, List<Topic> topics) {
+		super();
+		this.categoryName = categoryName;
+		this.topics = topics;
+	}
+	
+	
 	
 	
 }

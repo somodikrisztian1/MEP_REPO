@@ -1,5 +1,7 @@
 package hu.mep.mep_app;
 
+import hu.mep.datamodells.Session;
+
 import java.util.Locale;
 
 import android.os.Bundle;
@@ -52,6 +54,8 @@ public class ActivityLevel2NEW extends ActionBarActivity implements
 					.setText(mSectionsPagerAdapter.getPageTitle(i))
 					.setTabListener(this));
 		}
+		Session.getInstance(getApplicationContext()).getActualCommunicationInterface()
+		.getTopicList();
 	}
 
 	public class SectionsPagerAdapter extends FragmentPagerAdapter {

@@ -8,4 +8,5 @@ public interface ICommunicator {
 	public void getChatPartners();
 	public void getChatMessages();
 	public void sendChatMessage(String text);
+	public void getTopicList();
 }

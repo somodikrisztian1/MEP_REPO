@@ -155,6 +155,21 @@ public class RealCommunicator implements ICommunicator {
 	}
 
 	@Override
+	public void getTopicList() {
+		GetTopicListAsyncTask getTopicListAsyncTask = new GetTopicListAsyncTask(context, MainURL);
+		try {
+			getTopicListAsyncTask.execute().get();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ExecutionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+	
+	@Override
 	public void sendChatMessage(String messageText) {
 		HashMap<String, String> postDatas = new HashMap<String, String>();
 		Date date;
@@ -177,4 +192,6 @@ public class RealCommunicator implements ICommunicator {
 		}
 		
 	}
+
+
 }
