@@ -9,6 +9,12 @@ public class Chart {
 	@SerializedName("elapse")
 	private String elapse;
 	
+	public Chart(String elapse, String yAxisTitle) {
+		super();
+		this.elapse = elapse;
+		this.yAxisTitle = yAxisTitle;
+	}
+
 	@SerializedName("y")
 	private String yAxisTitle;
 	

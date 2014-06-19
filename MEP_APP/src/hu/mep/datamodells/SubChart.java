@@ -20,6 +20,13 @@ public class SubChart {
 	public HashMap<Date, Double> getChartValues() {
 		return chartValues;
 	}
+
+	public SubChart(String label, HashMap<Date, Double> chartValues) {
+		super();
+		this.label = label;
+		this.chartValues = chartValues;
+	}
+	
 	
 	
 	

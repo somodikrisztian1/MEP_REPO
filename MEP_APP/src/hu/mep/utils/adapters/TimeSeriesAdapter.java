@@ -1,9 +1,15 @@
 package hu.mep.utils.adapters;
 
-import hu.mep.datamodells.Chart;
 import hu.mep.datamodells.Session;
+import hu.mep.datamodells.SubChart;
+
+import java.util.Date;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import org.afree.data.time.Millisecond;
+import org.afree.data.time.Second;
 import org.afree.data.time.TimeSeries;
 import org.afree.data.time.TimeSeriesCollection;
 import org.afree.data.xy.XYDataset;
@@ -30,18 +36,36 @@ public class TimeSeriesAdapter {
 		s1.add(new Millisecond(00, 30, 03, 16, 18, 06, 2014), 60.6);
 		s1.add(new Millisecond(00, 40, 03, 16, 18, 06, 2014), 55.6);
 		s1.add(new Millisecond(00, 50, 03, 16, 18, 06, 2014), 53.6);
-		
+
 		TimeSeriesCollection dataset = new TimeSeriesCollection();
 		dataset.addSeries(s1);
 
 		return dataset;
 	}
-	
-	
-	public XYDataset getTimeFromChart(Chart chart) {
-		Session.getActualCommunicationInterface().get
-		return null;
+
+	public XYDataset getTimeFromChart() {
+		TimeSeriesCollection dataset = new TimeSeriesCollection();
+		TimeSeries ts;
 		
+		Map.Entry<Date, Double> keyValuePair;
+		Date date;
+		
+		for (SubChart actSubChart : Session.getActualChart().getSubCharts()) {
+			ts = new TimeSeries(actSubChart.getLabel());
+			Iterator<Entry<Date, Double>> it = actSubChart.getChartValues()
+					.entrySet().iterator();
+			while (it.hasNext()) {
+				keyValuePair = it.next();
+				date = keyValuePair.getKey();
+				ts.add(new Second(date.getSeconds(), date.getMinutes(), date
+						.getHours(), date.getDay(), date.getMonth(), date
+						.getYear()), keyValuePair.getValue());
+			}
+			dataset.addSeries(ts);
+			ts = null;
+		}
+
+		return dataset;
 	}
-	
+
 }

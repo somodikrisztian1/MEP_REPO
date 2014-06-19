@@ -68,7 +68,6 @@ public class GetTopicListAsyncTask extends AsyncTask<Void, Void, Void> {
 		Gson gson = gsonBuilder.create();
 		AllTopicsList topics = gson.fromJson(response, AllTopicsList.class);
 		Session.getInstance(context).setAllTopicsList(topics.getAllTopics());
-		topics = null;
 		return null;
 	}
 

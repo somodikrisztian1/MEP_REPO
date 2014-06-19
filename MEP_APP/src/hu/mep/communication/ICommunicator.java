@@ -10,4 +10,5 @@ public interface ICommunicator {
 	public void sendChatMessage(String text);
 	public void getTopicList();
 	public void getChartNames();
+	public void getActualChart();
 }

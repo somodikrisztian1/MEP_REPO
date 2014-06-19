@@ -45,7 +45,8 @@ public class TopicsExpandableListAdapter extends BaseExpandableListAdapter {
 
 	@Override
 	public long getChildId(int groupPosition, int childPosition) {
-		return groups.get(groupPosition).getTopics().get(childPosition).getTopicID();
+		//return groups.get(groupPosition).getTopics().get(childPosition).getTopicID();
+		return 0;
 	}
 
 	@Override

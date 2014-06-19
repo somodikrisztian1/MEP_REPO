@@ -15,25 +15,40 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 
-public class TopicListDeserializer implements JsonDeserializer<AllTopicsList>{
+public class TopicListDeserializer implements JsonDeserializer<AllTopicsList> {
 
 	@Override
 	public AllTopicsList deserialize(JsonElement element, Type type,
 			JsonDeserializationContext context) throws JsonParseException {
 		
-		JsonObject jsonObject = element.getAsJsonObject();
-		
 		List<TopicCategory> allTopicCategories = new ArrayList<TopicCategory>();
-
-		for (Map.Entry<String, JsonElement> entry : jsonObject.entrySet()) {
-			
-		}
+		String categoryName;
 		
-		/* Ha normális JSON array lenne, ennyi lenne csak a dolog:
-		TopicCategory newTopicCategory = context.deserialize(entry.getValue(),
-		TopicCategory.class);
-		allTopicCategories.add(newTopicCategory);*/
+		JsonObject rootObject = element.getAsJsonObject();
+		JsonObject object;
+		JsonObject topicsJSONobj;
+
+		for (Map.Entry<String, JsonElement> category : rootObject.entrySet()) {
+
+			object = category.getValue().getAsJsonObject();
+			categoryName = object.get("nev").getAsString();
+
+			topicsJSONobj = object.get("temakorok")
+					.getAsJsonObject();
+			List<Topic> topicListInCategory = new ArrayList<Topic>();
+			Topic actTopic;
+
+			for (Map.Entry<String, JsonElement> topic : topicsJSONobj
+					.entrySet()) {
+				actTopic = null;
+				actTopic = context.deserialize(topic.getValue(), Topic.class);
+				topicListInCategory.add(actTopic);
+			}
+			allTopicCategories.add(new TopicCategory(categoryName,
+					topicListInCategory));
+
+			object = null;
+		}
 		return new AllTopicsList(allTopicCategories);
 	}
-
 }

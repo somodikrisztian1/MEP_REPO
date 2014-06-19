@@ -38,7 +38,7 @@ AsyncTask<Void, Void, Void> {
 	@Override
 	protected void onPreExecute() {
 		super.onPreExecute();
-		resourceURI = "http://www.megujuloenergiapark.hu/ios_getChartNames.php?tsz1_id=" +
+		resourceURI = "ios_getChartNames.php?tsz1_id=" +
 		Session.getInstance(context).getActualTopic().getTopicID();
 		fullURI = hostURI + resourceURI;
 	}

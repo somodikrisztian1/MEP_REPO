@@ -17,6 +17,8 @@ public class ActivityLevel3ShowTopic extends Activity {
 	        Session.getInstance(getApplicationContext()).getActualCommunicationInterface().getChartNames();
 	        Session.getInstance(getApplicationContext()).setActualChartInfoContainer(
 	        		Session.getAllChartInfoContainer().get(0));
+	        Session.getActualCommunicationInterface().getActualChart();
+	        
 	        TimeLineChartView mView = new TimeLineChartView(this, new TimeSeriesAdapter());
 	        requestWindowFeature(Window.FEATURE_NO_TITLE);
 	        setContentView(mView);

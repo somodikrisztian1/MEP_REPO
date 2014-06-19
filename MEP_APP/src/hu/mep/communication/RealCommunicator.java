@@ -210,12 +210,26 @@ public class RealCommunicator implements ICommunicator {
 		try {
 			chartNameGetter.execute().get();
 		} catch (InterruptedException e) {
+			e.printStackTrace();
+		} catch (ExecutionException e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Override
+	public void getActualChart() {
+		GetChartAsyncTask getChart = new GetChartAsyncTask(context, MainURL);
+		try {
+			getChart.execute().get();
+		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (ExecutionException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		
 	}
 
 }

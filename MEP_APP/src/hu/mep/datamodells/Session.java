@@ -29,11 +29,13 @@ public class Session {
 	
 	private static List<TopicCategory> allTopicsList;
 	private static Topic actualTopic;
-	
-	
 
 	private static List<ChartInfoContainer> allChartInfoContainer;
 	private static ChartInfoContainer actualChartInfoContainer;
+
+	private static Chart actualChart;
+	
+	
 
 	/**
 	 * This method gives back the order value of the last ChatMessage object
@@ -201,7 +203,7 @@ public class Session {
 
 	public static List<TopicCategory> getTopicsList() {
 		/*int counter = 0;
-		for (TopicCategory actTopicCategory : allTopicsList.getAllTopics()) {
+		for (TopicCategory actTopicCategory : allTopicsList) {
 			for (Topic actTopic : actTopicCategory.getTopics()) {
 				Log.d(TAG, "Topic#" + counter + "= " + actTopic.getTopicName());
 				counter++;
@@ -212,14 +214,14 @@ public class Session {
 
 	public static void setAllTopicsList(List<TopicCategory> allTopicsList) {
 		Session.allTopicsList = allTopicsList;
-		/*int counter = 0;
-		for (TopicCategory actTopicCategory : allTopicsList.getAllTopics()) {
+		int counter = 0;
+		for (TopicCategory actTopicCategory : allTopicsList) {
 			for (Topic actTopic : actTopicCategory.getTopics()) {
 				Log.e(TAG, "Topic#" + counter + "= " + actTopic.getTopicName());
 				counter++;
 			}	
 		}
-		Log.e(TAG, "Összesen megkapott témakörök száma: " + counter);*/
+		Log.e(TAG, "Összesen megkapott témakörök száma: " + counter);
 	}
 	
 	public static Topic getActualTopic() {
@@ -237,6 +239,14 @@ public class Session {
 	public static void setAllChartInfoContainer(
 			List<ChartInfoContainer> allChartInfoContainer) {
 		Session.allChartInfoContainer = allChartInfoContainer;
+	}
+	
+	public static Chart getActualChart() {
+		return actualChart;
+	}
+
+	public static void setActualChart(Chart actualChart) {
+		Session.actualChart = actualChart;
 	}
 	
 }

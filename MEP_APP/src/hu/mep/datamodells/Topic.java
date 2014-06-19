@@ -7,7 +7,7 @@ import com.google.gson.annotations.SerializedName;
 public class Topic {
 	
 	@SerializedName("tsz1_id")
-	private int topicID;
+	private String topicID;
 	
 	@SerializedName("nev")
 	private String topicName;
@@ -15,7 +15,7 @@ public class Topic {
 	@SerializedName("sszs")
 	private List<Integer> tabSerialNumbers;
 
-	public int getTopicID() {
+	public String getTopicID() {
 		return topicID;
 	}
 
