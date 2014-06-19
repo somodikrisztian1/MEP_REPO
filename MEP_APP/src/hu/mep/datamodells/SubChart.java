@@ -12,6 +12,16 @@ public class SubChart {
 	
 	@SerializedName("adat")
 	private HashMap<Date, Double> chartValues;
+
+	public String getLabel() {
+		return label;
+	}
+
+	public HashMap<Date, Double> getChartValues() {
+		return chartValues;
+	}
+	
+	
 	
 	
 }

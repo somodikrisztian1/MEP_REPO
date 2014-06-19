@@ -1,8 +1,8 @@
 package hu.mep.mep_app;
 
 import hu.mep.datamodells.Session;
-import hu.mep.utils.FragmentLevel2EventHandler;
-import hu.mep.utils.TopicsExpandableListAdapter;
+import hu.mep.utils.adapters.TopicsExpandableListAdapter;
+import hu.mep.utils.others.FragmentLevel2EventHandler;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;

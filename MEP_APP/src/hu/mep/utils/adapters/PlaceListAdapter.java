@@ -1,4 +1,4 @@
-package hu.mep.utils;
+package hu.mep.utils.adapters;
 
 import hu.mep.datamodells.Place;
 import hu.mep.mep_app.R;

@@ -1,7 +1,8 @@
 package hu.mep.mep_app;
 
 import hu.mep.datamodells.Session;
-import hu.mep.utils.FragmentLevel2EventHandler;
+import hu.mep.datamodells.Topic;
+import hu.mep.utils.others.FragmentLevel2EventHandler;
 
 import java.util.Locale;
 
@@ -143,9 +144,11 @@ public class ActivityLevel2NEW extends ActionBarActivity implements
 	}
 
 	@Override
-	public void onTopicSelected() {
-		Intent i = new Intent(getApplicationContext(), ActivityLevel3ShowTopic.class);
+	public void onTopicSelected(Topic selectedTopic) {
+		Session.setActualTopic(selectedTopic);
+		Intent i = new Intent(this, ActivityLevel3ShowTopic.class);
 		startActivity(i);
 		
 	}
+
 }

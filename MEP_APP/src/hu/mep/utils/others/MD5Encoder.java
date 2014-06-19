@@ -1,4 +1,4 @@
-package hu.mep.utils;
+package hu.mep.utils.others;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;

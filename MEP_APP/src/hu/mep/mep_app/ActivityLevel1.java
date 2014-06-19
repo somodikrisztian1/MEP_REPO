@@ -2,6 +2,7 @@ package hu.mep.mep_app;
 
 import hu.mep.communication.NetThread;
 import hu.mep.datamodells.Session;
+import hu.mep.utils.others.FragmentLevel1EventHandler;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;

@@ -2,6 +2,7 @@ package hu.mep.mep_app;
 
 import hu.mep.communication.ICommunicator;
 import hu.mep.communication.RealCommunicator;
+import hu.mep.utils.others.FragmentLevel1EventHandler;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;

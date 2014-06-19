@@ -1,14 +1,19 @@
 package hu.mep.datamodells;
 
+import java.util.List;
+
 import com.google.gson.annotations.SerializedName;
 
 public class Topic {
 	
-	@SerializedName("tema_id")
+	@SerializedName("tsz1_id")
 	private int topicID;
 	
 	@SerializedName("nev")
 	private String topicName;
+	
+	@SerializedName("sszs")
+	private List<Integer> tabSerialNumbers;
 
 	public int getTopicID() {
 		return topicID;
@@ -17,6 +22,11 @@ public class Topic {
 	public String getTopicName() {
 		return topicName;
 	}
+
+	public List<Integer> getTabSerialNumbers() {
+		return tabSerialNumbers;
+	}
+	
 	
 	
 	

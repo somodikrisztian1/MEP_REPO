@@ -3,7 +3,7 @@ package hu.mep.mep_app;
 import hu.mep.communication.ChatMessagesRefresherAsyncTask;
 import hu.mep.datamodells.ChatMessage;
 import hu.mep.datamodells.Session;
-import hu.mep.utils.ChatMessagesListAdapter;
+import hu.mep.utils.adapters.ChatMessagesListAdapter;
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;

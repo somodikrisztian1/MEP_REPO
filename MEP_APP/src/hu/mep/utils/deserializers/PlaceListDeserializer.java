@@ -1,4 +1,4 @@
-package hu.mep.utils;
+package hu.mep.utils.deserializers;
 
 import hu.mep.datamodells.Place;
 import hu.mep.datamodells.PlaceList;

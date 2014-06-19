@@ -1,4 +1,4 @@
-package hu.mep.utils;
+package hu.mep.utils.adapters;
 
 import hu.mep.datamodells.ChatContact;
 import hu.mep.datamodells.Session;

@@ -9,10 +9,10 @@ import hu.mep.datamodells.PlaceList;
 import hu.mep.datamodells.User;
 import hu.mep.datamodells.Session;
 import hu.mep.mep_app.ActivityLevel3Chat;
-import hu.mep.utils.ChatContactListDeserializer;
-import hu.mep.utils.ChatMessagesListDeserializer;
-import hu.mep.utils.MD5Encoder;
-import hu.mep.utils.PlaceListDeserializer;
+import hu.mep.utils.deserializers.ChatContactListDeserializer;
+import hu.mep.utils.deserializers.ChatMessagesListDeserializer;
+import hu.mep.utils.deserializers.PlaceListDeserializer;
+import hu.mep.utils.others.MD5Encoder;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -64,15 +64,16 @@ public class RealCommunicator implements ICommunicator {
 	private static RealCommunicator instance = null;
 
 	private RealCommunicator(Context context) {
-		this.httpclient = new DefaultHttpClient(); // szükségtelen lesz az Asynctaskok után
-		this.context = context;						//szükséges az AsyncTaskokhoz
+		this.httpclient = new DefaultHttpClient(); // szükségtelen lesz az
+													// Asynctaskok után
+		this.context = context; // szükséges az AsyncTaskokhoz
 	}
 
 	public static synchronized RealCommunicator getInstance(Context ctx) {
 		if (instance == null) {
 			instance = new RealCommunicator(ctx);
 		}
-		
+
 		return instance;
 	}
 
@@ -97,8 +98,9 @@ public class RealCommunicator implements ICommunicator {
 
 	@Override
 	public void getChatMessages() {
-		
-		GetChatMessagesListAsyncTask getMessagesAsyncTask = new GetChatMessagesListAsyncTask(context, MainURL);
+
+		GetChatMessagesListAsyncTask getMessagesAsyncTask = new GetChatMessagesListAsyncTask(
+				context, MainURL);
 
 		try {
 			getMessagesAsyncTask.execute().get();
@@ -109,23 +111,26 @@ public class RealCommunicator implements ICommunicator {
 		}
 
 		/* Az aktuális üzenetlista kiíratása... tesztkiíratás */
-		/*Log.e("RealCommunicator.getChatMessages()","Minden bejövő üzenet:");
-		for (ChatMessage actMessage : Session.getInstance(context).getChatMessagesList().getChatMessagesList()) {
-			Log.e("RealCommunicator.getChatMessages()", actMessage.toString());
-		}*/
+		/*
+		 * Log.e("RealCommunicator.getChatMessages()","Minden bejövő üzenet:");
+		 * for (ChatMessage actMessage :
+		 * Session.getInstance(context).getChatMessagesList
+		 * ().getChatMessagesList()) {
+		 * Log.e("RealCommunicator.getChatMessages()", actMessage.toString()); }
+		 */
 	}
 
 	// TODO! Az internet kapcsolat ellenőrzést megoldani.
 	@Override
 	public void authenticateUser(String username, String password) {
 
-		if(NetThread.isOnline(context)) {
-			//Log.e("RealCommunicator", "ONLINE!!!!!!!!!");
+		if (NetThread.isOnline(context)) {
+			// Log.e("RealCommunicator", "ONLINE!!!!!!!!!");
+		} else {
+			// Log.e("RealCommunicator", "OFFLINE!!!!!!!!!");
 		}
-		else {
-			//Log.e("RealCommunicator", "OFFLINE!!!!!!!!!");
-		}
-		AuthenticationAsyncTask authenticationAsyncTask = new AuthenticationAsyncTask(context, username, password, MainURL);
+		AuthenticationAsyncTask authenticationAsyncTask = new AuthenticationAsyncTask(
+				context, username, password, MainURL);
 		try {
 			authenticationAsyncTask.execute().get();
 		} catch (InterruptedException e) {
@@ -133,14 +138,16 @@ public class RealCommunicator implements ICommunicator {
 		} catch (ExecutionException e) {
 			e.printStackTrace();
 		}
-		/*Log.e("RealCommunicator.authenticateUser()", "finished");*/
-		
+		/* Log.e("RealCommunicator.authenticateUser()", "finished"); */
+
 	}
 
 	@Override
 	public void getChatPartners() {
-		GetContactListAsyncTask getContactListAsyncTask = new GetContactListAsyncTask(context, MainURL);
-		// TODO! Ide sem kell majd a .get() Most azért van ott, mert logolni akarom az eredményt, muszáj megvárni
+		GetContactListAsyncTask getContactListAsyncTask = new GetContactListAsyncTask(
+				context, MainURL);
+		// TODO! Ide sem kell majd a .get() Most azért van ott, mert logolni
+		// akarom az eredményt, muszáj megvárni
 		// a szál végrehajtódását!
 		try {
 			getContactListAsyncTask.execute().get();
@@ -151,12 +158,13 @@ public class RealCommunicator implements ICommunicator {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		//Log.e("RealCommunicator.getChatPartners()","Chat partnerek frissítése...");
+		// Log.e("RealCommunicator.getChatPartners()","Chat partnerek frissítése...");
 	}
 
 	@Override
 	public void getTopicList() {
-		GetTopicListAsyncTask getTopicListAsyncTask = new GetTopicListAsyncTask(context, MainURL);
+		GetTopicListAsyncTask getTopicListAsyncTask = new GetTopicListAsyncTask(
+				context, MainURL);
 		try {
 			getTopicListAsyncTask.execute().get();
 		} catch (InterruptedException e) {
@@ -166,21 +174,23 @@ public class RealCommunicator implements ICommunicator {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 	}
-	
+
 	@Override
 	public void sendChatMessage(String messageText) {
 		HashMap<String, String> postDatas = new HashMap<String, String>();
 		Date date;
 		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		
+
 		postDatas.put("userId", "" + Session.getActualUser().getMepID());
 		postDatas.put("toId", "" + Session.getActualChatPartner().getUserID());
 		postDatas.put("msg", messageText);
-		postDatas.put("date", dateFormat.format(Calendar.getInstance().getTime()));
-		
-		SendChatMessageAsyncTask sendChatMessage = new SendChatMessageAsyncTask(context, MainURL, postDatas);
+		postDatas.put("date",
+				dateFormat.format(Calendar.getInstance().getTime()));
+
+		SendChatMessageAsyncTask sendChatMessage = new SendChatMessageAsyncTask(
+				context, MainURL, postDatas);
 		try {
 			sendChatMessage.execute().get();
 		} catch (InterruptedException e) {
@@ -190,8 +200,22 @@ public class RealCommunicator implements ICommunicator {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 	}
 
+	@Override
+	public void getChartNames() {
+		GetAllChartInfoContainerAsyncTask chartNameGetter = new GetAllChartInfoContainerAsyncTask(
+				context, MainURL);
+		try {
+			chartNameGetter.execute().get();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ExecutionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
 }

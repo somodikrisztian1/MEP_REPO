@@ -1,10 +1,11 @@
-package hu.mep.utils;
+package hu.mep.utils.adapters;
 
 import hu.mep.datamodells.Topic;
 import hu.mep.datamodells.TopicCategory;
 import hu.mep.mep_app.ActivityLevel2NEW;
 import hu.mep.mep_app.ActivityLevel3ShowTopic;
 import hu.mep.mep_app.R;
+import hu.mep.utils.others.FragmentLevel2EventHandler;
 
 import java.util.List;
 
@@ -66,7 +67,7 @@ public class TopicsExpandableListAdapter extends BaseExpandableListAdapter {
 						Toast.LENGTH_SHORT).show();
 				//TODO! Interfészen keresztül küldeni egy üzit, hogy 
 				//lehet indítani az ActivityLevel3ShowTopic activity-t.
-				fragmentEventHandler.onTopicSelected();
+				fragmentEventHandler.onTopicSelected(children);
 				
 				
 				

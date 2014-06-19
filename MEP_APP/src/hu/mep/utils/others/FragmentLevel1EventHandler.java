@@ -1,4 +1,4 @@
-package hu.mep.mep_app;
+package hu.mep.utils.others;
 
 public interface FragmentLevel1EventHandler {
 	public boolean onLoginButtonPressed(String username, String password);

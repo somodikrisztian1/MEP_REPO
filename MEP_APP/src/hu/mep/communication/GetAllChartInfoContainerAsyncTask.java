@@ -1,45 +1,50 @@
 package hu.mep.communication;
 
-import hu.mep.datamodells.AllTopicsList;
-import hu.mep.datamodells.Session;
-import hu.mep.datamodells.TopicCategory;
-import hu.mep.utils.deserializers.TopicListDeserializer;
-
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.List;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 
-import android.content.Context;
-import android.os.AsyncTask;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-public class GetTopicListAsyncTask extends AsyncTask<Void, Void, Void> {
+import hu.mep.datamodells.AllChartInfoContainer;
+import hu.mep.datamodells.ChatMessagesList;
+import hu.mep.datamodells.Session;
+import hu.mep.utils.deserializers.ChartInfoContainerDeserializer;
+import android.content.Context;
+import android.os.AsyncTask;
 
+public class GetAllChartInfoContainerAsyncTask extends
+AsyncTask<Void, Void, Void> {
+	
 	private Context context;
 	private static String hostURI;
 	private static String resourceURI;
 	private static String fullURI;
 	
 	
-	public GetTopicListAsyncTask(Context context, String catchedHostURI) {
+	
+
+	public GetAllChartInfoContainerAsyncTask(Context context, String catchedHostURI) {
+		super();
 		this.context = context;
 		hostURI = catchedHostURI;
 	}
 	
 	@Override
 	protected void onPreExecute() {
-		resourceURI = "ios_getTemakorok.php?userId=" + Session.getActualUser().getMepID();
-		fullURI = hostURI + resourceURI;
 		super.onPreExecute();
+		resourceURI = "http://www.megujuloenergiapark.hu/ios_getChartNames.php?tsz1_id=" +
+		Session.getInstance(context).getActualTopic().getTopicID();
+		fullURI = hostURI + resourceURI;
 	}
-	
+
+
+
 	@Override
 	protected Void doInBackground(Void... params) {
 		String response = "";
@@ -60,22 +65,17 @@ public class GetTopicListAsyncTask extends AsyncTask<Void, Void, Void> {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
-		//Log.e("GetContactListAsyncTask.doInBackground()", response);
-
-		GsonBuilder gsonBuilder = new GsonBuilder();
-		gsonBuilder.registerTypeAdapter(AllTopicsList.class, new TopicListDeserializer());
-		Gson gson = gsonBuilder.create();
-		AllTopicsList topics = gson.fromJson(response, AllTopicsList.class);
-		Session.getInstance(context).setAllTopicsList(topics.getAllTopics());
-		topics = null;
+		
+		if (!response.equals("[]")) {
+			GsonBuilder gsonBuilder = new GsonBuilder();
+			gsonBuilder.registerTypeAdapter(AllChartInfoContainer.class, new ChartInfoContainerDeserializer());
+			Gson gson = gsonBuilder.create();
+			AllChartInfoContainer allChartInfo = gson.fromJson(response,
+					AllChartInfoContainer.class);
+			Session.getInstance(context).setAllChartInfoContainer(allChartInfo.getAllChartInfoContainer());
+		}
+		
 		return null;
 	}
 
-	@Override
-	protected void onPostExecute(Void result) {
-		// TODO Auto-generated method stub
-		super.onPostExecute(result);
-	}
-	
 }

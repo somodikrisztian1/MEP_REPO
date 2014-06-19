@@ -3,7 +3,7 @@ package hu.mep.communication;
 import hu.mep.datamodells.ChatMessagesList;
 import hu.mep.datamodells.Session;
 import hu.mep.mep_app.ActivityLevel3Chat;
-import hu.mep.utils.ChatMessagesListDeserializer;
+import hu.mep.utils.deserializers.ChatMessagesListDeserializer;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -21,7 +21,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 public class GetChatMessagesListAsyncTask extends
-		AsyncTask<Void, Void, String> {
+		AsyncTask<Void, Void, Void> {
 
 	String hostURI;
 	String resourceURI;
@@ -54,7 +54,7 @@ public class GetChatMessagesListAsyncTask extends
 	}
 
 	@Override
-	protected String doInBackground(Void... nothing) {
+	protected Void doInBackground(Void... nothing) {
 		//Log.e("ASYNCTASK", "doInBackground() running");
 		String response = "";
 		String fullURI = hostURI + resourceURI;
@@ -87,11 +87,11 @@ public class GetChatMessagesListAsyncTask extends
 					+ messages.getChatMessagesList().size());*/
 			Session.getInstance(context).setChatMessagesList(messages);
 		}
-		return response;
+		return null;
 	}
 	
 	@Override
-	protected void onPostExecute(String result) {
+	protected void onPostExecute(Void result) {
 		//pd.dismiss();
 		ActivityLevel3Chat.adapter.notifyDataSetChanged();
 		super.onPostExecute(result);

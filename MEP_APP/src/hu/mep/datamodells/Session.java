@@ -26,8 +26,15 @@ public class Session {
 	private static Place actualRemoteMonitoring;
 
 	private static ProgressDialog progressDialog;
-	private static List<TopicCategory> allTopicsList;
 	
+	private static List<TopicCategory> allTopicsList;
+	private static Topic actualTopic;
+	
+	
+
+	private static List<ChartInfoContainer> allChartInfoContainer;
+	private static ChartInfoContainer actualChartInfoContainer;
+
 	/**
 	 * This method gives back the order value of the last ChatMessage object
 	 * from chatMessagesList or zero if the chatMessagesList is empty.
@@ -42,6 +49,15 @@ public class Session {
 				chatMessagesList.getChatMessagesList().size() - 1).order);
 		return chatMessagesList.getChatMessagesList().get(
 				chatMessagesList.getChatMessagesList().size() - 1).order;
+	}
+
+	public static ChartInfoContainer getActualChartInfoContainer() {
+		return actualChartInfoContainer;
+	}
+
+	public static void setActualChartInfoContainer(
+			ChartInfoContainer actualChartInfoContainer) {
+		Session.actualChartInfoContainer = actualChartInfoContainer;
 	}
 
 	public static ChatMessagesList getChatMessagesList() {
@@ -206,5 +222,21 @@ public class Session {
 		Log.e(TAG, "Összesen megkapott témakörök száma: " + counter);*/
 	}
 	
+	public static Topic getActualTopic() {
+		return actualTopic;
+	}
+
+	public static void setActualTopic(Topic actualTopic) {
+		Session.actualTopic = actualTopic;
+	}
+	
+	public static List<ChartInfoContainer> getAllChartInfoContainer() {
+		return allChartInfoContainer;
+	}
+
+	public static void setAllChartInfoContainer(
+			List<ChartInfoContainer> allChartInfoContainer) {
+		Session.allChartInfoContainer = allChartInfoContainer;
+	}
 	
 }

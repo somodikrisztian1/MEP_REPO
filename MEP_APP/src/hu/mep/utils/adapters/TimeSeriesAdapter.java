@@ -1,4 +1,7 @@
-package hu.mep.utils;
+package hu.mep.utils.adapters;
+
+import hu.mep.datamodells.Chart;
+import hu.mep.datamodells.Session;
 
 import org.afree.data.time.Millisecond;
 import org.afree.data.time.TimeSeries;
@@ -30,12 +33,14 @@ public class TimeSeriesAdapter {
 		
 		TimeSeriesCollection dataset = new TimeSeriesCollection();
 		dataset.addSeries(s1);
-		//dataset.addSeries(s2);
 
 		return dataset;
 	}
 	
+	
 	public XYDataset getTimeFromChart(Chart chart) {
+		Session.getActualCommunicationInterface().get
+		return null;
 		
 	}
 	

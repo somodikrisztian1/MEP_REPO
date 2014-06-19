@@ -14,6 +14,19 @@ public class Chart {
 	
 	@SerializedName("charts")
 	private List<SubChart> subCharts;
+
+	public String getElapse() {
+		return elapse;
+	}
+
+	public String getyAxisTitle() {
+		return yAxisTitle;
+	}
+
+	public List<SubChart> getSubCharts() {
+		return subCharts;
+	}
+	
 	
 	
 }

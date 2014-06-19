@@ -4,7 +4,7 @@ import hu.mep.datamodells.ChatContact;
 import hu.mep.datamodells.ChatContactList;
 import hu.mep.datamodells.Session;
 import hu.mep.mep_app.FragmentLevel2Chat;
-import hu.mep.utils.ChatContactListDeserializer;
+import hu.mep.utils.deserializers.ChatContactListDeserializer;
 
 import java.io.BufferedReader;
 import java.io.IOException;
