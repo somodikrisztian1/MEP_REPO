@@ -6,6 +6,8 @@ import com.google.gson.annotations.SerializedName;
 
 public class Chart {
 
+	
+
 	@SerializedName("elapse")
 	private String elapse;
 	
@@ -31,6 +33,10 @@ public class Chart {
 
 	public List<SubChart> getSubCharts() {
 		return subCharts;
+	}
+	
+	public void setSubCharts(List<SubChart> subCharts) {
+		this.subCharts = subCharts;
 	}
 	
 	
