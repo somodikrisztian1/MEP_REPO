@@ -43,11 +43,13 @@
 
 package hu.mep.charts;
 
-import org.afree.ui.RectangleInsets;
+import java.util.EventListener;
+import java.util.concurrent.CopyOnWriteArrayList;
+
+import org.afree.chart.AFreeChart;
+import org.afree.chart.ChartRenderingInfo;
 import org.afree.chart.ChartTouchEvent;
 import org.afree.chart.ChartTouchListener;
-import org.afree.chart.ChartRenderingInfo;
-import org.afree.chart.AFreeChart;
 import org.afree.chart.entity.ChartEntity;
 import org.afree.chart.entity.EntityCollection;
 import org.afree.chart.event.ChartChangeEvent;
@@ -59,12 +61,10 @@ import org.afree.chart.plot.Plot;
 import org.afree.chart.plot.PlotOrientation;
 import org.afree.chart.plot.PlotRenderingInfo;
 import org.afree.chart.plot.Zoomable;
+import org.afree.graphics.SolidColor;
 import org.afree.graphics.geom.Dimension;
 import org.afree.graphics.geom.RectShape;
-import org.afree.graphics.SolidColor;
-
-import java.util.EventListener;
-import java.util.concurrent.CopyOnWriteArrayList;
+import org.afree.ui.RectangleInsets;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -544,8 +544,8 @@ public class DemoView extends View
             this.rangeMovable = false;
             if (plot instanceof Movable) {
                 Movable z = (Movable) plot;
-                this.domainMovable = z.isDomainMovable();
-                this.rangeMovable = z.isRangeMovable();
+                //this.domainMovable = z.isDomainMovable();
+                //this.rangeMovable = z.isRangeMovable();
                 this.orientation = z.getOrientation();
             }
         }
@@ -848,16 +848,7 @@ public class DemoView extends View
      * @author ikeda
      *
      */
-    private class MultiTouchStartInfo {
-        private double distance = 0;
-        
-        public double getDistance() {
-            return distance;
-        }
-        public void setDistance(double distance) {
-            this.distance = distance;
-        }
-    }
+    
     
     private MultiTouchStartInfo multiTouchStartInfo = null;
     
@@ -866,23 +857,7 @@ public class DemoView extends View
      * @author ikeda
      *
      */
-    private class SingleTouchStartInfo {
-        private double x = 0;
-        private double y = 0;
-        
-        public double getX() {
-            return x;
-        }
-        public void setX(double x) {
-            this.x = x;
-        }
-        public double getY() {
-            return y;
-        }
-        public void setY(double y) {
-            this.y = y;
-        }
-    }
+   
     
     private SingleTouchStartInfo singleTouchStartInfo = null;
     

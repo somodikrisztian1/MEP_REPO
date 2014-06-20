@@ -18,6 +18,7 @@ import hu.mep.utils.deserializers.ChartDeserializer;
 import hu.mep.utils.deserializers.TopicListDeserializer;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.util.Log;
 
 public class GetChartAsyncTask extends AsyncTask<Void, Void, Void> {
 	
@@ -37,6 +38,7 @@ public class GetChartAsyncTask extends AsyncTask<Void, Void, Void> {
 		resourceURI = "ios_getChart.php?id=" +
 				Session.getActualChartInfoContainer().getId();
 		fullURI = hostURI + resourceURI;
+		Log.e("GetChart", fullURI);
 	}
 	
 	@Override

@@ -1,8 +1,17 @@
 package hu.mep.datamodells;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+
+import org.afree.data.time.Second;
+import org.afree.data.time.TimeSeries;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -33,6 +42,11 @@ public class Session {
 	private static List<ChartInfoContainer> allChartInfoContainer;
 	private static ChartInfoContainer actualChartInfoContainer;
 
+	private static Date minimalChartDate;
+	private static Date maximalChartDate;
+	private static double minimalChartValue;
+	private static double maximalChartValue;
+	
 	private static Chart actualChart;
 	
 	
@@ -247,6 +261,72 @@ public class Session {
 
 	public static void setActualChart(Chart actualChart) {
 		Session.actualChart = actualChart;
+		refreshChartIntervals();
+	}
+
+	public static Date getMinimalChartDate() {
+		return minimalChartDate;
+	}
+
+	public static Date getMaximalChartDate() {
+		return maximalChartDate;
+	}
+
+	public static double getMinimalChartValue() {
+		return minimalChartValue;
+	}
+
+	public static double getMaximalChartValue() {
+		return maximalChartValue;
+	}
+	
+	private static void refreshChartIntervals() {
+		double minValue = Double.MAX_VALUE;
+		double maxValue = Double.MIN_VALUE;
+		Date minDate = null;
+		Date maxDate = null;
+		try {
+			minDate = new Date();
+			maxDate = new SimpleDateFormat("yyyy.MM.dd hh:mm:ss").parse("1900.01.01 00:00:00");
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		Map.Entry<Date, Double> keyValuePair;
+		Date date;
+		Double value;
+		
+		for (SubChart actSubChart : Session.getActualChart().getSubCharts()) {
+			Iterator<Entry<Date, Double>> it = actSubChart.getChartValues()
+					.entrySet().iterator();
+			while (it.hasNext()) {
+				keyValuePair = it.next();
+				date = keyValuePair.getKey();
+				value = keyValuePair.getValue();
+				if(date.after(maxDate)) {
+					maxDate = date;
+				}
+				if(date.before(minDate)) {
+					minDate = date;
+				}
+				if(value > maxValue) {
+					maxValue = value;
+				}
+				if(value < minValue) {
+					minValue = value;
+				}
+			}
+		}
+		maximalChartDate = maxDate;
+		minimalChartDate = minDate;
+		maximalChartValue = maxValue;
+		minimalChartValue = minValue;
+		Log.d("maximalChartDate", "" + maximalChartDate);
+		Log.d("minimalChartDate", "" + minimalChartDate);
+		Log.d("maximalChartValue", "" + maximalChartValue);
+		Log.d("minimalChartValue", "" + minimalChartValue);
+		
 	}
 	
 }

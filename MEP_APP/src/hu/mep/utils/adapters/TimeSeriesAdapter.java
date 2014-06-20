@@ -43,7 +43,7 @@ public class TimeSeriesAdapter {
 		return dataset;
 	}
 
-	public XYDataset getTimeFromChart() {
+	public XYDataset getTimeSeriesFromChart() {
 		TimeSeriesCollection dataset = new TimeSeriesCollection();
 		TimeSeries ts;
 		
@@ -59,10 +59,36 @@ public class TimeSeriesAdapter {
 				date = keyValuePair.getKey();
 				ts.add(new Second(date.getSeconds(), date.getMinutes(), date
 						.getHours(), date.getDay(), date.getMonth(), date
-						.getYear()), keyValuePair.getValue());
+						.getYear() + 1900), keyValuePair.getValue());
 			}
 			dataset.addSeries(ts);
 			ts = null;
+		}
+
+		return dataset;
+	}
+	
+	public XYDataset getTimeSeriesFromChartNEW() {
+		TimeSeriesCollection dataset = new TimeSeriesCollection();
+		int howManyTimeSeries = Session.getActualChart().getSubCharts().size();
+		TimeSeries[] ts = new TimeSeries[howManyTimeSeries];
+		
+		Map.Entry<Date, Double> keyValuePair;
+		Date date;
+		SubChart actSubChart;
+		for (int i = 0; i < howManyTimeSeries; ++i) {
+			actSubChart = Session.getActualChart().getSubCharts().get(i);
+			ts[i] = new TimeSeries(actSubChart.getLabel());
+			Iterator<Entry<Date, Double>> it = actSubChart.getChartValues()
+					.entrySet().iterator();
+			while (it.hasNext()) {
+				keyValuePair = it.next();
+				date = keyValuePair.getKey();
+				ts[i].add(new Second(date.getSeconds(), date.getMinutes(), date
+						.getHours(), date.getDay(), date.getMonth(), date
+						.getYear() + 1900), keyValuePair.getValue());
+			}
+			dataset.addSeries(ts[i]);
 		}
 
 		return dataset;

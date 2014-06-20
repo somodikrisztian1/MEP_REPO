@@ -3,6 +3,8 @@ package hu.mep.communication;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.Iterator;
+import java.util.List;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -17,6 +19,7 @@ import hu.mep.datamodells.Session;
 import hu.mep.utils.deserializers.ChartInfoContainerDeserializer;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.util.Log;
 
 public class GetAllChartInfoContainerAsyncTask extends
 AsyncTask<Void, Void, Void> {
@@ -35,12 +38,27 @@ AsyncTask<Void, Void, Void> {
 		hostURI = catchedHostURI;
 	}
 	
+	private String getSSZS() {
+		String result = "";
+		Iterator<Integer> iterator = Session.getActualTopic().getTabSerialNumbers().iterator();
+		while(iterator.hasNext()) {
+			result += String.valueOf(iterator.next());
+			if(iterator.hasNext()) {
+				result += ",";
+			}
+		}
+		return result;
+	}
+	
 	@Override
 	protected void onPreExecute() {
 		super.onPreExecute();
 		resourceURI = "ios_getChartNames.php?tsz1_id=" +
-		Session.getInstance(context).getActualTopic().getTopicID();
+		Session.getInstance(context).getActualTopic().getTopicID()
+		+ "&sszs=" + getSSZS();
+		
 		fullURI = hostURI + resourceURI;
+		Log.e("GetChartNames", fullURI);
 	}
 
 
