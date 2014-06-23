@@ -18,13 +18,16 @@ import org.afree.data.time.TimeSeries;
 import org.afree.data.time.TimeSeriesCollection;
 import org.afree.data.xy.XYDataset;
 import org.afree.graphics.SolidColor;
+import org.afree.graphics.geom.Shape;
 import org.afree.ui.RectangleInsets;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.util.Log;
 
 public class TimeLineChartView extends DemoView {
 
+	private static final String TAG = "TimeLineChartView";
 	TimeSeriesAdapter adapter;
 	
 
@@ -68,10 +71,13 @@ public class TimeLineChartView extends DemoView {
 		if (r instanceof XYLineAndShapeRenderer) {
 			XYLineAndShapeRenderer renderer = (XYLineAndShapeRenderer) r;
 			renderer.setBaseShapesVisible(true);
+			renderer.setBaseShapesFilled(true);
 			renderer.setDrawSeriesLineAsPath(true);
 			renderer.setBaseLinesVisible(true);
 			for(int i = 0; i < dataset.getSeriesCount(); ++i) {
-				renderer.setSeriesVisible(i, true);
+				renderer.setSeriesLinesVisible(i, true);
+				renderer.setSeriesItemLabelsVisible(0, true);
+				//Log.e(TAG, "VISIBLE?!" + renderer.getSeriesLinesVisible(i));
 			}
 		}
 

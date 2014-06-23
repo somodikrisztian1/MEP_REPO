@@ -19,6 +19,7 @@ public class ActivityLevel3ShowTopic extends Activity {
 		super.onCreate(savedInstanceState);
 		Session.getInstance(getApplicationContext())
 				.getActualCommunicationInterface().getChartNames();
+		//TODO TABOK KEZELÉSE!!! Az alábbi sorban lévő 0-t, le kell cserélni a kattintott tab sorszámára.
 		Session.getInstance(getApplicationContext())
 				.setActualChartInfoContainer(
 						Session.getAllChartInfoContainer().get(0));
@@ -32,7 +33,6 @@ public class ActivityLevel3ShowTopic extends Activity {
 			TimeLineChartView mView = new TimeLineChartView(this,
 					new TimeSeriesAdapter());
 			requestWindowFeature(Window.FEATURE_NO_TITLE);
-			Log.e(TAG, mView.getInfo().toString());
 			setContentView(mView);
 		}
 	}

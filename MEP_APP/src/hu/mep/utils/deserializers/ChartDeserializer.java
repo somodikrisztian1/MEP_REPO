@@ -6,6 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import hu.mep.datamodells.Chart;
@@ -26,13 +27,14 @@ public class ChartDeserializer implements JsonDeserializer<Chart> {
 			"yyyy-MM-dd hh:mm:ss");
 
 	private static Chart result;
+	private static List<SubChart> subchartsForResult;
 
 	@Override
 	public Chart deserialize(JsonElement element, Type type,
 			JsonDeserializationContext context) throws JsonParseException {
 		JsonObject rootObject = null;
 		result = null;
-
+		subchartsForResult = new ArrayList<SubChart>();
 		rootObject = (element.isJsonArray() ? null : element.getAsJsonObject());
 
 		if (rootObject == null) {
@@ -50,9 +52,10 @@ public class ChartDeserializer implements JsonDeserializer<Chart> {
 
 			JsonObject charts = (rootObject.get("charts").isJsonArray() ? null
 					: rootObject.get("charts").getAsJsonObject());
-			
+
 			deserializeCharts(charts);
-			Log.e(TAG, "result.subcharts.size() = " + result.getSubCharts().size());
+			Log.e(TAG, "result.subcharts.size() = "
+					+ result.getSubCharts().size());
 			return result;
 		}
 	}
@@ -76,29 +79,34 @@ public class ChartDeserializer implements JsonDeserializer<Chart> {
 
 				actualChartDatas.clear();
 
-				actualChartDataJSONObj = (actualChartJSONObj.get("adat").isJsonArray() ? null
-						: actualChartJSONObj.get("adat").getAsJsonObject());
+				actualChartDataJSONObj = (actualChartJSONObj.get("adat")
+						.isJsonArray() ? null : actualChartJSONObj.get("adat")
+						.getAsJsonObject());
 
-				
 				if (actualChartDataJSONObj != null) {
-					
+
 					for (Map.Entry<String, JsonElement> actData : actualChartDataJSONObj
 							.entrySet()) {
 						try {
 							actualDate = dateFormatter.parse(actData.getKey());
-							//Log.e(TAG, "actData.getKey():" + actData.getKey());
-							//Log.e(TAG, actualDate.toGMTString());
+							 Log.e(TAG ,actData.getKey() + "#" + actData.getValue());
+							// Log.e(TAG, actualDate.toGMTString());
 						} catch (ParseException e) {
 							e.printStackTrace();
 						}
 						actualChartDatas.put(actualDate, actData.getValue()
 								.getAsDouble());
 					}
-					actualSubChart = new SubChart(actualChartLabel,
-							actualChartDatas);
-					result.getSubCharts().add(actualSubChart);
+					/*
+					 * actualSubChart = new SubChart(actualChartLabel,
+					 * actualChartDatas) ;
+					 */
+					subchartsForResult.add(new SubChart(actualChartLabel,
+							actualChartDatas));
+					
 				}
 			}
+			result.setSubCharts(subchartsForResult);
 		}
 	}
 

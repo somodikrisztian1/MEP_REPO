@@ -16,14 +16,13 @@ import org.afree.data.time.TimeSeriesCollection;
 import org.afree.data.xy.XYDataset;
 
 import android.util.Log;
-import android.widget.Toast;
 
 public class TimeSeriesAdapter {
 
 	private static final String TAG = "TimeSeriesAdapter2";
 
 	public XYDataset getTimeSeriesFromTheFly() {
-		
+
 		TimeSeriesCollection dataset = new TimeSeriesCollection();
 		TimeSeries[] s = new TimeSeries[2];
 
@@ -36,7 +35,7 @@ public class TimeSeriesAdapter {
 		s[0].add(new Millisecond(00, 50, 01, 16, 18, 06, 2014), 43.6);
 		s[0].add(new Millisecond(00, 00, 02, 16, 18, 06, 2014), 36.6);
 		s[0].add(new Millisecond(00, 10, 02, 16, 18, 06, 2014), 42.6);
-		
+
 		s[1] = new TimeSeries("Másik görbe");
 		s[1].add(new Millisecond(00, 20, 02, 16, 18, 06, 2014), 40.6);
 		s[1].add(new Millisecond(00, 30, 02, 16, 18, 06, 2014), 39.6);
@@ -49,7 +48,7 @@ public class TimeSeriesAdapter {
 		s[1].add(new Millisecond(00, 40, 03, 16, 18, 06, 2014), 55.6);
 		s[1].add(new Millisecond(00, 50, 03, 16, 18, 06, 2014), 53.6);
 
-		for(int i = 0; i < s.length; ++i) {
+		for (int i = 0; i < s.length; ++i) {
 			dataset.addSeries(s[i]);
 		}
 		return dataset;
@@ -58,10 +57,10 @@ public class TimeSeriesAdapter {
 	public XYDataset getTimeSeriesFromChart() {
 		TimeSeriesCollection dataset = new TimeSeriesCollection();
 		TimeSeries ts;
-		
+
 		Map.Entry<Date, Double> keyValuePair;
 		Date date;
-		
+		Calendar c = Calendar.getInstance();
 		for (SubChart actSubChart : Session.getActualChart().getSubCharts()) {
 			ts = new TimeSeries(actSubChart.getLabel());
 			Iterator<Entry<Date, Double>> it = actSubChart.getChartValues()
@@ -69,9 +68,11 @@ public class TimeSeriesAdapter {
 			while (it.hasNext()) {
 				keyValuePair = it.next();
 				date = keyValuePair.getKey();
-				ts.add(new Second(date.getSeconds(), date.getMinutes(), date
-						.getHours(), date.getDay(), date.getMonth(), date
-						.getYear() + 1900), keyValuePair.getValue());
+				c.setTime(date);
+				ts.add(new Second(c.get(Calendar.SECOND), c
+						.get(Calendar.MINUTE), c.get(Calendar.HOUR_OF_DAY), c
+						.get(Calendar.DAY_OF_MONTH), c.get(Calendar.MONTH), c
+						.get(Calendar.YEAR)), keyValuePair.getValue());
 			}
 			dataset.addSeries(ts);
 			ts = null;
@@ -79,7 +80,7 @@ public class TimeSeriesAdapter {
 
 		return dataset;
 	}
-	
+
 	public XYDataset getTimeSeriesFromChartNEW() {
 		
 		if(Session.getActualChart().getSubCharts() == null) {
@@ -94,12 +95,13 @@ public class TimeSeriesAdapter {
 		Date date;
 		SubChart actSubChart;
 		Calendar c = Calendar.getInstance();
+		Iterator<Entry<Date, Double>> it = null;
 		for (int i = 0; i < howManyTimeSeries; ++i) {
 			actSubChart = Session.getActualChart().getSubCharts().get(i);
 			Log.e(TAG, "actSubChart.getLabel() = " + actSubChart.getLabel());
 			ts[i] = new TimeSeries(actSubChart.getLabel());
-			Iterator<Entry<Date, Double>> it = actSubChart.getChartValues()
-					.entrySet().iterator();
+			it = null;
+			it = actSubChart.getChartValues().entrySet().iterator();
 			while (it.hasNext()) {
 				keyValuePair = it.next();
 				date = keyValuePair.getKey();
@@ -112,24 +114,25 @@ public class TimeSeriesAdapter {
 						c.get(Calendar.MONTH), 
 						c.get(Calendar.YEAR)), keyValuePair.getValue());
 				
-				
-				/*Log.e(TAG,
+				Log.e(TAG,
 						c.get(Calendar.YEAR) + "-" +
 						c.get(Calendar.MONTH) + "-" +
 						c.get(Calendar.DAY_OF_MONTH) + " " +								
 						c.get(Calendar.HOUR_OF_DAY) + ":" +
 						c.get(Calendar.MINUTE) + ":" +
-						c.get(Calendar.SECOND) + "#"+ 
-						keyValuePair.getValue().toString() );*/
+						c.get(Calendar.SECOND) + "#"+
+						keyValuePair.getValue().toString() );
 			}
 		}
 		
 		TimeSeriesCollection dataset = new TimeSeriesCollection();
 		for(int i = 0; i < howManyTimeSeries; ++i) {
+			for(int j = 0; j < ts[i].getItemCount(); ++j) {
+				Log.e(TAG + " ts[" + i + "][" + j + "]" , "" + ts[i].getValue(j));
+			}
 			dataset.addSeries(ts[i]);
 		}
 
 		return dataset;
 	}
-
 }
