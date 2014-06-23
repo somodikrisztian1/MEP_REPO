@@ -27,7 +27,7 @@ public class Session {
 	private static Context context;
 
 	private static ICommunicator actualCommunicationInterface;
-	
+
 	private static ChatContactList actualChatContactList;
 	private static ChatContact actualChatPartner;
 
@@ -35,7 +35,7 @@ public class Session {
 	private static Place actualRemoteMonitoring;
 
 	private static ProgressDialog progressDialog;
-	
+
 	private static List<TopicCategory> allTopicsList;
 	private static Topic actualTopic;
 
@@ -46,10 +46,8 @@ public class Session {
 	private static Date maximalChartDate;
 	private static double minimalChartValue;
 	private static double maximalChartValue;
-	
+
 	private static Chart actualChart;
-	
-	
 
 	/**
 	 * This method gives back the order value of the last ChatMessage object
@@ -61,8 +59,11 @@ public class Session {
 			Log.e("LastChatMessageOrder=", "" + 0);
 			return 0;
 		}
-		Log.e("LastChatMessageOrder=", "" + chatMessagesList.getChatMessagesList().get(
-				chatMessagesList.getChatMessagesList().size() - 1).order);
+		Log.e("LastChatMessageOrder=",
+				""
+						+ chatMessagesList.getChatMessagesList()
+								.get(chatMessagesList.getChatMessagesList()
+										.size() - 1).order);
 		return chatMessagesList.getChatMessagesList().get(
 				chatMessagesList.getChatMessagesList().size() - 1).order;
 	}
@@ -161,8 +162,7 @@ public class Session {
 	public static Session getInstance(Context context) {
 		if (instance == null) {
 			instance = new Session(context);
-		}
-		else if( instance.context != context) {
+		} else if (instance.context != context) {
 			instance.context = context;
 		}
 		return instance;
@@ -175,7 +175,7 @@ public class Session {
 	public static void setActualUser(User newUser) {
 		actualUser = newUser;
 	}
-	
+
 	public static Place getActualRemoteMonitoring() {
 		return actualRemoteMonitoring;
 	}
@@ -216,13 +216,11 @@ public class Session {
 	}
 
 	public static List<TopicCategory> getTopicsList() {
-		/*int counter = 0;
-		for (TopicCategory actTopicCategory : allTopicsList) {
-			for (Topic actTopic : actTopicCategory.getTopics()) {
-				Log.d(TAG, "Topic#" + counter + "= " + actTopic.getTopicName());
-				counter++;
-			}	
-		}*/
+		/*
+		 * int counter = 0; for (TopicCategory actTopicCategory : allTopicsList)
+		 * { for (Topic actTopic : actTopicCategory.getTopics()) { Log.d(TAG,
+		 * "Topic#" + counter + "= " + actTopic.getTopicName()); counter++; } }
+		 */
 		return allTopicsList;
 	}
 
@@ -233,11 +231,11 @@ public class Session {
 			for (Topic actTopic : actTopicCategory.getTopics()) {
 				Log.e(TAG, "Topic#" + counter + "= " + actTopic.getTopicName());
 				counter++;
-			}	
+			}
 		}
 		Log.e(TAG, "Összesen megkapott témakörök száma: " + counter);
 	}
-	
+
 	public static Topic getActualTopic() {
 		return actualTopic;
 	}
@@ -245,7 +243,7 @@ public class Session {
 	public static void setActualTopic(Topic actualTopic) {
 		Session.actualTopic = actualTopic;
 	}
-	
+
 	public static List<ChartInfoContainer> getAllChartInfoContainer() {
 		return allChartInfoContainer;
 	}
@@ -254,7 +252,7 @@ public class Session {
 			List<ChartInfoContainer> allChartInfoContainer) {
 		Session.allChartInfoContainer = allChartInfoContainer;
 	}
-	
+
 	public static Chart getActualChart() {
 		return actualChart;
 	}
@@ -279,7 +277,7 @@ public class Session {
 	public static double getMaximalChartValue() {
 		return maximalChartValue;
 	}
-	
+
 	private static void refreshChartIntervals() {
 		double minValue = Double.MAX_VALUE;
 		double maxValue = Double.MIN_VALUE;
@@ -287,46 +285,49 @@ public class Session {
 		Date maxDate = null;
 		try {
 			minDate = new Date();
-			maxDate = new SimpleDateFormat("yyyy.MM.dd hh:mm:ss").parse("1900.01.01 00:00:00");
+			maxDate = new SimpleDateFormat("yyyy.MM.dd hh:mm:ss")
+					.parse("1900.01.01 00:00:00");
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		Map.Entry<Date, Double> keyValuePair;
 		Date date;
 		Double value;
-		
-		for (SubChart actSubChart : Session.getActualChart().getSubCharts()) {
-			Iterator<Entry<Date, Double>> it = actSubChart.getChartValues()
-					.entrySet().iterator();
-			while (it.hasNext()) {
-				keyValuePair = it.next();
-				date = keyValuePair.getKey();
-				value = keyValuePair.getValue();
-				if(date.after(maxDate)) {
-					maxDate = date;
+		if (actualChart.getSubCharts() != null) {
+			if (!actualChart.getSubCharts().isEmpty()) {
+				for (SubChart actSubChart : Session.getActualChart()
+						.getSubCharts()) {
+					Iterator<Entry<Date, Double>> it = actSubChart
+							.getChartValues().entrySet().iterator();
+					while (it.hasNext()) {
+						keyValuePair = it.next();
+						date = keyValuePair.getKey();
+						value = keyValuePair.getValue();
+						if (date.after(maxDate)) {
+							maxDate = date;
+						}
+						if (date.before(minDate)) {
+							minDate = date;
+						}
+						if (value > maxValue) {
+							maxValue = value;
+						}
+						if (value < minValue) {
+							minValue = value;
+						}
+					}
 				}
-				if(date.before(minDate)) {
-					minDate = date;
-				}
-				if(value > maxValue) {
-					maxValue = value;
-				}
-				if(value < minValue) {
-					minValue = value;
-				}
+				maximalChartDate = maxDate;
+				minimalChartDate = minDate;
+				maximalChartValue = maxValue;
+				minimalChartValue = minValue;
+				Log.d("maximalChartDate", "" + maximalChartDate);
+				Log.d("minimalChartDate", "" + minimalChartDate);
+				Log.d("maximalChartValue", "" + maximalChartValue);
+				Log.d("minimalChartValue", "" + minimalChartValue);
 			}
 		}
-		maximalChartDate = maxDate;
-		minimalChartDate = minDate;
-		maximalChartValue = maxValue;
-		minimalChartValue = minValue;
-		Log.d("maximalChartDate", "" + maximalChartDate);
-		Log.d("minimalChartDate", "" + minimalChartDate);
-		Log.d("maximalChartValue", "" + maximalChartValue);
-		Log.d("minimalChartValue", "" + minimalChartValue);
-		
 	}
-	
 }

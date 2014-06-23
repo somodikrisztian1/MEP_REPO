@@ -67,17 +67,18 @@ public class TimeLineChartView extends DemoView {
 		XYItemRenderer r = plot.getRenderer();
 		if (r instanceof XYLineAndShapeRenderer) {
 			XYLineAndShapeRenderer renderer = (XYLineAndShapeRenderer) r;
-			renderer.setBaseShapesVisible(false);
+			renderer.setBaseShapesVisible(true);
 			renderer.setDrawSeriesLineAsPath(true);
+			renderer.setBaseLinesVisible(true);
+			for(int i = 0; i < dataset.getSeriesCount(); ++i) {
+				renderer.setSeriesVisible(i, true);
+			}
 		}
 
-		
-		
 		DateAxis domainAxis = (DateAxis) plot.getDomainAxis();
 		domainAxis.setRange(Session.getMinimalChartDate(), Session.getMaximalChartDate());
 		//domainAxis.setDateFormatOverride(new SimpleDateFormat("MMM dd. hh:mm", Locale.getDefault()));
 		domainAxis.setAutoRange(true);		
-		
 		return chart;
 
 	}
