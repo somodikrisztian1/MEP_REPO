@@ -21,7 +21,8 @@ import android.util.Log;
 public class TimeSeriesAdapter {
 
 	private static final String TAG = "TimeSeriesAdapter2";
-
+	
+	//TODO Ez csak egy teszt metódus! Végül ki kell majd venni!!!
 	public XYDataset getTimeSeriesFromTheFly() {
 
 		TimeSeriesCollection dataset = new TimeSeriesCollection();
@@ -58,17 +59,17 @@ public class TimeSeriesAdapter {
 	public XYDataset getTimeSeriesFromActualChart() {
 
 		if (Session.getActualChart().getSubCharts() == null) {
-			Log.e(TAG, "getSubCharts is null");
+			//Log.e(TAG, "getSubCharts is null");
 			return null;
 		}
 		int i = -1;
 		int howManyTimeSeries = Session.getActualChart().getSubCharts().size();
-		Log.e(TAG, "Idősorok száma:" + howManyTimeSeries);
+		//Log.e(TAG, "Idősorok száma:" + howManyTimeSeries);
 		TimeSeries[] ts = new TimeSeries[howManyTimeSeries];
 
 		for (SubChart actSubChart : Session.getActualChart().getSubCharts()) {
 			ts[++i] = new TimeSeries(actSubChart.getLabel());
-			Log.e(TAG, "Label:" + actSubChart.getLabel());
+			//Log.e(TAG, "Label:" + actSubChart.getLabel());
 
 			for (Map.Entry<Calendar, Double> actualValues : actSubChart
 					.getChartValues().entrySet()) {
@@ -85,19 +86,19 @@ public class TimeSeriesAdapter {
 								),
 						actualValues.getValue()
 						);
-				//Egyszerű logolás...
-				CalendarPrinter.logCalendar(TAG, date, actualValues.getValue());
+
+				//CalendarPrinter.logCalendar(TAG, date, actualValues.getValue());
 			}
 		}
 
 		TimeSeriesCollection dataset = new TimeSeriesCollection();
 		for (int i2 = 0; i2 < howManyTimeSeries; ++i2) {
 
-			for (int j = 0; j < ts[i2].getItemCount(); ++j) {
+			/*for (int j = 0; j < ts[i2].getItemCount(); ++j) {
 				Log.e(TAG + " ts[" + i2 + "][" + j + "]",
 						"" + ts[i2].getTimePeriod(j) + "#\t" + ts[i2].getValue(j));
 			}
-
+			 */
 			dataset.addSeries(ts[i2]);
 		}
 

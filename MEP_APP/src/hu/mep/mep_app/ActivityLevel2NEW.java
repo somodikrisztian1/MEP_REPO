@@ -134,7 +134,6 @@ public class ActivityLevel2NEW extends ActionBarActivity implements
 	@Override
 	public void onTabSelected(Tab tab, FragmentTransaction ft) {
 		mViewPager.setCurrentItem(tab.getPosition());
-
 	}
 
 	@Override
