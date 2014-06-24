@@ -2,6 +2,7 @@ package hu.mep.utils.adapters;
 
 import hu.mep.datamodells.Session;
 import hu.mep.datamodells.SubChart;
+import hu.mep.utils.others.CalendarPrinter;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -54,82 +55,117 @@ public class TimeSeriesAdapter {
 		return dataset;
 	}
 
-	public XYDataset getTimeSeriesFromChart() {
-		TimeSeriesCollection dataset = new TimeSeriesCollection();
-		TimeSeries ts;
+	public XYDataset getTimeSeriesFromActualChart() {
 
-		Map.Entry<Date, Double> keyValuePair;
-		Date date;
-		Calendar c = Calendar.getInstance();
+		if (Session.getActualChart().getSubCharts() == null) {
+			Log.e(TAG, "getSubCharts is null");
+			return null;
+		}
+		int i = -1;
+		int howManyTimeSeries = Session.getActualChart().getSubCharts().size();
+		Log.e(TAG, "Idősorok száma:" + howManyTimeSeries);
+		TimeSeries[] ts = new TimeSeries[howManyTimeSeries];
+
 		for (SubChart actSubChart : Session.getActualChart().getSubCharts()) {
-			ts = new TimeSeries(actSubChart.getLabel());
-			Iterator<Entry<Date, Double>> it = actSubChart.getChartValues()
-					.entrySet().iterator();
-			while (it.hasNext()) {
-				keyValuePair = it.next();
-				date = keyValuePair.getKey();
-				c.setTime(date);
-				ts.add(new Second(c.get(Calendar.SECOND), c
-						.get(Calendar.MINUTE), c.get(Calendar.HOUR_OF_DAY), c
-						.get(Calendar.DAY_OF_MONTH), c.get(Calendar.MONTH), c
-						.get(Calendar.YEAR)), keyValuePair.getValue());
+			ts[++i] = new TimeSeries(actSubChart.getLabel());
+			Log.e(TAG, "Label:" + actSubChart.getLabel());
+
+			for (Map.Entry<Calendar, Double> actualValues : actSubChart
+					.getChartValues().entrySet()) {
+				Calendar date = actualValues.getKey();
+				ts[i].add(
+						new Second
+								(
+								date.get(Calendar.SECOND), 
+								date.get(Calendar.MINUTE), 
+								date.get(Calendar.HOUR_OF_DAY), 
+								date.get(Calendar.DAY_OF_MONTH), 
+								date.get(Calendar.MONTH), 
+								date.get(Calendar.YEAR)
+								),
+						actualValues.getValue()
+						);
+				//Egyszerű logolás...
+				CalendarPrinter.logCalendar(TAG, date, actualValues.getValue());
 			}
-			dataset.addSeries(ts);
-			ts = null;
+		}
+
+		TimeSeriesCollection dataset = new TimeSeriesCollection();
+		for (int i2 = 0; i2 < howManyTimeSeries; ++i2) {
+
+			for (int j = 0; j < ts[i2].getItemCount(); ++j) {
+				Log.e(TAG + " ts[" + i2 + "][" + j + "]",
+						"" + ts[i2].getTimePeriod(j) + "#\t" + ts[i2].getValue(j));
+			}
+
+			dataset.addSeries(ts[i2]);
 		}
 
 		return dataset;
 	}
 
 	public XYDataset getTimeSeriesFromChartNEW() {
-		
-		if(Session.getActualChart().getSubCharts() == null) {
+
+		if (Session.getActualChart().getSubCharts() == null) {
 			Log.e(TAG, "getSubCharts is null");
 			return null;
 		}
 		int howManyTimeSeries = Session.getActualChart().getSubCharts().size();
 		Log.e(TAG, "Idősorok száma:" + howManyTimeSeries);
 		TimeSeries[] ts = new TimeSeries[howManyTimeSeries];
-		
-		Map.Entry<Date, Double> keyValuePair;
-		Date date;
+
+		Map.Entry<Calendar, Double> keyValuePair;
 		SubChart actSubChart;
-		Calendar c = Calendar.getInstance();
-		Iterator<Entry<Date, Double>> it = null;
+		Calendar date;
+		Iterator<Entry<Calendar, Double>> it = null;
 		for (int i = 0; i < howManyTimeSeries; ++i) {
-			actSubChart = Session.getActualChart().getSubCharts().get(i);
-			Log.e(TAG, "actSubChart.getLabel() = " + actSubChart.getLabel());
+			Log.d(TAG, "i = " + i);
+			actSubChart = null;
+			actSubChart = new SubChart(Session.getActualChart().getSubCharts()
+					.get(i).getLabel(), Session.getActualChart().getSubCharts()
+					.get(i).getChartValues());
+			// actSubChart = Session.getActualChart().getSubCharts().get(i);
+			// Log.e(TAG, "actSubChart.getLabel() = " + actSubChart.getLabel());
 			ts[i] = new TimeSeries(actSubChart.getLabel());
+			Log.e(TAG, "Label:" + actSubChart.getLabel());
 			it = null;
+
 			it = actSubChart.getChartValues().entrySet().iterator();
 			while (it.hasNext()) {
+				Log.d(TAG, "while(it.hasnext()");
 				keyValuePair = it.next();
-				date = keyValuePair.getKey();
-				c.setTime(date);
-				ts[i].add(new Second(
-						c.get(Calendar.SECOND), 
-						c.get(Calendar.MINUTE), 
-						c.get(Calendar.HOUR_OF_DAY), 
-						c.get(Calendar.DAY_OF_MONTH), 
-						c.get(Calendar.MONTH), 
-						c.get(Calendar.YEAR)), keyValuePair.getValue());
-				
+				/*
+				 * Log.e(TAG, keyValuePair.getKey() + "#" +
+				 * keyValuePair.getValue());
+				 */date = keyValuePair.getKey();
+
+				ts[i].add(
+						new Second(date.get(Calendar.SECOND), date
+								.get(Calendar.MINUTE), date
+								.get(Calendar.HOUR_OF_DAY), date
+								.get(Calendar.DAY_OF_MONTH), date
+								.get(Calendar.MONTH), date.get(Calendar.YEAR)),
+						keyValuePair.getValue());
 				Log.e(TAG,
-						c.get(Calendar.YEAR) + "-" +
-						c.get(Calendar.MONTH) + "-" +
-						c.get(Calendar.DAY_OF_MONTH) + " " +								
-						c.get(Calendar.HOUR_OF_DAY) + ":" +
-						c.get(Calendar.MINUTE) + ":" +
-						c.get(Calendar.SECOND) + "#"+
-						keyValuePair.getValue().toString() );
+						date.get(Calendar.YEAR) + "-"
+								+ date.get(Calendar.MONTH) + "-"
+								+ date.get(Calendar.DAY_OF_MONTH) + " "
+								+ date.get(Calendar.HOUR_OF_DAY) + ":"
+								+ date.get(Calendar.MINUTE) + ":"
+								+ date.get(Calendar.SECOND) + "#\t"
+								+ keyValuePair.getValue().toString());
+
 			}
 		}
-		
+
 		TimeSeriesCollection dataset = new TimeSeriesCollection();
-		for(int i = 0; i < howManyTimeSeries; ++i) {
-			for(int j = 0; j < ts[i].getItemCount(); ++j) {
-				Log.e(TAG + " ts[" + i + "][" + j + "]" , "" + ts[i].getValue(j));
+		for (int i = 0; i < howManyTimeSeries; ++i) {
+
+			for (int j = 0; j < ts[i].getItemCount(); ++j) {
+				Log.e(TAG + " ts[" + i + "][" + j + "]",
+						"" + ts[i].getTimePeriod(j) + "#\t" + ts[i].getValue(j));
 			}
+
 			dataset.addSeries(ts[i]);
 		}
 

@@ -1,16 +1,17 @@
 package hu.mep.utils.deserializers;
 
+import hu.mep.datamodells.Chart;
+import hu.mep.datamodells.SubChart;
+
 import java.lang.reflect.Type;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import hu.mep.datamodells.Chart;
-import hu.mep.datamodells.SubChart;
 import android.util.Log;
 
 import com.google.gson.JsonDeserializationContext;
@@ -54,32 +55,23 @@ public class ChartDeserializer implements JsonDeserializer<Chart> {
 					: rootObject.get("charts").getAsJsonObject());
 
 			deserializeCharts(charts);
-			Log.e(TAG, "result.subcharts.size() = "
-					+ result.getSubCharts().size());
+			Log.e(TAG, "result.subcharts.size() = "	+ result.getSubCharts().size());
 			return result;
 		}
 	}
 
 	private void deserializeCharts(JsonObject charts) {
-		JsonObject actualChartJSONObj;
-		JsonObject actualChartDataJSONObj;
-
-		String actualChartLabel;
-		SubChart actualSubChart;
-		Date actualDate = null;
-		HashMap<Date, Double> actualChartDatas = new HashMap<Date, Double>();
 
 		if (charts != null) {
 			result.setSubCharts(new ArrayList<SubChart>());
 			for (Map.Entry<String, JsonElement> entry : charts.entrySet()) {
-				actualChartJSONObj = entry.getValue().getAsJsonObject();
-				actualChartLabel = actualChartJSONObj.get("label")
-						.getAsString();
+				JsonObject actualChartJSONObj = entry.getValue().getAsJsonObject();
+				String actualChartLabel = actualChartJSONObj.get("label").getAsString();
 				Log.e(TAG, "Label:" + actualChartLabel);
 
-				actualChartDatas.clear();
+				HashMap<Calendar, Double> actualChartDatas = new HashMap<Calendar, Double>();
 
-				actualChartDataJSONObj = (actualChartJSONObj.get("adat")
+				JsonObject actualChartDataJSONObj = (actualChartJSONObj.get("adat")
 						.isJsonArray() ? null : actualChartJSONObj.get("adat")
 						.getAsJsonObject());
 
@@ -87,10 +79,12 @@ public class ChartDeserializer implements JsonDeserializer<Chart> {
 
 					for (Map.Entry<String, JsonElement> actData : actualChartDataJSONObj
 							.entrySet()) {
+						Calendar actualDate = Calendar.getInstance();
 						try {
-							actualDate = dateFormatter.parse(actData.getKey());
-							 Log.e(TAG ,actData.getKey() + "#" + actData.getValue());
-							// Log.e(TAG, actualDate.toGMTString());
+							actualDate.setTime(dateFormatter.parse(actData
+									.getKey()));
+							Log.e(TAG,
+									actData.getKey() + "#" + actData.getValue());
 						} catch (ParseException e) {
 							e.printStackTrace();
 						}
@@ -103,7 +97,8 @@ public class ChartDeserializer implements JsonDeserializer<Chart> {
 					 */
 					subchartsForResult.add(new SubChart(actualChartLabel,
 							actualChartDatas));
-					
+					actualChartDatas = null;
+
 				}
 			}
 			result.setSubCharts(subchartsForResult);

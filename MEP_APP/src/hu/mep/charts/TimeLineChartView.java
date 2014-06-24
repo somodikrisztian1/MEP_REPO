@@ -34,7 +34,7 @@ public class TimeLineChartView extends DemoView {
 	public TimeLineChartView(Context context, TimeSeriesAdapter adapter) {
 		super(context);
 		this.adapter = adapter;
-		final AFreeChart chart = createChart(adapter.getTimeSeriesFromChartNEW(),
+		final AFreeChart chart = createChart(adapter.getTimeSeriesFromActualChart(),
 				Session.getActualChartInfoContainer().getName(), "Időpont", Session.getActualChart().getyAxisTitle());
 
 		setChart(chart);
@@ -82,8 +82,8 @@ public class TimeLineChartView extends DemoView {
 		}
 
 		DateAxis domainAxis = (DateAxis) plot.getDomainAxis();
-		domainAxis.setRange(Session.getMinimalChartDate(), Session.getMaximalChartDate());
-		//domainAxis.setDateFormatOverride(new SimpleDateFormat("MMM dd. hh:mm", Locale.getDefault()));
+		/*domainAxis.setRange(Session.getMinimalChartDate(), Session.getMaximalChartDate());
+		domainAxis.setDateFormatOverride(new SimpleDateFormat("MMM dd. hh:mm", Locale.getDefault()));*/
 		domainAxis.setAutoRange(true);		
 		return chart;
 

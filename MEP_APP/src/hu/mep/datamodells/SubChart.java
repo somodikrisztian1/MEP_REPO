@@ -1,5 +1,6 @@
 package hu.mep.datamodells;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -11,17 +12,17 @@ public class SubChart {
 	private String label;
 	
 	@SerializedName("adat")
-	private HashMap<Date, Double> chartValues;
+	private HashMap<Calendar, Double> chartValues;
 
 	public String getLabel() {
 		return label;
 	}
 
-	public HashMap<Date, Double> getChartValues() {
+	public HashMap<Calendar, Double> getChartValues() {
 		return chartValues;
 	}
 
-	public SubChart(String label, HashMap<Date, Double> chartValues) {
+	public SubChart(String label, HashMap<Calendar, Double> chartValues) {
 		super();
 		this.label = label;
 		this.chartValues = chartValues;
