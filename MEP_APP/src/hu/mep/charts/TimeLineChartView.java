@@ -1,5 +1,6 @@
 package hu.mep.charts;
 
+import hu.mep.datamodells.Chart;
 import hu.mep.datamodells.Session;
 import hu.mep.utils.adapters.TimeSeriesAdapter;
 
@@ -8,8 +9,11 @@ import java.util.Locale;
 
 import org.afree.chart.AFreeChart;
 import org.afree.chart.ChartFactory;
+import org.afree.chart.LegendItem;
+import org.afree.chart.LegendItemCollection;
 import org.afree.chart.axis.DateAxis;
 import org.afree.chart.axis.ValueAxis;
+import org.afree.chart.plot.Plot;
 import org.afree.chart.plot.XYPlot;
 import org.afree.chart.renderer.xy.XYItemRenderer;
 import org.afree.chart.renderer.xy.XYLineAndShapeRenderer;
@@ -17,27 +21,58 @@ import org.afree.data.time.Month;
 import org.afree.data.time.TimeSeries;
 import org.afree.data.time.TimeSeriesCollection;
 import org.afree.data.xy.XYDataset;
+import org.afree.graphics.PaintType;
 import org.afree.graphics.SolidColor;
 import org.afree.graphics.geom.Shape;
 import org.afree.ui.RectangleInsets;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.PathEffect;
 import android.util.Log;
 
 public class TimeLineChartView extends DemoView {
 
 	private static final String TAG = "TimeLineChartView";
-	TimeSeriesAdapter adapter;
-	
+	private static Chart mChart;
+	private static final LegendItemCollection myColorPalette = new LegendItemCollection();
+	private static final SolidColor[] colorPalette = new SolidColor[] {
+	/* http://www.rapidtables.com/web/color/RGB_Color.htm */
+	new SolidColor(Color.rgb(0, 0, 205)), // MEDIUM BLUE
+			new SolidColor(Color.rgb(255, 140, 0)), // DARK ORANGE
+			new SolidColor(Color.rgb(0, 255, 0)), // LIME
 
-	public TimeLineChartView(Context context, TimeSeriesAdapter adapter) {
+			new SolidColor(Color.rgb(255, 0, 0)), // RED
+			new SolidColor(Color.rgb(139, 0, 139)), // DARK MAGENTA
+			new SolidColor(Color.rgb(47, 79, 79)), // DARK SLATE GREY
+
+			new SolidColor(Color.rgb(255, 215, 0)), // GOLD
+			new SolidColor(Color.rgb(0, 100, 0)), // DARK GREEN
+			new SolidColor(Color.rgb(255, 20, 147)), // DEEP PINK
+
+			new SolidColor(Color.rgb(139, 69, 19)), // SADDLE BROWN
+			new SolidColor(Color.rgb(75, 0, 130)), // INDIGO
+			new SolidColor(Color.rgb(0, 128, 128)) // TEAL
+
+	};
+
+	public TimeLineChartView(Context context, Chart chart) {
 		super(context);
-		this.adapter = adapter;
-		final AFreeChart chart = createChart(adapter.getTimeSeriesFromActualChart(),
-				Session.getActualChartInfoContainer().getName(), "Időpont", Session.getActualChart().getyAxisTitle());
+		mChart = chart;
 
-		setChart(chart);
+		for (int i = 0; i < 15; ++i) {
+			myColorPalette.add(new LegendItem("1", new SolidColor(Color.rgb(
+					17 * i, 17 * i, 17 * i))));
+		}
+
+		final AFreeChart aChart = createChart(
+				TimeSeriesAdapter.getTimeSeriesFromChart(mChart), ""/*
+																	 * ,mChart.
+																	 * getName()
+																	 */,
+				"Időpont", mChart.getyAxisTitle());
+		setChart(aChart);
+
 	}
 
 	private static AFreeChart createChart(XYDataset dataset, String title,
@@ -57,34 +92,46 @@ public class TimeLineChartView extends DemoView {
 		XYPlot plot = (XYPlot) chart.getPlot();
 		plot.setBackgroundPaintType(new SolidColor(Color.WHITE));
 		plot.setDomainGridlinePaintType(new SolidColor(Color.WHITE));
-		plot.setRangeGridlinePaintType(new SolidColor(Color.GRAY));
-		
+		plot.setRangeGridlinePaintType(new SolidColor(Color.LTGRAY));
+
 		ValueAxis rangeAxis = plot.getRangeAxis();
-		/*rangeAxis.setRange(Session.getMinimalChartValue(), Session.getMaximalChartValue());*/
 		rangeAxis.setAutoRange(true);
-		
+
 		plot.setAxisOffset(new RectangleInsets(5.0, 5.0, 5.0, 5.0));
-		plot.setDomainCrosshairVisible(false);
+		plot.setDomainCrosshairVisible(true);
 		plot.setRangeCrosshairVisible(true);
-		
+
 		XYItemRenderer r = plot.getRenderer();
 		if (r instanceof XYLineAndShapeRenderer) {
 			XYLineAndShapeRenderer renderer = (XYLineAndShapeRenderer) r;
-			renderer.setBaseShapesVisible(true);
-			renderer.setBaseShapesFilled(true);
+			renderer.setBaseShapesVisible(false);
+			//renderer.setBaseShapesFilled(true);
 			renderer.setDrawSeriesLineAsPath(true);
 			renderer.setBaseLinesVisible(true);
-			for(int i = 0; i < dataset.getSeriesCount(); ++i) {
+
+			LegendItemCollection legend = new LegendItemCollection();
+			for (int i = 0; i < mChart.getSubCharts().size(); ++i) {
 				renderer.setSeriesLinesVisible(i, true);
 				renderer.setSeriesItemLabelsVisible(0, true);
-				//Log.e(TAG, "VISIBLE?!" + renderer.getSeriesLinesVisible(i));
+				// renderer.setSeriesVisibleInLegend(i, true);
+				renderer.setSeriesPaintType(i, colorPalette[i]);
+				//renderer.setLegendTextPaintType(i, colorPalette[i]);
+				LegendItem li = new LegendItem(mChart.getSubCharts().get(i).getLabel(), "-", null,
+						null, Plot.DEFAULT_LEGEND_ITEM_BOX, colorPalette[i]);
+				li.setFillPaintType(colorPalette[i]);
+				
+				legend.add(li);
 			}
+			plot.setFixedLegendItems(legend);
 		}
 
 		DateAxis domainAxis = (DateAxis) plot.getDomainAxis();
-		/*domainAxis.setRange(Session.getMinimalChartDate(), Session.getMaximalChartDate());
-		domainAxis.setDateFormatOverride(new SimpleDateFormat("MMM dd. hh:mm", Locale.getDefault()));*/
-		domainAxis.setAutoRange(true);		
+		/*
+		 * domainAxis.setRange(Session.getMinimalChartDate(),
+		 * Session.getMaximalChartDate()); domainAxis.setDateFormatOverride(new
+		 * SimpleDateFormat("MMM dd. hh:mm", Locale.getDefault()));
+		 */
+		domainAxis.setAutoRange(true);
 		return chart;
 
 	}

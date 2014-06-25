@@ -31,4 +31,11 @@ public class ChartInfoContainerDeserializer implements JsonDeserializer<AllChart
 		return new AllChartInfoContainer(allChartInfoContainer);
 	}
 	
+	private void logAllChartInfoContainer(AllChartInfoContainer all) {
+		for (ChartInfoContainer actChartInfoContainer : all.getAllChartInfoContainer()) {
+			actChartInfoContainer.getId();
+			
+		}
+	}
+	
 }

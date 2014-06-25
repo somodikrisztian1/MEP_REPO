@@ -127,6 +127,7 @@ public class Session {
 	public static void setAllChartInfoContainer(
 			List<ChartInfoContainer> allChartInfoContainer) {
 		Session.allChartInfoContainer = allChartInfoContainer;
+		logAllChartInfoContainer();
 	}
 	
 	public static ChartInfoContainer getActualChartInfoContainer() {
@@ -138,6 +139,14 @@ public class Session {
 		Session.actualChartInfoContainer = actualChartInfoContainer;
 	}
 
+	private static void logAllChartInfoContainer() {
+		for (ChartInfoContainer actChartInfoContainer : getAllChartInfoContainer()) {
+			String s = "id=" + actChartInfoContainer.getId() + "\n";
+			s += "name=" + actChartInfoContainer.getName() + "\n";
+			s += "ssz=" + actChartInfoContainer.getSerialNumber() + "\n";
+			Log.e("Session.logAllChartInfoContainer()", s);
+		}
+	}
 	
 	
 	// ==============================================================================

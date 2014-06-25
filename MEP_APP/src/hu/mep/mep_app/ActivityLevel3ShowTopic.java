@@ -39,16 +39,12 @@ public class ActivityLevel3ShowTopic extends ActionBarActivity implements TabLis
 				mActionBar.setSelectedNavigationItem(position);
 			}
 		});
-		//NEM SZABAD ELŐTÖLTÉST ALKALMAZNI, MERT A SESSION-BELI ADATOK ELROMLANAK....
-		mViewPager.setOffscreenPageLimit(1);
 		
 		mActionBar = getSupportActionBar();
 		mActionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 		mActionBar.setDisplayShowHomeEnabled(false);
 		mActionBar.setDisplayShowTitleEnabled(false);
-		
-		//TODO TABOK KEZELÉSE!!! Az alábbi sorban lévő 0-t, le kell cserélni a kattintott tab sorszámára.
-		
+
 		for (int i = 0; i < mSectionsPagerAdapter.getCount(); i++) {
 
 			mActionBar.addTab(mActionBar.newTab()
@@ -56,25 +52,6 @@ public class ActivityLevel3ShowTopic extends ActionBarActivity implements TabLis
 					//.setIcon(mSectionsPagerAdapter.getPageIcon(i))
 					.setTabListener(this));
 		}
-		
-		
-		/*
-		Session.getInstance(getApplicationContext())
-				.setActualChartInfoContainer(
-						Session.getAllChartInfoContainer().get(0));
-		Session.getActualCommunicationInterface().getActualChart();
-		if (Session.getActualChart().getSubCharts().isEmpty()) {
-			Toast.makeText(getApplicationContext(),
-					"Ehhez a témához nem tartozik grafikon.",
-					Toast.LENGTH_SHORT).show();;
-			onBackPressed();
-		} else {
-			TimeLineChartView mView = new TimeLineChartView(this,
-					new TimeSeriesAdapter());
-			requestWindowFeature(Window.FEATURE_NO_TITLE);
-			setContentView(mView);
-			
-		}*/
 	}
 	
 	public class SectionsPagerAdapter extends FragmentPagerAdapter {
@@ -85,10 +62,9 @@ public class ActivityLevel3ShowTopic extends ActionBarActivity implements TabLis
 
 		@Override
 		public Fragment getItem(int position) {
-			//TODO TALÁN EZ NEM JÓ! :D
 			Session.setActualChartInfoContainer(Session.getAllChartInfoContainer().get(position));
 			Session.getActualCommunicationInterface().getActualChart();
-			return new FragmentLevel3ShowTopic();
+			return new FragmentLevel3ShowTopic(Session.getActualChart());
 		}
 
 		@Override

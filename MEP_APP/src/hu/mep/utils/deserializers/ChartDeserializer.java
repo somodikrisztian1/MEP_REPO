@@ -2,6 +2,7 @@ package hu.mep.utils.deserializers;
 
 import hu.mep.datamodells.Chart;
 import hu.mep.datamodells.SubChart;
+import hu.mep.utils.others.CalendarPrinter;
 
 import java.lang.reflect.Type;
 import java.text.ParseException;
@@ -25,7 +26,7 @@ public class ChartDeserializer implements JsonDeserializer<Chart> {
 	private static final String TAG = "ChartDeserializer";
 
 	private static final SimpleDateFormat dateFormatter = new SimpleDateFormat(
-			"yyyy-MM-dd hh:mm:ss");
+			"yyyy-MM-dd HH:mm:ss");
 
 	private static Chart result;
 	private static List<SubChart> subchartsForResult;
@@ -44,7 +45,7 @@ public class ChartDeserializer implements JsonDeserializer<Chart> {
 			return result;
 		} else {
 			rootObject = element.getAsJsonObject();
-			Log.e(TAG, "JSON FOR GETCHART - FROM ROOT:" + rootObject.toString());
+			//Log.e(TAG, "JSON FOR GETCHART - FROM ROOT:" + rootObject.toString());
 
 			String elapse = rootObject.get("elapse").getAsString();
 			String y = rootObject.get("y").getAsString();
@@ -55,7 +56,7 @@ public class ChartDeserializer implements JsonDeserializer<Chart> {
 					: rootObject.get("charts").getAsJsonObject());
 
 			deserializeCharts(charts);
-			Log.e(TAG, "result.subcharts.size() = "	+ result.getSubCharts().size());
+			//Log.e(TAG, "result.subcharts.size() = "	+ result.getSubCharts().size());
 			return result;
 		}
 	}
@@ -67,8 +68,8 @@ public class ChartDeserializer implements JsonDeserializer<Chart> {
 			for (Map.Entry<String, JsonElement> entry : charts.entrySet()) {
 				JsonObject actualChartJSONObj = entry.getValue().getAsJsonObject();
 				String actualChartLabel = actualChartJSONObj.get("label").getAsString();
+				//Log.e(TAG, "Label:" + actualChartLabel);
 				Log.e(TAG, "Label:" + actualChartLabel);
-
 				HashMap<Calendar, Double> actualChartDatas = new HashMap<Calendar, Double>();
 
 				JsonObject actualChartDataJSONObj = (actualChartJSONObj.get("adat")
@@ -83,8 +84,9 @@ public class ChartDeserializer implements JsonDeserializer<Chart> {
 						try {
 							actualDate.setTime(dateFormatter.parse(actData
 									.getKey()));
-							Log.e(TAG,
-									actData.getKey() + "#" + actData.getValue());
+							// LOGOLÁS!
+							//Log.d("pure date:", actData.getKey());
+							CalendarPrinter.logCalendar(TAG, actualDate, actData.getValue().getAsDouble());
 						} catch (ParseException e) {
 							e.printStackTrace();
 						}

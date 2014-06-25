@@ -32,7 +32,7 @@
         </activity>
         <activity android:name="hu.mep.mep_app.ActivityLevel2NEW" >
         </activity>
-        <activity android:name="hu.mep.mep_app.ActivityLevel3ShowTopic" >
+        <activity android:name="hu.mep.mep_app.ActivityLevel3ShowTopic" android:screenOrientation="landscape" >
         </activity>
     </application>
 
