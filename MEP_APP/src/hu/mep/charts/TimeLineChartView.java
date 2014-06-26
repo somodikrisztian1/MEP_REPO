@@ -40,19 +40,19 @@ public class TimeLineChartView extends DemoView {
 	/* http://www.rapidtables.com/web/color/RGB_Color.htm */
 	new SolidColor(Color.rgb(0, 0, 205)), // MEDIUM BLUE
 			new SolidColor(Color.rgb(255, 140, 0)), // DARK ORANGE
-			new SolidColor(Color.rgb(0, 255, 0)), // LIME
-
+			new SolidColor(Color.rgb(0, 100, 0)), // DARK GREEN
 			new SolidColor(Color.rgb(255, 0, 0)), // RED
 			new SolidColor(Color.rgb(139, 0, 139)), // DARK MAGENTA
 			new SolidColor(Color.rgb(47, 79, 79)), // DARK SLATE GREY
-
-			new SolidColor(Color.rgb(255, 215, 0)), // GOLD
-			new SolidColor(Color.rgb(0, 100, 0)), // DARK GREEN
+			new SolidColor(Color.rgb(184, 134, 11)), // DARK GOLDEN ROD
+			new SolidColor(Color.rgb(25, 25, 112)), // MIDNIGHT BLUE
 			new SolidColor(Color.rgb(255, 20, 147)), // DEEP PINK
-
 			new SolidColor(Color.rgb(139, 69, 19)), // SADDLE BROWN
 			new SolidColor(Color.rgb(75, 0, 130)), // INDIGO
-			new SolidColor(Color.rgb(0, 128, 128)) // TEAL
+			new SolidColor(Color.rgb(128, 128, 0)), // OLIVE
+			new SolidColor(Color.rgb(0, 128, 128)), // TEAL
+
+			new SolidColor(Color.rgb(0, 255, 0)) // LIME
 
 	};
 
@@ -60,17 +60,14 @@ public class TimeLineChartView extends DemoView {
 		super(context);
 		mChart = chart;
 
-		for (int i = 0; i < 15; ++i) {
-			myColorPalette.add(new LegendItem("1", new SolidColor(Color.rgb(
-					17 * i, 17 * i, 17 * i))));
-		}
+//		for (int i = 0; i < 15; ++i) {
+//			myColorPalette.add(new LegendItem("1", new SolidColor(Color.rgb(
+//					17 * i, 17 * i, 17 * i))));
+//		}
 
 		final AFreeChart aChart = createChart(
-				TimeSeriesAdapter.getTimeSeriesFromChart(mChart), ""/*
-																	 * ,mChart.
-																	 * getName()
-																	 */,
-				"Időpont", mChart.getyAxisTitle());
+				TimeSeriesAdapter.getTimeSeriesFromChart(mChart), "", "",
+				mChart.getyAxisTitle());
 		setChart(aChart);
 
 	}
@@ -105,7 +102,7 @@ public class TimeLineChartView extends DemoView {
 		if (r instanceof XYLineAndShapeRenderer) {
 			XYLineAndShapeRenderer renderer = (XYLineAndShapeRenderer) r;
 			renderer.setBaseShapesVisible(false);
-			//renderer.setBaseShapesFilled(true);
+			// renderer.setBaseShapesFilled(true);
 			renderer.setDrawSeriesLineAsPath(true);
 			renderer.setBaseLinesVisible(true);
 
@@ -113,16 +110,22 @@ public class TimeLineChartView extends DemoView {
 			for (int i = 0; i < mChart.getSubCharts().size(); ++i) {
 				renderer.setSeriesLinesVisible(i, true);
 				renderer.setSeriesItemLabelsVisible(0, true);
-				// renderer.setSeriesVisibleInLegend(i, true);
+				renderer.setSeriesVisibleInLegend(i, true);
 				renderer.setSeriesPaintType(i, colorPalette[i]);
-				//renderer.setLegendTextPaintType(i, colorPalette[i]);
-				LegendItem li = new LegendItem(mChart.getSubCharts().get(i).getLabel(), "-", null,
-						null, Plot.DEFAULT_LEGEND_ITEM_BOX, colorPalette[i]);
+
+				LegendItem li = new LegendItem(mChart.getSubCharts().get(i)
+						.getLabel(), "-", null, null,
+						Plot.DEFAULT_LEGEND_ITEM_BOX, colorPalette[i]);
 				li.setFillPaintType(colorPalette[i]);
-				
+				li.setLabelPaintType(colorPalette[i]);
+
 				legend.add(li);
 			}
 			plot.setFixedLegendItems(legend);
+			/*
+			 * for(int i = 0; i < mChart.getSubCharts().size(); ++i) {
+			 * renderer.setLegendTextPaintType(i, colorPalette[i]); }
+			 */
 		}
 
 		DateAxis domainAxis = (DateAxis) plot.getDomainAxis();

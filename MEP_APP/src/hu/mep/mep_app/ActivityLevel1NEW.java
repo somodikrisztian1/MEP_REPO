@@ -58,11 +58,11 @@ public class ActivityLevel1NEW extends ActionBarActivity implements
 	public void refreshDrawerStrings() {
 		if (isLoggedOnAnyUser) {
 			firstActivityDrawerStrings = getResources().getStringArray(
-					R.array.logged_in_drawer_items_list);
+					R.array.activity_level1_drawer_items_list);
 			drawerAdapter.notifyDataSetChanged();
 		} else {
 			firstActivityDrawerStrings = getResources().getStringArray(
-					R.array.logged_off_drawer_items_list);
+					R.array.activity_level1_drawer_items_list);
 			drawerAdapter.notifyDataSetChanged();
 		}
 	}
@@ -82,7 +82,7 @@ public class ActivityLevel1NEW extends ActionBarActivity implements
 		firstActivityDrawerListView = (ListView) findViewById(R.id.first_activity_drawer_listview);
 		
 		firstActivityDrawerStrings = getResources().getStringArray(
-				R.array.logged_off_drawer_items_list);
+				R.array.activity_level1_drawer_items_list);
 		
 		drawerAdapter = new ArrayAdapter<String>(this,
 				R.layout.drawer_list_item, firstActivityDrawerStrings);

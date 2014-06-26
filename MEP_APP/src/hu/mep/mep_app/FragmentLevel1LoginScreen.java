@@ -7,6 +7,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -53,8 +54,7 @@ public class FragmentLevel1LoginScreen extends Fragment implements OnClickListen
 				container, false);
 		int index = getArguments().getInt(
 				FragmentLevel1MainScreen.CLICKED_DRAWER_ITEM_NUMBER);
-		String newTitle = getResources().getStringArray(
-				R.array.logged_off_drawer_items_list)[index];
+		String newTitle = getResources().getString(R.string.login);
 		Log.d(TAG, " inside onCreateView 1");
 
 		getActivity().setTitle(newTitle);
@@ -90,6 +90,7 @@ public class FragmentLevel1LoginScreen extends Fragment implements OnClickListen
 		passwordEdittext.setOnEditorActionListener(clickToLogin);
 		*/
 		Log.d(TAG, " after onCreateView");
+		//getActivity().getSupportFragmentManager().popBackStack();
 		return rootView;
 	}
 
