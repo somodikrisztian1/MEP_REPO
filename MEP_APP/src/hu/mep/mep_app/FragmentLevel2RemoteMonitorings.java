@@ -28,7 +28,7 @@ public class FragmentLevel2RemoteMonitorings extends Fragment implements OnItemC
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 
-		View v = inflater.inflate(R.layout.fragment_remote_monitorings, container, false);
+		View v = inflater.inflate(R.layout.fragment_secondlevel_remote_monitorings, container, false);
 		placeAdapter = new PlaceListAdapter(getActivity(),
 				R.id.fragment_remote_monitorings_listview, Session
 				.getInstance(getActivity())

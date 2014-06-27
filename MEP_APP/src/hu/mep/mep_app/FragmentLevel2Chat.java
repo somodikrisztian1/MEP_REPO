@@ -22,7 +22,7 @@ public class FragmentLevel2Chat extends Fragment implements OnItemClickListener 
 	public static ArrayAdapter<ChatContact> contactAdapter;
 	
 	ContactListRefresherAsyncTask refresher;
-	private static final long REFRESH_WAIT_TIME = 3000;
+	//private static final long REFRESH_WAIT_TIME = 3000;
 	private static final String TAG = "FragmentLevel2Chat";
 	
 	public FragmentLevel2Chat() {
@@ -35,7 +35,7 @@ public class FragmentLevel2Chat extends Fragment implements OnItemClickListener 
 		Session.getInstance(getActivity()).getActualCommunicationInterface()
 				.getChatPartners();
 
-		View v = inflater.inflate(R.layout.fragment_chat, container, false);
+		View v = inflater.inflate(R.layout.fragment_secondlevel_chat, container, false);
 		contactAdapter = new ChatContactListAdapter(getActivity(),
 				R.id.fragment_chat_listview, Session.getInstance(getActivity())
 						.getActualChatContactList().getContacts());
@@ -43,11 +43,13 @@ public class FragmentLevel2Chat extends Fragment implements OnItemClickListener 
 		listview = (ListView) v.findViewById(R.id.fragment_chat_listview);
 		listview.setAdapter(contactAdapter);
 		listview.setOnItemClickListener(this);
-		refresher = new ContactListRefresherAsyncTask();
+		/*refresher = new ContactListRefresherAsyncTask();
 		//Log.e(TAG, "Starting contactListRefresherAsyncTask");
 		refresher = new ContactListRefresherAsyncTask();
 		refresher.execute(REFRESH_WAIT_TIME);
-
+*/
+		Session.startContactRefresher();
+		
 		return v;
 	}
 
@@ -65,11 +67,12 @@ public class FragmentLevel2Chat extends Fragment implements OnItemClickListener 
 	
 	@Override
 	public void onDestroyView() {
-		if(refresher != null) {
+		/*if(refresher != null) {
 			Log.e(TAG, "Cancelling contactListRefresherAsyncTask");
 			refresher.cancel(true);
 			refresher = null;
-		}
+		}*/
+		Session.stopContactRefresher();
 		super.onDestroyView();
 	}
 

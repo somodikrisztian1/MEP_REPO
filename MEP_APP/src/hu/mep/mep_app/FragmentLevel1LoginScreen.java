@@ -50,7 +50,7 @@ public class FragmentLevel1LoginScreen extends Fragment implements OnClickListen
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		Log.d(TAG, " before onCreateView");
-		View rootView = inflater.inflate(R.layout.fragment_login_screen,
+		View rootView = inflater.inflate(R.layout.fragment_firstlevel_login_screen,
 				container, false);
 		int index = getArguments().getInt(
 				FragmentLevel1MainScreen.CLICKED_DRAWER_ITEM_NUMBER);

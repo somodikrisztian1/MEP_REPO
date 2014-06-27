@@ -11,7 +11,7 @@ public class FragmentLevel1ContactsScreen extends Fragment{
 	//private FragmentLevel1EventHandler fragmentEventHandler;
 	
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		View v = inflater.inflate(R.layout.fragment_main_screen, container, false);
+		View v = inflater.inflate(R.layout.fragment_firstlevel_contacts_screen, container, false);
 		
 		return v;
 	};

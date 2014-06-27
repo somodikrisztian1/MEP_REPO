@@ -20,12 +20,12 @@ import android.widget.TextView.OnEditorActionListener;
 
 public class ActivityLevel3Chat extends Activity {
 
-	private static ChatMessagesRefresherAsyncTask messageRefresher = new ChatMessagesRefresherAsyncTask();
+	//private static ChatMessagesRefresherAsyncTask messageRefresher = new ChatMessagesRefresherAsyncTask();
 	private static ListView chatMessagesListview;
 	private static EditText chatInputTextView;
 	private static final String TAG = "ActivityLevel3Chat";
 	public static ArrayAdapter<ChatMessage> adapter;
-	private static final long MESSAGE_REFRESH_TIME_INTERVAL = 1000;
+	//private static final long MESSAGE_REFRESH_TIME_INTERVAL = 1000;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -65,20 +65,22 @@ public class ActivityLevel3Chat extends Activity {
 				return false;
 			}
 		});
-
+		/*
 		messageRefresher = new ChatMessagesRefresherAsyncTask();
 		messageRefresher.execute(MESSAGE_REFRESH_TIME_INTERVAL);
-		
+		*/
+		//Session.startMessageRefresher();
 	}
 
 	@Override
 	protected void onResume() {
 		super.onResume();
 		Log.e(TAG, "onResume running");
-		if (messageRefresher == null) {
+		/*if (messageRefresher == null) {
 			messageRefresher = new ChatMessagesRefresherAsyncTask();
 			messageRefresher.execute(MESSAGE_REFRESH_TIME_INTERVAL);
-		}
+		}*/
+		Session.startMessageRefresher();
 		chatMessagesListview
 		.setTranscriptMode(AbsListView.TRANSCRIPT_MODE_NORMAL);
 	}
@@ -87,8 +89,9 @@ public class ActivityLevel3Chat extends Activity {
 	protected void onPause() {
 		super.onPause();
 		Log.e(TAG, "onPause running");
-		messageRefresher.cancel(true);
+		/*messageRefresher.cancel(true);
 		messageRefresher = null;
+*/	Session.stopMessageRefresher();		
 	}
 
 	/**

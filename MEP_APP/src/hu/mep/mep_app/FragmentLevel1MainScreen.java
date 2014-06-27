@@ -29,7 +29,7 @@ public class FragmentLevel1MainScreen extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_main_screen, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_firstlevel_contacts_screen, container, false);
         int index = getArguments().getInt(CLICKED_DRAWER_ITEM_NUMBER);
         String newTitle = "";
         if(index == -1) {

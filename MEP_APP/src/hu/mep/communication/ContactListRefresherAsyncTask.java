@@ -18,31 +18,43 @@ public class ContactListRefresherAsyncTask extends AsyncTask<Long, Void, Void> {
 		super.onPreExecute();
 		Session.getActualCommunicationInterface().getChatPartners();
 	}
-	
+
 	@Override
 	protected Void doInBackground(Long... params) {
 		WAIT_TIME = params[0];
-		//Log.d(TAG, "WAIT_TIME = " + WAIT_TIME);
+		// Log.d(TAG, "WAIT_TIME = " + WAIT_TIME);
 		Thread t = new Thread(new Runnable() {
-			
+
 			@Override
 			public void run() {
-				while(!isCancelled()) {
-					List<ChatContact> before = Session.getActualChatContactList().getContacts();
-					Session.getActualCommunicationInterface().getChatPartners();
-					List<ChatContact> after = Session.getActualChatContactList().getContacts();
-					if(after.containsAll(before)) { 
-						//Log.d(TAG, "NO PARTNERS CHANGED SINCE LAST REFRESH.");
-					} else {
-						//Log.d(TAG, "PARTNERS HAS CHANGED SINCE LAST REFRESH.");
-						//ActivityLevel2.actualAdapter.notifyDataSetChanged();
+				while (!isCancelled()) {
+					List<ChatContact> before = null;
+					List<ChatContact> after = null;
+					if (!isCancelled()) {
+						before = Session.getActualChatContactList().getContacts();
 					}
-					try {
-						//Log.e(TAG, "WAITING...");
-						Thread.sleep(WAIT_TIME);
-					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
+					if (!isCancelled()) {
+					Session.getActualCommunicationInterface().getChatPartners();
+					}
+					if (!isCancelled()) {
+						after = Session.getActualChatContactList().getContacts();
+					}
+					if (before != null && after != null) {
+						if (after.containsAll(before)) {
+							// Log.d(TAG,
+							// "NO PARTNERS CHANGED SINCE LAST REFRESH.");
+						} else {
+							// Log.d(TAG,
+							// "PARTNERS HAS CHANGED SINCE LAST REFRESH.");
+							// ActivityLevel2.actualAdapter.notifyDataSetChanged();
+						}
+						try {
+							// Log.e(TAG, "WAITING...");
+							Thread.sleep(WAIT_TIME);
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
 					}
 				}
 			}
@@ -50,11 +62,11 @@ public class ContactListRefresherAsyncTask extends AsyncTask<Long, Void, Void> {
 		t.start();
 		return null;
 	}
-	
+
 	@Override
 	protected void onPostExecute(Void result) {
 		super.onPostExecute(result);
 		FragmentLevel2Chat.contactAdapter.notifyDataSetChanged();
-		//FragmentLevel2Chat.listview.invalidateViews();
+		// FragmentLevel2Chat.listview.invalidateViews();
 	}
 }

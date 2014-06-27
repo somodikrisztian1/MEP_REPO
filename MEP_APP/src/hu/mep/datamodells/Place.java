@@ -15,19 +15,23 @@ import android.util.Log;
  * @author Tibor, Török
  */
 public class Place {
-	
+
 	private static final String TAG = "Place.java";
+	public static final String nameTag = "nev";
+	public static final String idTag = "tsz1_id";
+	public static final String descriptionTag = "leiras";
+	public static final String locationTag = "helyszin";
 	
-	@SerializedName("nev")
+	@SerializedName(nameTag)
 	private String name;
 	
-	@SerializedName("tsz1_id")
+	@SerializedName(idTag)
 	private String ID;
 	
-	@SerializedName("leiras")
+	@SerializedName(descriptionTag)
 	private String description;
 	
-	@SerializedName("helyszin")
+	@SerializedName(locationTag)
 	private String location;
 	
 	
@@ -43,14 +47,7 @@ public class Place {
 
 	public String getLocation() {
 		return location;
-	}
-
-
-	public static final String nameTag = "nev";
-	public static final String idTag = "tsz1_id";
-	public static final String descriptionTag = "leiras";
-	public static final String locationTag = "helyszin";
-	
+	}	
 	
 	public Place(String name, String ID, String description, String location) {
 		super();

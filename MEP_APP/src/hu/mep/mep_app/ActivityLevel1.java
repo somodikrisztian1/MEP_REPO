@@ -131,6 +131,16 @@ public class ActivityLevel1 extends ActionBarActivity implements
 		// Log.e(TAG, "onCreate 7");
 	}
 
+	@Override
+	protected void onResume() {
+		if (actualFragmentNumber == DRAWER_LIST_LOGIN_LOGOUT_NUMBER) {
+			fragmentManager.popBackStack("addLogin",
+					FragmentManager.POP_BACK_STACK_INCLUSIVE);
+			actualFragmentNumber = DRAWER_LIST_MAIN_PAGE_NUMBER; 
+		}
+		super.onResume();
+	}
+
 	/* The click listener for ListView in the navigation drawer */
 	private class DrawerItemClickListener implements
 			ListView.OnItemClickListener {
@@ -146,8 +156,9 @@ public class ActivityLevel1 extends ActionBarActivity implements
 	public void onBackPressed() {
 		super.onBackPressed();
 		if (actualFragmentNumber == DRAWER_LIST_LOGIN_LOGOUT_NUMBER) {
-			Log.e(TAG, "onBackPressed() and actualFragmentNumber is " + actualFragmentNumber);
-			//fragmentManager.popBackStack("login", 0);
+			Log.e(TAG, "onBackPressed() and actualFragmentNumber is "
+					+ actualFragmentNumber);
+			// fragmentManager.popBackStack("login", 0);
 		}
 	}
 
@@ -197,7 +208,8 @@ public class ActivityLevel1 extends ActionBarActivity implements
 		case DRAWER_LIST_ABOUT_REMOTE_NUMBER:
 			/* !TODO */
 			waitForIt.show();
-			Log.e("FirstActivity", "handleDrawerClick() -> About Remote Monitorings");
+			Log.e("FirstActivity",
+					"handleDrawerClick() -> About Remote Monitorings");
 			break;
 		case DRAWER_LIST_CONTACTS_NUMBER:
 			newFragment = new FragmentLevel1ContactsScreen();
@@ -262,7 +274,7 @@ public class ActivityLevel1 extends ActionBarActivity implements
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.activity_level1_menu, menu);
+		inflater.inflate(R.menu.activity_firstlevel_menu, menu);
 		// Log.e("FirstActivity", "onCreateOptionsMenu");
 		return super.onCreateOptionsMenu(menu);
 	}
@@ -297,12 +309,12 @@ public class ActivityLevel1 extends ActionBarActivity implements
 				ft.replace(R.id.first_activity_frame, newFragment);
 				ft.addToBackStack("addLogin");
 				ft.commit();
-				Log.e(TAG, "onOptionsItemSelected ....\nfragments number is:" + getSupportFragmentManager().getBackStackEntryCount());
+				Log.e(TAG, "onOptionsItemSelected ....\nfragments number is:"
+						+ getSupportFragmentManager().getBackStackEntryCount());
 				// update selected item and title, then close the drawer
 
 				// setTitle(firstActivityDrawerStrings[DRAWER_LIST_LOGIN_LOGOUT_NUMBER]);
-			}
-			else {
+			} else {
 				Intent i = new Intent(this, ActivityLevel2NEW.class);
 				startActivity(i);
 			}
@@ -324,15 +336,13 @@ public class ActivityLevel1 extends ActionBarActivity implements
 
 		if (NetThread.isOnline(context)) {
 			Session.getInstance(context).getActualCommunicationInterface()
-					.authenticateUser(username, password);
+					.authenticateUser(this, username, password);
 			if (Session.getInstance(context).getActualUser() == null) {
 				Toast.makeText(
 						context,
 						"Sikertelen bejelentkezés!\nEllenőrizze a beírt adatok helyességét!",
 						Toast.LENGTH_LONG).show();
 			} else {
-				getSupportFragmentManager().popBackStack("addLogin", FragmentManager.POP_BACK_STACK_INCLUSIVE);
-				Log.e(TAG, "onLoginButtonPressed...\nfragments number is:" + getSupportFragmentManager().getBackStackEntryCount());
 				Intent i = new Intent(this, ActivityLevel2NEW.class);
 				startActivity(i);
 			}

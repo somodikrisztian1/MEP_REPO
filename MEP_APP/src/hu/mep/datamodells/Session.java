@@ -1,5 +1,7 @@
 package hu.mep.datamodells;
 
+import hu.mep.communication.ChatMessagesRefresherAsyncTask;
+import hu.mep.communication.ContactListRefresherAsyncTask;
 import hu.mep.communication.ICommunicator;
 import hu.mep.communication.RealCommunicator;
 
@@ -17,7 +19,7 @@ public class Session {
 	private static Session instance;
 	private static Context context;
 	private static ICommunicator actualCommunicationInterface;
-	
+
 	private static User actualUser;
 
 	private static List<TopicCategory> allTopicsList;
@@ -28,20 +30,22 @@ public class Session {
 	private static ChatContactList actualChatContactList;
 	private static ChatContact actualChatPartner;
 	private static ChatMessagesList chatMessagesList;
-	
+
 	private static List<ChartInfoContainer> allChartInfoContainer;
 	private static ChartInfoContainer actualChartInfoContainer;
 	private static Chart actualChart;
-	
+
+	private static ContactListRefresherAsyncTask contactRefresher;
+	private static ChatMessagesRefresherAsyncTask messageRefresher = new ChatMessagesRefresherAsyncTask();
+
 	private static ProgressDialog progressDialog;
-	
+
 	/*
 	 * private static Calendar minimalChartDate; private static Calendar
 	 * maximalChartDate; private static double minimalChartValue; private static
 	 * double maximalChartValue;
 	 */
-	
-	
+
 	// ==============================================================================
 	// SESSION + COMMUNICATION
 	// ==============================================================================
@@ -68,21 +72,19 @@ public class Session {
 		return actualCommunicationInterface;
 	}
 
-	
-	
 	// ==============================================================================
 	// ACTUAL USER
 	// ==============================================================================
 	public static User getActualUser() {
+		Log.e(TAG, "getActualUser");
 		return actualUser;
 	}
 
 	public static void setActualUser(User newUser) {
+		Log.e(TAG, "setActualUser");
 		actualUser = newUser;
 	}
 
-	
-	
 	// ==============================================================================
 	// TOPICS LIST + ACTUAL TOPIC
 	// ==============================================================================
@@ -92,50 +94,59 @@ public class Session {
 		 * { for (Topic actTopic : actTopicCategory.getTopics()) { Log.d(TAG,
 		 * "Topic#" + counter + "= " + actTopic.getTopicName()); counter++; } }
 		 */
+		Log.e(TAG, "getTopicsList");
 		return allTopicsList;
 	}
 
 	public static void setAllTopicsList(List<TopicCategory> allTopicsList) {
 		Session.allTopicsList = allTopicsList;
 		int counter = 0;
-		for (TopicCategory actTopicCategory : allTopicsList) {
-			for (Topic actTopic : actTopicCategory.getTopics()) {
-				Log.e(TAG, "Topic#" + counter + "= " + actTopic.getTopicName());
-				counter++;
+		if (allTopicsList != null) {
+			for (TopicCategory actTopicCategory : allTopicsList) {
+				for (Topic actTopic : actTopicCategory.getTopics()) {
+					Log.e(TAG,
+							"Topic#" + counter + "= " + actTopic.getTopicName());
+					counter++;
+				}
 			}
+			Log.e(TAG, "setAllTopicsList");
+			Log.e(TAG, "Összesen megkapott témakörök száma: " + counter);
 		}
-		Log.e(TAG, "Összesen megkapott témakörök száma: " + counter);
 	}
 
 	public static Topic getActualTopic() {
+		Log.e(TAG, "getActualTopic");
 		return actualTopic;
 	}
 
 	public static void setActualTopic(Topic actualTopic) {
+		Log.e(TAG, "setActualTopic");
 		Session.actualTopic = actualTopic;
 	}
 
-	
-	
 	// ==============================================================================
 	// ALL CHART INFO CONTAINAR + ACTUAL CHART INFO CONTAINER
 	// ==============================================================================
 	public static List<ChartInfoContainer> getAllChartInfoContainer() {
+		Log.e(TAG, "getAllChartInfoContainer");
 		return allChartInfoContainer;
 	}
 
 	public static void setAllChartInfoContainer(
 			List<ChartInfoContainer> allChartInfoContainer) {
+		Log.e(TAG, "setAllChartInfoContainer");
 		Session.allChartInfoContainer = allChartInfoContainer;
-		logAllChartInfoContainer();
+		// logAllChartInfoContainer();
 	}
-	
+
 	public static ChartInfoContainer getActualChartInfoContainer() {
+		Log.e(TAG, "getActualChartInfoContainer");
 		return actualChartInfoContainer;
 	}
 
 	public static void setActualChartInfoContainer(
 			ChartInfoContainer actualChartInfoContainer) {
+		Log.e(TAG, "setActualChartInfoContainer");
 		Session.actualChartInfoContainer = actualChartInfoContainer;
 	}
 
@@ -147,34 +158,52 @@ public class Session {
 			Log.e("Session.logAllChartInfoContainer()", s);
 		}
 	}
-	
-	
+
 	// ==============================================================================
 	// ACTUAL REMOTE MONITORING
 	// ==============================================================================
 	public static Place getActualRemoteMonitoring() {
+		Log.e(TAG, "getActualRemoteMonitoring");
 		return actualRemoteMonitoring;
 	}
 
 	public static void setActualRemoteMonitoring(Place actualRemoteMonitoring) {
+		Log.e(TAG, "setActualRemoteMonitoring");
 		Session.actualRemoteMonitoring = actualRemoteMonitoring;
 	}
-	
-	
-	
+
 	// ==============================================================================
-	// CHAT CONTACT LIST + ACTUAL CHAT PARTNER
+	// CONTACT REFRESHER + CHAT CONTACT LIST + ACTUAL CHAT PARTNER
 	// ==============================================================================
+	public static void startContactRefresher() {
+		Log.e(TAG, "startContactRefresher");
+		if (contactRefresher == null) {
+			contactRefresher = new ContactListRefresherAsyncTask();
+			contactRefresher.execute(5000L);
+		}
+	}
+
+	public static void stopContactRefresher() {
+		Log.e(TAG, "stopContactRefresher");
+		if (contactRefresher != null) {
+			contactRefresher.cancel(true);
+			contactRefresher = null;
+		}
+	}
+
 	public static ChatContactList getActualChatContactList() {
+		Log.e(TAG, "getActualChatContactList");
 		return actualChatContactList;
 	}
 
 	public static void setActualChatContactList(
 			ChatContactList newChatContactList) {
+		Log.e(TAG, "setActualChatContactList");
 		Session.actualChatContactList = newChatContactList;
 	}
 
 	public static ChatContact getActualChatPartner() {
+		Log.e(TAG, "getActualChatPartner");
 		return actualChatPartner;
 	}
 
@@ -185,6 +214,7 @@ public class Session {
 	 * contacts will be not mixed.
 	 */
 	public static void setActualChatPartner(ChatContact newPartner) {
+		Log.e(TAG, "setActualChatPartner");
 		if (actualChatPartner != null) {
 			if (!(actualChatPartner.equals(newPartner))) {
 				Log.e("Session.setActualChatPartner()", "Különbözik.");
@@ -197,12 +227,27 @@ public class Session {
 		}
 	}
 
-	
-	
 	// ==============================================================================
-	// CHAT MESSAGE LIST
+	// MESSAGE REFRESHER + CHAT MESSAGE LIST
 	// ==============================================================================
+	public static void startMessageRefresher() {
+		Log.e(TAG, "startMessageRefresher");
+		if (messageRefresher == null) {
+			messageRefresher = new ChatMessagesRefresherAsyncTask();
+			messageRefresher.execute(1500l);
+		}
+	}
+
+	public static void stopMessageRefresher() {
+		Log.e(TAG, "stopMessageRefresher");
+		if (messageRefresher != null) {
+			messageRefresher.cancel(true);
+			messageRefresher = null;
+		}
+	}
+
 	public static ChatMessagesList getChatMessagesList() {
+		Log.e(TAG, "getChatMessagesList");
 		if (chatMessagesList == null) {
 			chatMessagesList = new ChatMessagesList(
 					new ArrayList<ChatMessage>());
@@ -218,7 +263,7 @@ public class Session {
 	 * the order value of the ChatMessages objects.
 	 */
 	public static void setChatMessagesList(ChatMessagesList newChatMessagesList) {
-		Log.e("Session", "setChatMessagesList()");
+		Log.e(TAG, "setChatMessagesList()");
 		if (newChatMessagesList == null) {
 			Log.e("Session.setChatmessagesList()",
 					"The newChatMessagesList parameter IS NULL!!!!");
@@ -237,6 +282,7 @@ public class Session {
 	 * actualChatPartner choosed.
 	 */
 	public static void emptyChatMessagesList() {
+		Log.e(TAG, "emptyChatMessagesList");
 		if (chatMessagesList == null) {
 			chatMessagesList = new ChatMessagesList(
 					new ArrayList<ChatMessage>());
@@ -248,7 +294,9 @@ public class Session {
 
 	public static void sortChatMessagesList() {
 		Log.e("Session", "sortChatMessagesList()");
-		Collections.sort(Session.chatMessagesList.chatMessagesList);
+		if (Session.chatMessagesList != null) {
+			Collections.sort(Session.chatMessagesList.chatMessagesList);
+		}
 	}
 
 	/**
@@ -256,6 +304,7 @@ public class Session {
 	 * from chatMessagesList or zero if the chatMessagesList is empty.
 	 */
 	public static int getLastChatMessageOrder() {
+		Log.e(TAG, "getLastChatMessageOrder");
 		if (chatMessagesList == null
 				|| chatMessagesList.chatMessagesList.isEmpty()) {
 			Log.e("LastChatMessageOrder=", "" + 0);
@@ -270,32 +319,30 @@ public class Session {
 				chatMessagesList.getChatMessagesList().size() - 1).order;
 	}
 
-
-
-
 	// ==============================================================================
 	// ACTUAL CHART
 	// ==============================================================================
 	public static Chart getActualChart() {
+		Log.e(TAG, "getActualChart");
 		return actualChart;
 	}
 
 	public static void setActualChart(Chart actualChart) {
+		Log.e(TAG, "setActualChart");
 		Session.actualChart = actualChart;
 		/* refreshChartIntervals(); */
 	}
-	
-	
-	
+
 	// ==============================================================================
 	// PROGRESS DIALOG
 	// ==============================================================================
 	public static void setProgressDialog(ProgressDialog progressDialog) {
-		Log.d(TAG, "Set progress dialog");
+		Log.d(TAG, "setProgressDialog");
 		Session.progressDialog = progressDialog;
 	}
 
 	public static void dismissProgressDialog() {
+		Log.d(TAG, "dismissProgressDialog");
 		if (progressDialog != null) {
 			Log.d(TAG, "Dismiss progress dialog");
 			progressDialog.dismiss();
@@ -304,10 +351,10 @@ public class Session {
 	}
 
 	public static void showProgressDialog() {
-		Log.d(TAG, "Show progress dialog");
+		Log.d(TAG, "showProgressDialog");
 		progressDialog.show();
 	}
-	
+
 	/*
 	 * public static Calendar getMinimalChartDate() { return minimalChartDate; }
 	 * 

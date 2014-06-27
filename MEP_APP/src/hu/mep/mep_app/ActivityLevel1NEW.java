@@ -293,7 +293,7 @@ public class ActivityLevel1NEW extends ActionBarActivity implements
 
 		if (NetThread.isOnline(context)) {
 			Session.getInstance(context).getActualCommunicationInterface()
-					.authenticateUser(username, password);
+					.authenticateUser(this, username, password);
 			if (Session.getInstance(context).getActualUser() == null) {
 				Toast.makeText(
 						context,

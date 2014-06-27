@@ -44,11 +44,12 @@ public class User {
 	boolean teacher;
 	@SerializedName("moderator")
 	boolean moderator;
+
 	@SerializedName("tavfelugyeletek")
 	PlaceList usersPlaces;
-	
+
 	Bitmap profilePicture;
-	
+
 	public int getMepID() {
 		return mepID;
 	}
@@ -61,8 +62,6 @@ public class User {
 		this.usersPlaces = usersPlaces;
 	}
 
-	
-	
 	public Bitmap getProfilePicture() {
 		return profilePicture;
 	}
@@ -73,6 +72,14 @@ public class User {
 
 	public URL getImageURL() {
 		return imageURL;
+	}
+
+	public boolean isMekut() {
+		return mekut;
+	}
+
+	public boolean isTeacher() {
+		return teacher;
 	}
 
 	public User(int mepID, String fullName, URL imageURL, boolean mekut,
@@ -93,8 +100,12 @@ public class User {
 		Log.d(TAG, "mekut=" + mekut);
 		Log.d(TAG, "teacher=" + teacher);
 		Log.d(TAG, "moderator=" + moderator);
-
+		if(this.usersPlaces != null) {
+			Log.d(TAG, "usersPlaces.count()=" + usersPlaces.places.size());
+		}
+		else {
+			Log.d(TAG, "usersPlaces is null");
+		}
 	}
-	
 
 }

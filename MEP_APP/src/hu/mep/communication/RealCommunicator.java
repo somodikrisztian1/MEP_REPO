@@ -46,6 +46,7 @@ import org.apache.http.message.BasicNameValuePair;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
@@ -122,14 +123,14 @@ public class RealCommunicator implements ICommunicator {
 
 	// TODO! Az internet kapcsolat ellenőrzést megoldani.
 	@Override
-	public void authenticateUser(String username, String password) {
+	public void authenticateUser(Activity act, String username, String password) {
 
 		if (NetThread.isOnline(context)) {
 			// Log.e("RealCommunicator", "ONLINE!!!!!!!!!");
 		} else {
 			// Log.e("RealCommunicator", "OFFLINE!!!!!!!!!");
 		}
-		AuthenticationAsyncTask authenticationAsyncTask = new AuthenticationAsyncTask(
+		AuthenticationAsyncTask authenticationAsyncTask = new AuthenticationAsyncTask(act,
 				context, username, password, MainURL);
 		try {
 			authenticationAsyncTask.execute().get();
