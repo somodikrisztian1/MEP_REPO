@@ -2,9 +2,9 @@ package hu.mep.utils.adapters;
 
 import hu.mep.datamodells.Topic;
 import hu.mep.datamodells.TopicCategory;
-import hu.mep.mep_app.ActivityLevel2NEW;
-import hu.mep.mep_app.ActivityLevel3ShowTopic;
 import hu.mep.mep_app.R;
+import hu.mep.mep_app.activities.ActivityLevel2NEW;
+import hu.mep.mep_app.activities.ActivityLevel3ShowTopic;
 import hu.mep.utils.others.FragmentLevel2EventHandler;
 
 import java.util.List;

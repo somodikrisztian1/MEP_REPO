@@ -4,6 +4,7 @@ import hu.mep.communication.ContactListRefresherAsyncTask;
 import hu.mep.datamodells.ChatContact;
 import hu.mep.datamodells.Place;
 import hu.mep.datamodells.Session;
+import hu.mep.mep_app.activities.ActivityLevel3Chat;
 import hu.mep.utils.adapters.PlaceListAdapter;
 import android.content.Intent;
 import android.os.Bundle;

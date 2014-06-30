@@ -12,11 +12,15 @@ import android.util.Log;
 public class ContactListRefresherAsyncTask extends AsyncTask<Long, Void, Void> {
 	protected static final String TAG = "ChatMessagesRefresherAsyncTask";
 	private static long WAIT_TIME;
-
+	
+	private List<ChatContact> before = null;
+	private List<ChatContact> after = null;
+	
 	@Override
 	protected void onPreExecute() {
 		super.onPreExecute();
 		Session.getActualCommunicationInterface().getChatPartners();
+		before = Session.getActualChatContactList().getContacts();
 	}
 
 	@Override
@@ -28,8 +32,7 @@ public class ContactListRefresherAsyncTask extends AsyncTask<Long, Void, Void> {
 			@Override
 			public void run() {
 				while (!isCancelled()) {
-					List<ChatContact> before = null;
-					List<ChatContact> after = null;
+					
 					if (!isCancelled()) {
 						before = Session.getActualChatContactList().getContacts();
 					}

@@ -1,7 +1,15 @@
-package hu.mep.mep_app;
+package hu.mep.mep_app.activities;
 
 import hu.mep.communication.NetThread;
 import hu.mep.datamodells.Session;
+import hu.mep.mep_app.FragmentLevel1LoginScreen;
+import hu.mep.mep_app.FragmentLevel1MainScreen;
+import hu.mep.mep_app.R;
+import hu.mep.mep_app.R.array;
+import hu.mep.mep_app.R.drawable;
+import hu.mep.mep_app.R.id;
+import hu.mep.mep_app.R.layout;
+import hu.mep.mep_app.R.string;
 import hu.mep.utils.others.FragmentLevel1EventHandler;
 import android.content.Context;
 import android.content.Intent;

@@ -3,14 +3,16 @@
     android:id="@+id/activity_thirdlevel_linear_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    >
 
 
         <ListView
             android:id="@+id/activity_thirdlevel_chat_listview"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_above="@+id/activity_thirdlevel_chat_input_edittext">
+            android:layout_above="@+id/activity_thirdlevel_chat_input_edittext"
+         	android:fadeScrollbars="false">
         </ListView>
 
     <EditText

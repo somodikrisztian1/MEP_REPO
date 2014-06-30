@@ -6,13 +6,22 @@ import android.os.AsyncTask;
 import android.util.Log;
 import hu.mep.datamodells.ChatMessage;
 import hu.mep.datamodells.Session;
-import hu.mep.mep_app.ActivityLevel3Chat;
+import hu.mep.mep_app.activities.ActivityLevel3Chat;
 
 public class ChatMessagesRefresherAsyncTask extends AsyncTask<Long, Void, Void> {
+	
+	private List<ChatMessage> before;
+	private List<ChatMessage> after;
 
 	protected static final String TAG = "ChatMessagesRefresherAsyncTask";
 	private static long WAIT_TIME;
 
+	@Override
+	protected void onPreExecute() {
+		super.onPreExecute();
+		before = Session.getChatMessagesList().getChatMessagesList();
+	}
+	
 	@Override
 	protected Void doInBackground(Long... params) {
 		WAIT_TIME = params[0];
@@ -22,20 +31,13 @@ public class ChatMessagesRefresherAsyncTask extends AsyncTask<Long, Void, Void> 
 			@Override
 			public void run() {
 				while(!isCancelled()) {
-					List<ChatMessage> before = Session.getChatMessagesList().getChatMessagesList();
+					
 					Session.getActualCommunicationInterface().getChatMessages();
-					List<ChatMessage> after = Session.getChatMessagesList().getChatMessagesList();
-					if(after.containsAll(before)) { 
-						Log.d(TAG, "NO DATA CHANGED SINCE LAST REFRESH.");
-					} else {
-						Log.d(TAG, "DATA HAS CHANGED SINCE LAST REFRESH.");
-						ActivityLevel3Chat.adapter.notifyDataSetChanged();
-					}
+					
 					try {
 						Log.e(TAG, "WAITING...");
 						Thread.sleep(WAIT_TIME);
 					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 				}
@@ -43,6 +45,20 @@ public class ChatMessagesRefresherAsyncTask extends AsyncTask<Long, Void, Void> 
 		});
 		t.start();
 		return null;
+	}
+	
+	@Override
+	protected void onPostExecute(Void result) {
+		super.onPostExecute(result);
+		after = Session.getChatMessagesList().getChatMessagesList();
+		
+		if(after.containsAll(before)) { 
+			Log.d(TAG, "NO DATA CHANGED SINCE LAST REFRESH.");
+		} else {
+			Log.d(TAG, "DATA HAS CHANGED SINCE LAST REFRESH.");
+			ActivityLevel3Chat.adapter.notifyDataSetChanged();
+		}
+		
 	}
 	
 }

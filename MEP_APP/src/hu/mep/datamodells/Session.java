@@ -199,6 +199,7 @@ public class Session {
 	public static void setActualChatContactList(
 			ChatContactList newChatContactList) {
 		Log.e(TAG, "setActualChatContactList");
+		
 		Session.actualChatContactList = newChatContactList;
 	}
 

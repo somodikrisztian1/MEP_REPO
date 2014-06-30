@@ -1,6 +1,10 @@
-package hu.mep.mep_app;
+package hu.mep.mep_app.activities;
 
 import hu.mep.datamodells.Session;
+import hu.mep.mep_app.FragmentLevel3ShowTopic;
+import hu.mep.mep_app.R;
+import hu.mep.mep_app.R.id;
+import hu.mep.mep_app.R.layout;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;

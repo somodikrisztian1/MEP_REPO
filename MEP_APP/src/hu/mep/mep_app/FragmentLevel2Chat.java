@@ -3,6 +3,7 @@ package hu.mep.mep_app;
 import hu.mep.communication.ContactListRefresherAsyncTask;
 import hu.mep.datamodells.ChatContact;
 import hu.mep.datamodells.Session;
+import hu.mep.mep_app.activities.ActivityLevel3Chat;
 import hu.mep.utils.adapters.ChatContactListAdapter;
 import android.content.Intent;
 import android.os.Bundle;

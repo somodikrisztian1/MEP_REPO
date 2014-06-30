@@ -5,6 +5,23 @@
     <string name="company_name">Megújuló\nEnergiapark</string>
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
+    
+    <string name="welcome_text">Üdvözöljük a Megújuló Energiapark alkalmazásában!\n\nAz alkalmazás használatával
+        tájékozódhat a Megújuló Energiaparkról, és amennyiben Ön regisztrált felhasználó, megfelelő jogosultságokkal
+        megtekintheti a megújuló energiaforrásokkal kapcsolatos kutatási eredményeinket, illetve gyorsan és
+         egyszerűen kezelheti távfelügyeleteit.</string>
+    
+    <string name="fragment_presentation_park_title">Bemutatópark</string>
+    <string name="bemutato_park_text_1" >„Zöld” folt az iparterület közepén,
+avagy mi található a Kishegyesi út 187. szám alatt\n\n
+2013. szeptember 10-én Debrecenben nyitotta meg kapuit a térségben
+egyedülállónak számító Megújuló Energiapark. Különlegessége, hogy az
+energiamérlege pozitív, illetve kizárólag megújuló energiát hasznosítva üzemel. A
+különböző, efféle energiát hasznosító rendszerek működtetésénél viszont nagyon
+fontos, hogy ezek hatékonysága növelhető legyen. Erre az alapkoncepcióra alapult ez
+a park: megismertetni, bemutatni, kutatni, elősegíteni a fejlődést.</string>
+    
+    
     <string name="fragment_login_screen_login_button_text">Bejelentkezés</string>
     
     <string name="contact_address">4031 Debrecen,\nKishegyesi út 187.</string>

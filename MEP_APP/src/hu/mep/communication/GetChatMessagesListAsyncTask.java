@@ -2,7 +2,7 @@ package hu.mep.communication;
 
 import hu.mep.datamodells.ChatMessagesList;
 import hu.mep.datamodells.Session;
-import hu.mep.mep_app.ActivityLevel3Chat;
+import hu.mep.mep_app.activities.ActivityLevel3Chat;
 import hu.mep.utils.deserializers.ChatMessagesListDeserializer;
 
 import java.io.BufferedReader;

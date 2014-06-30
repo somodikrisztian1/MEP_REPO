@@ -1,8 +1,11 @@
-package hu.mep.mep_app;
+package hu.mep.mep_app.activities;
 
 import hu.mep.communication.ChatMessagesRefresherAsyncTask;
 import hu.mep.datamodells.ChatMessage;
 import hu.mep.datamodells.Session;
+import hu.mep.mep_app.R;
+import hu.mep.mep_app.R.id;
+import hu.mep.mep_app.R.layout;
 import hu.mep.utils.adapters.ChatMessagesListAdapter;
 import android.app.Activity;
 import android.os.Bundle;

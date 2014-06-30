@@ -1,7 +1,12 @@
-package hu.mep.mep_app;
+package hu.mep.mep_app.activities;
 
 import hu.mep.datamodells.Session;
 import hu.mep.datamodells.Topic;
+import hu.mep.mep_app.ActivityLevel2SectionsPagerAdapter;
+import hu.mep.mep_app.R;
+import hu.mep.mep_app.R.id;
+import hu.mep.mep_app.R.layout;
+import hu.mep.mep_app.R.menu;
 import hu.mep.utils.others.FragmentLevel2EventHandler;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -36,7 +41,7 @@ public class ActivityLevel2NEW extends ActionBarActivity implements
 
 		mViewPager = (ViewPager) findViewById(R.id.activity_secondlevel_pager);
 		mViewPager.setAdapter(mSectionsPagerAdapter);
-
+		mViewPager.setOffscreenPageLimit(2);
 		mViewPager
 				.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
 					@Override
@@ -51,6 +56,7 @@ public class ActivityLevel2NEW extends ActionBarActivity implements
 		mActionBar.setDisplayShowTitleEnabled(false);
 		mActionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 		addTabsForActionBar();
+		
 		
 		if (Session.getActualUser().isMekut()) {
 			Session.getInstance(getApplicationContext())

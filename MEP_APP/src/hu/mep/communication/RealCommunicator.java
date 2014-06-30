@@ -8,7 +8,7 @@ import hu.mep.datamodells.Place;
 import hu.mep.datamodells.PlaceList;
 import hu.mep.datamodells.User;
 import hu.mep.datamodells.Session;
-import hu.mep.mep_app.ActivityLevel3Chat;
+import hu.mep.mep_app.activities.ActivityLevel3Chat;
 import hu.mep.utils.deserializers.ChatContactListDeserializer;
 import hu.mep.utils.deserializers.ChatMessagesListDeserializer;
 import hu.mep.utils.deserializers.PlaceListDeserializer;

@@ -18,7 +18,7 @@
         android:label="@string/app_name"
         android:theme="@style/Theme.AppCompat.Light" >
         <activity
-            android:name="hu.mep.mep_app.ActivityLevel1"
+            android:name="hu.mep.mep_app.activities.ActivityLevel1"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -27,12 +27,18 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="hu.mep.mep_app.ActivityLevel3Chat"
+            android:name="hu.mep.mep_app.activities.ActivityLevel2NEW"
             android:label="@string/app_name" >
         </activity>
-        <activity android:name="hu.mep.mep_app.ActivityLevel2NEW" >
+        <activity
+            android:name="hu.mep.mep_app.activities.ActivityLevel3Chat"
+            android:label="@string/app_name" >
         </activity>
-        <activity android:name="hu.mep.mep_app.ActivityLevel3ShowTopic" android:screenOrientation="landscape" >
+        <activity android:name="hu.mep.mep_app.activities.ActivityLevel3RemoteMonitoring" >
+        </activity>
+        <activity
+            android:name="hu.mep.mep_app.activities.ActivityLevel3ShowTopic"
+            android:screenOrientation="landscape" >
         </activity>
     </application>
 
