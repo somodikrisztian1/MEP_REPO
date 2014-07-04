@@ -1,26 +1,11 @@
 package hu.mep.communication;
 
-import hu.mep.datamodells.ChatContact;
-import hu.mep.datamodells.ChatContactList;
-import hu.mep.datamodells.ChatMessage;
-import hu.mep.datamodells.ChatMessagesList;
-import hu.mep.datamodells.Place;
-import hu.mep.datamodells.PlaceList;
-import hu.mep.datamodells.User;
 import hu.mep.datamodells.Session;
-import hu.mep.mep_app.activities.ActivityLevel3Chat;
-import hu.mep.utils.deserializers.ChatContactListDeserializer;
-import hu.mep.utils.deserializers.ChatMessagesListDeserializer;
-import hu.mep.utils.deserializers.PlaceListDeserializer;
-import hu.mep.utils.others.MD5Encoder;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
+import java.io.InputStreamReader;
 import java.sql.Date;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -30,7 +15,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Formatter.BigDecimalLayoutForm;
 import java.util.concurrent.ExecutionException;
 
 import org.apache.http.HttpResponse;
@@ -38,22 +22,14 @@ import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.Bitmap.Config;
-import android.graphics.BitmapFactory;
-import android.os.AsyncTask.Status;
-import android.support.v7.app.ActionBar;
-import android.util.Log;
 
 public class RealCommunicator implements ICommunicator {
 
@@ -95,6 +71,28 @@ public class RealCommunicator implements ICommunicator {
 		HttpResponse response = httpclient.execute(httppost);
 		String data = new BasicResponseHandler().handleResponse(response);
 		return data;
+	}
+	
+	public static String dohttpGet(String fullURI) {
+		String response = "";
+		
+		DefaultHttpClient client = new DefaultHttpClient();
+		HttpGet httpGet = new HttpGet(fullURI);
+		try {
+			HttpResponse execute = client.execute(httpGet);
+			InputStream content = execute.getEntity().getContent();
+
+			BufferedReader buffer = new BufferedReader(new InputStreamReader(
+					content));
+			String s = "";
+			while ((s = buffer.readLine()) != null) {
+				response += s;
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return response;
 	}
 
 	@Override
@@ -145,36 +143,17 @@ public class RealCommunicator implements ICommunicator {
 
 	@Override
 	public void getChatPartners() {
-		GetContactListAsyncTask getContactListAsyncTask = new GetContactListAsyncTask(
-				context, MainURL);
-		// TODO! Ide sem kell majd a .get() Most azért van ott, mert logolni
-		// akarom az eredményt, muszáj megvárni
-		// a szál végrehajtódását!
-		try {
-			getContactListAsyncTask.execute().get();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ExecutionException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		// Log.e("RealCommunicator.getChatPartners()","Chat partnerek frissítése...");
+		/*GetContactListAsyncTask getContactListAsyncTask = new GetContactListAsyncTask(
+				context, MainURL);*/
+		GetContactListAsyncTaskNEW getContactListAsyncTask = new GetContactListAsyncTaskNEW(context, MainURL);
+		getContactListAsyncTask.execute();
 	}
 
 	@Override
 	public void getTopicList() {
 		GetTopicListAsyncTask getTopicListAsyncTask = new GetTopicListAsyncTask(
 				context, MainURL);
-		try {
-			getTopicListAsyncTask.execute().get();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ExecutionException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		getTopicListAsyncTask.execute();
 
 	}
 

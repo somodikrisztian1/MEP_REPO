@@ -5,10 +5,17 @@ import hu.mep.communication.ContactListRefresherAsyncTask;
 import hu.mep.communication.ICommunicator;
 import hu.mep.communication.RealCommunicator;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.util.Log;
@@ -39,12 +46,12 @@ public class Session {
 	private static ChatMessagesRefresherAsyncTask messageRefresher = new ChatMessagesRefresherAsyncTask();
 
 	private static ProgressDialog progressDialog;
+	private static AlertDialog alertDialog;
 
-	/*
-	 * private static Calendar minimalChartDate; private static Calendar
-	 * maximalChartDate; private static double minimalChartValue; private static
-	 * double maximalChartValue;
-	 */
+	public static Calendar beginChartDate;
+	public static Calendar endChartDate;
+	public static double minimalChartValue;
+	public static double maximalChartValue;
 
 	// ==============================================================================
 	// SESSION + COMMUNICATION
@@ -76,7 +83,7 @@ public class Session {
 	// ACTUAL USER
 	// ==============================================================================
 	public static User getActualUser() {
-		Log.e(TAG, "getActualUser");
+		// Log.e(TAG, "getActualUser");
 		return actualUser;
 	}
 
@@ -192,14 +199,14 @@ public class Session {
 	}
 
 	public static ChatContactList getActualChatContactList() {
-		Log.e(TAG, "getActualChatContactList");
+		// Log.e(TAG, "getActualChatContactList");
 		return actualChatContactList;
 	}
 
 	public static void setActualChatContactList(
 			ChatContactList newChatContactList) {
 		Log.e(TAG, "setActualChatContactList");
-		
+
 		Session.actualChatContactList = newChatContactList;
 	}
 
@@ -331,24 +338,15 @@ public class Session {
 	public static void setActualChart(Chart actualChart) {
 		Log.e(TAG, "setActualChart");
 		Session.actualChart = actualChart;
-		/* refreshChartIntervals(); */
+		refreshChartIntervals();
 	}
 
 	// ==============================================================================
-	// PROGRESS DIALOG
+	// PROGRESS DIALOG + ALERT DIALOG
 	// ==============================================================================
 	public static void setProgressDialog(ProgressDialog progressDialog) {
 		Log.d(TAG, "setProgressDialog");
 		Session.progressDialog = progressDialog;
-	}
-
-	public static void dismissProgressDialog() {
-		Log.d(TAG, "dismissProgressDialog");
-		if (progressDialog != null) {
-			Log.d(TAG, "Dismiss progress dialog");
-			progressDialog.dismiss();
-			progressDialog = null;
-		}
 	}
 
 	public static void showProgressDialog() {
@@ -356,36 +354,99 @@ public class Session {
 		progressDialog.show();
 	}
 
-	/*
-	 * public static Calendar getMinimalChartDate() { return minimalChartDate; }
-	 * 
-	 * public static Calendar getMaximalChartDate() { return maximalChartDate; }
-	 * 
-	 * public static double getMinimalChartValue() { return minimalChartValue; }
-	 * 
-	 * public static double getMaximalChartValue() { return maximalChartValue; }
-	 * 
-	 * private static void refreshChartIntervals() { double minValue =
-	 * Double.MAX_VALUE; double maxValue = Double.MIN_VALUE; Calendar minDate =
-	 * null; Calendar maxDate = null; try { minDate = Calendar.getInstance();
-	 * maxDate = Calendar.getInstance(); maxDate.setTime(new
-	 * SimpleDateFormat("yyyy.MM.dd hh:mm:ss").parse("1900.01.01 00:00:00")); }
-	 * catch (ParseException e) { e.printStackTrace(); }
-	 * 
-	 * Map.Entry<Calendar, Double> keyValuePair; Calendar date; Double value; if
-	 * (actualChart.getSubCharts() != null) { if
-	 * (!actualChart.getSubCharts().isEmpty()) { for (SubChart actSubChart :
-	 * Session.getActualChart() .getSubCharts()) { Iterator<Entry<Calendar,
-	 * Double>> it = actSubChart .getChartValues().entrySet().iterator(); while
-	 * (it.hasNext()) { keyValuePair = it.next(); date = keyValuePair.getKey();
-	 * value = keyValuePair.getValue(); if (date.after(maxDate)) { maxDate =
-	 * date; } if (date.before(minDate)) { minDate = date; } if (value >
-	 * maxValue) { maxValue = value; } if (value < minValue) { minValue = value;
-	 * } } } maximalChartDate = maxDate; minimalChartDate = minDate;
-	 * maximalChartValue = maxValue; minimalChartValue = minValue;
-	 * Log.d("maximalChartDate", "" + maximalChartDate);
-	 * Log.d("minimalChartDate", "" + minimalChartDate);
-	 * Log.d("maximalChartValue", "" + maximalChartValue);
-	 * Log.d("minimalChartValue", "" + minimalChartValue); } } }
-	 */
+	public static void dismissAndMakeNullProgressDialog() {
+		if (progressDialog != null) {
+			Log.d(TAG, "Dismiss progress dialog");
+			progressDialog.dismiss();
+			progressDialog = null;
+		}
+	}
+
+	public static void setAlertDialog(AlertDialog ad) {
+		Log.d(TAG, "setAlertDialog");
+		Session.alertDialog = ad;
+	}
+
+	public static void showAlertDialog() {
+		Log.d(TAG, "showAlertDialog");
+		alertDialog.show();
+	}
+
+	public static void dismissAndMakeNullAlertDialog() {
+		if (alertDialog != null) {
+			Log.d(TAG, "Dismiss alert dialog");
+			alertDialog.dismiss();
+			alertDialog = null;
+		}
+	}
+
+	public static Calendar getMinimalChartDate() {
+		return beginChartDate;
+	}
+
+	public static Calendar getMaximalChartDate() {
+		return endChartDate;
+	}
+
+	public static double getMinimalChartValue() {
+		return minimalChartValue;
+	}
+
+	public static double getMaximalChartValue() {
+		return maximalChartValue;
+	}
+
+	public static void refreshChartIntervals() {
+		double minValue = Double.MAX_VALUE;
+		double maxValue = Double.MIN_VALUE;
+		Calendar minDate = null;
+		Calendar maxDate = null;
+		try {
+			minDate = Calendar.getInstance();
+			maxDate = Calendar.getInstance();
+			maxDate.setTime(new SimpleDateFormat("yyyy.MM.dd hh:mm:ss")
+					.parse("1900.01.01 00:00:00"));
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+
+		Map.Entry<Calendar, Double> keyValuePair;
+		Calendar date;
+		Double value;
+		if (actualChart.getSubCharts() != null) {
+			if (!actualChart.getSubCharts().isEmpty()) {
+				for (SubChart actSubChart : Session.getActualChart()
+						.getSubCharts()) {
+					Iterator<Entry<Calendar, Double>> it = actSubChart
+							.getChartValues().entrySet().iterator();
+					while (it.hasNext()) {
+						keyValuePair = it.next();
+						date = keyValuePair.getKey();
+						value = keyValuePair.getValue();
+						if (date.after(maxDate)) {
+							maxDate = date;
+						}
+						if (date.before(minDate)) {
+							minDate = date;
+						}
+						if (value > maxValue) {
+							maxValue = value;
+						}
+						if (value < minValue) {
+							minValue = value;
+						}
+					}
+				}
+				endChartDate = maxDate;
+				beginChartDate = minDate;
+				maximalChartValue = maxValue;
+				minimalChartValue = minValue;
+				Log.d("maximalChartDate", "" + endChartDate);
+				Log.d("minimalChartDate", "" + beginChartDate);
+				Log.d("maximalChartValue", "" + maximalChartValue);
+				Log.d("minimalChartValue", "" + minimalChartValue);
+			}
+		}
+	}
+
 }

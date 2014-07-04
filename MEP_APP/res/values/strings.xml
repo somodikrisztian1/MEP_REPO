@@ -2,45 +2,58 @@
 <resources>
 
     <string name="app_name">MEP APP</string>
-    <string name="company_name">Megújuló\nEnergiapark</string>
-    <string name="drawer_open">Open navigation drawer</string>
-    <string name="drawer_close">Close navigation drawer</string>
+
+    <string name="fragment_firstlevel_mainscreen_welcome_text">Üdvözöljük a Megújuló Energiapark alkalmazásában!\n\nAz alkalmazás használatával tájékozódhat a Megújuló Energiaparkról, és amennyiben Ön regisztrált felhasználó, megfelelő jogosultságokkal megtekintheti a megújuló energiaforrásokkal kapcsolatos kutatási eredményeinket, illetve gyorsan és egyszerűen kezelheti távfelügyeleteit.</string>
     
-    <string name="welcome_text">Üdvözöljük a Megújuló Energiapark alkalmazásában!\n\nAz alkalmazás használatával
-        tájékozódhat a Megújuló Energiaparkról, és amennyiben Ön regisztrált felhasználó, megfelelő jogosultságokkal
-        megtekintheti a megújuló energiaforrásokkal kapcsolatos kutatási eredményeinket, illetve gyorsan és
-         egyszerűen kezelheti távfelügyeleteit.</string>
+    <string name="fragment_firstlevel_representation_park_page_title">Bemutatópark</string>
+    <string name="fragment_firstlevel_representation_park_text_title_1">„Zöld” folt az iparterület közepén, avagy mi található a Kishegyesi út 187. szám alatt</string>
+    <string name="fragment_firstlevel_representation_park_text_content_1_1">2013. szeptember 10-én Debrecenben nyitotta meg kapuit a térségben egyedülállónak számító Megújuló Energiapark. Különlegessége, hogy az energiamérlege pozitív, illetve kizárólag megújuló energiát hasznosítva üzemel. A különböző, efféle energiát hasznosító rendszerek működtetésénél viszont nagyon fontos, hogy ezek hatékonysága növelhető legyen. Erre az alapkoncepcióra alapult ez a park: megismertetni, bemutatni, kutatni, elősegíteni a fejlődést.</string>
+    <string name="fragment_firstlevel_representation_park_text_content_1_2">A Megújuló Energiapark saját hálózatára minden érdeklődő kutató regisztrálhat és hozzáférhet a mért és tárolt rendszeradatokhoz, mérési eredményekhez. A park tehát segíti a különböző szakemberek, illetve az egyetemek, elsősorban a Debreceni Egyetem hallgatóinak tudományos munkáját.</string>
+    <string name="fragment_firstlevel_representation_park_text_title_2">De mit nyújt azoknak, akiknek nem ez a szakterületük?</string>
+    <string name="fragment_firstlevel_representation_park_text_content_2_1">Fontos leszögezni, hogy az Energiapark egyik fő célja, hogy ne csak azok találkozzanak testközelből ezekkel a technológiákkal, akik szeretnének befektetni, hanem azok is, akik információra vágynak velük kapcsolatosan. Széleskörűbb tájékozottságot ad az, ha az ember látja ezeket az eszközöket működés közben. Ezáltal annak is megjöhet a kedve az efféle energia használatára, aki esetleg még nem is kacérkodott eddig a gondolattal.</string>
+    <string name="fragment_firstlevel_representation_park_text_content_2_2">A Megújuló Energiapark korántsem különleges űrkütyüket mutat be, egyszerűen arról van szó, hogy ezeket az eszközöket még nem lehet látni elterjedve az országban, főleg nem így egymás mellett működve. Ennek többek között az az oka, hogy a sokszor negatív propaganda elveszi az egyébként bizonytalan érdeklődő kedvét: túl drága, nem térül meg, bonyolult beszereltetni, folyamatos karbantartást és felügyeletet igényel, stb. Ezeknek az előítéleteknek és sztereotípiáknak az ellensúlyozására láthatunk példákat a parkban, és tájékozódhatunk arról, hogy valójában hogyan is működik ez a gyakorlatban.</string>
+    <string name="fragment_firstlevel_representation_park_text_title_3">Mivel találkozhat az az érdeklődő, aki ide betér?</string>
+    <string name="fragment_firstlevel_representation_park_text_content_3_1">A komplexum egyik legérdekesebb része maga az épület, amelyet beton vázszerkezet tart össze, a falai pedig szalmabálából épültek. Ez az építkezési mód a régi időkből származik, és a stabilitása illetve a nagyon jó hőszigetelő hatás miatt egyre elterjedtebbé vált. A gyerekek számára pedig izgalmas, testhezálló időtöltés lehet az udvaron található szalmabála-labirintusból való kijutás.</string>
+    <string name="fragment_firstlevel_representation_park_text_content_3_2">Az épület fűtési- és hűtési rendszere összetett, a hőenergia előállítása különféle módszerekkel történik. A manapság ismertté váló napkollektor mellett hőszivattyúk és egy vízteres cserépkályha segít abban, hogy a hőmérséklet a legkeményebb fagyban is kellemes legyen odabent. Nyáron pedig a fan coil-ok használata váltja ki a klímát, hűvösen tartva az épületet.</string>
+    <string name="fragment_firstlevel_representation_park_text_content_3_3">A napelem -melyet gyakran szoktak keverni a napkollektorral- a szükséges elektromos áramot állítja elő. Ennek több fajtája is megtekinthető, természetesen működés közben a Megújuló Energiaparkban. Az udvaron a fent említett eszközök mellett található egy meteorológiai állomás is. Az általa mért adatok elsősorban a városklímakutatásokhoz, valamint a napelemek hatásfokának vizsgálatához és növeléséhez használatosak.</string>
+    <string name="fragment_firstlevel_representation_park_text_content_3_4">A geotermikus energia felhasználására aquapóniás rendszer épül, a kivitelezés nemrég kezdődött el. A felsorolt eszközök és technológiák vizsgálatában, az eredmények értékelésében a Debreceni Egyetem oktatói és kutatói vesznek részt.</string>
+    <string name="fragment_firstlevel_representation_park_text_content_3_5">A Megújuló Energiapark csapata fontos feladatául tűzte ki, hogy a fiatalabb korosztály részére is megfelelő tájékoztatást adjon, nekik való stílusban. A kutatók éjszakáján való részvétel és a részletes programpaletta is ezt bizonyítja.</string>
+   
+    <string name="fragment_firstlevel_research_center_text_content_0">A hagyományos energiahordozó-készletek apadásával egyre fontosabb a megújuló energiák megismerése és megismertetése. Ez a gondolat az alapja a kutatási, oktatási tevékenység támogatásának.</string>
+    <string name="fragment_firstlevel_research_center_text_content_1"> A parkban található minden megújuló energiát hasznosító eszköz és a szalmabálafal is szenzorokkal van felszerelve, az ezek által mért és tárolt adatok, illetve a meteorológiai állomás mérései rögtön felkerülnek a Megújuló Energiapark saját intranet hálózatára. Ide minden érdeklődő kutató regisztrálhat és hozzáférhet a mért és tárolt rendszeradatokhoz, mérési eredményekhez. A park tehát segíti a különböző szakemberek, illetve az egyetemek, elsősorban a Debreceni Egyetem oktatóinak és hallgatóinak tudományos munkáját.</string>
+    <string name="fragment_firstlevel_research_center_text_content_2">A Megújuló Energiaparkban kihelyezett tanórák szoktak zajlani középiskolások és egyetemisták számára, illetve a jövőben változatos programokkal kíván a MEP csapata aktívan részt venni a megújuló energetika népszerűsítésében és a hozzá kapcsolódó ismeretterjesztésben.</string>
+    <string name="fragment_firstlevel_research_center_text_content_3">Ilyen esemény volt 2013-ban a Kutatók éjszakája, ahol a Debreceni Egyetem oktatói tartottak előadást, és számtalan érdekes feladat várta a gyerekeket is. Az egyik legnépszerűbb program az volt, amikor a hőmérsékletmérő szenzorokkal felszerelt ballont bocsátottak fel 100 méterre, az ottani légköri viszonyok vizsgálata érdekében. </string>
     
-    <string name="fragment_presentation_park_title">Bemutatópark</string>
-    <string name="bemutato_park_text_1" >„Zöld” folt az iparterület közepén,
-avagy mi található a Kishegyesi út 187. szám alatt\n\n
-2013. szeptember 10-én Debrecenben nyitotta meg kapuit a térségben
-egyedülállónak számító Megújuló Energiapark. Különlegessége, hogy az
-energiamérlege pozitív, illetve kizárólag megújuló energiát hasznosítva üzemel. A
-különböző, efféle energiát hasznosító rendszerek működtetésénél viszont nagyon
-fontos, hogy ezek hatékonysága növelhető legyen. Erre az alapkoncepcióra alapult ez
-a park: megismertetni, bemutatni, kutatni, elősegíteni a fejlődést.</string>
-    
+    <string name="fragment_firstlevel_about_remote_text_content_0">Minden újonnan telepített napelemes-, napkollektoros- és fűtési rendszernél lassan alapkövetelménnyé válik a távfelügyelet kiépítése. Ez elősegíti azt, hogy a rendszer működésének biztonságát jelentősen növeljük. A Megújuló Energiapark minden újonnan épített rendszer esetében - ahol lehetőség van internetes elérésre - javasolja a távfelügyelet kiépítését. A felügyelet legfőbb előnye, hogy minden ügyfél és a Megújuló Energiapark is azonnal értesül arról, ha a rendszer működésében valamilyen rendellenesség tapasztalható, és ezt vagy távolról meg lehet oldani, vagy a lehető legrövidebb időn belül javíthatóvá válik.</string>
+    <string name="fragment_firstlevel_about_remote_text_title_1">Napelemes rendszerek</string>
+    <string name="fragment_firstlevel_about_remote_text_content_1">A hálózatra tápláló napelemes rendszerek esetében a távfelügyelet segítségével folyamatosan nyomonkövethetővé válnak az inverterek termelési adatai. Amennyiben egyáltalán nem termelnek, vagy csak a meteorológiai viszonyokhoz képest csekély mértékű termelést adnak le, úgy a hibát azonnal továbbítja a rendszer. Amennyivel egy-egy telephelyen több inverter található, a távfelügyelet szoftvere folyamatosan összehasonlítja ezek értékeit, és ha túl nagy eltérések tapasztalhatóak ezek között, úgy erről is értesítést küld.</string>
+    <string name="fragment_firstlevel_about_remote_text_title_2">Napkollektoros rendszerek</string>
+    <string name="fragment_firstlevel_about_remote_text_content_2">A napkollektoros rendszerek esetében a kezelőfelületen számos paraméter beállíthatóvá válik a távfelügyelet segítségével. A napkollektoros rendszerek meglehetősen nagy karbantartásigényű rendszerek, de a távfelügyelet segítségével a keletkező hiba okát messziről meg lehet állapítani és vagy távolról javítható, vagy egy szervizegységet a lehető legrövidebb időn belül a helyszínre küldve elhárítható a rendellenesség, hogy a napkollektoros rendszer zavartalanul működhessen. A távfelügyelet másik nagy előnye az, hogy az ügyfelek meggyőződhetnek a napi megtakarításaikról, ugyanis a rendszer minden nap rögzíti a ezeket, ezáltal egyértelművé téve a rendszer hatékonyságát.</string>
+    <string name="fragment_firstlevel_about_remote_text_title_3">	Fűtési- és hűtési rendszerek</string>
+    <string name="fragment_firstlevel_about_remote_text_content_3">A fűtési és hűtési rendszerek esetében a távfelügyeletes rendszer szintén egyszerűen kivitelezhető, és fontos lehetőséget biztosít a tulajdonosa számára azzal kapcsolatban, hogy az épületben, vagy épületrészben hány fokos hőmérsékletet kíván beállítani. Ezt interneten keresztül egyszerűen meg is teheti, és amennyiben jelentős eltérés mutatkozik a kívánt értéktől, és ezáltal valamilyen hiba következett be, arról azonnal értesül a beruházó. </string>
     
     <string name="fragment_login_screen_login_button_text">Bejelentkezés</string>
-    
+   
+    <string name="company_name">Megújuló\nEnergiapark</string>
     <string name="contact_address">4031 Debrecen,\nKishegyesi út 187.</string>
     <string name="contact_phone_number">06-70/604-54-64</string>
-	<string name="contact_mail">info@megujuloenergiapark.hu</string>
-	<string name="contact_opening_hours">Minden hétköznap\n8:00 - 16:00-ig</string>
-	
-	<string name="fragment_main_screen_title">Kezdőlap</string>
-	
-	<string name="hint_for_login_activity_username_textview">Felhasználónév</string>
-	<string name="hint_for_login_activity_password_textview">Jelszó</string>
+    <string name="contact_mail">info@megujuloenergiapark.hu</string>
+    <string name="contact_opening_hours">Minden hétköznap\n8:00 - 16:00-ig</string>
+    <string name="fragment_main_screen_title">Kezdőlap</string>
+   
+    <string name="hint_for_login_activity_username_textview">Felhasználónév</string>
+    <string name="hint_for_login_activity_password_textview">Jelszó</string>
+   
     
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
     <string-array name="activity_level1_drawer_items_list">
         <item>Bemutatópark</item>
         <item>Kutatóközpont</item>
         <item>Távfelügyeletről</item>
         <item>Elérhetőségek</item>
     </string-array>
-    
+
     <string name="login">Bejelentkezés</string>
-    
+
 </resources>

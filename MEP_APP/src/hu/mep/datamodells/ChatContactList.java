@@ -2,6 +2,8 @@ package hu.mep.datamodells;
 
 import java.util.List;
 
+import android.graphics.Bitmap;
+
 public class ChatContactList {
 	List<ChatContact> contacts;
 
@@ -18,5 +20,15 @@ public class ChatContactList {
 		this.contacts = contacts;
 	}
 
+	public Bitmap getImageFromContactID(int id) {
+		Bitmap result = null;
+		for (ChatContact actContact : this.contacts) {
+			if(actContact.getUserID() == id) {
+				result = actContact.getProfilePicture();
+			}
+		}
+		return result;
+	}
+	
 	
 }

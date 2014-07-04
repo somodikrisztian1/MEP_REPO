@@ -1,5 +1,8 @@
 package hu.mep.mep_app.activities;
 
+import java.util.concurrent.ExecutionException;
+
+import hu.mep.communication.ActivityLevel2PreloaderAsyncTask;
 import hu.mep.datamodells.Session;
 import hu.mep.datamodells.Topic;
 import hu.mep.mep_app.ActivityLevel2SectionsPagerAdapter;
@@ -15,14 +18,17 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBar.Tab;
+import android.support.v7.app.ActionBar.TabListener;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
 public class ActivityLevel2NEW extends ActionBarActivity implements
-		ActionBar.TabListener, FragmentLevel2EventHandler {
+		TabListener, FragmentLevel2EventHandler {
 
+	private static final String TAG = "ActivityLevel2NEW";
 	ActionBar mActionBar;
 	Tab tabTopics;
 	Tab tabRemoteMonitorings;
@@ -34,8 +40,25 @@ public class ActivityLevel2NEW extends ActionBarActivity implements
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		Session.setProgressDialog(prepareProgressDialogForLoading());
+		Session.showProgressDialog();
+		
+		ActivityLevel2PreloaderAsyncTask at = new ActivityLevel2PreloaderAsyncTask();
+		try {
+			at.execute().get();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ExecutionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		setContentView(R.layout.activity_secondlevel);
-
+		
+		
+		
 		mSectionsPagerAdapter = new ActivityLevel2SectionsPagerAdapter(
 				getSupportFragmentManager());
 
@@ -49,7 +72,7 @@ public class ActivityLevel2NEW extends ActionBarActivity implements
 						mActionBar.setSelectedNavigationItem(position);
 					}
 				});
-
+		
 		mActionBar = getSupportActionBar();
 		mActionBar.setDisplayShowHomeEnabled(true);
 		mActionBar.setDisplayHomeAsUpEnabled(true);
@@ -57,11 +80,7 @@ public class ActivityLevel2NEW extends ActionBarActivity implements
 		mActionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 		addTabsForActionBar();
 		
-		
-		if (Session.getActualUser().isMekut()) {
-			Session.getInstance(getApplicationContext())
-					.getActualCommunicationInterface().getTopicList();
-		}
+		Session.dismissAndMakeNullProgressDialog();
 	}
 
 	private void addTabsForActionBar() {
@@ -92,6 +111,7 @@ public class ActivityLevel2NEW extends ActionBarActivity implements
 	@Override
 	public void onTopicSelected(Topic selectedTopic) {
 		Session.setActualTopic(selectedTopic);
+		Session.stopContactRefresher();
 		Intent i = new Intent(this, ActivityLevel3ShowTopic.class);
 		startActivity(i);
 
@@ -112,26 +132,57 @@ public class ActivityLevel2NEW extends ActionBarActivity implements
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		if (item.getItemId() == R.id.action_logoff) {
-			onBackPressed();
+			Log.e(TAG, "Stopping refresher tasks");
 			Session.stopContactRefresher();
 			Session.stopMessageRefresher();
 			
+			Log.e(TAG, "Session.setActualChart(null);");
 			Session.setActualChart(null);
+			
+			Log.e(TAG, "Session.setActualChartInfoContainer(null);");
 			Session.setActualChartInfoContainer(null);
+
+			Log.e(TAG, "Session.setAllChartInfoContainer(null);");
 			Session.setAllChartInfoContainer(null);
+			
+			Log.e(TAG, "Session.setActualTopic(null);");
 			Session.setActualTopic(null);
+			
+			Log.e(TAG, "Session.setAllTopicsList(null);");
 			Session.setAllTopicsList(null);
 			
+			Log.e(TAG, "Session.setChatMessagesList(null);");
 			Session.setChatMessagesList(null);
+			
+			Log.e(TAG, "Session.setActualChatPartner(null);");
 			Session.setActualChatPartner(null);
+			
+			Log.e(TAG, "Session.setActualChatContactList(null);");
 			Session.setActualChatContactList(null);
 
+			Log.e(TAG, "Session.setActualRemoteMonitoring(null);");
 			Session.setActualRemoteMonitoring(null);
 			
+			Log.e(TAG, "Session.setActualUser(null);");
 			Session.setActualUser(null);
 			
+			onBackPressed();
 		}
 		return super.onOptionsItemSelected(item);
 	}
+	
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		Log.e(TAG, "##########################ONDESTROY##################################");
+	}
 
+	private ProgressDialog prepareProgressDialogForLoading() {
+		ProgressDialog pd = new ProgressDialog(ActivityLevel2NEW.this);
+		pd.setCancelable(false);
+		pd.setTitle("Kérem várjon!");
+		pd.setMessage("Adatok letöltése folyamatban...");
+		return pd;
+	}
+	
 }

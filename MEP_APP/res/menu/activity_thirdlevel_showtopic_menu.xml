@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto" >
+
+    <item
+        android:id="@+id/action_datetime_begin"
+        android:title="-tól"
+        app:showAsAction="always"/>
+    <item
+        android:id="@+id/action_datetime_end"
+        android:title="-ig"
+        app:showAsAction="always"/>
+	<item 
+	    android:id="@+id/action_datetime_refresh_button"
+	    android:title="Frissít"
+	    android:icon="@drawable/ic_action_refresh"
+	    app:showAsAction="always"/>
+    <!-- Settings, should always be in the overflow -->
+    <item
+        android:id="@+id/action_settings"
+        android:title="settings"
+        android:visible="false"
+        app:showAsAction="never"/>
+
+</menu>

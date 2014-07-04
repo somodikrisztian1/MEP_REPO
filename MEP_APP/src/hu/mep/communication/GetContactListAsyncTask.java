@@ -12,6 +12,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -31,6 +32,7 @@ public class GetContactListAsyncTask extends AsyncTask<Void, Void, String> {
 	String hostURI;
 	String resourceURI;
 	Context context;
+	ChatContactList before = new ChatContactList(new ArrayList<ChatContact>());
 
 	public GetContactListAsyncTask(Context context, String hostURI) {
 		this.context = context;
@@ -79,6 +81,9 @@ public class GetContactListAsyncTask extends AsyncTask<Void, Void, String> {
 
 		for (ChatContact actContact : Session.getInstance(context)
 				.getActualChatContactList().getContacts()) {
+			if(isCancelled()) {
+				break;
+			}
 			if (actContact.getProfilePicture() == null) {
 				//Log.e("GetContactListAsyncTask", actContact.getName());
 				//Log.e("GetContactListAsyncTask", "Kép letöltése...");
@@ -93,7 +98,20 @@ public class GetContactListAsyncTask extends AsyncTask<Void, Void, String> {
 		try {
 			Bitmap bmp;
 			if (contact.getProfilePicture() == null) {
-				URL imgURL = new URL(contact.getImageURL());
+				URL imgURL = null;
+				if (contact.getImageURL().toUpperCase().endsWith(".JPG")
+						|| contact.getImageURL().toUpperCase().endsWith(".JPEG")
+						|| contact.getImageURL().toUpperCase().endsWith(".PNG")
+						|| contact.getImageURL().toUpperCase().endsWith(".GIF")
+						|| contact.getImageURL().toUpperCase().endsWith(".BMP")) {
+					imgURL = new URL(contact.getImageURL());
+				} else {
+					imgURL = new URL(
+							"http://megujuloenergiapark.hu/images/avatar/empty.jpg");
+				}
+				Log.e("GetContactListAsyncTask", contact.getName());
+				Log.e("GetContactListAsyncTask", "Kép letöltése...");
+
 				HttpURLConnection connection = (HttpURLConnection) imgURL
 						.openConnection();
 				connection.setDoInput(true);

@@ -43,14 +43,14 @@ public class ContactListRefresherAsyncTask extends AsyncTask<Long, Void, Void> {
 						after = Session.getActualChatContactList().getContacts();
 					}
 					if (before != null && after != null) {
-						if (after.containsAll(before)) {
+						/*if (after.containsAll(before)) {
 							// Log.d(TAG,
 							// "NO PARTNERS CHANGED SINCE LAST REFRESH.");
 						} else {
 							// Log.d(TAG,
 							// "PARTNERS HAS CHANGED SINCE LAST REFRESH.");
 							// ActivityLevel2.actualAdapter.notifyDataSetChanged();
-						}
+						}*/
 						try {
 							// Log.e(TAG, "WAITING...");
 							Thread.sleep(WAIT_TIME);
@@ -70,6 +70,6 @@ public class ContactListRefresherAsyncTask extends AsyncTask<Long, Void, Void> {
 	protected void onPostExecute(Void result) {
 		super.onPostExecute(result);
 		FragmentLevel2Chat.contactAdapter.notifyDataSetChanged();
-		// FragmentLevel2Chat.listview.invalidateViews();
+		//FragmentLevel2Chat.listview.invalidateViews();
 	}
 }

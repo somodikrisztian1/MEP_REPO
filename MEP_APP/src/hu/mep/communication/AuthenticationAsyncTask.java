@@ -26,10 +26,10 @@ import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.util.Log;
 
-public class AuthenticationAsyncTask extends AsyncTask<Void, Void, String>{
+public class AuthenticationAsyncTask extends AsyncTask<Void, Void, String> {
 
 	private static final String TAG = "AuthenticationAsyncTask";
-	
+
 	private String hostURI;
 	private String resourceURI;
 	private Activity activity;
@@ -37,36 +37,36 @@ public class AuthenticationAsyncTask extends AsyncTask<Void, Void, String>{
 	private String username;
 	private String password;
 	private static String fullURI;
-	
-	public AuthenticationAsyncTask(Activity activity, Context context, String username, String password, String hostURI) {
+
+	public AuthenticationAsyncTask(Activity activity, Context context,
+			String username, String password, String hostURI) {
 		this.activity = activity;
 		this.context = context;
 		this.username = username;
 		this.password = password;
 		this.hostURI = hostURI;
 	}
-	
-	
+
 	@Override
 	protected void onPreExecute() {
-		
-		resourceURI = "iphonelogin_do.php?username=" + username
-				+ "&password=" + MD5Encoder.encodePasswordWithMD5(password);
+
+		resourceURI = "iphonelogin_do.php?username=" + username + "&password="
+				+ MD5Encoder.encodePasswordWithMD5(password);
 		fullURI = hostURI + resourceURI;
 		Log.e(TAG, fullURI);
-		ProgressDialog pd = new ProgressDialog(activity);
-		pd.setCancelable(false);
-		pd.setTitle("Kérem várjon!");
-		pd.setMessage("Adatok letöltése folyamatban...");
-		Session.setProgressDialog(pd);
-		Session.showProgressDialog();
+		/*
+		 * ProgressDialog pd = new ProgressDialog(activity);
+		 * pd.setCancelable(false); pd.setTitle("Kérem várjon!");
+		 * pd.setMessage("Adatok letöltése folyamatban...");
+		 * Session.setProgressDialog(pd); Session.showProgressDialog();
+		 */
 	}
-	
+
 	@Override
 	protected String doInBackground(Void... nothing) {
 		String response = "";
-		
-		//Log.e("fullURI is: ", fullURI);
+
+		// Log.e("fullURI is: ", fullURI);
 		DefaultHttpClient client = new DefaultHttpClient();
 		HttpGet httpGet = new HttpGet(fullURI);
 		try {
@@ -85,15 +85,16 @@ public class AuthenticationAsyncTask extends AsyncTask<Void, Void, String>{
 		}
 		Log.e("response:", response);
 		GsonBuilder gsonBuilder = new GsonBuilder();
-		/*gsonBuilder.registerTypeAdapter(PlaceList.class,
-				new PlaceListDeserializer());*/
+
 		gsonBuilder.registerTypeAdapter(User.class, new UserDeserializer());
-		
+
 		Gson gson = gsonBuilder.create();
 		User newUser = gson.fromJson(response, User.class);
+
 		Session.getInstance(context).setActualUser(newUser);
-		downloadProfilePictureForActualUser();
-		
+		if (newUser != null) {
+			downloadProfilePictureForActualUser();
+		}
 		return "";
 	}
 
@@ -116,13 +117,11 @@ public class AuthenticationAsyncTask extends AsyncTask<Void, Void, String>{
 		}
 		return;
 	}
-	
-	
+
 	@Override
 	protected void onPostExecute(String result) {
-		// TODO Itt kell majd elindítani az ActivityLevel2-t.
 		super.onPostExecute(result);
-		Session.dismissProgressDialog();
+		Session.dismissAndMakeNullProgressDialog();
 	}
-	
+
 }

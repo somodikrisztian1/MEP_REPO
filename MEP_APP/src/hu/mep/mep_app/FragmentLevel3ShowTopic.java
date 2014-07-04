@@ -29,7 +29,7 @@ public class FragmentLevel3ShowTopic extends Fragment {
 			Toast.makeText(getActivity(),
 					"Ehhez a témához nem tartozik grafikon.",
 					Toast.LENGTH_SHORT).show();
-			getActivity().onBackPressed();
+			//getActivity().onBackPressed();
 		} else {
 			mView = new TimeLineChartView(getActivity(), mChart);
 			//getActivity().requestWindowFeature(Window.FEATURE_NO_TITLE);
