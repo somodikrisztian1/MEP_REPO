@@ -42,23 +42,8 @@ public class GetTopicListAsyncTask extends AsyncTask<Void, Void, Void> {
 	@Override
 	protected Void doInBackground(Void... params) {
 		String response = "";
-		//Log.e("ASYNCTASK", "fullURI: " + fullURI);
-		DefaultHttpClient client = new DefaultHttpClient();
-		HttpGet httpGet = new HttpGet(fullURI);
-		try {
-			HttpResponse execute = client.execute(httpGet);
-			InputStream content = execute.getEntity().getContent();
 
-			BufferedReader buffer = new BufferedReader(new InputStreamReader(
-					content));
-			String s = "";
-			while ((s = buffer.readLine()) != null) {
-				response += s;
-			}
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		response = RealCommunicator.dohttpGet(fullURI);
 
 		Log.e("GetTopicListAsyncTask.doInBackground()", "response:" + response);
 
@@ -66,14 +51,14 @@ public class GetTopicListAsyncTask extends AsyncTask<Void, Void, Void> {
 		gsonBuilder.registerTypeAdapter(AllTopicsList.class, new TopicListDeserializer());
 		Gson gson = gsonBuilder.create();
 		AllTopicsList topics = gson.fromJson(response, AllTopicsList.class);
-		Session.getInstance(context).setAllTopicsList(topics.getAllTopics());
+		Session.setAllTopicsList(topics.getAllTopics());
 		return null;
 	}
 
 	@Override
 	protected void onPostExecute(Void result) {
-		// TODO Auto-generated method stub
 		super.onPostExecute(result);
+		//Session.dismissAndMakeNullProgressDialog();
 	}
 	
 }

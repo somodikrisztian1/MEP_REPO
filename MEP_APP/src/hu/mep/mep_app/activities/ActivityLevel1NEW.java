@@ -48,9 +48,10 @@ public class ActivityLevel1NEW extends ActionBarActivity implements
 	private static final int DRAWER_LIST_MAIN_PAGE_NUMBER = -1;
 	private static final int DRAWER_LIST_LOGIN_LOGOUT_NUMBER = 0;
 	private static final int DRAWER_LIST_PRESENTATION_PARK_NUMBER = 1;
-	private static final int DRAWER_LIST_RESEARCH_CENTER_NUMBER = 2;
-	private static final int DRAWER_LIST_ABOUT_REMOTE_NUMBER = 3;
-	private static final int DRAWER_LIST_CONTACTS_NUMBER = 4;
+	private static final int DRAWER_LIST_GALLERY_NUMBER = 2;
+	private static final int DRAWER_LIST_RESEARCH_CENTER_NUMBER = 3;
+	private static final int DRAWER_LIST_ABOUT_REMOTE_NUMBER = 4;
+	private static final int DRAWER_LIST_CONTACTS_NUMBER = 5;
 
 	private static boolean isLoggedOnAnyUser = false;
 
@@ -199,6 +200,9 @@ public class ActivityLevel1NEW extends ActionBarActivity implements
 			waitForIt.show();
 			// Log.e("FirstActivity", "handleDrawerClick 2");
 			break;
+			
+		case DRAWER_LIST_GALLERY_NUMBER:
+			break;
 		case DRAWER_LIST_RESEARCH_CENTER_NUMBER:
 			/* !TODO */
 			waitForIt.show();
@@ -264,10 +268,6 @@ public class ActivityLevel1NEW extends ActionBarActivity implements
 		// Log.e("FirstActivity", "onConfigurationChanged");
 	}
 
-	/*
-	 * Ha a későbbiekben gombokat akarunk tenni az ActionBar options menüjében
-	 * akkor itt kell megtenni.
-	 */
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// MenuInflater inflater = getMenuInflater();

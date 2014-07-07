@@ -19,7 +19,7 @@ public View onCreateView(LayoutInflater inflater, ViewGroup container,
 		Bundle savedInstanceState) {
 
 	View rootView = inflater.inflate(R.layout.fragment_firstlevel_representation_park_screen, container, false);
-    
+	
     TextViewEx text_content_1_1 = (TextViewEx) rootView.findViewById(R.id.fragment_firstlevel_representation_park_textview_content_1_1);
     text_content_1_1.setText(getResources().getString(R.string.fragment_firstlevel_representation_park_text_content_1_1), true);
     text_content_1_1.setPadding(0, 0, 0, 0);

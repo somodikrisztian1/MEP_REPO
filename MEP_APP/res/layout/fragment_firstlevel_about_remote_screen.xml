@@ -7,7 +7,9 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp" >
 
         <bluejamesbond.textviewjustifier.TextViewEx
             android:id="@+id/fragment_firstlevel_about_remote_textview_content_0"
@@ -18,10 +20,9 @@
 
         <ImageView
             android:id="@+id/fragment_firstlevel_about_remote_imageview_1"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/fragment_firstlevel_about_remote_textview_content_0"
-            android:layout_margin="8dp"
             android:adjustViewBounds="true"
             android:src="@drawable/tavfel_inverterek" />
 
@@ -30,7 +31,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/fragment_firstlevel_about_remote_imageview_1"
-            android:layout_margin="8dp"
             android:text="@string/fragment_firstlevel_about_remote_text_title_1"
             android:textStyle="bold" />
 
@@ -38,15 +38,13 @@
             android:id="@+id/fragment_firstlevel_about_remote_textview_content_1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/fragment_firstlevel_about_remote_textview_title_1"
- />
+            android:layout_below="@+id/fragment_firstlevel_about_remote_textview_title_1" />
 
         <ImageView
             android:id="@+id/fragment_firstlevel_about_remote_imageview_2"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/fragment_firstlevel_about_remote_textview_content_1"
-            android:layout_margin="8dp"
             android:adjustViewBounds="true"
             android:src="@drawable/tavfel_napelem" />
 
@@ -55,7 +53,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/fragment_firstlevel_about_remote_imageview_2"
-            android:layout_margin="8dp"
             android:text="@string/fragment_firstlevel_about_remote_text_title_2"
             android:textStyle="bold" />
 
@@ -63,14 +60,13 @@
             android:id="@+id/fragment_firstlevel_about_remote_textview_content_2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/fragment_firstlevel_about_remote_textview_title_2"/>
+            android:layout_below="@+id/fragment_firstlevel_about_remote_textview_title_2" />
 
         <TextView
             android:id="@+id/fragment_firstlevel_about_remote_textview_title_3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/fragment_firstlevel_about_remote_textview_content_2"
-            android:layout_margin="8dp"
             android:text="@string/fragment_firstlevel_about_remote_text_title_3"
             android:textStyle="bold" />
 
@@ -79,7 +75,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/fragment_firstlevel_about_remote_textview_title_3"
-            android:layout_marginBottom="20dp"/>
+            android:layout_marginBottom="20dp" />
     </RelativeLayout>
 
 </ScrollView>

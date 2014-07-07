@@ -83,12 +83,13 @@ public class ActivityLevel3ShowTopic extends ActionBarActivity implements
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case R.id.action_datetime_begin:
+		
+		if(item.getItemId() == R.id.action_datetime_begin) {
 			Dialog d = new Dialog(ActivityLevel3ShowTopic.this);
+			
 			d.setContentView(R.layout.date_and_time_picker);
 			d.setTitle("Kezdő időpont");
-
+			
 			DatePicker dp = (DatePicker) d.findViewById(R.id.datePicker);
 			TimePicker tp = (TimePicker) d.findViewById(R.id.timePicker);
 			
@@ -126,17 +127,51 @@ public class ActivityLevel3ShowTopic extends ActionBarActivity implements
 			});
 			d.show();
 			
-			break;
-		case R.id.action_datetime_end:
-
-			break;
-		case R.id.action_datetime_refresh_button:
-			//TODO szerverről frissíteni!!!
-			break;
-		default:
-			break;
 		}
+		else if(item.getItemId() == R.id.action_datetime_end ) {
+			Dialog d = new Dialog(ActivityLevel3ShowTopic.this);
+			d.setContentView(R.layout.date_and_time_picker);
+			d.setTitle("Záró időpont");
+			
+			DatePicker dp = (DatePicker) d.findViewById(R.id.datePicker);
+			TimePicker tp = (TimePicker) d.findViewById(R.id.timePicker);
 
+			dp.init(Session.endChartDate.get(Calendar.YEAR),
+					Session.endChartDate.get(Calendar.MONTH) + 1,
+					Session.endChartDate.get(Calendar.DAY_OF_MONTH),
+					new OnDateChangedListener() {
+
+						@Override
+						public void onDateChanged(DatePicker view, int year,
+								int monthOfYear, int dayOfMonth) {
+							endDate.set(Calendar.YEAR, year);
+							endDate.set(Calendar.MONTH, monthOfYear);
+							endDate.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+							CalendarPrinter.logCalendar(TAG, endDate, null);
+							/*Toast.makeText(ActivityLevel3ShowTopic.this,
+									beginDate.toString(), Toast.LENGTH_LONG)
+									.show();*/
+						}
+					});
+			tp.setIs24HourView(true);
+			tp.setCurrentHour(endDate.get(Calendar.HOUR_OF_DAY));
+			tp.setCurrentMinute(endDate.get(Calendar.MINUTE));
+			tp.setOnTimeChangedListener(new OnTimeChangedListener() {
+
+				@Override
+				public void onTimeChanged(TimePicker view, int hourOfDay,
+						int minute) {
+					endDate.set(Calendar.HOUR_OF_DAY, hourOfDay);
+					endDate.set(Calendar.MINUTE, minute);
+					CalendarPrinter.logCalendar(TAG, endDate, null);
+					/*Toast.makeText(ActivityLevel3ShowTopic.this,
+							beginDate.toString(), Toast.LENGTH_LONG).show();*/
+				}
+			});
+			d.show();
+		} else if( item.getItemId() ==  R.id.action_datetime_refresh_button) {
+			Toast.makeText(getApplicationContext(), "Itt kell frissíteni", Toast.LENGTH_LONG).show();
+		}
 		return super.onOptionsItemSelected(item);
 	}
 

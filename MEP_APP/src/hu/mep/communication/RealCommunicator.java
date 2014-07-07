@@ -94,6 +94,23 @@ public class RealCommunicator implements ICommunicator {
 		}
 		return response;
 	}
+	
+	@Override
+	public void getGalleryURLsAndPictures() {
+		GetGalleryURLsAsyncTask urlGetter = new GetGalleryURLsAsyncTask(MainURL, context);
+		GetGalleryImagesAsyncTask imageGetter = new GetGalleryImagesAsyncTask(MainURL, context);
+		try {
+			urlGetter.execute().get();
+			imageGetter.execute().get();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ExecutionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
 
 	@Override
 	public void getChatMessages() {
@@ -123,11 +140,6 @@ public class RealCommunicator implements ICommunicator {
 	@Override
 	public void authenticateUser(Activity act, String username, String password) {
 
-		if (NetThread.isOnline(context)) {
-			// Log.e("RealCommunicator", "ONLINE!!!!!!!!!");
-		} else {
-			// Log.e("RealCommunicator", "OFFLINE!!!!!!!!!");
-		}
 		AuthenticationAsyncTask authenticationAsyncTask = new AuthenticationAsyncTask(act,
 				context, username, password, MainURL);
 		try {
@@ -137,8 +149,6 @@ public class RealCommunicator implements ICommunicator {
 		} catch (ExecutionException e) {
 			e.printStackTrace();
 		}
-		/* Log.e("RealCommunicator.authenticateUser()", "finished"); */
-
 	}
 
 	@Override

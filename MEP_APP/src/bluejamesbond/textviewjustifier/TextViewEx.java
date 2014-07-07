@@ -61,26 +61,29 @@ public class TextViewEx extends TextView
     {
         super(context, attrs, defStyle);
         //set a minimum of left and right padding so that the texts are not too close to the side screen
-        this.setPadding(10, 0, 10, 0);
+        // this.setPadding(10, 0, 10, 0); THAT WAS THE ORIGINAL VALUE!!!!!
+        this.setPadding(0, 0, 0, 0);
     }
 
     public TextViewEx(Context context, AttributeSet attrs) 
     {
         super(context, attrs);
-        this.setPadding(10, 0, 10, 0);
+        // this.setPadding(10, 0, 10, 0); THAT WAS THE ORIGINAL VALUE!!!!!
+        this.setPadding(0, 0, 0, 0);
     }
 
     public TextViewEx(Context context) 
     {
         super(context);
-        this.setPadding(10, 0, 10, 0);
+        // this.setPadding(10, 0, 10, 0); THAT WAS THE ORIGINAL VALUE!!!!!
+        this.setPadding(0, 0, 0, 0);
     }
     
     @Override
 	public void setPadding(int left, int top, int right, int bottom) {
 		// TODO Auto-generated method stub
     	
-		super.setPadding(left+10, top, right+10, bottom);
+		super.setPadding(left, top, right, bottom);
 	}
 
 	@Override

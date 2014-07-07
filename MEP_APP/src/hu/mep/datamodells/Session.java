@@ -5,6 +5,7 @@ import hu.mep.communication.ContactListRefresherAsyncTask;
 import hu.mep.communication.ICommunicator;
 import hu.mep.communication.RealCommunicator;
 
+import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -18,6 +19,7 @@ import java.util.Map.Entry;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.util.Log;
 
 public class Session {
@@ -26,6 +28,9 @@ public class Session {
 	private static Session instance;
 	private static Context context;
 	private static ICommunicator actualCommunicationInterface;
+	
+	private static List<String> galleryImageURLSList = new ArrayList<String>();
+	private static List<Bitmap> galleryImagesList = new ArrayList<Bitmap>();
 
 	private static User actualUser;
 
@@ -77,6 +82,32 @@ public class Session {
 					.getInstance(context);
 		}
 		return actualCommunicationInterface;
+	}
+	
+	// ==============================================================================
+	// GALLERY IMAGE URL + IMAGES
+	// ==============================================================================
+	
+	
+	
+	public static List<Bitmap> getGalleryImagesList() {
+		return galleryImagesList;
+	}
+	
+	public static List<String> getGalleryImageURLSList() {
+		return galleryImageURLSList;
+	}
+
+	public static void setGalleryImageURLSList(List<String> galleryImageURLSList) {
+		Session.galleryImageURLSList = galleryImageURLSList;
+	}
+
+	public static void addPictureToGallery(Bitmap newPicture) {
+		galleryImagesList.add(newPicture);
+	}
+
+	public static void setGalleryImagesList(List<Bitmap> galleryImagesList) {
+		Session.galleryImagesList = galleryImagesList;
 	}
 
 	// ==============================================================================

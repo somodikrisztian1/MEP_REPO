@@ -12,4 +12,5 @@ public interface ICommunicator {
 	public void getChartNames();
 	public void getActualChart();
 	public void authenticateUser(Activity act, String username, String password);
+	public void getGalleryURLsAndPictures();
 }

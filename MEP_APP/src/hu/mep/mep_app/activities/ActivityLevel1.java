@@ -1,5 +1,7 @@
 package hu.mep.mep_app.activities;
 
+import java.util.concurrent.ExecutionException;
+
 import hu.mep.communication.ActivityLevel2PreloaderAsyncTask;
 import hu.mep.communication.NetThread;
 import hu.mep.datamodells.Session;
@@ -16,6 +18,7 @@ import hu.mep.mep_app.R.id;
 import hu.mep.mep_app.R.layout;
 import hu.mep.mep_app.R.menu;
 import hu.mep.mep_app.R.string;
+import hu.mep.utils.others.AlertDialogFactory;
 import hu.mep.utils.others.FragmentLevel1EventHandler;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -60,10 +63,11 @@ public class ActivityLevel1 extends ActionBarActivity implements
 
 	private static final int DRAWER_LIST_MAIN_PAGE_NUMBER = -1;
 	private static final int DRAWER_LIST_PRESENTATION_PARK_NUMBER = 0;
-	private static final int DRAWER_LIST_RESEARCH_CENTER_NUMBER = 1;
+	private static final int DRAWER_LIST_GALLERY_NUMBER = 1;
 	private static final int DRAWER_LIST_ABOUT_REMOTE_NUMBER = 2;
-	private static final int DRAWER_LIST_CONTACTS_NUMBER = 3;
-	private static final int DRAWER_LIST_LOGIN_LOGOUT_NUMBER = 4;
+	private static final int DRAWER_LIST_RESEARCH_CENTER_NUMBER = 3;
+	private static final int DRAWER_LIST_CONTACTS_NUMBER = 4;
+	private static final int DRAWER_LIST_LOGIN_LOGOUT_NUMBER = 5;
 
 	private int actualFragmentNumber;
 	private FragmentManager fragmentManager;
@@ -77,7 +81,7 @@ public class ActivityLevel1 extends ActionBarActivity implements
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
+
 		context = getApplicationContext();
 		fragmentManager = getSupportFragmentManager();
 		setContentView(R.layout.activity_first);
@@ -108,7 +112,7 @@ public class ActivityLevel1 extends ActionBarActivity implements
 			/** Called when a drawer has settled in a completely closed state. */
 			public void onDrawerClosed(View view) {
 				super.onDrawerClosed(view);
-				//mActionBar.setTitle(mainTitle);
+				// mActionBar.setTitle(mainTitle);
 				Log.e(TAG, "onDrawerClosed");
 			}
 
@@ -182,10 +186,7 @@ public class ActivityLevel1 extends ActionBarActivity implements
 	}
 
 	private void handleDrawerClick(int position) {
-		/**
-		 * EGYÉB ACTIVITYK MEGNYITÁSA, A DRAWER ELEMEIRE KATTINTÁS LOGIKÁJA
-		 * KERÜL IDE!!!!
-		 */
+
 		actualFragmentNumber = position;
 		Fragment newFragment = null;
 		Bundle args;
@@ -194,40 +195,29 @@ public class ActivityLevel1 extends ActionBarActivity implements
 				"Under construction...Try it later! :)", Toast.LENGTH_SHORT);
 		boolean readyForFragmentLoading = false;
 		switch (actualFragmentNumber) {
-		/*
-		 * case DRAWER_LIST_LOGIN_LOGOUT_NUMBER: if (!isLoggedOnAnyUser) {
-		 * newFragment = new FragmentLevel1LoginScreen();
-		 * 
-		 * args = new Bundle(); args.putInt(
-		 * FragmentLevel1MainScreen.CLICKED_DRAWER_ITEM_NUMBER,
-		 * actualFragmentNumber);
-		 * 
-		 * newFragment.setArguments(args); ft.addToBackStack("login");
-		 * readyForFragmentLoading = true; // Log.e("FirstActivity",
-		 * "handleDrawerClick 1"); } else { isLoggedOnAnyUser = false;
-		 * newFragment = new FragmentLevel1MainScreen();
-		 * 
-		 * args = new Bundle(); args.putInt(
-		 * FragmentLevel1MainScreen.CLICKED_DRAWER_ITEM_NUMBER,
-		 * DRAWER_LIST_MAIN_PAGE_NUMBER);
-		 * 
-		 * newFragment.setArguments(args); readyForFragmentLoading = true; }
-		 * break;
-		 */
+
 		case DRAWER_LIST_PRESENTATION_PARK_NUMBER:
-			/* !TODO */
 			newFragment = new FragmentLevel1RepresentationParkScreen();
 			readyForFragmentLoading = true;
 			Log.e("FirstActivity", "handleDrawerClick() -> Representation Park");
 			break;
+		case DRAWER_LIST_GALLERY_NUMBER:
+			if (NetThread.isOnline(context)) {
+				Session.setProgressDialog(prepareProgressDialogForLoading3());
+				Session.showProgressDialog();
+				Intent i = new Intent(context, ActivityLevel1Gallery.class);
+				startActivity(i);
+			} else {
+				Session.setAlertDialog(AlertDialogFactory.prepareAlertDialogForNoConnection(ActivityLevel1.this));
+				Session.showAlertDialog();
+			}
+			break;
 		case DRAWER_LIST_RESEARCH_CENTER_NUMBER:
-			/* !TODO */
 			newFragment = new FragmentLevel1ResearchCenterScreen();
 			readyForFragmentLoading = true;
 			Log.e("FirstActivity", "handleDrawerClick() -> Research Center");
 			break;
 		case DRAWER_LIST_ABOUT_REMOTE_NUMBER:
-			/* !TODO */
 			newFragment = new FragmentLevel1AboutRemoteScreen();
 			readyForFragmentLoading = true;
 			Log.e("FirstActivity",
@@ -246,8 +236,8 @@ public class ActivityLevel1 extends ActionBarActivity implements
 			ft.replace(R.id.first_activity_frame, newFragment);
 			ft.commit();
 		}
-	
-		if (position > -1 ) {
+
+		if (position > -1 && position != DRAWER_LIST_GALLERY_NUMBER) {
 			firstActivityDrawerListView.setItemChecked(position, true);
 			setTitle(firstActivityDrawerStrings[position]);
 		}
@@ -340,35 +330,39 @@ public class ActivityLevel1 extends ActionBarActivity implements
 			final String password) {
 
 		if (NetThread.isOnline(context)) {
-			Session.setProgressDialog(prepareProgressDialogForLoading());
+			Session.setProgressDialog(prepareProgressDialogForLoading1());
 			Session.showProgressDialog();
 			Session.getInstance(context).getActualCommunicationInterface()
 					.authenticateUser(this, username, password);
 			if (Session.getInstance(context).getActualUser() == null) {
-				
-				Session.setAlertDialog(prepareAlertDialogForBadCredentials());
+
+				Session.setAlertDialog(AlertDialogFactory.prepareAlertDialogForBadCredentials(ActivityLevel1.this));
 				Session.showAlertDialog();
 				/*
-				Toast.makeText(
-						context,
-						"Sikertelen bejelentkezés!\nEllenőrizze a beírt adatok helyességét!",
-						Toast.LENGTH_LONG).show();
-				*/
+				 * Toast.makeText( context,
+				 * "Sikertelen bejelentkezés!\nEllenőrizze a beírt adatok helyességét!"
+				 * , Toast.LENGTH_LONG).show();
+				 */
 			} else {
+
+				Session.setProgressDialog(prepareProgressDialogForLoading2());
+				Session.showProgressDialog();
+				
 				Intent i = new Intent(this, ActivityLevel2NEW.class);
 				startActivity(i);
 			}
 		} else {
-			Session.setAlertDialog(prepareAlertDialogForNoConnection());
+			Session.setAlertDialog(AlertDialogFactory.prepareAlertDialogForNoConnection(ActivityLevel1.this));
 			Session.showAlertDialog();
-			/* Toast.makeText(context, "Nincs internet kapcsolat!",
-					Toast.LENGTH_SHORT).show();
-			*/
+			/*
+			 * Toast.makeText(context, "Nincs internet kapcsolat!",
+			 * Toast.LENGTH_SHORT).show();
+			 */
 		}
 		return false;
 	}
-	
-	private ProgressDialog prepareProgressDialogForLoading() {
+
+	private ProgressDialog prepareProgressDialogForLoading1() {
 		ProgressDialog pd = new ProgressDialog(ActivityLevel1.this);
 		pd.setCancelable(false);
 		pd.setTitle("Kérem várjon!");
@@ -376,54 +370,21 @@ public class ActivityLevel1 extends ActionBarActivity implements
 		return pd;
 	}
 
-	private AlertDialog prepareAlertDialogForBadCredentials() {
-		AlertDialog.Builder adb = new AlertDialog.Builder(ActivityLevel1.this);
-		adb.setCancelable(true)
-				.setTitle("Hiba a bejelentkezés során!")
-				.setMessage(
-						"Sikertelen bejelentkezés!\nHelytelen felhasználónév vagy jelszó!")
-				.setNegativeButton("Vissza",
-						new DialogInterface.OnClickListener() {
-
-							@Override
-							public void onClick(DialogInterface dialog,
-									int which) {
-								if (which == DialogInterface.BUTTON_NEGATIVE) {
-									Session.dismissAndMakeNullAlertDialog();
-								}
-							}
-						});
-		return adb.create();
+	private ProgressDialog prepareProgressDialogForLoading2() {
+		ProgressDialog pd = new ProgressDialog(ActivityLevel1.this);
+		pd.setCancelable(false);
+		pd.setTitle("Kérem várjon!");
+		pd.setMessage("Felhasználói adatok betöltése folyamatban...");
+		return pd;
 	}
 
-	private AlertDialog prepareAlertDialogForNoConnection() {
-		AlertDialog.Builder adb = new AlertDialog.Builder(ActivityLevel1.this);
-		adb.setCancelable(true)
-				.setTitle("Hiba a bejelentkezés során!")
-				.setMessage(
-						"Nincs internet kapcsolata!\nMit kíván tenni?")
-				.setPositiveButton("Wi-Fi beállítások",
-						new DialogInterface.OnClickListener() {
-							public void onClick(DialogInterface dialog,
-									int which) {
-								if (which == DialogInterface.BUTTON_POSITIVE) {
-									startActivity(new Intent(
-											Settings.ACTION_WIFI_SETTINGS));
-								}
-							};
-
-						})
-				.setNegativeButton("Vissza",
-						new DialogInterface.OnClickListener() {
-
-							@Override
-							public void onClick(DialogInterface dialog,
-									int which) {
-								if (which == DialogInterface.BUTTON_NEGATIVE) {
-									Session.dismissAndMakeNullAlertDialog();
-								}
-							}
-						});
-		return adb.create();
+	private ProgressDialog prepareProgressDialogForLoading3() {
+		ProgressDialog pd = new ProgressDialog(ActivityLevel1.this);
+		pd.setCancelable(false);
+		pd.setTitle("Kérem várjon!");
+		pd.setMessage("Képek letöltése folyamatban...");
+		return pd;
 	}
+
+
 }

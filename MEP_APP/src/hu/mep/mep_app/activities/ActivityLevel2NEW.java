@@ -40,11 +40,11 @@ public class ActivityLevel2NEW extends ActionBarActivity implements
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+	
 		
-		Session.setProgressDialog(prepareProgressDialogForLoading());
-		Session.showProgressDialog();
+		setContentView(R.layout.activity_secondlevel);
 		
-		ActivityLevel2PreloaderAsyncTask at = new ActivityLevel2PreloaderAsyncTask();
+		ActivityLevel2PreloaderAsyncTask at = new ActivityLevel2PreloaderAsyncTask(ActivityLevel2NEW.this);
 		try {
 			at.execute().get();
 		} catch (InterruptedException e) {
@@ -54,9 +54,7 @@ public class ActivityLevel2NEW extends ActionBarActivity implements
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		setContentView(R.layout.activity_secondlevel);
-		
+
 		
 		
 		mSectionsPagerAdapter = new ActivityLevel2SectionsPagerAdapter(
@@ -79,8 +77,6 @@ public class ActivityLevel2NEW extends ActionBarActivity implements
 		mActionBar.setDisplayShowTitleEnabled(false);
 		mActionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 		addTabsForActionBar();
-		
-		Session.dismissAndMakeNullProgressDialog();
 	}
 
 	private void addTabsForActionBar() {
@@ -177,12 +173,6 @@ public class ActivityLevel2NEW extends ActionBarActivity implements
 		Log.e(TAG, "##########################ONDESTROY##################################");
 	}
 
-	private ProgressDialog prepareProgressDialogForLoading() {
-		ProgressDialog pd = new ProgressDialog(ActivityLevel2NEW.this);
-		pd.setCancelable(false);
-		pd.setTitle("Kérem várjon!");
-		pd.setMessage("Adatok letöltése folyamatban...");
-		return pd;
-	}
+
 	
 }

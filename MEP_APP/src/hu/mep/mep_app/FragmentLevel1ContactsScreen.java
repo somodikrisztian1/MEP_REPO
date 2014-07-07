@@ -13,6 +13,8 @@ public class FragmentLevel1ContactsScreen extends Fragment{
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View v = inflater.inflate(R.layout.fragment_firstlevel_contacts_screen, container, false);
 		
+		
+		
 		return v;
 	};
 

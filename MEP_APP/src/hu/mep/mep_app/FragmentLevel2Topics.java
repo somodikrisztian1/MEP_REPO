@@ -28,7 +28,7 @@ public class FragmentLevel2Topics extends Fragment {
 				.findViewById(R.id.fragment_topics_expandable_listview);
 
 		adapter = new TopicsExpandableListAdapter(getActivity(),
-				Session.getInstance(getActivity()).getTopicsList(),
+				Session.getTopicsList(),
 				fragmentEventHandler);
 		listview.setAdapter(adapter);
 

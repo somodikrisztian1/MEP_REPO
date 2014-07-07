@@ -7,7 +7,9 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp" >
 
         <TextView
             android:id="@+id/fragment_firstlevel_representation_park_textview_title_1"
@@ -15,8 +17,6 @@
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_marginBottom="5dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
             android:layout_marginTop="15dp"
             android:text="@string/fragment_firstlevel_representation_park_text_title_1"
             android:textStyle="bold" />
@@ -33,8 +33,6 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/fragment_firstlevel_representation_park_textview_content_1_1"
             android:layout_marginBottom="10dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
             android:adjustViewBounds="true"
             android:src="@drawable/bemutato_park_1" />
 
@@ -49,7 +47,8 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/fragment_firstlevel_representation_park_textview_content_1_2"
-            android:layout_margin="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
             android:text="@string/fragment_firstlevel_representation_park_text_title_2"
             android:textStyle="bold" />
 
@@ -71,7 +70,8 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/fragment_firstlevel_representation_park_textview_content_2_2"
-            android:layout_margin="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
             android:text="@string/fragment_firstlevel_representation_park_text_title_3"
             android:textStyle="bold" />
 
@@ -93,7 +93,8 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/fragment_firstlevel_representation_park_textview_content_3_2"
-            android:layout_margin="8dp"
+           	android:layout_marginTop="8dp"
+           	android:layout_marginBottom="8dp"
             android:adjustViewBounds="true"
             android:src="@drawable/bemutato_park_4" />
 
@@ -101,8 +102,8 @@
             android:id="@+id/fragment_firstlevel_representation_park_textview_content_3_3"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_below="@+id/fragment_firstlevel_representation_park_picture_imageview_2" />
+            android:layout_below="@+id/fragment_firstlevel_representation_park_picture_imageview_2"
+            android:layout_marginTop="8dp" />
 
         <bluejamesbond.textviewjustifier.TextViewEx
             android:id="@+id/fragment_firstlevel_representation_park_textview_content_3_4"

@@ -3,6 +3,8 @@ package hu.mep.communication;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -21,26 +23,52 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 public class GetChartAsyncTask extends AsyncTask<Void, Void, Void> {
-	
+
+	private static final String TAG = "GetChartAsyncTask";
 	private Context context;
-	private static String hostURI;
-	private static String resourceURI;
-	private static String fullURI;
-	
+	private String hostURI;
+	private String resourceURI;
+	private String fullURI;
+	private Calendar startDate;
+	private Calendar endDate;
+
 	public GetChartAsyncTask(Context context, String catchedHostURI) {
 		this.context = context;
 		hostURI = catchedHostURI;
 	}
+
+	public GetChartAsyncTask(Context context, String catchedHostURI,
+			Calendar startDate, Calendar endDate) {
+		this.context = context;
+		this.hostURI = catchedHostURI;
+		this.startDate = startDate;
+		this.endDate = endDate;
+	}
 	
+	private String formatDate(Calendar date) {
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
+		Log.e(TAG, "Formatted Date: " + format.format(date));
+		return format.format(date);
+		
+	}
+
 	@Override
 	protected void onPreExecute() {
 		super.onPreExecute();
-		resourceURI = "ios_getChart.php?id=" +
-				Session.getActualChartInfoContainer().getId();
+		if ((startDate != null) && (endDate != null)) {
+			resourceURI = "ios_getChart.php?id="
+					+ Session.getActualChartInfoContainer().getId()
+					+ "&fromDate=" + formatDate(startDate)
+					+ "&toDate=" + formatDate(endDate) ;
+		}
+		else {
+			resourceURI = "ios_getChart.php?id="
+					+ Session.getActualChartInfoContainer().getId();
+		}
 		fullURI = hostURI + resourceURI;
 		Log.e("GetChart", fullURI);
 	}
-	
+
 	@Override
 	protected Void doInBackground(Void... params) {
 		String response = "";
@@ -60,14 +88,14 @@ public class GetChartAsyncTask extends AsyncTask<Void, Void, Void> {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 		GsonBuilder gsonBuilder = new GsonBuilder();
 		gsonBuilder.registerTypeAdapter(Chart.class, new ChartDeserializer());
 		Gson gson = gsonBuilder.create();
 		Chart chart = gson.fromJson(response, Chart.class);
-		Session.getInstance(context).setActualChart(chart);
-		
+		Session.setActualChart(chart);
+
 		return null;
-	}	
-	
+	}
+
 }
