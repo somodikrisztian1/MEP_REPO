@@ -12,7 +12,7 @@ public class ActivityLevel2PreloaderAsyncTask extends AsyncTask<Void, Void, Void
 	private String hostURI = "http://www.megujuloenergiapark.hu/";
 	
 	public ActivityLevel2PreloaderAsyncTask(Context context) {
-		// TODO Auto-generated constructor stub
+		this.context = context;
 	}
 	
 	@Override
@@ -24,11 +24,18 @@ public class ActivityLevel2PreloaderAsyncTask extends AsyncTask<Void, Void, Void
 	
 	@Override
 	protected Void doInBackground(Void... params) {
+		GetContactListAsyncTaskPRELOAD getContactListAsyncTask = new GetContactListAsyncTaskPRELOAD(context, hostURI);
+		try {
+			getContactListAsyncTask.execute().get();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		} catch (ExecutionException e) {
+			e.printStackTrace();
+		}
+		
 		if (Session.getActualUser().isMekut()) {
-			GetContactListAsyncTaskPRELOAD getContactListAsyncTask = new GetContactListAsyncTaskPRELOAD(context, hostURI);
-			GetTopicListAsyncTask getTopicListAsyncTask = new GetTopicListAsyncTask(context, hostURI);
+				GetTopicListAsyncTask getTopicListAsyncTask = new GetTopicListAsyncTask(context, hostURI);
 			try {
-				getContactListAsyncTask.execute().get();
 				getTopicListAsyncTask.execute().get();
 			} catch (InterruptedException e) {
 				e.printStackTrace();

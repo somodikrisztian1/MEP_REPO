@@ -30,6 +30,7 @@ import org.apache.http.message.BasicNameValuePair;
 
 import android.app.Activity;
 import android.content.Context;
+import android.util.Log;
 
 public class RealCommunicator implements ICommunicator {
 
@@ -103,10 +104,8 @@ public class RealCommunicator implements ICommunicator {
 			urlGetter.execute().get();
 			imageGetter.execute().get();
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (ExecutionException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -176,18 +175,16 @@ public class RealCommunicator implements ICommunicator {
 		postDatas.put("userId", "" + Session.getActualUser().getMepID());
 		postDatas.put("toId", "" + Session.getActualChatPartner().getUserID());
 		postDatas.put("msg", messageText);
-		postDatas.put("date",
-				dateFormat.format(Calendar.getInstance().getTime()));
+		postDatas.put("date", dateFormat.format(Calendar.getInstance().getTime()));
+		Log.e("message Time:", dateFormat.format(Calendar.getInstance().getTime()));
 
 		SendChatMessageAsyncTask sendChatMessage = new SendChatMessageAsyncTask(
 				context, MainURL, postDatas);
 		try {
 			sendChatMessage.execute().get();
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (ExecutionException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -212,14 +209,22 @@ public class RealCommunicator implements ICommunicator {
 		try {
 			getChart.execute().get();
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (ExecutionException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		
+	}
+	
+	@Override
+	public void getActualChart(Calendar beginDate, Calendar endDate) {
+		GetChartAsyncTask getChart = new GetChartAsyncTask(context, MainURL, beginDate, endDate);
+		try {
+			getChart.execute().get();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		} catch (ExecutionException e) {
+			e.printStackTrace();
+		}
 	}
 
 }

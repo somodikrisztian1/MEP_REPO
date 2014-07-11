@@ -46,8 +46,7 @@ public class GetContactListAsyncTaskNEW extends AsyncTask<Void, Void, String> {
 	@Override
 	protected void onPreExecute() {
 		// Log.e("ASYNCTASK", "onPreExecute() running");
-		resourceURI = "ios_getContactList.php?userId="
-				+ Session.getInstance(context).getActualUser().getMepID();
+		resourceURI = "ios_getContactList.php?userId=" + Session.getActualUser().getMepID();
 	}
 
 	@Override
@@ -56,7 +55,7 @@ public class GetContactListAsyncTaskNEW extends AsyncTask<Void, Void, String> {
 		String response = "";
 		String fullURI = hostURI + resourceURI;
 		// Log.e("ASYNCTASK", "fullURI: " + fullURI);
-		
+
 		response = RealCommunicator.dohttpGet(fullURI);
 
 		// Log.e("GetContactListAsyncTask.doInBackground()", response);
@@ -72,15 +71,17 @@ public class GetContactListAsyncTaskNEW extends AsyncTask<Void, Void, String> {
 		Session.setActualChatContactList(after);
 
 		for (ChatContact actContact : after.getContacts()) {
-			boolean on = (actContact.isOnline() == 1 ? true : false);
-			Log.i("getContactsAT",
-					actContact.getName() + (on ? "[on]" : "[off]") + "("
-							+ actContact.getUnreadedMessageNumber() + ")");
-
-			actContact.setProfilePicture(before
-					.getImageFromContactID(actContact.getUserID()));
-			if (actContact.getProfilePicture() == null) {
-				downloadProfilePictureForChatContact(actContact);
+			if (!isCancelled()) {
+				boolean on = (actContact.isOnline() == 1 ? true : false);
+				/*Log.i("getContactsAT",
+						actContact.getName() + (on ? "[on]" : "[off]") + "("
+								+ actContact.getUnreadedMessageNumber() + ")");
+				 */
+				actContact.setProfilePicture(before
+						.getImageFromContactID(actContact.getUserID()));
+				if (actContact.getProfilePicture() == null) {
+					downloadProfilePictureForChatContact(actContact);
+				}
 			}
 		}
 
@@ -128,7 +129,7 @@ public class GetContactListAsyncTaskNEW extends AsyncTask<Void, Void, String> {
 
 	@Override
 	protected void onPostExecute(String result) {
-		FragmentLevel2Chat.contactAdapter.notifyDataSetChanged();
+		// FragmentLevel2Chat.contactAdapter.notifyDataSetChanged();
 		super.onPostExecute(result);
 	}
 

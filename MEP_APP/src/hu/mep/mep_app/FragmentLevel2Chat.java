@@ -43,13 +43,9 @@ public class FragmentLevel2Chat extends Fragment implements OnItemClickListener 
 		listview = (ListView) v.findViewById(R.id.fragment_chat_listview);
 		listview.setAdapter(contactAdapter);
 		listview.setOnItemClickListener(this);
-		/*
-		refresher = new ContactListRefresherAsyncTask();
-		Log.e(TAG, "Starting contactListRefresherAsyncTask");
-		refresher = new ContactListRefresherAsyncTask();
-		refresher.execute(REFRESH_WAIT_TIME);
-		*/
-		Session.startContactRefresher();
+		
+		
+		//Session.startContactRefresher();
 		
 		return v;
 	}
@@ -66,14 +62,8 @@ public class FragmentLevel2Chat extends Fragment implements OnItemClickListener 
 	
 	@Override
 	public void onDestroyView() {
-		/*
-		if(refresher != null) {
-			Log.e(TAG, "Cancelling contactListRefresherAsyncTask");
-			refresher.cancel(true);
-			refresher = null;
-		}
-		*/
-		Session.stopContactRefresher();
+
+		//Session.stopContactRefresher();
 		super.onDestroyView();
 	}
 

@@ -16,6 +16,8 @@ import com.google.gson.GsonBuilder;
 import hu.mep.datamodells.AllTopicsList;
 import hu.mep.datamodells.Chart;
 import hu.mep.datamodells.Session;
+import hu.mep.mep_app.FragmentLevel3ShowTopic;
+import hu.mep.mep_app.activities.ActivityLevel3ShowTopic;
 import hu.mep.utils.deserializers.ChartDeserializer;
 import hu.mep.utils.deserializers.TopicListDeserializer;
 import android.content.Context;
@@ -46,9 +48,11 @@ public class GetChartAsyncTask extends AsyncTask<Void, Void, Void> {
 	}
 	
 	private String formatDate(Calendar date) {
-		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
-		Log.e(TAG, "Formatted Date: " + format.format(date));
-		return format.format(date);
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd_HH:mm");
+		
+		Log.e(TAG, "Formatted Date: " + format.format(date.getTime()));
+		
+		return format.format(date.getTime());
 		
 	}
 
@@ -96,6 +100,16 @@ public class GetChartAsyncTask extends AsyncTask<Void, Void, Void> {
 		Session.setActualChart(chart);
 
 		return null;
+	}
+	
+	@Override
+	protected void onPostExecute(Void result) {
+		super.onPostExecute(result);
+		if(startDate != null && endDate != null) {
+			ActivityLevel3ShowTopic.refreshFragments();
+		}
+		Log.e(TAG, "GetChartAsyncTask finished...");
+		
 	}
 
 }

@@ -2,6 +2,10 @@ package hu.mep.mep_app.activities;
 
 import java.util.Calendar;
 
+import org.afree.chart.event.ChartChangeEvent;
+import org.afree.chart.event.ChartChangeEventType;
+
+import hu.mep.communication.GetChartAsyncTask;
 import hu.mep.datamodells.Session;
 import hu.mep.mep_app.FragmentLevel3ShowTopic;
 import hu.mep.mep_app.R;
@@ -9,6 +13,7 @@ import hu.mep.mep_app.R.id;
 import hu.mep.mep_app.R.layout;
 import hu.mep.utils.others.CalendarPrinter;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -19,6 +24,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBar.Tab;
 import android.support.v7.app.ActionBar.TabListener;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -35,8 +41,9 @@ public class ActivityLevel3ShowTopic extends ActionBarActivity implements
 	private static ActionBar mActionBar;
 	private static SectionsPagerAdapter mSectionsPagerAdapter;
 	private static ViewPager mViewPager;
-	private Calendar beginDate = Calendar.getInstance();
-	private Calendar endDate = Calendar.getInstance();
+	private Calendar beginDate;
+	private Calendar endDate;
+	private Calendar tempDate = Calendar.getInstance();
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -71,31 +78,62 @@ public class ActivityLevel3ShowTopic extends ActionBarActivity implements
 					// .setIcon(mSectionsPagerAdapter.getPageIcon(i))
 					.setTabListener(this));
 		}
-		//Session.refreshChartIntervals();
+		// Session.refreshChartIntervals();
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.activity_thirdlevel_showtopic_menu, menu);
+		if (beginDate == null) {
+			beginDate = Calendar.getInstance();
+			beginDate.set(Calendar.YEAR,
+					Session.beginChartDate.get(Calendar.YEAR));
+			beginDate.set(Calendar.MONTH,
+					Session.beginChartDate.get(Calendar.MONTH));
+			beginDate.set(Calendar.DAY_OF_MONTH,
+					Session.beginChartDate.get(Calendar.DAY_OF_MONTH));
+			beginDate.set(Calendar.HOUR_OF_DAY,
+					Session.beginChartDate.get(Calendar.HOUR_OF_DAY));
+			beginDate.set(Calendar.MINUTE,
+					Session.beginChartDate.get(Calendar.MINUTE));
+		}
+		if (endDate == null) {
+			endDate = Calendar.getInstance();
+			endDate.set(Calendar.YEAR, Session.endChartDate.get(Calendar.YEAR));
+			endDate.set(Calendar.MONTH,
+					Session.endChartDate.get(Calendar.MONTH));
+			endDate.set(Calendar.DAY_OF_MONTH,
+					Session.endChartDate.get(Calendar.DAY_OF_MONTH));
+			endDate.set(Calendar.HOUR_OF_DAY,
+					Session.endChartDate.get(Calendar.HOUR_OF_DAY));
+			endDate.set(Calendar.MINUTE,
+					Session.endChartDate.get(Calendar.MINUTE));
+		}
 		return super.onCreateOptionsMenu(menu);
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		
-		if(item.getItemId() == R.id.action_datetime_begin) {
+		/*
+		 * itt volt a begindate enddate beállítása eredetileg....
+		 */
+		if (item.getItemId() == R.id.action_datetime_begin) {
 			Dialog d = new Dialog(ActivityLevel3ShowTopic.this);
-			
+
 			d.setContentView(R.layout.date_and_time_picker);
 			d.setTitle("Kezdő időpont");
-			
+
 			DatePicker dp = (DatePicker) d.findViewById(R.id.datePicker);
 			TimePicker tp = (TimePicker) d.findViewById(R.id.timePicker);
 			
-			dp.init(Session.beginChartDate.get(Calendar.YEAR),
-					Session.beginChartDate.get(Calendar.MONTH) + 1,
-					Session.beginChartDate.get(Calendar.DAY_OF_MONTH),
+			Calendar actDate = Calendar.getInstance();
+			
+			
+			
+			dp.init(beginDate.get(Calendar.YEAR),
+					beginDate.get(Calendar.MONTH),
+					beginDate.get(Calendar.DAY_OF_MONTH),
 					new OnDateChangedListener() {
 
 						@Override
@@ -104,12 +142,15 @@ public class ActivityLevel3ShowTopic extends ActionBarActivity implements
 							beginDate.set(Calendar.YEAR, year);
 							beginDate.set(Calendar.MONTH, monthOfYear);
 							beginDate.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-							CalendarPrinter.logCalendar(TAG, beginDate, null);
-							/*Toast.makeText(ActivityLevel3ShowTopic.this,
-									beginDate.toString(), Toast.LENGTH_LONG)
-									.show();*/
+							CalendarPrinter.logCalendar(TAG, "beginDate",
+									beginDate);
+							/*
+							 * Toast.makeText(ActivityLevel3ShowTopic.this,
+							 * beginDate.toString(), Toast.LENGTH_LONG) .show();
+							 */
 						}
 					});
+			dp.setMaxDate(actDate.getTimeInMillis());
 			tp.setIs24HourView(true);
 			tp.setCurrentHour(beginDate.get(Calendar.HOUR_OF_DAY));
 			tp.setCurrentMinute(beginDate.get(Calendar.MINUTE));
@@ -120,25 +161,25 @@ public class ActivityLevel3ShowTopic extends ActionBarActivity implements
 						int minute) {
 					beginDate.set(Calendar.HOUR_OF_DAY, hourOfDay);
 					beginDate.set(Calendar.MINUTE, minute);
-					CalendarPrinter.logCalendar(TAG, beginDate, null);
-					/*Toast.makeText(ActivityLevel3ShowTopic.this,
-							beginDate.toString(), Toast.LENGTH_LONG).show();*/
+					CalendarPrinter.logCalendar(TAG, "beginDate", beginDate);
+					/*
+					 * Toast.makeText(ActivityLevel3ShowTopic.this,
+					 * beginDate.toString(), Toast.LENGTH_LONG).show();
+					 */
 				}
 			});
 			d.show();
-			
-		}
-		else if(item.getItemId() == R.id.action_datetime_end ) {
+
+		} else if (item.getItemId() == R.id.action_datetime_end) {
 			Dialog d = new Dialog(ActivityLevel3ShowTopic.this);
 			d.setContentView(R.layout.date_and_time_picker);
 			d.setTitle("Záró időpont");
-			
+
 			DatePicker dp = (DatePicker) d.findViewById(R.id.datePicker);
 			TimePicker tp = (TimePicker) d.findViewById(R.id.timePicker);
 
-			dp.init(Session.endChartDate.get(Calendar.YEAR),
-					Session.endChartDate.get(Calendar.MONTH) + 1,
-					Session.endChartDate.get(Calendar.DAY_OF_MONTH),
+			dp.init(endDate.get(Calendar.YEAR), endDate.get(Calendar.MONTH),
+					endDate.get(Calendar.DAY_OF_MONTH),
 					new OnDateChangedListener() {
 
 						@Override
@@ -147,10 +188,12 @@ public class ActivityLevel3ShowTopic extends ActionBarActivity implements
 							endDate.set(Calendar.YEAR, year);
 							endDate.set(Calendar.MONTH, monthOfYear);
 							endDate.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-							CalendarPrinter.logCalendar(TAG, endDate, null);
-							/*Toast.makeText(ActivityLevel3ShowTopic.this,
-									beginDate.toString(), Toast.LENGTH_LONG)
-									.show();*/
+							CalendarPrinter
+									.logCalendar(TAG, "endDate", endDate);
+							/*
+							 * Toast.makeText(ActivityLevel3ShowTopic.this,
+							 * beginDate.toString(), Toast.LENGTH_LONG) .show();
+							 */
 						}
 					});
 			tp.setIs24HourView(true);
@@ -163,14 +206,22 @@ public class ActivityLevel3ShowTopic extends ActionBarActivity implements
 						int minute) {
 					endDate.set(Calendar.HOUR_OF_DAY, hourOfDay);
 					endDate.set(Calendar.MINUTE, minute);
-					CalendarPrinter.logCalendar(TAG, endDate, null);
-					/*Toast.makeText(ActivityLevel3ShowTopic.this,
-							beginDate.toString(), Toast.LENGTH_LONG).show();*/
+					CalendarPrinter.logCalendar(TAG, "endDate", endDate);
+					/*
+					 * Toast.makeText(ActivityLevel3ShowTopic.this,
+					 * beginDate.toString(), Toast.LENGTH_LONG).show();
+					 */
 				}
 			});
 			d.show();
-		} else if( item.getItemId() ==  R.id.action_datetime_refresh_button) {
-			Toast.makeText(getApplicationContext(), "Itt kell frissíteni", Toast.LENGTH_LONG).show();
+		} else if (item.getItemId() == R.id.action_datetime_refresh_button) {
+			CalendarPrinter.logCalendar(TAG, "fromDate", beginDate);
+			CalendarPrinter.logCalendar(TAG, "toDate", endDate);
+			Session.setProgressDialog(prepareProgressDialogForLoading());
+			Session.showProgressDialog();
+			Session.getActualCommunicationInterface().getActualChart(beginDate,
+					endDate);
+			Session.dismissAndMakeNullProgressDialog();
 		}
 		return super.onOptionsItemSelected(item);
 	}
@@ -198,6 +249,13 @@ public class ActivityLevel3ShowTopic extends ActionBarActivity implements
 		public CharSequence getPageTitle(int position) {
 			return Session.getAllChartInfoContainer().get(position).getName();
 		}
+		
+		@Override
+		public int getItemPosition(Object object) {
+			// TODO Auto-generated method stub
+			return POSITION_NONE;
+		}
+		
 	}
 
 	@Override
@@ -212,8 +270,34 @@ public class ActivityLevel3ShowTopic extends ActionBarActivity implements
 
 	@Override
 	public void onTabUnselected(Tab tab, FragmentTransaction ft) {
-		// TODO Auto-generated method stub
 
+	}
+
+	public static void refreshFragments() {
+		Log.e(TAG, "refreshFragments: fragments number is " + mSectionsPagerAdapter.getCount());
+		
+		
+		
+		
+		mSectionsPagerAdapter.notifyDataSetChanged();
+		mViewPager.setAdapter(mSectionsPagerAdapter);
+		/*
+		for (int i = 0; i < mSectionsPagerAdapter.getCount(); ++i) {
+			FragmentLevel3ShowTopic actFragment = (FragmentLevel3ShowTopic) mSectionsPagerAdapter
+					.getItem(i);
+			Log.e(TAG, "fragment No." + i);
+			ChartChangeEvent change = new ChartChangeEvent(source, chart, type)
+			actFragment.mView.chartChanged(new ChartChangeEvent(ChartChangeEventType.NEW_DATASET));
+			//actFragment.mView.invalidate();
+		}*/
+	}
+
+	private ProgressDialog prepareProgressDialogForLoading() {
+		ProgressDialog pd = new ProgressDialog(ActivityLevel3ShowTopic.this);
+		pd.setCancelable(false);
+		pd.setTitle("Kérem várjon!");
+		pd.setMessage("Gráf adatok letöltése folyamatban...");
+		return pd;
 	}
 
 }

@@ -10,12 +10,12 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 public class ContactListRefresherAsyncTask extends AsyncTask<Long, Void, Void> {
-	protected static final String TAG = "ChatMessagesRefresherAsyncTask";
+	protected static final String TAG = "ContactListRefresherAsyncTask";
 	private static long WAIT_TIME;
-	
+
 	private List<ChatContact> before = null;
 	private List<ChatContact> after = null;
-	
+
 	@Override
 	protected void onPreExecute() {
 		super.onPreExecute();
@@ -32,30 +32,25 @@ public class ContactListRefresherAsyncTask extends AsyncTask<Long, Void, Void> {
 			@Override
 			public void run() {
 				while (!isCancelled()) {
-					
 					if (!isCancelled()) {
 						before = Session.getActualChatContactList().getContacts();
 					}
 					if (!isCancelled()) {
-					Session.getActualCommunicationInterface().getChatPartners();
+						Session.getActualCommunicationInterface().getChatPartners();
 					}
 					if (!isCancelled()) {
 						after = Session.getActualChatContactList().getContacts();
 					}
 					if (before != null && after != null) {
-						/*if (after.containsAll(before)) {
-							// Log.d(TAG,
-							// "NO PARTNERS CHANGED SINCE LAST REFRESH.");
+						if (isEqualsBeforeAndAfterList()) {
+							Log.e(TAG, "NO PARTNERS CHANGED!!!");
 						} else {
-							// Log.d(TAG,
-							// "PARTNERS HAS CHANGED SINCE LAST REFRESH.");
-							// ActivityLevel2.actualAdapter.notifyDataSetChanged();
-						}*/
+							Log.e(TAG, "PARTNERS CHANGED!!!");
+							FragmentLevel2Chat.contactAdapter.notifyDataSetChanged();
+						}
 						try {
-							// Log.e(TAG, "WAITING...");
 							Thread.sleep(WAIT_TIME);
 						} catch (InterruptedException e) {
-							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
 					}
@@ -69,7 +64,36 @@ public class ContactListRefresherAsyncTask extends AsyncTask<Long, Void, Void> {
 	@Override
 	protected void onPostExecute(Void result) {
 		super.onPostExecute(result);
-		FragmentLevel2Chat.contactAdapter.notifyDataSetChanged();
-		//FragmentLevel2Chat.listview.invalidateViews();
+
+		// FragmentLevel2Chat.listview.invalidateViews();
+	}
+
+	private boolean isEqualsBeforeAndAfterList() {
+		String TAG = "isEqualBeforeAndAfterList";
+		if (before.size() != after.size()) {
+			Log.e(TAG, "1");
+			return false;
+		}
+
+		for (int i = 0; i < before.size(); ++i) {
+			if (!isCancelled()) {
+				
+				if (before.get(i).getName().equals(after.get(i).getName())) {
+					Log.i(TAG, before.get(i).getName() + "==" + after.get(i).getName());
+					if (before.get(i).isOnline() != after.get(i).isOnline()) {
+						Log.e(TAG, "2");
+						return false;
+					}
+				} else {
+					Log.e(TAG, before.get(i).getName() + "==" + after.get(i).getName());
+					return false;
+				}
+			}
+			else {
+				Log.e(TAG, "cancelled");
+				return false;
+			}
+		}
+		return true;
 	}
 }

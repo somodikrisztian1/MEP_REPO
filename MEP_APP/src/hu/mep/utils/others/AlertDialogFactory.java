@@ -12,7 +12,7 @@ public class AlertDialogFactory {
 	public static AlertDialog prepareAlertDialogForNoConnection(final Activity act) {
 		AlertDialog.Builder adb = new AlertDialog.Builder(act);
 		adb.setCancelable(true)
-				.setTitle("Hiba a bejelentkezés során!")
+				.setTitle("Hiba történt!")
 				.setMessage("Nincs internet kapcsolata!\nMit kíván tenni?")
 				.setPositiveButton("Wi-Fi beállítások",
 						new DialogInterface.OnClickListener() {

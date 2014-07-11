@@ -16,49 +16,50 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-public class GetChatMessagesListAsyncTask extends
-		AsyncTask<Void, Void, Void> {
+public class GetChatMessagesListAsyncTask extends AsyncTask<Void, Void, Void> {
 
 	String hostURI;
 	String resourceURI;
 	Context context;
-//	ProgressDialog pd;
+
+	// ProgressDialog pd;
 
 	public GetChatMessagesListAsyncTask(Context context, String hostURI) {
 		this.context = context;
 		this.hostURI = hostURI;
-		/*pd = new ProgressDialog(context.getApplicationContext());
-		pd.setTitle("Üzenetek letöltése");
-		pd.setCancelable(false);
-		pd.setMessage("Kérem várjon!\nLetöltés folyamatban...");
-		pd.setProgressStyle(ProgressDialog.STYLE_SPINNER);*/
+		/*
+		 * pd = new ProgressDialog(context.getApplicationContext());
+		 * pd.setTitle("Üzenetek letöltése"); pd.setCancelable(false);
+		 * pd.setMessage("Kérem várjon!\nLetöltés folyamatban...");
+		 * pd.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+		 */
 	}
 
 	@Override
 	protected void onPreExecute() {
-		//Log.e("ASYNCTASK", "onPreExecute() running");
-	//	pd.show();
-		/*Session.getInstance(context).setProgressDialog(pd);
-		Session.getInstance(context).showProgressDialog();
-		*/
+		// Log.e("ASYNCTASK", "onPreExecute() running");
+		// pd.show();
+		/*
+		 * Session.getInstance(context).setProgressDialog(pd);
+		 * Session.getInstance(context).showProgressDialog();
+		 */
 		resourceURI = "ios_getLastMessages.php?userId="
-				+ Session.getActualUser().getMepID()
-				+ "&contactId="
-				+ Session.getActualChatPartner()
-						.getUserID() + "&lastDate="
+				+ Session.getActualUser().getMepID() + "&contactId="
+				+ Session.getActualChatPartner().getUserID() + "&lastDate="
 				+ Session.getLastChatMessageOrder();
 	}
 
 	@Override
 	protected Void doInBackground(Void... nothing) {
-		//Log.e("ASYNCTASK", "doInBackground() running");
+		// Log.e("ASYNCTASK", "doInBackground() running");
 		String response = "";
 		String fullURI = hostURI + resourceURI;
-		//Log.e("ASYNCTASK", "fullURI: " + fullURI);
+		// Log.e("ASYNCTASK", "fullURI: " + fullURI);
 		DefaultHttpClient client = new DefaultHttpClient();
 		HttpGet httpGet = new HttpGet(fullURI);
 		try {
@@ -75,24 +76,21 @@ public class GetChatMessagesListAsyncTask extends
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		//Log.e("ASYNCTASK", "response= " + response);
-		if (!response.equals("[]")) {
-			GsonBuilder gsonBuilder = new GsonBuilder();
-			gsonBuilder.registerTypeAdapter(ChatMessagesList.class,
-					new ChatMessagesListDeserializer());
-			Gson gson = gsonBuilder.create();
-			ChatMessagesList messages = gson.fromJson(response,
-					ChatMessagesList.class);
-			/*Log.e("GSON...", "beérkezett üzenetek száma: "
-					+ messages.getChatMessagesList().size());*/
-			Session.getInstance(context).setChatMessagesList(messages);
-		}
+		
+		GsonBuilder gsonBuilder = new GsonBuilder();
+		gsonBuilder.registerTypeAdapter(ChatMessagesList.class,
+				new ChatMessagesListDeserializer());
+		Gson gson = gsonBuilder.create();
+		ChatMessagesList messages = gson.fromJson(response, ChatMessagesList.class);
+		Log.e("GSON", "Beérkezett üzenetek száma: " + messages.getChatMessagesList().size());
+		
+		Session.setChatMessagesList(messages);
 		return null;
 	}
-	
+
 	@Override
 	protected void onPostExecute(Void result) {
-		//pd.dismiss();
+		// pd.dismiss();
 		ActivityLevel3Chat.adapter.notifyDataSetChanged();
 		super.onPostExecute(result);
 	}

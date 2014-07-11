@@ -156,22 +156,18 @@ public class ActivityLevel1 extends ActionBarActivity implements
 
 	@Override
 	protected void onResume() {
+		super.onResume();
 		if (actualFragmentNumber == DRAWER_LIST_LOGIN_LOGOUT_NUMBER) {
-			fragmentManager.popBackStack("addLogin",
-					FragmentManager.POP_BACK_STACK_INCLUSIVE);
+			fragmentManager.popBackStack("addLogin", FragmentManager.POP_BACK_STACK_INCLUSIVE);
 			actualFragmentNumber = DRAWER_LIST_MAIN_PAGE_NUMBER;
 		}
-		super.onResume();
 	}
 
 	/* The click listener for ListView in the navigation drawer */
-	private class DrawerItemClickListener implements
-			ListView.OnItemClickListener {
+	private class DrawerItemClickListener implements ListView.OnItemClickListener {
 		@Override
-		public void onItemClick(AdapterView<?> parent, View view, int position,
-				long id) {
+		public void onItemClick(AdapterView<?> parent, View view, int position,	long id) {
 			handleDrawerClick(position);
-			// Log.e(TAG, "onItemClick 1");
 		}
 	}
 
@@ -179,8 +175,7 @@ public class ActivityLevel1 extends ActionBarActivity implements
 	public void onBackPressed() {
 		super.onBackPressed();
 		if (actualFragmentNumber == DRAWER_LIST_LOGIN_LOGOUT_NUMBER) {
-			Log.e(TAG, "onBackPressed() and actualFragmentNumber is "
-					+ actualFragmentNumber);
+			Log.e(TAG, "onBackPressed() and actualFragmentNumber is " + actualFragmentNumber);
 			// fragmentManager.popBackStack("login", 0);
 		}
 	}
@@ -261,16 +256,13 @@ public class ActivityLevel1 extends ActionBarActivity implements
 	@Override
 	public void onConfigurationChanged(Configuration newConfig) {
 		super.onConfigurationChanged(newConfig);
-		// Pass any configuration change to the drawer toggls
 		drawerToggle.onConfigurationChanged(newConfig);
-		// Log.e("FirstActivity", "onConfigurationChanged");
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.activity_firstlevel_menu, menu);
-		// Log.e("FirstActivity", "onCreateOptionsMenu");
 		return super.onCreateOptionsMenu(menu);
 	}
 
@@ -279,7 +271,6 @@ public class ActivityLevel1 extends ActionBarActivity implements
 		boolean drawerOpen = firstActivityDrawerLayout
 				.isDrawerOpen(firstActivityDrawerListView);
 		menu.findItem(R.id.action_login).setVisible(!drawerOpen);
-		// Log.e("FirstActivity", "onPrepareOptionsMenu");
 		return super.onPrepareOptionsMenu(menu);
 	}
 
@@ -304,10 +295,6 @@ public class ActivityLevel1 extends ActionBarActivity implements
 				ft.replace(R.id.first_activity_frame, newFragment);
 				ft.addToBackStack("addLogin");
 				ft.commit();
-				Log.e(TAG, "onOptionsItemSelected ....\nfragments number is:"
-						+ getSupportFragmentManager().getBackStackEntryCount());
-				// update selected item and title, then close the drawer
-
 				// setTitle(firstActivityDrawerStrings[DRAWER_LIST_LOGIN_LOGOUT_NUMBER]);
 			} else {
 				Intent i = new Intent(this, ActivityLevel2NEW.class);
@@ -332,32 +319,32 @@ public class ActivityLevel1 extends ActionBarActivity implements
 		if (NetThread.isOnline(context)) {
 			Session.setProgressDialog(prepareProgressDialogForLoading1());
 			Session.showProgressDialog();
-			Session.getInstance(context).getActualCommunicationInterface()
-					.authenticateUser(this, username, password);
-			if (Session.getInstance(context).getActualUser() == null) {
+			Session.getActualCommunicationInterface().authenticateUser(this, username, password);
+			if (Session.getActualUser() == null) {
 
 				Session.setAlertDialog(AlertDialogFactory.prepareAlertDialogForBadCredentials(ActivityLevel1.this));
 				Session.showAlertDialog();
-				/*
-				 * Toast.makeText( context,
-				 * "Sikertelen bejelentkezés!\nEllenőrizze a beírt adatok helyességét!"
-				 * , Toast.LENGTH_LONG).show();
-				 */
+
 			} else {
 
 				Session.setProgressDialog(prepareProgressDialogForLoading2());
 				Session.showProgressDialog();
-				
+				ActivityLevel2PreloaderAsyncTask at = new ActivityLevel2PreloaderAsyncTask(ActivityLevel1.this);
+				try {
+					at.execute().get();
+					at = null;
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				} catch (ExecutionException e) {
+					e.printStackTrace();
+				}
+				Session.dismissAndMakeNullProgressDialog();
 				Intent i = new Intent(this, ActivityLevel2NEW.class);
 				startActivity(i);
 			}
 		} else {
 			Session.setAlertDialog(AlertDialogFactory.prepareAlertDialogForNoConnection(ActivityLevel1.this));
 			Session.showAlertDialog();
-			/*
-			 * Toast.makeText(context, "Nincs internet kapcsolat!",
-			 * Toast.LENGTH_SHORT).show();
-			 */
 		}
 		return false;
 	}

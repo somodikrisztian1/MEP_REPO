@@ -14,8 +14,8 @@ import android.widget.Toast;
 
 public class FragmentLevel3ShowTopic extends Fragment {
 
-	TimeLineChartView mView;
-	Chart mChart;
+	public TimeLineChartView mView;
+	public Chart mChart;
 	
 		
 	public FragmentLevel3ShowTopic(Chart chart) {

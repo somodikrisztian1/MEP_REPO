@@ -1,6 +1,7 @@
 package hu.mep.datamodells;
 
 import hu.mep.communication.ChatMessagesRefresherAsyncTask;
+import hu.mep.communication.ContactListRefresherRunnable;
 import hu.mep.communication.ContactListRefresherAsyncTask;
 import hu.mep.communication.ICommunicator;
 import hu.mep.communication.RealCommunicator;
@@ -28,18 +29,19 @@ public class Session {
 	private static Session instance;
 	private static Context context;
 	private static ICommunicator actualCommunicationInterface;
-	
+
 	private static List<String> galleryImageURLSList = new ArrayList<String>();
 	private static List<Bitmap> galleryImagesList = new ArrayList<Bitmap>();
 
 	private static User actualUser;
+	private static boolean isAnyUserLoggedIn = false;
 
 	private static List<TopicCategory> allTopicsList;
 	private static Topic actualTopic;
 
 	private static Place actualRemoteMonitoring;
 
-	private static ChatContactList actualChatContactList;
+	private static volatile ChatContactList actualChatContactList;
 	private static ChatContact actualChatPartner;
 	private static ChatMessagesList chatMessagesList;
 
@@ -47,7 +49,10 @@ public class Session {
 	private static ChartInfoContainer actualChartInfoContainer;
 	private static Chart actualChart;
 
-	private static ContactListRefresherAsyncTask contactRefresher;
+	private static ContactListRefresherAsyncTask contactRefresherAsyncTask;
+	private static ContactListRefresherRunnable contactRefresherRunnable = new ContactListRefresherRunnable();
+	private static Thread contactRefresherThread = new Thread(contactRefresherRunnable);
+
 	private static ChatMessagesRefresherAsyncTask messageRefresher = new ChatMessagesRefresherAsyncTask();
 
 	private static ProgressDialog progressDialog;
@@ -83,17 +88,15 @@ public class Session {
 		}
 		return actualCommunicationInterface;
 	}
-	
+
 	// ==============================================================================
 	// GALLERY IMAGE URL + IMAGES
 	// ==============================================================================
-	
-	
-	
+
 	public static List<Bitmap> getGalleryImagesList() {
 		return galleryImagesList;
 	}
-	
+
 	public static List<String> getGalleryImageURLSList() {
 		return galleryImageURLSList;
 	}
@@ -121,6 +124,50 @@ public class Session {
 	public static void setActualUser(User newUser) {
 		Log.e(TAG, "setActualUser");
 		actualUser = newUser;
+	}
+
+	public static boolean isAnyUserLoggedIn() {
+		return isAnyUserLoggedIn;
+	}
+
+	public static void logOffActualUser() {
+		isAnyUserLoggedIn = false;
+
+		Log.e(TAG, "Stopping refresher tasks");
+		/* stopContactRefresherAsyncTask(); */
+		stopContactRefresherThread();
+		contactRefresherThread.stop();
+
+		Log.e(TAG, "setActualChart(null);");
+		setActualChart(null);
+
+		Log.e(TAG, "setActualChartInfoContainer(null);");
+		setActualChartInfoContainer(null);
+
+		Log.e(TAG, "setAllChartInfoContainer(null);");
+		setAllChartInfoContainer(null);
+
+		Log.e(TAG, "setActualTopic(null);");
+		setActualTopic(null);
+
+		Log.e(TAG, "setAllTopicsList(null);");
+		setAllTopicsList(null);
+
+		Log.e(TAG, "setChatMessagesList(null);");
+		setChatMessagesList(null);
+
+		Log.e(TAG, "setActualChatPartner(null);");
+		setActualChatPartner(null);
+
+		Log.e(TAG, "setActualChatContactList(null);");
+		setActualChatContactList(null);
+
+		Log.e(TAG, "setActualRemoteMonitoring(null);");
+		setActualRemoteMonitoring(null);
+
+		Log.e(TAG, "setActualUser(null);");
+		setActualUser(null);
+
 	}
 
 	// ==============================================================================
@@ -213,20 +260,44 @@ public class Session {
 	// ==============================================================================
 	// CONTACT REFRESHER + CHAT CONTACT LIST + ACTUAL CHAT PARTNER
 	// ==============================================================================
-	public static void startContactRefresher() {
-		Log.e(TAG, "startContactRefresher");
-		if (contactRefresher == null) {
-			contactRefresher = new ContactListRefresherAsyncTask();
-			contactRefresher.execute(5000L);
+	public static void startContactRefresherAsyncTask() {
+		Log.e(TAG, "startContactRefresherAsyncTask");
+
+		if (contactRefresherAsyncTask == null) {
+			contactRefresherAsyncTask = new ContactListRefresherAsyncTask();
+			contactRefresherAsyncTask.execute(5000L);
+		}
+
+	}
+
+	public static void stopContactRefresherAsyncTask() {
+		Log.e(TAG, "stopContactRefresherAsyncTask");
+		if (contactRefresherAsyncTask != null) {
+			contactRefresherAsyncTask.cancel(true);
+			contactRefresherAsyncTask = null;
 		}
 	}
 
-	public static void stopContactRefresher() {
-		Log.e(TAG, "stopContactRefresher");
-		if (contactRefresher != null) {
-			contactRefresher.cancel(true);
-			contactRefresher = null;
+	public static void startContactRefresherThread() {
+		Log.e(TAG, "startContactRefresherThread");
+
+		if (contactRefresherThread.getState().equals(Thread.State.NEW)) {
+			contactRefresherThread.start();
+		} else if (contactRefresherThread.getState().equals(Thread.State.WAITING)) {
+			contactRefresherThread.notify();
 		}
+	}
+	
+	public static void stopContactRefresherThread() {
+		Log.e(TAG, "stopContactRefresherThread");
+		if (contactRefresherThread.getState().equals(Thread.State.RUNNABLE)) {
+			try {
+				contactRefresherThread.wait();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+
 	}
 
 	public static ChatContactList getActualChatContactList() {
@@ -444,38 +515,40 @@ public class Session {
 		Map.Entry<Calendar, Double> keyValuePair;
 		Calendar date;
 		Double value;
-		if (actualChart.getSubCharts() != null) {
-			if (!actualChart.getSubCharts().isEmpty()) {
-				for (SubChart actSubChart : Session.getActualChart()
-						.getSubCharts()) {
-					Iterator<Entry<Calendar, Double>> it = actSubChart
-							.getChartValues().entrySet().iterator();
-					while (it.hasNext()) {
-						keyValuePair = it.next();
-						date = keyValuePair.getKey();
-						value = keyValuePair.getValue();
-						if (date.after(maxDate)) {
-							maxDate = date;
-						}
-						if (date.before(minDate)) {
-							minDate = date;
-						}
-						if (value > maxValue) {
-							maxValue = value;
-						}
-						if (value < minValue) {
-							minValue = value;
+		if (actualChart != null) {
+			if (actualChart.getSubCharts() != null) {
+				if (!actualChart.getSubCharts().isEmpty()) {
+					for (SubChart actSubChart : Session.getActualChart()
+							.getSubCharts()) {
+						Iterator<Entry<Calendar, Double>> it = actSubChart
+								.getChartValues().entrySet().iterator();
+						while (it.hasNext()) {
+							keyValuePair = it.next();
+							date = keyValuePair.getKey();
+							value = keyValuePair.getValue();
+							if (date.after(maxDate)) {
+								maxDate = date;
+							}
+							if (date.before(minDate)) {
+								minDate = date;
+							}
+							if (value > maxValue) {
+								maxValue = value;
+							}
+							if (value < minValue) {
+								minValue = value;
+							}
 						}
 					}
+					endChartDate = maxDate;
+					beginChartDate = minDate;
+					maximalChartValue = maxValue;
+					minimalChartValue = minValue;
+					Log.d("maximalChartDate", "" + endChartDate);
+					Log.d("minimalChartDate", "" + beginChartDate);
+					Log.d("maximalChartValue", "" + maximalChartValue);
+					Log.d("minimalChartValue", "" + minimalChartValue);
 				}
-				endChartDate = maxDate;
-				beginChartDate = minDate;
-				maximalChartValue = maxValue;
-				minimalChartValue = minValue;
-				Log.d("maximalChartDate", "" + endChartDate);
-				Log.d("minimalChartDate", "" + beginChartDate);
-				Log.d("maximalChartValue", "" + maximalChartValue);
-				Log.d("minimalChartValue", "" + minimalChartValue);
 			}
 		}
 	}
