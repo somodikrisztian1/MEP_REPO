@@ -228,4 +228,30 @@ public class RealCommunicator implements ICommunicator {
 		}
 	}
 
+	//TODO:
+	@Override
+	public String registrateUser(String fullName, String email, String userName, String password)
+	{
+		HashMap<String, String> postDatas = new HashMap<String, String>();
+		
+		postDatas.put("name", "" + fullName);
+		postDatas.put("username", "" + userName);
+		postDatas.put("password", password);
+		postDatas.put("email", password);
+
+		RegistrationAssyncTask sendRegistration = new RegistrationAssyncTask(
+				context, MainURL, postDatas);
+		try {
+			sendRegistration.execute().get();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		} catch (ExecutionException e) {
+			e.printStackTrace();
+		}
+		
+		return null;
+	}
+
+	
+
 }

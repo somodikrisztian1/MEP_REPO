@@ -24,4 +24,8 @@ public interface ICommunicator {
 	public void getActualChart(Calendar beginDate, Calendar endDate);
 
 	public void getActualChart();
+	
+	public String registrateUser(String fullName, String email, String userName, String password);
+	
+	
 }
