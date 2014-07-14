@@ -170,14 +170,14 @@ public class RealCommunicator implements ICommunicator {
 	@Override
 	public void sendChatMessage(String messageText) {
 		HashMap<String, String> postDatas = new HashMap<String, String>();
-		Date date;
-		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		
+		/*DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");*/
 
 		postDatas.put("userId", "" + Session.getActualUser().getMepID());
 		postDatas.put("toId", "" + Session.getActualChatPartner().getUserID());
 		postDatas.put("msg", messageText);
-		postDatas.put("date", dateFormat.format(Calendar.getInstance().getTime()));
-		Log.e("message Time:", dateFormat.format(Calendar.getInstance().getTime()));
+		/*postDatas.put("date", dateFormat.format(Calendar.getInstance().getTime()));
+		Log.e("message Time:", dateFormat.format(Calendar.getInstance().getTime()));*/
 
 		SendChatMessageAsyncTask sendChatMessage = new SendChatMessageAsyncTask(
 				context, MainURL, postDatas);

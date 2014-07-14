@@ -27,27 +27,13 @@ public class GetChatMessagesListAsyncTask extends AsyncTask<Void, Void, Void> {
 	String resourceURI;
 	Context context;
 
-	// ProgressDialog pd;
-
 	public GetChatMessagesListAsyncTask(Context context, String hostURI) {
 		this.context = context;
 		this.hostURI = hostURI;
-		/*
-		 * pd = new ProgressDialog(context.getApplicationContext());
-		 * pd.setTitle("Üzenetek letöltése"); pd.setCancelable(false);
-		 * pd.setMessage("Kérem várjon!\nLetöltés folyamatban...");
-		 * pd.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-		 */
 	}
 
 	@Override
 	protected void onPreExecute() {
-		// Log.e("ASYNCTASK", "onPreExecute() running");
-		// pd.show();
-		/*
-		 * Session.getInstance(context).setProgressDialog(pd);
-		 * Session.getInstance(context).showProgressDialog();
-		 */
 		resourceURI = "ios_getLastMessages.php?userId="
 				+ Session.getActualUser().getMepID() + "&contactId="
 				+ Session.getActualChatPartner().getUserID() + "&lastDate="
@@ -59,23 +45,8 @@ public class GetChatMessagesListAsyncTask extends AsyncTask<Void, Void, Void> {
 		// Log.e("ASYNCTASK", "doInBackground() running");
 		String response = "";
 		String fullURI = hostURI + resourceURI;
-		// Log.e("ASYNCTASK", "fullURI: " + fullURI);
-		DefaultHttpClient client = new DefaultHttpClient();
-		HttpGet httpGet = new HttpGet(fullURI);
-		try {
-			HttpResponse execute = client.execute(httpGet);
-			InputStream content = execute.getEntity().getContent();
-
-			BufferedReader buffer = new BufferedReader(new InputStreamReader(
-					content));
-			String s = "";
-			while ((s = buffer.readLine()) != null) {
-				response += s;
-			}
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		
+		response = RealCommunicator.dohttpGet(fullURI);
 		
 		GsonBuilder gsonBuilder = new GsonBuilder();
 		gsonBuilder.registerTypeAdapter(ChatMessagesList.class,

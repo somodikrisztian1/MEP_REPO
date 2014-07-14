@@ -61,14 +61,13 @@ public class GetContactListAsyncTaskNEW extends AsyncTask<Void, Void, String> {
 		// Log.e("GetContactListAsyncTask.doInBackground()", response);
 
 		GsonBuilder gsonBuilder = new GsonBuilder();
-		gsonBuilder.registerTypeAdapter(ChatContactList.class,
-				new ChatContactListDeserializer());
+		gsonBuilder.registerTypeAdapter(ChatContactList.class, new ChatContactListDeserializer());
 		Gson gson = gsonBuilder.create();
 		ChatContactList after = gson.fromJson(response, ChatContactList.class);
 		if (Session.getActualChatContactList() != null) {
-			before = Session.getActualChatContactList();
+			before = new ChatContactList(Session.getActualChatContactList().getContacts());
 		}
-		Session.setActualChatContactList(after);
+		
 
 		for (ChatContact actContact : after.getContacts()) {
 			if (!isCancelled()) {
@@ -84,6 +83,8 @@ public class GetContactListAsyncTaskNEW extends AsyncTask<Void, Void, String> {
 				}
 			}
 		}
+		
+		Session.setActualChatContactList(after);
 
 		return response;
 	}

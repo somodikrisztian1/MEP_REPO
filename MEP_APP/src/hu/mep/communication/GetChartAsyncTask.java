@@ -76,23 +76,9 @@ public class GetChartAsyncTask extends AsyncTask<Void, Void, Void> {
 	@Override
 	protected Void doInBackground(Void... params) {
 		String response = "";
-		DefaultHttpClient client = new DefaultHttpClient();
-		HttpGet httpGet = new HttpGet(fullURI);
-		try {
-			HttpResponse execute = client.execute(httpGet);
-			InputStream content = execute.getEntity().getContent();
-
-			BufferedReader buffer = new BufferedReader(new InputStreamReader(
-					content));
-			String s = "";
-			while ((s = buffer.readLine()) != null) {
-				response += s;
-			}
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
+		
+		response = RealCommunicator.dohttpGet(fullURI);
+		
 		GsonBuilder gsonBuilder = new GsonBuilder();
 		gsonBuilder.registerTypeAdapter(Chart.class, new ChartDeserializer());
 		Gson gson = gsonBuilder.create();

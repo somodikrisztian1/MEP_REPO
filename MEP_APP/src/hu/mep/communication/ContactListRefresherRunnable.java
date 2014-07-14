@@ -33,17 +33,17 @@ public class ContactListRefresherRunnable implements Runnable {
 		while (true) {
 			if (running) {
 				Log.i(TAG, "running");
-				before = null;
-				after = null;
-				if (!running) continue;
+				/*before = null;
+				after = null;*/
+				/*if (!running) continue;
 				before = new ChatContactList( Session.getActualChatContactList().getContacts() );
 				for (ChatContact act : before.getContacts()) {
 					if (!running) continue;
 					Log.i("TESTbefore",	act.getName() + " isON?[" + act.isOnline() + "]");
-				}
+				}*/
 				if (!running) continue;
 				Session.getActualCommunicationInterface().getChatPartners();
-				if (!running) continue;
+				/*	if (!running) continue;
 				after = new ChatContactList( Session.getActualChatContactList().getContacts() );
 				for (ChatContact act : after.getContacts()) {
 					if (!running) continue;
@@ -59,7 +59,8 @@ public class ContactListRefresherRunnable implements Runnable {
 						if (!running) continue;
 						FragmentLevel2Chat.contactAdapter
 								.notifyDataSetChanged();
-					}
+					}*/
+					/*FragmentLevel2Chat.contactAdapter.notifyDataSetChanged();*/
 					try {
 						Thread.sleep(WAIT_TIME);
 					} catch (InterruptedException e) {
@@ -70,4 +71,3 @@ public class ContactListRefresherRunnable implements Runnable {
 		}
 	}
 
-}

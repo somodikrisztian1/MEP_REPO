@@ -280,7 +280,6 @@ public class Session {
 	}
 
 	public static void startContactRefresherThread() {
-		
 
 		if (contactRefresherThread.getState().equals(Thread.State.NEW)) {
 			Log.e(TAG, "startContactRefresherThread NEW");
@@ -308,8 +307,10 @@ public class Session {
 	public static void setActualChatContactList(
 			ChatContactList newChatContactList) {
 		Log.e(TAG, "setActualChatContactList");
-
-		Session.actualChatContactList = newChatContactList;
+		if (newChatContactList.getContacts() != null) {
+			Session.actualChatContactList = new ChatContactList(
+					newChatContactList.getContacts());
+		}
 	}
 
 	public static ChatContact getActualChatPartner() {
@@ -463,11 +464,10 @@ public class Session {
 	public static void dismissAndMakeNullProgressDialog() {
 		progressDialog.dismiss();
 		progressDialog = null;
-		/*if (progressDialog != null) {
-			Log.e(TAG, "Dismiss progress dialog");
-			progressDialog.dismiss();
-			progressDialog = null;
-		}*/
+		/*
+		 * if (progressDialog != null) { Log.e(TAG, "Dismiss progress dialog");
+		 * progressDialog.dismiss(); progressDialog = null; }
+		 */
 	}
 
 	public static void setAlertDialog(AlertDialog ad) {
@@ -550,8 +550,16 @@ public class Session {
 					beginChartDate = minDate;
 					maximalChartValue = maxValue;
 					minimalChartValue = minValue;
-					Log.d("maximalChartDate", "" + endChartDate);
-					Log.d("minimalChartDate", "" + beginChartDate);
+					SimpleDateFormat formatter = new SimpleDateFormat(
+							"yyyy-MM-dd_HH:mm");
+					Log.d("maximalChartDate",
+							""
+									+ formatter.format(endChartDate
+											.getTimeInMillis()));
+					Log.d("minimalChartDate",
+							""
+									+ formatter.format(beginChartDate
+											.getTimeInMillis()));
 					Log.d("maximalChartValue", "" + maximalChartValue);
 					Log.d("minimalChartValue", "" + minimalChartValue);
 				}

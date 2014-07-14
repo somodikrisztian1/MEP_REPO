@@ -127,26 +127,39 @@ public class ActivityLevel3ShowTopic extends ActionBarActivity implements
 
 			DatePicker dp = (DatePicker) d.findViewById(R.id.datePicker);
 			TimePicker tp = (TimePicker) d.findViewById(R.id.timePicker);
-			Button cancelButton = (Button) d.findViewById(R.id.datePickerCancelButton);
-			Button setButton = (Button) d.findViewById(R.id.datePickerSettedButton);
+			Button cancelButton = (Button) d
+					.findViewById(R.id.datePickerCancelButton);
+			Button setButton = (Button) d
+					.findViewById(R.id.datePickerSettedButton);
 
 			cancelButton.setOnClickListener(new OnClickListener() {
-				
+
 				@Override
 				public void onClick(View v) {
 					d.dismiss();
 				}
 			});
-			
+
 			setButton.setOnClickListener(new OnClickListener() {
 
+				Calendar actDate = Calendar.getInstance();
 				@Override
 				public void onClick(View v) {
-					beginDate = (Calendar) tempDate.clone();
+					if (tempDate.after(actDate)) {
+						Toast.makeText(ActivityLevel3ShowTopic.this,
+								"Rossz időintervallum!\nNem lehet a jelenlegi dátumnál újabb dátumot megadni!", Toast.LENGTH_SHORT)
+								.show();
+					}
+					else if (tempDate.after(endDate)) {
+						Toast.makeText(ActivityLevel3ShowTopic.this,
+								"Rossz időintervallum!\nA kezdő időpont a zárónál későbbi!", Toast.LENGTH_SHORT)
+								.show();
+					} else {
+						beginDate = (Calendar) tempDate.clone();
+						d.dismiss();
+					}
 				}
 			});
-
-			Calendar actDate = Calendar.getInstance();
 
 			dp.init(beginDate.get(Calendar.YEAR),
 					beginDate.get(Calendar.MONTH),
@@ -163,7 +176,7 @@ public class ActivityLevel3ShowTopic extends ActionBarActivity implements
 									tempDate);
 						}
 					});
-			dp.setMaxDate(actDate.getTimeInMillis());
+			// dp.setMaxDate(actDate.getTimeInMillis());
 			tp.setIs24HourView(true);
 			tp.setCurrentHour(beginDate.get(Calendar.HOUR_OF_DAY));
 			tp.setCurrentMinute(beginDate.get(Calendar.MINUTE));
@@ -186,22 +199,37 @@ public class ActivityLevel3ShowTopic extends ActionBarActivity implements
 
 			DatePicker dp = (DatePicker) d.findViewById(R.id.datePicker);
 			TimePicker tp = (TimePicker) d.findViewById(R.id.timePicker);
-			Button cancelButton = (Button) d.findViewById(R.id.datePickerCancelButton);
-			Button setButton = (Button) d.findViewById(R.id.datePickerSettedButton);
+			Button cancelButton = (Button) d
+					.findViewById(R.id.datePickerCancelButton);
+			Button setButton = (Button) d
+					.findViewById(R.id.datePickerSettedButton);
 
 			cancelButton.setOnClickListener(new OnClickListener() {
-				
+
 				@Override
 				public void onClick(View v) {
 					d.dismiss();
 				}
 			});
-			
+
 			setButton.setOnClickListener(new OnClickListener() {
 
 				@Override
 				public void onClick(View v) {
-					endDate = (Calendar) tempDate.clone();
+					Calendar actDate = Calendar.getInstance();
+					if (tempDate.after(actDate)) {
+						Toast.makeText(ActivityLevel3ShowTopic.this,
+								"Rossz időintervallum!\nNem lehet a jelenlegi dátumnál újabb dátumot megadni!", Toast.LENGTH_SHORT)
+								.show();
+					}
+					else if(tempDate.before(beginDate)) {
+						Toast.makeText(ActivityLevel3ShowTopic.this,
+								"Rossz időintervallum!\nA kezdő időpont a zárónál későbbi!", Toast.LENGTH_SHORT)
+								.show();
+					} else {
+						endDate = (Calendar) tempDate.clone();
+						d.dismiss();
+					}
 				}
 			});
 
@@ -215,8 +243,8 @@ public class ActivityLevel3ShowTopic extends ActionBarActivity implements
 							tempDate.set(Calendar.YEAR, year);
 							tempDate.set(Calendar.MONTH, monthOfYear);
 							tempDate.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-							CalendarPrinter
-									.logCalendar(TAG, "tempDate", tempDate);
+							CalendarPrinter.logCalendar(TAG, "tempDate",
+									tempDate);
 							/*
 							 * Toast.makeText(ActivityLevel3ShowTopic.this,
 							 * beginDate.toString(), Toast.LENGTH_LONG) .show();
@@ -242,8 +270,12 @@ public class ActivityLevel3ShowTopic extends ActionBarActivity implements
 			CalendarPrinter.logCalendar(TAG, "toDate", endDate);
 			Session.setProgressDialog(prepareProgressDialogForLoading());
 			Session.showProgressDialog();
-			Session.getActualCommunicationInterface().getActualChart(beginDate,	endDate);
+			Session.getActualCommunicationInterface().getActualChart(beginDate,
+					endDate);
 			Session.dismissAndMakeNullProgressDialog();
+			Toast.makeText(ActivityLevel3ShowTopic.this, "Kész!",
+					Toast.LENGTH_LONG).show();
+			mSectionsPagerAdapter.notifyDataSetChanged();
 		}
 		return super.onOptionsItemSelected(item);
 	}
@@ -301,15 +333,14 @@ public class ActivityLevel3ShowTopic extends ActionBarActivity implements
 
 		mSectionsPagerAdapter.notifyDataSetChanged();
 		mViewPager.setAdapter(mSectionsPagerAdapter);
-		/*
-		 * for (int i = 0; i < mSectionsPagerAdapter.getCount(); ++i) {
-		 * FragmentLevel3ShowTopic actFragment = (FragmentLevel3ShowTopic)
-		 * mSectionsPagerAdapter .getItem(i); Log.e(TAG, "fragment No." + i);
-		 * ChartChangeEvent change = new ChartChangeEvent(source, chart, type)
-		 * actFragment.mView.chartChanged(new
-		 * ChartChangeEvent(ChartChangeEventType.NEW_DATASET));
-		 * //actFragment.mView.invalidate(); }
-		 */
+
+		for (int i = 0; i < mSectionsPagerAdapter.getCount(); ++i) {
+			FragmentLevel3ShowTopic actFragment = (FragmentLevel3ShowTopic) mSectionsPagerAdapter
+					.getItem(i);
+			Log.e(TAG, "fragment No." + i);
+
+		}
+
 	}
 
 	private ProgressDialog prepareProgressDialogForLoading() {

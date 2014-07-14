@@ -21,7 +21,7 @@ import android.util.Log;
 
 public class TimeSeriesAdapter {
 
-	private static final String TAG = "TimeSeriesAdapter2";
+	private static final String TAG = "TimeSeriesAdapter";
 
 	// TODO Ez csak egy teszt metódus! Végül ki kell majd venni!!!
 	public XYDataset getTimeSeriesFromTheFly() {

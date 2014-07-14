@@ -15,9 +15,11 @@ import android.view.View;
 import android.view.View.OnKeyListener;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AbsListView;
+import android.widget.AbsListView.OnScrollListener;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 
@@ -44,6 +46,26 @@ public class ActivityLevel3Chat extends Activity {
 		chatMessagesListview.setTranscriptMode(AbsListView.TRANSCRIPT_MODE_ALWAYS_SCROLL);
 		chatMessagesListview.setStackFromBottom(true);
 		chatMessagesListview.setAdapter(adapter);
+		chatMessagesListview.setOnScrollListener(new OnScrollListener() {
+			
+			@Override
+			public void onScroll(AbsListView view, int firstVisibleItem,
+					int visibleItemCount, int totalItemCount) {
+				final int lastVisibleItem = firstVisibleItem + visibleItemCount;
+				if(lastVisibleItem == totalItemCount) {
+					view.setTranscriptMode(ListView.TRANSCRIPT_MODE_ALWAYS_SCROLL);
+				}
+				else {
+					view.setTranscriptMode(ListView.TRANSCRIPT_MODE_NORMAL);
+				}
+			}
+
+			@Override
+			public void onScrollStateChanged(AbsListView view, int scrollState) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
 
 		chatInputTextView = (EditText) findViewById(R.id.activity_thirdlevel_chat_input_edittext);
 
