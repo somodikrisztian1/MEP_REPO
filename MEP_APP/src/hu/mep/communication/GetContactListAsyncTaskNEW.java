@@ -129,7 +129,7 @@ public class GetContactListAsyncTaskNEW extends AsyncTask<Void, Void, String> {
 
 	@Override
 	protected void onPostExecute(String result) {
-		// FragmentLevel2Chat.contactAdapter.notifyDataSetChanged();
+		FragmentLevel2Chat.contactAdapter.notifyDataSetChanged();
 		super.onPostExecute(result);
 	}
 

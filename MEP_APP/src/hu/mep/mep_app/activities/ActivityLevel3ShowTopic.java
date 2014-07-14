@@ -129,8 +129,6 @@ public class ActivityLevel3ShowTopic extends ActionBarActivity implements
 			
 			Calendar actDate = Calendar.getInstance();
 			
-			
-			
 			dp.init(beginDate.get(Calendar.YEAR),
 					beginDate.get(Calendar.MONTH),
 					beginDate.get(Calendar.DAY_OF_MONTH),

@@ -184,10 +184,10 @@ public class ActivityLevel1 extends ActionBarActivity implements
 
 		actualFragmentNumber = position;
 		Fragment newFragment = null;
-		Bundle args;
+		/*Bundle args;*/
 		FragmentTransaction ft = fragmentManager.beginTransaction();
-		Toast waitForIt = Toast.makeText(context,
-				"Under construction...Try it later! :)", Toast.LENGTH_SHORT);
+		/*Toast waitForIt = Toast.makeText(context,
+				"Under construction...Try it later! :)", Toast.LENGTH_SHORT);*/
 		boolean readyForFragmentLoading = false;
 		switch (actualFragmentNumber) {
 
@@ -317,16 +317,16 @@ public class ActivityLevel1 extends ActionBarActivity implements
 			final String password) {
 
 		if (NetThread.isOnline(context)) {
+			Log.e(TAG, "prepareProgressDialogForLoading1");
 			Session.setProgressDialog(prepareProgressDialogForLoading1());
 			Session.showProgressDialog();
 			Session.getActualCommunicationInterface().authenticateUser(this, username, password);
+//			Session.dismissAndMakeNullProgressDialog();
 			if (Session.getActualUser() == null) {
-
 				Session.setAlertDialog(AlertDialogFactory.prepareAlertDialogForBadCredentials(ActivityLevel1.this));
 				Session.showAlertDialog();
-
 			} else {
-
+				Log.e(TAG, "prepareProgressDialogForLoading2");
 				Session.setProgressDialog(prepareProgressDialogForLoading2());
 				Session.showProgressDialog();
 				ActivityLevel2PreloaderAsyncTask at = new ActivityLevel2PreloaderAsyncTask(ActivityLevel1.this);
@@ -338,7 +338,7 @@ public class ActivityLevel1 extends ActionBarActivity implements
 				} catch (ExecutionException e) {
 					e.printStackTrace();
 				}
-				Session.dismissAndMakeNullProgressDialog();
+				//Session.dismissAndMakeNullProgressDialog();
 				Intent i = new Intent(this, ActivityLevel2NEW.class);
 				startActivity(i);
 			}

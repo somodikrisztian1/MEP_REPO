@@ -26,22 +26,18 @@ import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.util.Log;
 
-public class AuthenticationAsyncTask extends AsyncTask<Void, Void, String> {
+public class AuthenticationAsyncTask extends AsyncTask<Void, Void, Void> {
 
 	private static final String TAG = "AuthenticationAsyncTask";
 
 	private String hostURI;
 	private String resourceURI;
-	private Activity activity;
-	private Context context;
 	private String username;
 	private String password;
 	private static String fullURI;
 
-	public AuthenticationAsyncTask(Activity activity, Context context,
-			String username, String password, String hostURI) {
-		this.activity = activity;
-		this.context = context;
+	public AuthenticationAsyncTask(String username, String password,
+			String hostURI) {
 		this.username = username;
 		this.password = password;
 		this.hostURI = hostURI;
@@ -49,21 +45,15 @@ public class AuthenticationAsyncTask extends AsyncTask<Void, Void, String> {
 
 	@Override
 	protected void onPreExecute() {
-
+		Log.e(TAG, "onPreExecute");
 		resourceURI = "iphonelogin_do.php?username=" + username + "&password="
 				+ MD5Encoder.encodePasswordWithMD5(password);
 		fullURI = hostURI + resourceURI;
-		Log.e(TAG, fullURI);
-		/*
-		 * ProgressDialog pd = new ProgressDialog(activity);
-		 * pd.setCancelable(false); pd.setTitle("Kérem várjon!");
-		 * pd.setMessage("Adatok letöltése folyamatban...");
-		 * Session.setProgressDialog(pd); Session.showProgressDialog();
-		 */
 	}
 
 	@Override
-	protected String doInBackground(Void... nothing) {
+	protected Void doInBackground(Void... nothing) {
+		Log.e(TAG, "doInBackground begin...");
 		String response = "";
 
 		// Log.e("fullURI is: ", fullURI);
@@ -91,24 +81,24 @@ public class AuthenticationAsyncTask extends AsyncTask<Void, Void, String> {
 		Gson gson = gsonBuilder.create();
 		User newUser = gson.fromJson(response, User.class);
 
-		Session.getInstance(context).setActualUser(newUser);
+		Session.setActualUser(newUser);
 		if (newUser != null) {
 			downloadProfilePictureForActualUser();
 		}
-		return "";
+		Log.e(TAG, "doInBackground finished...");
+		return null;
 	}
 
 	private void downloadProfilePictureForActualUser() {
 		try {
 
 			HttpURLConnection connection = (HttpURLConnection) Session
-					.getInstance(context).getActualUser().getImageURL()
-					.openConnection();
+					.getActualUser().getImageURL().openConnection();
 			connection.setDoInput(true);
 			connection.connect();
 			InputStream input = connection.getInputStream();
-			Session.getInstance(context).getActualUser()
-					.setProfilePicture(BitmapFactory.decodeStream(input));
+			Session.getActualUser().setProfilePicture(
+					BitmapFactory.decodeStream(input));
 
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -119,9 +109,11 @@ public class AuthenticationAsyncTask extends AsyncTask<Void, Void, String> {
 	}
 
 	@Override
-	protected void onPostExecute(String result) {
+	protected void onPostExecute(Void result) {
 		super.onPostExecute(result);
+		Log.e(TAG, "onPostExecute");
 		Session.dismissAndMakeNullProgressDialog();
+		return;
 	}
 
 }
