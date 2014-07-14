@@ -28,14 +28,21 @@
     <string name="fragment_firstlevel_about_remote_text_title_3">	Fűtési- és hűtési rendszerek</string>
     <string name="fragment_firstlevel_about_remote_text_content_3">A fűtési és hűtési rendszerek esetében a távfelügyeletes rendszer szintén egyszerűen kivitelezhető, és fontos lehetőséget biztosít a tulajdonosa számára azzal kapcsolatban, hogy az épületben, vagy épületrészben hány fokos hőmérsékletet kíván beállítani. Ezt interneten keresztül egyszerűen meg is teheti, és amennyiben jelentős eltérés mutatkozik a kívánt értéktől, és ezáltal valamilyen hiba következett be, arról azonnal értesül a beruházó. </string>
     <string name="fragment_login_screen_login_button_text">Bejelentkezés</string>
+    <string name="fragment_login_screen_registration_button">Regisztráció</string>
     <string name="company_name">Megújuló\nEnergiapark</string>
     <string name="contact_address">4031 Debrecen,\nKishegyesi út 187.</string>
     <string name="contact_phone_number">06-70/604-54-64</string>
     <string name="contact_mail">info@megujuloenergiapark.hu</string>
     <string name="contact_opening_hours">Minden hétköznap\n8:00 - 16:00-ig</string>
     <string name="fragment_main_screen_title">Kezdőlap</string>
+    
     <string name="hint_for_login_activity_username_textview">Felhasználónév</string>
     <string name="hint_for_login_activity_password_textview">Jelszó</string>
+    <string name="hint_for_reg_activity_fullname_textview">Teljes név</string>
+    <string name="hint_for_reg_activity_email_textview">e-mail</string>
+    <string name="hint_for_reg_activity_password_again_textview">Jelszó újra</string>
+    <string name="hint_for_reg_activity_regbutton_text">Regisztráció</string>
+    
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
 

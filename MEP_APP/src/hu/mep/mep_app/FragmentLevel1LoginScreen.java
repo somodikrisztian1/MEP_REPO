@@ -1,20 +1,17 @@
 package hu.mep.mep_app;
 
-import hu.mep.communication.ICommunicator;
-import hu.mep.communication.RealCommunicator;
+import hu.mep.mep_app.activities.ActivityLevel1Registration;
 import hu.mep.utils.others.FragmentLevel1EventHandler;
 import android.app.Activity;
-import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -28,6 +25,7 @@ public class FragmentLevel1LoginScreen extends Fragment implements
 	private EditText usernameEdittext;
 	private EditText passwordEdittext;
 	Button loginButton;
+	private Button regButton;
 
 	public FragmentLevel1LoginScreen() {
 	}
@@ -46,12 +44,14 @@ public class FragmentLevel1LoginScreen extends Fragment implements
 				.findViewById(R.id.fragment_login_screen_password_edittext);
 		loginButton = (Button) rootView
 				.findViewById(R.id.fragment_login_screen_login_button);
+		regButton = (Button) rootView.findViewById(R.id.fragment_login_screen_registration_button);
 
 		usernameEdittext.setFocusable(true);
 		// usernameEdittext.requestFocus();
 		passwordEdittext.setFocusable(true);
 
 		loginButton.setOnClickListener(this);
+		regButton.setOnClickListener(this);
 
 		passwordEdittext
 				.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -89,6 +89,9 @@ public class FragmentLevel1LoginScreen extends Fragment implements
 			fragmentEventHandler.onLoginButtonPressed(username_for_send,
 					password_for_send);
 			break;
+		case R.id.fragment_login_screen_registration_button:
+			Intent myIntent = new Intent(this.getActivity(), ActivityLevel1Registration.class);
+			this.startActivity(myIntent);
 		default:
 			break;
 		}
