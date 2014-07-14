@@ -327,8 +327,8 @@ public class ActivityLevel1 extends ActionBarActivity implements
 				Session.showAlertDialog();
 			} else {
 				Log.e(TAG, "prepareProgressDialogForLoading2");
-				Session.setProgressDialog(prepareProgressDialogForLoading2());
-				Session.showProgressDialog();
+				/*Session.setProgressDialog(prepareProgressDialogForLoading2());
+				Session.showProgressDialog();*/
 				ActivityLevel2PreloaderAsyncTask at = new ActivityLevel2PreloaderAsyncTask(ActivityLevel1.this);
 				try {
 					at.execute().get();

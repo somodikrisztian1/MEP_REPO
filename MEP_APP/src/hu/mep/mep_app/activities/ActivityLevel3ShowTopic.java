@@ -28,6 +28,9 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.DatePicker.OnDateChangedListener;
 import android.widget.TimePicker;
@@ -115,20 +118,36 @@ public class ActivityLevel3ShowTopic extends ActionBarActivity implements
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		/*
-		 * itt volt a begindate enddate beállítása eredetileg....
-		 */
+
 		if (item.getItemId() == R.id.action_datetime_begin) {
-			Dialog d = new Dialog(ActivityLevel3ShowTopic.this);
+			final Dialog d = new Dialog(ActivityLevel3ShowTopic.this);
 
 			d.setContentView(R.layout.date_and_time_picker);
 			d.setTitle("Kezdő időpont");
 
 			DatePicker dp = (DatePicker) d.findViewById(R.id.datePicker);
 			TimePicker tp = (TimePicker) d.findViewById(R.id.timePicker);
+			Button cancelButton = (Button) d.findViewById(R.id.datePickerCancelButton);
+			Button setButton = (Button) d.findViewById(R.id.datePickerSettedButton);
+
+			cancelButton.setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					d.dismiss();
+				}
+			});
 			
+			setButton.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					beginDate = (Calendar) tempDate.clone();
+				}
+			});
+
 			Calendar actDate = Calendar.getInstance();
-			
+
 			dp.init(beginDate.get(Calendar.YEAR),
 					beginDate.get(Calendar.MONTH),
 					beginDate.get(Calendar.DAY_OF_MONTH),
@@ -137,15 +156,11 @@ public class ActivityLevel3ShowTopic extends ActionBarActivity implements
 						@Override
 						public void onDateChanged(DatePicker view, int year,
 								int monthOfYear, int dayOfMonth) {
-							beginDate.set(Calendar.YEAR, year);
-							beginDate.set(Calendar.MONTH, monthOfYear);
-							beginDate.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-							CalendarPrinter.logCalendar(TAG, "beginDate",
-									beginDate);
-							/*
-							 * Toast.makeText(ActivityLevel3ShowTopic.this,
-							 * beginDate.toString(), Toast.LENGTH_LONG) .show();
-							 */
+							tempDate.set(Calendar.YEAR, year);
+							tempDate.set(Calendar.MONTH, monthOfYear);
+							tempDate.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+							CalendarPrinter.logCalendar(TAG, "tempDate",
+									tempDate);
 						}
 					});
 			dp.setMaxDate(actDate.getTimeInMillis());
@@ -157,24 +172,38 @@ public class ActivityLevel3ShowTopic extends ActionBarActivity implements
 				@Override
 				public void onTimeChanged(TimePicker view, int hourOfDay,
 						int minute) {
-					beginDate.set(Calendar.HOUR_OF_DAY, hourOfDay);
-					beginDate.set(Calendar.MINUTE, minute);
-					CalendarPrinter.logCalendar(TAG, "beginDate", beginDate);
-					/*
-					 * Toast.makeText(ActivityLevel3ShowTopic.this,
-					 * beginDate.toString(), Toast.LENGTH_LONG).show();
-					 */
+					tempDate.set(Calendar.HOUR_OF_DAY, hourOfDay);
+					tempDate.set(Calendar.MINUTE, minute);
+					CalendarPrinter.logCalendar(TAG, "tempDate", tempDate);
 				}
 			});
 			d.show();
 
 		} else if (item.getItemId() == R.id.action_datetime_end) {
-			Dialog d = new Dialog(ActivityLevel3ShowTopic.this);
+			final Dialog d = new Dialog(ActivityLevel3ShowTopic.this);
 			d.setContentView(R.layout.date_and_time_picker);
 			d.setTitle("Záró időpont");
 
 			DatePicker dp = (DatePicker) d.findViewById(R.id.datePicker);
 			TimePicker tp = (TimePicker) d.findViewById(R.id.timePicker);
+			Button cancelButton = (Button) d.findViewById(R.id.datePickerCancelButton);
+			Button setButton = (Button) d.findViewById(R.id.datePickerSettedButton);
+
+			cancelButton.setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					d.dismiss();
+				}
+			});
+			
+			setButton.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					endDate = (Calendar) tempDate.clone();
+				}
+			});
 
 			dp.init(endDate.get(Calendar.YEAR), endDate.get(Calendar.MONTH),
 					endDate.get(Calendar.DAY_OF_MONTH),
@@ -183,11 +212,11 @@ public class ActivityLevel3ShowTopic extends ActionBarActivity implements
 						@Override
 						public void onDateChanged(DatePicker view, int year,
 								int monthOfYear, int dayOfMonth) {
-							endDate.set(Calendar.YEAR, year);
-							endDate.set(Calendar.MONTH, monthOfYear);
-							endDate.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+							tempDate.set(Calendar.YEAR, year);
+							tempDate.set(Calendar.MONTH, monthOfYear);
+							tempDate.set(Calendar.DAY_OF_MONTH, dayOfMonth);
 							CalendarPrinter
-									.logCalendar(TAG, "endDate", endDate);
+									.logCalendar(TAG, "tempDate", tempDate);
 							/*
 							 * Toast.makeText(ActivityLevel3ShowTopic.this,
 							 * beginDate.toString(), Toast.LENGTH_LONG) .show();
@@ -202,13 +231,9 @@ public class ActivityLevel3ShowTopic extends ActionBarActivity implements
 				@Override
 				public void onTimeChanged(TimePicker view, int hourOfDay,
 						int minute) {
-					endDate.set(Calendar.HOUR_OF_DAY, hourOfDay);
-					endDate.set(Calendar.MINUTE, minute);
+					tempDate.set(Calendar.HOUR_OF_DAY, hourOfDay);
+					tempDate.set(Calendar.MINUTE, minute);
 					CalendarPrinter.logCalendar(TAG, "endDate", endDate);
-					/*
-					 * Toast.makeText(ActivityLevel3ShowTopic.this,
-					 * beginDate.toString(), Toast.LENGTH_LONG).show();
-					 */
 				}
 			});
 			d.show();
@@ -217,8 +242,7 @@ public class ActivityLevel3ShowTopic extends ActionBarActivity implements
 			CalendarPrinter.logCalendar(TAG, "toDate", endDate);
 			Session.setProgressDialog(prepareProgressDialogForLoading());
 			Session.showProgressDialog();
-			Session.getActualCommunicationInterface().getActualChart(beginDate,
-					endDate);
+			Session.getActualCommunicationInterface().getActualChart(beginDate,	endDate);
 			Session.dismissAndMakeNullProgressDialog();
 		}
 		return super.onOptionsItemSelected(item);
@@ -247,13 +271,13 @@ public class ActivityLevel3ShowTopic extends ActionBarActivity implements
 		public CharSequence getPageTitle(int position) {
 			return Session.getAllChartInfoContainer().get(position).getName();
 		}
-		
+
 		@Override
 		public int getItemPosition(Object object) {
 			// TODO Auto-generated method stub
 			return POSITION_NONE;
 		}
-		
+
 	}
 
 	@Override
@@ -272,22 +296,20 @@ public class ActivityLevel3ShowTopic extends ActionBarActivity implements
 	}
 
 	public static void refreshFragments() {
-		Log.e(TAG, "refreshFragments: fragments number is " + mSectionsPagerAdapter.getCount());
-		
-		
-		
-		
+		Log.e(TAG, "refreshFragments: fragments number is "
+				+ mSectionsPagerAdapter.getCount());
+
 		mSectionsPagerAdapter.notifyDataSetChanged();
 		mViewPager.setAdapter(mSectionsPagerAdapter);
 		/*
-		for (int i = 0; i < mSectionsPagerAdapter.getCount(); ++i) {
-			FragmentLevel3ShowTopic actFragment = (FragmentLevel3ShowTopic) mSectionsPagerAdapter
-					.getItem(i);
-			Log.e(TAG, "fragment No." + i);
-			ChartChangeEvent change = new ChartChangeEvent(source, chart, type)
-			actFragment.mView.chartChanged(new ChartChangeEvent(ChartChangeEventType.NEW_DATASET));
-			//actFragment.mView.invalidate();
-		}*/
+		 * for (int i = 0; i < mSectionsPagerAdapter.getCount(); ++i) {
+		 * FragmentLevel3ShowTopic actFragment = (FragmentLevel3ShowTopic)
+		 * mSectionsPagerAdapter .getItem(i); Log.e(TAG, "fragment No." + i);
+		 * ChartChangeEvent change = new ChartChangeEvent(source, chart, type)
+		 * actFragment.mView.chartChanged(new
+		 * ChartChangeEvent(ChartChangeEventType.NEW_DATASET));
+		 * //actFragment.mView.invalidate(); }
+		 */
 	}
 
 	private ProgressDialog prepareProgressDialogForLoading() {

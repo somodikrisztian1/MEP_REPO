@@ -112,7 +112,7 @@ public class AuthenticationAsyncTask extends AsyncTask<Void, Void, Void> {
 	protected void onPostExecute(Void result) {
 		super.onPostExecute(result);
 		Log.e(TAG, "onPostExecute");
-		Session.dismissAndMakeNullProgressDialog();
+		//Session.dismissAndMakeNullProgressDialog();
 		return;
 	}
 

@@ -280,16 +280,13 @@ public class Session {
 	}
 
 	public static void startContactRefresherThread() {
-		Log.e(TAG, "startContactRefresherThread");
+		
 
 		if (contactRefresherThread.getState().equals(Thread.State.NEW)) {
+			Log.e(TAG, "startContactRefresherThread NEW");
 			contactRefresherThread.start();
-			contactRefresherRunnable.resume();
-		} else if (contactRefresherThread.getState().equals(
-				Thread.State.WAITING)) {
-			contactRefresherThread.notify();
-			contactRefresherRunnable.resume();
 		}
+		contactRefresherRunnable.resume();
 	}
 
 	public static void stopContactRefresherThread() {
@@ -449,26 +446,28 @@ public class Session {
 	// ==============================================================================
 	// PROGRESS DIALOG + ALERT DIALOG
 	// ==============================================================================
-	public static void setProgressDialog(ProgressDialog progressDialog) {
-		Log.e(TAG, "setProgressDialog");
+	public static void setProgressDialog(ProgressDialog p_ProgressDialog) {
 		if (progressDialog == null) {
-			Session.progressDialog = progressDialog;
+			Log.e(TAG, "setProgressDialog");
+			Session.progressDialog = p_ProgressDialog;
 		}
 	}
 
 	public static void showProgressDialog() {
-		Log.e(TAG, "showProgressDialog");
 		if (progressDialog != null) {
+			Log.e(TAG, "showProgressDialog");
 			progressDialog.show();
 		}
 	}
 
 	public static void dismissAndMakeNullProgressDialog() {
-		if (progressDialog != null) {
+		progressDialog.dismiss();
+		progressDialog = null;
+		/*if (progressDialog != null) {
 			Log.e(TAG, "Dismiss progress dialog");
 			progressDialog.dismiss();
 			progressDialog = null;
-		}
+		}*/
 	}
 
 	public static void setAlertDialog(AlertDialog ad) {
