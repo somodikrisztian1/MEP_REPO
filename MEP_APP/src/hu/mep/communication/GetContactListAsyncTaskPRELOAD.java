@@ -73,10 +73,10 @@ public class GetContactListAsyncTaskPRELOAD extends AsyncTask<Void, Void, String
 
 		for (ChatContact actContact : after.getContacts()) {
 			boolean on = (actContact.isOnline() == 1 ? true : false);
-			Log.i("getContactsAT",
+			/*Log.i("getContactsAT",
 					actContact.getName() + (on ? "[on]" : "[off]") + "("
 							+ actContact.getUnreadedMessageNumber() + ")");
-
+			*/
 			actContact.setProfilePicture(before
 					.getImageFromContactID(actContact.getUserID()));
 			if (actContact.getProfilePicture() == null) {

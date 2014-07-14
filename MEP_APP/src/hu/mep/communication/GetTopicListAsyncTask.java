@@ -45,7 +45,7 @@ public class GetTopicListAsyncTask extends AsyncTask<Void, Void, Void> {
 
 		response = RealCommunicator.dohttpGet(fullURI);
 
-		Log.e("GetTopicListAsyncTask.doInBackground()", "response:" + response);
+		/*Log.e("GetTopicListAsyncTask.doInBackground()", "response:" + response);*/
 
 		GsonBuilder gsonBuilder = new GsonBuilder();
 		gsonBuilder.registerTypeAdapter(AllTopicsList.class, new TopicListDeserializer());

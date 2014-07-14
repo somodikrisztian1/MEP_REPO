@@ -51,7 +51,8 @@ public class Session {
 
 	private static ContactListRefresherAsyncTask contactRefresherAsyncTask;
 	private static ContactListRefresherRunnable contactRefresherRunnable = new ContactListRefresherRunnable();
-	private static Thread contactRefresherThread = new Thread(contactRefresherRunnable);
+	private static Thread contactRefresherThread = new Thread(
+			contactRefresherRunnable);
 
 	private static ChatMessagesRefresherAsyncTask messageRefresher = new ChatMessagesRefresherAsyncTask();
 
@@ -136,7 +137,7 @@ public class Session {
 		Log.e(TAG, "Stopping refresher tasks");
 		/* stopContactRefresherAsyncTask(); */
 		stopContactRefresherThread();
-		contactRefresherThread.stop();
+		// contactRefresherThread.stop();
 
 		Log.e(TAG, "setActualChart(null);");
 		setActualChart(null);
@@ -279,25 +280,24 @@ public class Session {
 	}
 
 	public static void startContactRefresherThread() {
-		Log.e(TAG, "startContactRefresherThread");
+		
 
 		if (contactRefresherThread.getState().equals(Thread.State.NEW)) {
+			Log.e(TAG, "startContactRefresherThread NEW");
 			contactRefresherThread.start();
-		} else if (contactRefresherThread.getState().equals(Thread.State.WAITING)) {
-			contactRefresherThread.notify();
 		}
+		contactRefresherRunnable.resume();
 	}
-	
+
 	public static void stopContactRefresherThread() {
 		Log.e(TAG, "stopContactRefresherThread");
-		if (contactRefresherThread.getState().equals(Thread.State.RUNNABLE)) {
-			try {
-				contactRefresherThread.wait();
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-		}
-
+		contactRefresherRunnable.pause();
+		/*
+		 * if (contactRefresherThread.getState().equals(Thread.State.RUNNABLE))
+		 * { try { Log.i(TAG, "stopContactRefresherThread");
+		 * contactRefresherRunnable.pause(); contactRefresherThread.wait(); }
+		 * catch (InterruptedException e) { e.printStackTrace(); } }
+		 */
 	}
 
 	public static ChatContactList getActualChatContactList() {
@@ -446,31 +446,37 @@ public class Session {
 	// ==============================================================================
 	// PROGRESS DIALOG + ALERT DIALOG
 	// ==============================================================================
-	public static void setProgressDialog(ProgressDialog progressDialog) {
-		Log.d(TAG, "setProgressDialog");
-		Session.progressDialog = progressDialog;
-	}
-
-	public static void showProgressDialog() {
-		Log.d(TAG, "showProgressDialog");
-		progressDialog.show();
-	}
-
-	public static void dismissAndMakeNullProgressDialog() {
-		if (progressDialog != null) {
-			Log.d(TAG, "Dismiss progress dialog");
-			progressDialog.dismiss();
-			progressDialog = null;
+	public static void setProgressDialog(ProgressDialog p_ProgressDialog) {
+		if (progressDialog == null) {
+			Log.e(TAG, "setProgressDialog");
+			Session.progressDialog = p_ProgressDialog;
 		}
 	}
 
+	public static void showProgressDialog() {
+		if (progressDialog != null) {
+			Log.e(TAG, "showProgressDialog");
+			progressDialog.show();
+		}
+	}
+
+	public static void dismissAndMakeNullProgressDialog() {
+		progressDialog.dismiss();
+		progressDialog = null;
+		/*if (progressDialog != null) {
+			Log.e(TAG, "Dismiss progress dialog");
+			progressDialog.dismiss();
+			progressDialog = null;
+		}*/
+	}
+
 	public static void setAlertDialog(AlertDialog ad) {
-		Log.d(TAG, "setAlertDialog");
+		Log.e(TAG, "setAlertDialog");
 		Session.alertDialog = ad;
 	}
 
 	public static void showAlertDialog() {
-		Log.d(TAG, "showAlertDialog");
+		Log.e(TAG, "showAlertDialog");
 		alertDialog.show();
 	}
 

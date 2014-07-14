@@ -3,10 +3,13 @@ package hu.mep.datamodells;
 import java.util.List;
 
 import android.graphics.Bitmap;
+import android.util.Log;
 
 public class ChatContactList {
+	
 	List<ChatContact> contacts;
-
+	private static final String TAG = "ChatContactList";
+	
 	public ChatContactList(List<ChatContact> contacts) {
 		super();
 		this.contacts = contacts;
@@ -29,6 +32,37 @@ public class ChatContactList {
 		}
 		return result;
 	}
+
+	@Override
+	public boolean equals(Object o) {
+		if(!(o instanceof ChatContactList)) {
+			return false;
+		}
+		List<ChatContact> own = this.contacts;
+		List<ChatContact> other = ((ChatContactList) o).getContacts();
+		
+		if (own.size() != other.size()) {
+			return false;
+		}
+
+		for (int i = 0; i < own.size(); ++i) {
+			if (own.get(i).getName().equals(other.get(i).getName())) {
+				/*Log.i(TAG, own.get(i).getName() + "==" + other.get(i).getName());*/
+				/*Log.i(TAG, own.get(i).isOnline() + "==" + other.get(i).isOnline());*/
+				if (own.get(i).isOnline() != other.get(i).isOnline()) {
+					/* Log.i(TAG, own.get(i).isOnline() + "==" + other.get(i).isOnline());*/
+					return false;
+				}
+			} else {
+				/*Log.e(TAG, own.get(i).getName() + "==" + other.get(i).getName());*/
+				return false;
+			}
+		}
+		return true;
+		
+	};
+	
+	
 	
 	
 }

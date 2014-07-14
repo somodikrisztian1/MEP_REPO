@@ -139,13 +139,14 @@ public class RealCommunicator implements ICommunicator {
 	@Override
 	public void authenticateUser(Activity act, String username, String password) {
 
-		AuthenticationAsyncTask authenticationAsyncTask = new AuthenticationAsyncTask(act,
-				context, username, password, MainURL);
+		AuthenticationAsyncTask authenticationAsyncTask = new AuthenticationAsyncTask(username, password, MainURL);
 		try {
 			authenticationAsyncTask.execute().get();
 		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (ExecutionException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
