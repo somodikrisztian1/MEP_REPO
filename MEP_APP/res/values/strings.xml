@@ -43,10 +43,13 @@
         <item>Bemutatópark</item>
         <item>Galéria</item>
         <item>Távfelügyeletről</item>
-         <item>Kutatóközpont</item>
+        <item>Kutatóközpont</item>
         <item>Elérhetőségek</item>
     </string-array>
 
     <string name="login">Bejelentkezés</string>
+    <string name="title_activity_activity_level1_registration">ActivityLevel1Registration</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
 
 </resources>
