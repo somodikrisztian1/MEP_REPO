@@ -33,6 +33,9 @@ public class Session {
 	private static List<String> galleryImageURLSList = new ArrayList<String>();
 	private static List<Bitmap> galleryImagesList = new ArrayList<Bitmap>();
 
+	private static boolean successfulRegistration = false;
+	private static String unsuccessfulRegistrationMessage = "";
+	
 	private static User actualUser;
 	private static boolean isAnyUserLoggedIn = false;
 
@@ -65,7 +68,7 @@ public class Session {
 	public static double maximalChartValue;
 
 	// ==============================================================================
-	// SESSION + COMMUNICATION
+	// SESSION + COMMUNICATION + REGISTRATION
 	// ==============================================================================
 	private Session(Context context) {
 		this.context = context;
@@ -89,11 +92,29 @@ public class Session {
 		}
 		return actualCommunicationInterface;
 	}
+	
+	public static boolean isSuccessfulRegistration() {
+		return successfulRegistration;
+	}
+	
+
+	public static void setSuccessfulRegistration(boolean successfulRegistration) {
+		Session.successfulRegistration = successfulRegistration;
+	}
+	
+
+	public static String getUnsuccessfulRegistrationMessage() {
+		return unsuccessfulRegistrationMessage;
+	}
+
+	public static void setUnsuccessfulRegistrationMessage(
+			String unsuccessfulRegistrationMessage) {
+		Session.unsuccessfulRegistrationMessage = unsuccessfulRegistrationMessage;
+	}
 
 	// ==============================================================================
 	// GALLERY IMAGE URL + IMAGES
 	// ==============================================================================
-
 	public static List<Bitmap> getGalleryImagesList() {
 		return galleryImagesList;
 	}

@@ -17,7 +17,7 @@ public interface ICommunicator {
 
 	public void getChartNames();
 
-	public void authenticateUser(Activity act, String username, String password);
+	public void authenticateUser(String username, String password);
 
 	public void getGalleryURLsAndPictures();
 
@@ -25,7 +25,7 @@ public interface ICommunicator {
 
 	public void getActualChart();
 	
-	public String registrateUser(String fullName, String email, String userName, String password);
+	public void registrateUser(String fullName, String email, String userName, String password);
 	
 	
 }

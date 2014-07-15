@@ -35,15 +35,13 @@ import android.util.Log;
 public class RealCommunicator implements ICommunicator {
 
 	private static final String TAG = "RealCommunicator.java";
-	HttpClient httpclient;
+	private static HttpClient httpclient = new DefaultHttpClient();
 	Context context;
-	final String MainURL = "http://www.megujuloenergiapark.hu/";
+	final static String MainURL = "http://www.megujuloenergiapark.hu/";
 
 	private static RealCommunicator instance = null;
 
 	private RealCommunicator(Context context) {
-		this.httpclient = new DefaultHttpClient(); // szükségtelen lesz az
-													// Asynctaskok után
 		this.context = context; // szükséges az AsyncTaskokhoz
 	}
 
@@ -55,7 +53,7 @@ public class RealCommunicator implements ICommunicator {
 		return instance;
 	}
 
-	public String httpPost(String file, HashMap<String, String> post)
+	public static String httpPost(String resourceURI, HashMap<String, String> post)
 			throws ClientProtocolException, IOException {
 
 		List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
@@ -67,7 +65,7 @@ public class RealCommunicator implements ICommunicator {
 					(String) pairs.getValue()));
 		}
 
-		HttpPost httppost = new HttpPost(MainURL + file);
+		HttpPost httppost = new HttpPost(MainURL + resourceURI);
 		httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs, "UTF-8"));
 		HttpResponse response = httpclient.execute(httppost);
 		String data = new BasicResponseHandler().handleResponse(response);
@@ -137,7 +135,7 @@ public class RealCommunicator implements ICommunicator {
 
 	// TODO! Az internet kapcsolat ellenőrzést megoldani.
 	@Override
-	public void authenticateUser(Activity act, String username, String password) {
+	public void authenticateUser(String username, String password) {
 
 		AuthenticationAsyncTask authenticationAsyncTask = new AuthenticationAsyncTask(username, password, MainURL);
 		try {
@@ -228,19 +226,17 @@ public class RealCommunicator implements ICommunicator {
 		}
 	}
 
-	//TODO:
 	@Override
-	public String registrateUser(String fullName, String email, String userName, String password)
+	public void registrateUser(String fullName, String email, String userName, String password)
 	{
 		HashMap<String, String> postDatas = new HashMap<String, String>();
 		
 		postDatas.put("name", "" + fullName);
 		postDatas.put("username", "" + userName);
 		postDatas.put("password", password);
-		postDatas.put("email", password);
+		postDatas.put("email", email);
 
-		RegistrationAssyncTask sendRegistration = new RegistrationAssyncTask(
-				context, MainURL, postDatas);
+		RegistrationAssyncTask sendRegistration = new RegistrationAssyncTask(MainURL, postDatas);
 		try {
 			sendRegistration.execute().get();
 		} catch (InterruptedException e) {
@@ -249,7 +245,7 @@ public class RealCommunicator implements ICommunicator {
 			e.printStackTrace();
 		}
 		
-		return null;
+		return;
 	}
 
 	

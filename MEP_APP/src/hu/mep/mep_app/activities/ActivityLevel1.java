@@ -320,7 +320,7 @@ public class ActivityLevel1 extends ActionBarActivity implements
 			Log.e(TAG, "prepareProgressDialogForLoading1");
 			Session.setProgressDialog(prepareProgressDialogForLoading1());
 			Session.showProgressDialog();
-			Session.getActualCommunicationInterface().authenticateUser(this, username, password);
+			Session.getActualCommunicationInterface().authenticateUser(username, password);
 //			Session.dismissAndMakeNullProgressDialog();
 			if (Session.getActualUser() == null) {
 				Session.setAlertDialog(AlertDialogFactory.prepareAlertDialogForBadCredentials(ActivityLevel1.this));

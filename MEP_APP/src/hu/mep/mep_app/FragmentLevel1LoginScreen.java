@@ -90,8 +90,9 @@ public class FragmentLevel1LoginScreen extends Fragment implements
 					password_for_send);
 			break;
 		case R.id.fragment_login_screen_registration_button:
-			Intent myIntent = new Intent(this.getActivity(), ActivityLevel1Registration.class);
-			this.startActivity(myIntent);
+			Intent myIntent = new Intent(getActivity(), ActivityLevel1Registration.class);
+			myIntent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+			startActivity(myIntent);
 		default:
 			break;
 		}

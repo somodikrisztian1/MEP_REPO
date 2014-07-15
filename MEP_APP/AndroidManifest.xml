@@ -45,6 +45,8 @@
         <activity
             android:name="hu.mep.mep_app.activities.ActivityLevel1Registration"
             android:label="@string/title_activity_activity_level1_registration" >
+            <meta-data android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.ActivityLevel1"/>
         </activity>
     </application>
 
