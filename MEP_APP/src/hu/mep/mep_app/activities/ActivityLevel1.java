@@ -316,26 +316,25 @@ public class ActivityLevel1 extends ActionBarActivity implements
 	}
 
 	@Override
-	public boolean onLoginButtonPressed(final String username,
-			final String password) {
+	public boolean onLoginButtonPressed(final String username, final String password) {
 
 		if (NetThread.isOnline(context)) {
-			Log.e(TAG, "prepareProgressDialogForLoading1");
-			Session.setProgressDialog(prepareProgressDialogForLoading1());
-			Session.showProgressDialog();
+//			Log.e(TAG, "prepareProgressDialogForLoading1");
+//			Session.setProgressDialog(prepareProgressDialogForLoading1());
+//			Session.showProgressDialog();
 			Session.getActualCommunicationInterface().authenticateUser(username, password);
 //			Session.dismissAndMakeNullProgressDialog();
 			if (Session.getActualUser() == null) {
 				Session.setAlertDialog(AlertDialogFactory.prepareAlertDialogForBadCredentials(ActivityLevel1.this));
 				Session.showAlertDialog();
 			} else {
-				Log.e(TAG, "prepareProgressDialogForLoading2");
+//				Log.e(TAG, "prepareProgressDialogForLoading2");
 				/*Session.setProgressDialog(prepareProgressDialogForLoading2());
 				Session.showProgressDialog();*/
 				ActivityLevel2PreloaderAsyncTask at = new ActivityLevel2PreloaderAsyncTask(ActivityLevel1.this);
 				try {
 					at.execute().get();
-					at = null;
+					//at = null;
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				} catch (ExecutionException e) {

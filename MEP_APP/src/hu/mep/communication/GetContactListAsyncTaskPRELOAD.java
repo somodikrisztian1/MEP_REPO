@@ -31,8 +31,9 @@ import android.util.Log;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-public class GetContactListAsyncTaskPRELOAD extends AsyncTask<Void, Void, String> {
+public class GetContactListAsyncTaskPRELOAD extends AsyncTask<Void, Void, Void> {
 
+	private static final String TAG = "GetContactListAsyncTaskPRELOAD";
 	String hostURI;
 	String resourceURI;
 	Context context;
@@ -45,46 +46,35 @@ public class GetContactListAsyncTaskPRELOAD extends AsyncTask<Void, Void, String
 
 	@Override
 	protected void onPreExecute() {
-		// Log.e("ASYNCTASK", "onPreExecute() running");
+		Log.e(TAG, "onPreExecute() running");
 		resourceURI = "ios_getContactList.php?userId="
-				+ Session.getInstance(context).getActualUser().getMepID();
+				+ Session.getActualUser().getMepID();
 	}
 
 	@Override
-	protected String doInBackground(Void... nothing) {
-		// Log.e("ASYNCTASK", "doInBackground() running");
+	protected Void doInBackground(Void... nothing) {
+		Log.e(TAG, "doInBackground() running");
 		String response = "";
 		String fullURI = hostURI + resourceURI;
-		// Log.e("ASYNCTASK", "fullURI: " + fullURI);
+		Log.e("ASYNCTASK", "fullURI: " + fullURI);
 		
 		response = RealCommunicator.dohttpGet(fullURI);
 
-		// Log.e("GetContactListAsyncTask.doInBackground()", response);
+		Log.e(TAG, "response:" + response);
 
 		GsonBuilder gsonBuilder = new GsonBuilder();
 		gsonBuilder.registerTypeAdapter(ChatContactList.class,
 				new ChatContactListDeserializer());
 		Gson gson = gsonBuilder.create();
 		ChatContactList after = gson.fromJson(response, ChatContactList.class);
-		if (Session.getActualChatContactList() != null) {
-			before = Session.getActualChatContactList();
+		
+		for (ChatContact actContact : after.getContacts()) {
+			downloadProfilePictureForChatContact(actContact);
 		}
+
 		Session.setActualChatContactList(after);
 
-		for (ChatContact actContact : after.getContacts()) {
-			boolean on = (actContact.isOnline() == 1 ? true : false);
-			/*Log.i("getContactsAT",
-					actContact.getName() + (on ? "[on]" : "[off]") + "("
-							+ actContact.getUnreadedMessageNumber() + ")");
-			*/
-			actContact.setProfilePicture(before
-					.getImageFromContactID(actContact.getUserID()));
-			if (actContact.getProfilePicture() == null) {
-				downloadProfilePictureForChatContact(actContact);
-			}
-		}
-
-		return response;
+		return null;
 	}
 
 	private void downloadProfilePictureForChatContact(ChatContact contact) {
@@ -124,11 +114,6 @@ public class GetContactListAsyncTaskPRELOAD extends AsyncTask<Void, Void, String
 			return;
 		}
 		return;
-	}
-
-	@Override
-	protected void onPostExecute(String result) {
-		super.onPostExecute(result);
 	}
 
 }

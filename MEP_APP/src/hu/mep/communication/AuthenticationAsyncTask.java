@@ -57,27 +57,11 @@ public class AuthenticationAsyncTask extends AsyncTask<Void, Void, Void> {
 		String response = "";
 
 		// Log.e("fullURI is: ", fullURI);
-		DefaultHttpClient client = new DefaultHttpClient();
-		HttpGet httpGet = new HttpGet(fullURI);
-		try {
-			HttpResponse execute = client.execute(httpGet);
-			InputStream content = execute.getEntity().getContent();
-
-			BufferedReader buffer = new BufferedReader(new InputStreamReader(
-					content));
-			String s = "";
-			while ((s = buffer.readLine()) != null) {
-				response += s;
-			}
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		Log.e("response:", response);
+		response = RealCommunicator.dohttpGet(fullURI);
+		
+		//Log.e("response:", response);
 		GsonBuilder gsonBuilder = new GsonBuilder();
-
 		gsonBuilder.registerTypeAdapter(User.class, new UserDeserializer());
-
 		Gson gson = gsonBuilder.create();
 		User newUser = gson.fromJson(response, User.class);
 
@@ -108,12 +92,12 @@ public class AuthenticationAsyncTask extends AsyncTask<Void, Void, Void> {
 		return;
 	}
 
-	@Override
+	/*@Override
 	protected void onPostExecute(Void result) {
 		super.onPostExecute(result);
 		Log.e(TAG, "onPostExecute");
 		//Session.dismissAndMakeNullProgressDialog();
 		return;
 	}
-
+*/
 }

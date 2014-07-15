@@ -133,7 +133,6 @@ public class RealCommunicator implements ICommunicator {
 		 */
 	}
 
-	// TODO! Az internet kapcsolat ellenőrzést megoldani.
 	@Override
 	public void authenticateUser(String username, String password) {
 

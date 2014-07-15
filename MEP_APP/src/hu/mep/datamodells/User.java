@@ -93,13 +93,13 @@ public class User {
 		this.moderator = moderator;
 		this.usersPlaces = usersPlaces;
 
-		Log.d(TAG, "New User Has Been Created With The Following Values!");
-		Log.d(TAG, "mepID=" + mepID);
-		Log.d(TAG, "fullName=" + fullName);
-		Log.d(TAG, "imageURL=" + imageURL);
-		Log.d(TAG, "mekut=" + mekut);
-		Log.d(TAG, "teacher=" + teacher);
-		Log.d(TAG, "moderator=" + moderator);
+		Log.e(TAG, "New User Has Been Created With The Following Values!");
+		Log.e(TAG, "mepID=" + mepID);
+		Log.e(TAG, "fullName=" + fullName);
+		Log.e(TAG, "imageURL=" + imageURL);
+		Log.e(TAG, "mekut=" + mekut);
+		Log.e(TAG, "teacher=" + teacher);
+		Log.e(TAG, "moderator=" + moderator);
 		if(this.usersPlaces != null) {
 			Log.d(TAG, "usersPlaces.count()=" + usersPlaces.places.size());
 		}

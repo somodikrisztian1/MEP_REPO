@@ -34,9 +34,9 @@ public class GetTopicListAsyncTask extends AsyncTask<Void, Void, Void> {
 	
 	@Override
 	protected void onPreExecute() {
+		super.onPreExecute();
 		resourceURI = "ios_getTemakorok.php?userId=" + Session.getActualUser().getMepID();
 		fullURI = hostURI + resourceURI;
-		super.onPreExecute();
 	}
 	
 	@Override
@@ -53,12 +53,6 @@ public class GetTopicListAsyncTask extends AsyncTask<Void, Void, Void> {
 		AllTopicsList topics = gson.fromJson(response, AllTopicsList.class);
 		Session.setAllTopicsList(topics.getAllTopics());
 		return null;
-	}
-
-	@Override
-	protected void onPostExecute(Void result) {
-		super.onPostExecute(result);
-		//Session.dismissAndMakeNullProgressDialog();
 	}
 	
 }
