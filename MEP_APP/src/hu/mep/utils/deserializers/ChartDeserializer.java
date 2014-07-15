@@ -28,15 +28,12 @@ public class ChartDeserializer implements JsonDeserializer<Chart> {
 	private static final SimpleDateFormat dateFormatter = new SimpleDateFormat(
 			"yyyy-MM-dd HH:mm:ss");
 
-	private static Chart result;
-	private static List<SubChart> subchartsForResult;
-
 	@Override
 	public Chart deserialize(JsonElement element, Type type,
 			JsonDeserializationContext context) throws JsonParseException {
 		JsonObject rootObject = null;
-		result = null;
-		subchartsForResult = new ArrayList<SubChart>();
+		Chart result = null;
+		List<SubChart> subchartsForResult = new ArrayList<SubChart>();
 		rootObject = (element.isJsonArray() ? null : element.getAsJsonObject());
 
 		if (rootObject == null) {
@@ -45,8 +42,7 @@ public class ChartDeserializer implements JsonDeserializer<Chart> {
 			return result;
 		} else {
 			rootObject = element.getAsJsonObject();
-			//Log.e(TAG, "JSON FOR GETCHART - FROM ROOT:" + rootObject.toString());
-
+			
 			String elapse = rootObject.get("elapse").getAsString();
 			String y = rootObject.get("y").getAsString();
 
@@ -55,13 +51,13 @@ public class ChartDeserializer implements JsonDeserializer<Chart> {
 			JsonObject charts = (rootObject.get("charts").isJsonArray() ? null
 					: rootObject.get("charts").getAsJsonObject());
 
-			deserializeCharts(charts);
+			deserializeCharts(charts, subchartsForResult, result);
 			//Log.e(TAG, "result.subcharts.size() = "	+ result.getSubCharts().size());
 			return result;
 		}
 	}
 
-	private void deserializeCharts(JsonObject charts) {
+	private void deserializeCharts(JsonObject charts, List<SubChart> subchartsForResult, Chart result) {
 
 		if (charts != null) {
 			result.setSubCharts(new ArrayList<SubChart>());
@@ -84,8 +80,6 @@ public class ChartDeserializer implements JsonDeserializer<Chart> {
 						try {
 							actualDate.setTime(dateFormatter.parse(actData
 									.getKey()));
-							// LOGOLÁS!
-							//Log.d("pure date:", actData.getKey());
 							CalendarPrinter.logCalendar(TAG, actualDate, actData.getValue().getAsDouble());
 						} catch (ParseException e) {
 							e.printStackTrace();
@@ -93,12 +87,8 @@ public class ChartDeserializer implements JsonDeserializer<Chart> {
 						actualChartDatas.put(actualDate, actData.getValue()
 								.getAsDouble());
 					}
-					/*
-					 * actualSubChart = new SubChart(actualChartLabel,
-					 * actualChartDatas) ;
-					 */
-					subchartsForResult.add(new SubChart(actualChartLabel,
-							actualChartDatas));
+					/* actualSubChart = new SubChart(actualChartLabel, actualChartDatas); */
+					subchartsForResult.add(new SubChart(actualChartLabel, actualChartDatas));
 					actualChartDatas = null;
 
 				}
