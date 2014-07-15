@@ -1,8 +1,11 @@
 package hu.mep.mep_app;
 
+import hu.mep.datamodells.Session;
+import hu.mep.mep_app.activities.ActivityLevel1;
 import hu.mep.mep_app.activities.ActivityLevel1Registration;
 import hu.mep.utils.others.FragmentLevel1EventHandler;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -84,6 +87,10 @@ public class FragmentLevel1LoginScreen extends Fragment implements
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.fragment_login_screen_login_button:
+
+			Session.setProgressDialog(prepareProgressDialogForLoading1());
+			Session.showProgressDialog();
+			
 			String username_for_send = usernameEdittext.getText().toString();
 			String password_for_send = passwordEdittext.getText().toString();
 			fragmentEventHandler.onLoginButtonPressed(username_for_send,
@@ -96,6 +103,14 @@ public class FragmentLevel1LoginScreen extends Fragment implements
 		default:
 			break;
 		}
+	}
+	
+	private ProgressDialog prepareProgressDialogForLoading1() {
+		ProgressDialog pd = new ProgressDialog(getActivity());
+		pd.setCancelable(false);
+		pd.setTitle("Kérem várjon!");
+		pd.setMessage("Felhasználói adatok ellenőrzése folyamatban...");
+		return pd;
 	}
 
 }
