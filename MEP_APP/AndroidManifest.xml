@@ -31,6 +31,8 @@
         <activity
             android:name=".activities.ActivityLevel2NEW"
             android:label="@string/app_name" >
+            <meta-data android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.ActivityLevel1"/>
         </activity>
         <activity
             android:name=".activities.ActivityLevel3Chat"

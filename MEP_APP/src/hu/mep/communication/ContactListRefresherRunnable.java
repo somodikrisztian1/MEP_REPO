@@ -42,7 +42,9 @@ public class ContactListRefresherRunnable implements Runnable {
 					Log.i("TESTbefore",	act.getName() + " isON?[" + act.isOnline() + "]");
 				}*/
 				if (!running) continue;
-				Session.getActualCommunicationInterface().getChatPartners();
+				if(Session.isAnyUserLoggedIn()) {
+					Session.getActualCommunicationInterface().getChatPartners();
+				}
 				/*	if (!running) continue;
 				after = new ChatContactList( Session.getActualChatContactList().getContacts() );
 				for (ChatContact act : after.getContacts()) {

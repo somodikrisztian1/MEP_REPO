@@ -277,6 +277,9 @@ public class ActivityLevel1 extends ActionBarActivity implements
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		Log.e("FirstActivity", "onOptionsItemSelected");
+		if(!Session.isAnyUserLoggedIn()) {
+			Session.logOffActualUser();
+		}
 		switch (item.getItemId()) {
 		case R.id.action_login:
 			if (Session.getActualUser() == null) {
@@ -339,6 +342,7 @@ public class ActivityLevel1 extends ActionBarActivity implements
 					e.printStackTrace();
 				}
 				//Session.dismissAndMakeNullProgressDialog();
+				Session.setAnyUserLoggedIn(true);
 				Intent i = new Intent(this, ActivityLevel2NEW.class);
 				startActivity(i);
 			}
@@ -357,14 +361,14 @@ public class ActivityLevel1 extends ActionBarActivity implements
 		return pd;
 	}
 
-	private ProgressDialog prepareProgressDialogForLoading2() {
+	/*private ProgressDialog prepareProgressDialogForLoading2() {
 		ProgressDialog pd = new ProgressDialog(ActivityLevel1.this);
 		pd.setCancelable(false);
 		pd.setTitle("Kérem várjon!");
 		pd.setMessage("Felhasználói adatok betöltése folyamatban...");
 		return pd;
 	}
-
+*/
 	private ProgressDialog prepareProgressDialogForLoading3() {
 		ProgressDialog pd = new ProgressDialog(ActivityLevel1.this);
 		pd.setCancelable(false);

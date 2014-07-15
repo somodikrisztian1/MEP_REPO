@@ -54,6 +54,7 @@ public class Session {
 
 	private static ContactListRefresherAsyncTask contactRefresherAsyncTask;
 	private static ContactListRefresherRunnable contactRefresherRunnable = new ContactListRefresherRunnable();
+
 	private static Thread contactRefresherThread = new Thread(
 			contactRefresherRunnable);
 
@@ -152,13 +153,12 @@ public class Session {
 		return isAnyUserLoggedIn;
 	}
 
+	public static void setAnyUserLoggedIn(boolean n_isAnyUserLoggedIn) {
+		Log.i(TAG, "setAnyUserLoggedIn " + isAnyUserLoggedIn);
+		Session.isAnyUserLoggedIn = n_isAnyUserLoggedIn;
+	}
+	
 	public static void logOffActualUser() {
-		isAnyUserLoggedIn = false;
-
-		Log.e(TAG, "Stopping refresher tasks");
-		/* stopContactRefresherAsyncTask(); */
-		stopContactRefresherThread();
-		// contactRefresherThread.stop();
 
 		Log.e(TAG, "setActualChart(null);");
 		setActualChart(null);
@@ -325,12 +325,10 @@ public class Session {
 		return actualChatContactList;
 	}
 
-	public static void setActualChatContactList(
-			ChatContactList newChatContactList) {
+	public static void setActualChatContactList(ChatContactList newChatContactList) {
 		Log.e(TAG, "setActualChatContactList");
-		if (newChatContactList.getContacts() != null) {
-			Session.actualChatContactList = new ChatContactList(
-					newChatContactList.getContacts());
+		if (newChatContactList != null) {
+			Session.actualChatContactList = new ChatContactList(newChatContactList.getContacts());
 		}
 	}
 

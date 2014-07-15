@@ -8,6 +8,7 @@ import hu.mep.utils.others.FragmentLevel2EventHandler;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.NavUtils;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBar.Tab;
@@ -114,8 +115,14 @@ public class ActivityLevel2NEW extends ActionBarActivity implements
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		if (item.getItemId() == R.id.action_logoff) {
-			Session.logOffActualUser();
-			onBackPressed();
+			//Session.logOffActualUser();
+			Session.setAnyUserLoggedIn(false);
+			NavUtils.navigateUpFromSameTask(this);
+			return true;
+		}
+		else if(item.getItemId() == R.id.homeAsUp) {
+			NavUtils.navigateUpFromSameTask(this);
+			return true;
 		}
 		return super.onOptionsItemSelected(item);
 	}
@@ -123,6 +130,7 @@ public class ActivityLevel2NEW extends ActionBarActivity implements
 	@Override
 	protected void onPause() {
 		super.onPause();
+		Log.d(TAG, "onPause running... stopContactRefresher()");
 		Session.stopContactRefresherThread();
 	}
 

@@ -141,18 +141,14 @@ public class RealCommunicator implements ICommunicator {
 		try {
 			authenticationAsyncTask.execute().get();
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (ExecutionException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
 	@Override
 	public void getChatPartners() {
-		/*GetContactListAsyncTask getContactListAsyncTask = new GetContactListAsyncTask(
-				context, MainURL);*/
 		GetContactListAsyncTaskNEW getContactListAsyncTask = new GetContactListAsyncTaskNEW(context, MainURL);
 		getContactListAsyncTask.execute();
 	}
@@ -168,14 +164,10 @@ public class RealCommunicator implements ICommunicator {
 	@Override
 	public void sendChatMessage(String messageText) {
 		HashMap<String, String> postDatas = new HashMap<String, String>();
-		
-		/*DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");*/
 
 		postDatas.put("userId", "" + Session.getActualUser().getMepID());
 		postDatas.put("toId", "" + Session.getActualChatPartner().getUserID());
 		postDatas.put("msg", messageText);
-		/*postDatas.put("date", dateFormat.format(Calendar.getInstance().getTime()));
-		Log.e("message Time:", dateFormat.format(Calendar.getInstance().getTime()));*/
 
 		SendChatMessageAsyncTask sendChatMessage = new SendChatMessageAsyncTask(
 				context, MainURL, postDatas);
