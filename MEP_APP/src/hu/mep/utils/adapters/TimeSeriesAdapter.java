@@ -121,13 +121,13 @@ public class TimeSeriesAdapter {
 					.getChartValues().entrySet()) {
 				Calendar date = actualValues.getKey();
 				ts[i].add(
-						new Second(date.get(Calendar.SECOND), date
-								.get(Calendar.MINUTE), date
-								.get(Calendar.HOUR_OF_DAY), date
-								.get(Calendar.DAY_OF_MONTH), date
-								.get(Calendar.MONTH), date.get(Calendar.YEAR)),
+						new Second(date.get(Calendar.SECOND), 
+								date.get(Calendar.MINUTE), 
+								date.get(Calendar.HOUR_OF_DAY), 
+								date.get(Calendar.DAY_OF_MONTH), 
+								date.get(Calendar.MONTH), 
+								date.get(Calendar.YEAR)),
 						actualValues.getValue());
-
 				CalendarPrinter.logCalendar(TAG, date, actualValues.getValue());
 			}
 		}

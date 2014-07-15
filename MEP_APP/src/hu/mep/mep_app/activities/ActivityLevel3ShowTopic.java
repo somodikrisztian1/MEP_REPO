@@ -51,8 +51,7 @@ public class ActivityLevel3ShowTopic extends ActionBarActivity implements
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		Session.getInstance(getApplicationContext())
-				.getActualCommunicationInterface().getChartNames();
+		Session.getActualCommunicationInterface().getChartNames();
 		setContentView(R.layout.activity_thirdlevel_charts);
 
 		mSectionsPagerAdapter = new SectionsPagerAdapter(
@@ -172,8 +171,7 @@ public class ActivityLevel3ShowTopic extends ActionBarActivity implements
 							tempDate.set(Calendar.YEAR, year);
 							tempDate.set(Calendar.MONTH, monthOfYear);
 							tempDate.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-							CalendarPrinter.logCalendar(TAG, "tempDate",
-									tempDate);
+							//CalendarPrinter.logCalendar(TAG, "tempDate", tempDate);
 						}
 					});
 			// dp.setMaxDate(actDate.getTimeInMillis());
@@ -187,7 +185,7 @@ public class ActivityLevel3ShowTopic extends ActionBarActivity implements
 						int minute) {
 					tempDate.set(Calendar.HOUR_OF_DAY, hourOfDay);
 					tempDate.set(Calendar.MINUTE, minute);
-					CalendarPrinter.logCalendar(TAG, "tempDate", tempDate);
+					//CalendarPrinter.logCalendar(TAG, "tempDate", tempDate);
 				}
 			});
 			d.show();
@@ -243,8 +241,7 @@ public class ActivityLevel3ShowTopic extends ActionBarActivity implements
 							tempDate.set(Calendar.YEAR, year);
 							tempDate.set(Calendar.MONTH, monthOfYear);
 							tempDate.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-							CalendarPrinter.logCalendar(TAG, "tempDate",
-									tempDate);
+							//CalendarPrinter.logCalendar(TAG, "tempDate", tempDate);
 							/*
 							 * Toast.makeText(ActivityLevel3ShowTopic.this,
 							 * beginDate.toString(), Toast.LENGTH_LONG) .show();
@@ -261,18 +258,17 @@ public class ActivityLevel3ShowTopic extends ActionBarActivity implements
 						int minute) {
 					tempDate.set(Calendar.HOUR_OF_DAY, hourOfDay);
 					tempDate.set(Calendar.MINUTE, minute);
-					CalendarPrinter.logCalendar(TAG, "endDate", endDate);
+					//CalendarPrinter.logCalendar(TAG, "endDate", endDate);
 				}
 			});
 			d.show();
 		} else if (item.getItemId() == R.id.action_datetime_refresh_button) {
 			CalendarPrinter.logCalendar(TAG, "fromDate", beginDate);
 			CalendarPrinter.logCalendar(TAG, "toDate", endDate);
-			Session.setProgressDialog(prepareProgressDialogForLoading());
-			Session.showProgressDialog();
-			Session.getActualCommunicationInterface().getActualChart(beginDate,
-					endDate);
-			Session.dismissAndMakeNullProgressDialog();
+			//Session.setProgressDialog(prepareProgressDialogForLoading());
+			//Session.showProgressDialog();
+			Session.getActualCommunicationInterface().getActualChart(beginDate,	endDate);
+			//Session.dismissAndMakeNullProgressDialog();
 			Toast.makeText(ActivityLevel3ShowTopic.this, "Kész!",
 					Toast.LENGTH_LONG).show();
 			mSectionsPagerAdapter.notifyDataSetChanged();
@@ -328,21 +324,21 @@ public class ActivityLevel3ShowTopic extends ActionBarActivity implements
 	}
 
 	public static void refreshFragments() {
-		Log.e(TAG, "refreshFragments: fragments number is "
-				+ mSectionsPagerAdapter.getCount());
+		Log.e(TAG, "refreshFragments: fragments number is "	+ mSectionsPagerAdapter.getCount());
 
-		mSectionsPagerAdapter.notifyDataSetChanged();
 		mViewPager.setAdapter(mSectionsPagerAdapter);
-
+		mSectionsPagerAdapter.notifyDataSetChanged();
+/*
 		for (int i = 0; i < mSectionsPagerAdapter.getCount(); ++i) {
 			FragmentLevel3ShowTopic actFragment = (FragmentLevel3ShowTopic) mSectionsPagerAdapter
 					.getItem(i);
 			Log.e(TAG, "fragment No." + i);
 
 		}
-
+*/
 	}
 
+	/*
 	private ProgressDialog prepareProgressDialogForLoading() {
 		ProgressDialog pd = new ProgressDialog(ActivityLevel3ShowTopic.this);
 		pd.setCancelable(false);
@@ -350,5 +346,5 @@ public class ActivityLevel3ShowTopic extends ActionBarActivity implements
 		pd.setMessage("Gráf adatok letöltése folyamatban...");
 		return pd;
 	}
-
+*/
 }
