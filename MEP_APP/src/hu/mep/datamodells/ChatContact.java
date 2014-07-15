@@ -31,6 +31,11 @@ public class ChatContact {
 	public void setProfilePicture(Bitmap profilePicture) {
 		this.profilePicture = profilePicture;
 	}
+	
+	public void setName(String newName)
+	{
+		this.name = newName;
+	}
 
 
 	public int getUserID() {

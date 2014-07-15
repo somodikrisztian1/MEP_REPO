@@ -21,14 +21,13 @@ public class ChatContactListAdapter extends ArrayAdapter<ChatContact> {
 
 	private static final String TAG = "ChatContactListAdapter";
 	private Context context;
-	private List<ChatContact> listOfContacts;
 	private LayoutInflater inflater;
 	
 	public ChatContactListAdapter(Context context, int listviewID,
 			List<ChatContact> listOfContacts) {
 		super(context, listviewID, listOfContacts);
 		this.context = context;
-		this.listOfContacts = listOfContacts;
+		
 		inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		HashMap<String, Integer> mIDMap = new HashMap<String, Integer>();
 	}
@@ -37,8 +36,8 @@ public class ChatContactListAdapter extends ArrayAdapter<ChatContact> {
 	public View getView(int position, View convertView, ViewGroup parent) {
 		View newRow = inflater.inflate(R.layout.activity_secondlevel_list_item_picture_and_textview, parent, false);
 		TextView textview = (TextView) newRow.findViewById(R.id.activity_secondlevel_chat_textview_for_name);
-		textview.setText(listOfContacts.get(position).getName());
-		if(Session.getInstance(context).getActualChatContactList().getContacts().get(position).getUnreadedMessageNumber() != 0 ) {
+		textview.setText(Session.getActualChatContactList().getContacts().get(position).getName());
+		if(Session.getActualChatContactList().getContacts().get(position).getUnreadedMessageNumber() != 0 ) {
 			textview.setTypeface(null, Typeface.BOLD);
 		}
 		else {
@@ -46,11 +45,11 @@ public class ChatContactListAdapter extends ArrayAdapter<ChatContact> {
 		}		
 		
 		ImageView profilePictureView = (ImageView) newRow.findViewById(R.id.activity_secondlevel_chat_imageview_for_profile_picture);
-		profilePictureView.setImageBitmap(Session.getInstance(context).getActualChatContactList().getContacts().get(position).getProfilePicture());
+		profilePictureView.setImageBitmap(Session.getActualChatContactList().getContacts().get(position).getProfilePicture());
 		
 		ImageView statePictureView = (ImageView) newRow.findViewById(R.id.activity_secondlevel_chat_imageview_for_state);
 		statePictureView.setImageResource(R.drawable.state_picture_online);
-		if(Session.getInstance(context).getActualChatContactList().getContacts().get(position).isOnline() != 0) {
+		if(Session.getActualChatContactList().getContacts().get(position).isOnline() != 0) {
 			statePictureView.setVisibility(View.VISIBLE);
 		}
 		else {
@@ -61,7 +60,7 @@ public class ChatContactListAdapter extends ArrayAdapter<ChatContact> {
 	
 	@Override
 	public long getItemId(int position) {
-		return listOfContacts.get(position).getUserID();
+		return Session.getActualChatContactList().getContacts().get(position).getUserID();
 	}
 	
 }

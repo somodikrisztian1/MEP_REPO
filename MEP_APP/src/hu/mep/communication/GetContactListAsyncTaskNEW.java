@@ -6,27 +6,16 @@ import hu.mep.datamodells.Session;
 import hu.mep.mep_app.FragmentLevel2Chat;
 import hu.mep.utils.deserializers.ChatContactListDeserializer;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
-
-import org.apache.http.HttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
 
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
-import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -63,7 +52,9 @@ public class GetContactListAsyncTaskNEW extends AsyncTask<Void, Void, String> {
 		GsonBuilder gsonBuilder = new GsonBuilder();
 		gsonBuilder.registerTypeAdapter(ChatContactList.class, new ChatContactListDeserializer());
 		Gson gson = gsonBuilder.create();
+		
 		ChatContactList after = gson.fromJson(response, ChatContactList.class);
+		
 		if (Session.getActualChatContactList() != null) {
 			before = new ChatContactList(Session.getActualChatContactList().getContacts());
 		}
@@ -71,16 +62,13 @@ public class GetContactListAsyncTaskNEW extends AsyncTask<Void, Void, String> {
 
 		for (ChatContact actContact : after.getContacts()) {
 			if (!isCancelled()) {
-				boolean on = (actContact.isOnline() == 1 ? true : false);
-				/*Log.i("getContactsAT",
-						actContact.getName() + (on ? "[on]" : "[off]") + "("
-								+ actContact.getUnreadedMessageNumber() + ")");
-				 */
-				actContact.setProfilePicture(before
-						.getImageFromContactID(actContact.getUserID()));
+				actContact.setProfilePicture( before.getImageFromContactID( actContact.getUserID() ) );
+				
 				if (actContact.getProfilePicture() == null) {
 					downloadProfilePictureForChatContact(actContact);
 				}
+				
+				
 			}
 		}
 		
@@ -104,8 +92,10 @@ public class GetContactListAsyncTaskNEW extends AsyncTask<Void, Void, String> {
 				imgURL = new URL(
 						"http://megujuloenergiapark.hu/images/avatar/empty.jpg");
 			}
-			Log.e("GetContactListAsyncTask", contact.getName());
-			Log.e("GetContactListAsyncTask", "Kép letöltése...");
+			
+//			Log.e("GetContactListAsyncTask", contact.getName());
+//			Log.e("GetContactListAsyncTask", "Kép letöltése...");
+			
 			HttpURLConnection connection = (HttpURLConnection) imgURL
 					.openConnection();
 			connection.setDoInput(true);
@@ -122,7 +112,9 @@ public class GetContactListAsyncTaskNEW extends AsyncTask<Void, Void, String> {
 			contact.setProfilePicture(bmp);
 		} catch (IOException e) {
 			e.printStackTrace();
-			Log.e("getBmpFromUrl error: ", e.getMessage().toString());
+			
+//			Log.e("getBmpFromUrl error: ", e.getMessage().toString());
+			
 			return;
 		}
 		return;

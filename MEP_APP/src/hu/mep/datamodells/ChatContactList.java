@@ -3,8 +3,6 @@ package hu.mep.datamodells;
 import java.util.List;
 
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.util.Log;
 
 public class ChatContactList {
 	
@@ -24,6 +22,17 @@ public class ChatContactList {
 		this.contacts = contacts;
 	}
 
+	public String getNameFromContactID(int id) {
+		String result = null;
+		for (ChatContact actContact : this.contacts) {
+			if(actContact.getUserID() == id) {
+				return actContact.getName();
+			}
+		}
+		
+		return result;
+	}
+	
 	public Bitmap getImageFromContactID(int id) {
 		Bitmap result = null;
 		for (ChatContact actContact : this.contacts) {
