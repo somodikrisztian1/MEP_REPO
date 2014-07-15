@@ -26,7 +26,7 @@ public class ContactListRefresherAsyncTask extends AsyncTask<Long, Void, Void> {
 	@Override
 	protected Void doInBackground(Long... params) {
 		WAIT_TIME = params[0];
-		// Log.d(TAG, "WAIT_TIME = " + WAIT_TIME);
+		 Log.d(TAG, "WAIT_TIME = " + WAIT_TIME);
 		Thread t = new Thread(new Runnable() {
 
 			@Override
