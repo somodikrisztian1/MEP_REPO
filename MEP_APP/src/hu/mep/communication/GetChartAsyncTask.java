@@ -63,7 +63,7 @@ public class GetChartAsyncTask extends AsyncTask<Void, Void, Void> {
 			resourceURI = "ios_getChart.php?id="
 					+ Session.getActualChartInfoContainer().getId()
 					+ "&fromDate=" + formatDate(startDate)
-					+ "&toDate=" + formatDate(endDate) ;
+					+ "&toDate=" + formatDate(endDate);
 		}
 		else {
 			resourceURI = "ios_getChart.php?id="

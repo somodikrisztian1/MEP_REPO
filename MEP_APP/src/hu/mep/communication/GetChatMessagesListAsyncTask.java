@@ -25,10 +25,8 @@ public class GetChatMessagesListAsyncTask extends AsyncTask<Void, Void, Void> {
 
 	String hostURI;
 	String resourceURI;
-	Context context;
 
-	public GetChatMessagesListAsyncTask(Context context, String hostURI) {
-		this.context = context;
+	public GetChatMessagesListAsyncTask(String hostURI) {
 		this.hostURI = hostURI;
 	}
 
@@ -42,7 +40,6 @@ public class GetChatMessagesListAsyncTask extends AsyncTask<Void, Void, Void> {
 
 	@Override
 	protected Void doInBackground(Void... nothing) {
-		// Log.e("ASYNCTASK", "doInBackground() running");
 		String response = "";
 		String fullURI = hostURI + resourceURI;
 		
@@ -61,8 +58,8 @@ public class GetChatMessagesListAsyncTask extends AsyncTask<Void, Void, Void> {
 
 	@Override
 	protected void onPostExecute(Void result) {
-		// pd.dismiss();
-		ActivityLevel3Chat.adapter.notifyDataSetChanged();
 		super.onPostExecute(result);
+		ActivityLevel3Chat.adapter.notifyDataSetChanged();
+
 	}
 }

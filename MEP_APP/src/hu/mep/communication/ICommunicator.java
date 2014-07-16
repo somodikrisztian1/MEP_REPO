@@ -2,9 +2,6 @@ package hu.mep.communication;
 
 import java.util.Calendar;
 
-import android.app.Activity;
-import hu.mep.datamodells.User;
-
 public interface ICommunicator {
 
 	public void getChatPartners();

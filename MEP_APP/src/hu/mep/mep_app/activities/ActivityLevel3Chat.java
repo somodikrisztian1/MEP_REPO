@@ -1,11 +1,8 @@
 package hu.mep.mep_app.activities;
 
-import hu.mep.communication.ChatMessagesRefresherAsyncTask;
 import hu.mep.datamodells.ChatMessage;
 import hu.mep.datamodells.Session;
 import hu.mep.mep_app.R;
-import hu.mep.mep_app.R.id;
-import hu.mep.mep_app.R.layout;
 import hu.mep.utils.adapters.ChatMessagesListAdapter;
 import android.app.Activity;
 import android.os.Bundle;
@@ -13,15 +10,11 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnKeyListener;
-import android.view.inputmethod.EditorInfo;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.ScrollView;
-import android.widget.TextView;
-import android.widget.TextView.OnEditorActionListener;
 
 public class ActivityLevel3Chat extends Activity {
 
@@ -43,7 +36,7 @@ public class ActivityLevel3Chat extends Activity {
 				R.id.activity_thirdlevel_chat_listview, Session
 						.getChatMessagesList().getChatMessagesList());
 		
-		chatMessagesListview.setTranscriptMode(AbsListView.TRANSCRIPT_MODE_ALWAYS_SCROLL);
+		//chatMessagesListview.setTranscriptMode(AbsListView.TRANSCRIPT_MODE_ALWAYS_SCROLL);
 		chatMessagesListview.setStackFromBottom(true);
 		chatMessagesListview.setAdapter(adapter);
 		chatMessagesListview.setOnScrollListener(new OnScrollListener() {
@@ -89,19 +82,18 @@ public class ActivityLevel3Chat extends Activity {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		Session.startMessageRefresher();
-		//chatMessagesListview.setTranscriptMode(AbsListView.TRANSCRIPT_MODE_NORMAL);
+		//Session.startMessageRefresherAT();
+		Session.startMessageRefresherThread();
 	}
 
 	@Override
 	protected void onPause() {
 		super.onPause();
-		Session.stopMessageRefresher();		
+		Session.stopMessageRefresherThread();
 	}
 
 	/**
-	 * Check the chat message before sending, if it has any alphabetic
-	 * character, so it does not contain only whitespaces.
+	 * Check the chat message before sending, if it has any alphabetic character, so it does not contain only whitespaces.
 	 */
 	private boolean checkChatMessage(String message) {
 		for (Character actChar : message.toCharArray()) {

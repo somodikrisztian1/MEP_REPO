@@ -1,5 +1,6 @@
 package hu.mep.datamodells;
 
+import hu.mep.communication.ChatMessageRefresherRunnable;
 import hu.mep.communication.ChatMessagesRefresherAsyncTask;
 import hu.mep.communication.ContactListRefresherRunnable;
 import hu.mep.communication.ContactListRefresherAsyncTask;
@@ -12,10 +13,12 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -52,13 +55,14 @@ public class Session {
 	private static ChartInfoContainer actualChartInfoContainer;
 	private static Chart actualChart;
 
-	private static ContactListRefresherAsyncTask contactRefresherAsyncTask;
-	private static ContactListRefresherRunnable contactRefresherRunnable = new ContactListRefresherRunnable();
-
-	private static Thread contactRefresherThread = new Thread(
-			contactRefresherRunnable);
-
+	/*private static ContactListRefresherAsyncTask contactRefresherAsyncTask;
 	private static ChatMessagesRefresherAsyncTask messageRefresher = new ChatMessagesRefresherAsyncTask();
+	*/
+	private static ContactListRefresherRunnable contactRefresherRunnable = new ContactListRefresherRunnable();
+	private static Thread contactRefresherThread = new Thread(contactRefresherRunnable);
+
+	private static ChatMessageRefresherRunnable messageRefresherRunnable = new ChatMessageRefresherRunnable();
+	private static Thread messageRefresherThread = new Thread(messageRefresherRunnable);
 
 	private static ProgressDialog progressDialog;
 	private static AlertDialog alertDialog;
@@ -282,7 +286,7 @@ public class Session {
 	// ==============================================================================
 	// CONTACT REFRESHER + CHAT CONTACT LIST + ACTUAL CHAT PARTNER
 	// ==============================================================================
-	public static void startContactRefresherAsyncTask() {
+	/*public static void startContactRefresherAsyncTask() {
 		Log.e(TAG, "startContactRefresherAsyncTask");
 
 		if (contactRefresherAsyncTask == null) {
@@ -299,7 +303,7 @@ public class Session {
 			contactRefresherAsyncTask = null;
 		}
 	}
-
+	*/
 	public static void startContactRefresherThread() {
 
 		if (contactRefresherThread.getState().equals(Thread.State.NEW)) {
@@ -312,12 +316,6 @@ public class Session {
 	public static void stopContactRefresherThread() {
 		Log.e(TAG, "stopContactRefresherThread");
 		contactRefresherRunnable.pause();
-		/*
-		 * if (contactRefresherThread.getState().equals(Thread.State.RUNNABLE))
-		 * { try { Log.i(TAG, "stopContactRefresherThread");
-		 * contactRefresherRunnable.pause(); contactRefresherThread.wait(); }
-		 * catch (InterruptedException e) { e.printStackTrace(); } }
-		 */
 	}
 
 	public static ChatContactList getActualChatContactList() {
@@ -333,7 +331,7 @@ public class Session {
 	}
 
 	public static ChatContact getActualChatPartner() {
-		Log.e(TAG, "getActualChatPartner");
+		//Log.e(TAG, "getActualChatPartner");
 		return actualChatPartner;
 	}
 
@@ -360,7 +358,8 @@ public class Session {
 	// ==============================================================================
 	// MESSAGE REFRESHER + CHAT MESSAGE LIST
 	// ==============================================================================
-	public static void startMessageRefresher() {
+	/*
+	public static void startMessageRefresherAT() {
 		Log.e(TAG, "startMessageRefresher");
 		if (messageRefresher == null) {
 			messageRefresher = new ChatMessagesRefresherAsyncTask();
@@ -368,19 +367,32 @@ public class Session {
 		}
 	}
 
-	public static void stopMessageRefresher() {
+	public static void stopMessageRefresherAT() {
 		Log.e(TAG, "stopMessageRefresher");
 		if (messageRefresher != null) {
 			messageRefresher.cancel(true);
 			messageRefresher = null;
 		}
+	}*/
+	
+	public static void startMessageRefresherThread() {
+
+		if (messageRefresherThread.getState().equals(Thread.State.NEW)) {
+			Log.e(TAG, "startMessageRefresherThread NEW");
+			messageRefresherThread.start();
+		}
+		messageRefresherRunnable.resume();
+	}
+
+	public static void stopMessageRefresherThread() {
+		Log.e(TAG, "stopMessageRefresherThread");
+		messageRefresherRunnable.pause();
 	}
 
 	public static ChatMessagesList getChatMessagesList() {
-		Log.e(TAG, "getChatMessagesList");
+		//Log.e(TAG, "getChatMessagesList");
 		if (chatMessagesList == null) {
-			chatMessagesList = new ChatMessagesList(
-					new ArrayList<ChatMessage>());
+			chatMessagesList = new ChatMessagesList(new ArrayList<ChatMessage>());
 		}
 		return chatMessagesList;
 	}
@@ -398,7 +410,7 @@ public class Session {
 			Log.e("Session.setChatmessagesList()",
 					"The newChatMessagesList parameter IS NULL!!!!");
 		}
-		if (chatMessagesList == null
+		else if (chatMessagesList == null
 				|| chatMessagesList.getChatMessagesList().isEmpty()) {
 			chatMessagesList = newChatMessagesList;
 		} else {
@@ -425,7 +437,15 @@ public class Session {
 	public static void sortChatMessagesList() {
 		Log.e("Session", "sortChatMessagesList()");
 		if (Session.chatMessagesList != null) {
+			/* Egy kis hack. Kézi duplikáció kiszűrés... */
+			Set<ChatMessage> tempSet = new HashSet<ChatMessage>(chatMessagesList.getChatMessagesList());
+			Session.chatMessagesList.getChatMessagesList().clear();
+			Session.chatMessagesList.getChatMessagesList().addAll(tempSet);
+			
 			Collections.sort(Session.chatMessagesList.chatMessagesList);
+			for (ChatMessage actMessage : chatMessagesList.getChatMessagesList()) {
+				Log.i(TAG, actMessage.toString());
+			}
 		}
 	}
 

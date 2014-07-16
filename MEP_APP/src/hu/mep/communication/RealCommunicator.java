@@ -112,8 +112,7 @@ public class RealCommunicator implements ICommunicator {
 	@Override
 	public void getChatMessages() {
 
-		GetChatMessagesListAsyncTask getMessagesAsyncTask = new GetChatMessagesListAsyncTask(
-				context, MainURL);
+		GetChatMessagesListAsyncTask getMessagesAsyncTask = new GetChatMessagesListAsyncTask(MainURL);
 
 		try {
 			getMessagesAsyncTask.execute().get();

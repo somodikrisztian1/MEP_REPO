@@ -1,30 +1,9 @@
 package hu.mep.datamodells;
 
-import java.text.SimpleDateFormat;
-
 import com.google.gson.annotations.SerializedName;
 
 
 public class ChatMessage implements Comparable<ChatMessage> {
-	private static final SimpleDateFormat myFormatter = new SimpleDateFormat("yyyy-MM-dd_hh:mm:ss");
-	/*
-	@Override
-	public int compareTo(ChatMessage another) {
-		Date myDate = null;
-		Date otherDate = null;
-		try {
-			myDate = myFormatter.parse(this.date);
-			otherDate = myFormatter.parse(another.date);
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
-
-		if(myDate.before(otherDate))
-			return -1;
-		else if(myDate.after(otherDate)) 
-			return 1;
-		return 0;
-	}*/
 	
 	@Override
 	public String toString() {

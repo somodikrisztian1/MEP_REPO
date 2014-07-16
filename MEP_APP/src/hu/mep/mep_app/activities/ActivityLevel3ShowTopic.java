@@ -328,14 +328,15 @@ public class ActivityLevel3ShowTopic extends ActionBarActivity implements
 
 		mViewPager.setAdapter(mSectionsPagerAdapter);
 		mSectionsPagerAdapter.notifyDataSetChanged();
-/*
+
 		for (int i = 0; i < mSectionsPagerAdapter.getCount(); ++i) {
 			FragmentLevel3ShowTopic actFragment = (FragmentLevel3ShowTopic) mSectionsPagerAdapter
 					.getItem(i);
+			actFragment.mChart = Session.getActualChart();
 			Log.e(TAG, "fragment No." + i);
 
 		}
-*/
+
 	}
 
 	/*

@@ -15,11 +15,11 @@ public class ChatMessagesList {
 	}
 
 	public void setChatMessagesList(List<ChatMessage> newChatMessagesList) {
-		this.chatMessagesList = chatMessagesList;
+		this.chatMessagesList = newChatMessagesList;
 	}
 
 	public void addFurtherMessages(ChatMessagesList newChatMessagesList) {
-		// this.chatMessagesList.removeAll(newChatMessagesList.getChatMessagesList());
+		//this.chatMessagesList.removeAll(newChatMessagesList.getChatMessagesList());
 		if (newChatMessagesList != null) {
 			this.chatMessagesList.addAll(newChatMessagesList
 					.getChatMessagesList());
