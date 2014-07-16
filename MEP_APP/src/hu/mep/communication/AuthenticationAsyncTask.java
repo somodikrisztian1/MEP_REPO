@@ -59,7 +59,7 @@ public class AuthenticationAsyncTask extends AsyncTask<Void, Void, Void> {
 		// Log.e("fullURI is: ", fullURI);
 		response = RealCommunicator.dohttpGet(fullURI);
 		
-		//Log.e("response:", response);
+		Log.e("response:", response);
 		GsonBuilder gsonBuilder = new GsonBuilder();
 		gsonBuilder.registerTypeAdapter(User.class, new UserDeserializer());
 		Gson gson = gsonBuilder.create();

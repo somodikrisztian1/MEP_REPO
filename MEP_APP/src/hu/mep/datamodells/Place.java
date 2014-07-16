@@ -17,6 +17,7 @@ import android.util.Log;
 public class Place {
 
 	private static final String TAG = "Place.java";
+	
 	public static final String nameTag = "nev";
 	public static final String idTag = "tsz1_id";
 	public static final String descriptionTag = "leiras";

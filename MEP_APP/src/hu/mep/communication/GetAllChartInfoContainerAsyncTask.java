@@ -23,28 +23,36 @@ import com.google.gson.GsonBuilder;
 public class GetAllChartInfoContainerAsyncTask extends
 AsyncTask<Void, Void, Void> {
 	
-	private Context context;
 	private static String hostURI;
 	private static String resourceURI;
 	private static String fullURI;
-	
-	
-	
+	private static boolean isRemoteMonitoring;	
 
-	public GetAllChartInfoContainerAsyncTask(Context context, String catchedHostURI) {
+	public GetAllChartInfoContainerAsyncTask(String catchedHostURI, boolean isRemoteMonitoring) {
 		super();
-		this.context = context;
 		hostURI = catchedHostURI;
+		GetAllChartInfoContainerAsyncTask.isRemoteMonitoring = isRemoteMonitoring;
 	}
 	
 	private String getSSZS() {
 		String result = "";
-		Iterator<Integer> iterator = Session.getActualTopic().getTabSerialNumbers().iterator();
-		while(iterator.hasNext()) {
-			result += String.valueOf(iterator.next());
-			if(iterator.hasNext()) {
-				result += ",";
-			}
+		if(isRemoteMonitoring) {
+			/* NINCS MIBŐL AZ SSZ-EKET KINYERNI!!! */
+			/*Iterator<Integer> iterator = Session.getActualRemoteMonitoring().ge
+			while(iterator.hasNext()) {
+				result += String.valueOf(iterator.next());
+				if(iterator.hasNext()) {
+					result += ",";
+				}
+			}	*/	
+		} else {
+			Iterator<Integer> iterator = Session.getActualTopic().getTabSerialNumbers().iterator();
+			while(iterator.hasNext()) {
+				result += String.valueOf(iterator.next());
+				if(iterator.hasNext()) {
+					result += ",";
+				}
+			}			
 		}
 		return result;
 	}
@@ -52,12 +60,21 @@ AsyncTask<Void, Void, Void> {
 	@Override
 	protected void onPreExecute() {
 		super.onPreExecute();
-		resourceURI = "ios_getChartNames.php?tsz1_id=" +
-		Session.getActualTopic().getTopicID()
-		+ "&sszs=" + getSSZS();
-		
-		fullURI = hostURI + resourceURI;
-		Log.e("GetChartNames", fullURI);
+		if(isRemoteMonitoring) {
+			resourceURI = "ios_getChartNames.php?tsz1_id=" +
+					Session.getActualRemoteMonitoring().getID();
+					
+					fullURI = hostURI + resourceURI;
+					Log.e("GetChartNames", fullURI);
+		}
+		else {
+			resourceURI = "ios_getChartNames.php?tsz1_id=" +
+					Session.getActualTopic().getTopicID()
+					+ "&sszs=" + getSSZS();
+					
+					fullURI = hostURI + resourceURI;
+					Log.e("GetChartNames", fullURI);
+		}
 	}
 
 

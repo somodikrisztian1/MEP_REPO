@@ -181,8 +181,7 @@ public class RealCommunicator implements ICommunicator {
 
 	@Override
 	public void getChartNames() {
-		GetAllChartInfoContainerAsyncTask chartNameGetter = new GetAllChartInfoContainerAsyncTask(
-				context, MainURL);
+		GetAllChartInfoContainerAsyncTask chartNameGetter = new GetAllChartInfoContainerAsyncTask(MainURL, false);
 		try {
 			chartNameGetter.execute().get();
 		} catch (InterruptedException e) {
