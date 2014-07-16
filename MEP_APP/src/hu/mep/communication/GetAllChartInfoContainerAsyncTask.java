@@ -1,25 +1,24 @@
 package hu.mep.communication;
 
+import hu.mep.datamodells.AllChartInfoContainer;
+import hu.mep.datamodells.Session;
+import hu.mep.utils.deserializers.ChartInfoContainerDeserializer;
+
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Iterator;
-import java.util.List;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
-import hu.mep.datamodells.AllChartInfoContainer;
-import hu.mep.datamodells.ChatMessagesList;
-import hu.mep.datamodells.Session;
-import hu.mep.utils.deserializers.ChartInfoContainerDeserializer;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 public class GetAllChartInfoContainerAsyncTask extends
 AsyncTask<Void, Void, Void> {
@@ -54,7 +53,7 @@ AsyncTask<Void, Void, Void> {
 	protected void onPreExecute() {
 		super.onPreExecute();
 		resourceURI = "ios_getChartNames.php?tsz1_id=" +
-		Session.getInstance(context).getActualTopic().getTopicID()
+		Session.getActualTopic().getTopicID()
 		+ "&sszs=" + getSSZS();
 		
 		fullURI = hostURI + resourceURI;
@@ -90,7 +89,7 @@ AsyncTask<Void, Void, Void> {
 			Gson gson = gsonBuilder.create();
 			AllChartInfoContainer allChartInfo = gson.fromJson(response,
 					AllChartInfoContainer.class);
-			Session.getInstance(context).setAllChartInfoContainer(allChartInfo.getAllChartInfoContainer());
+			Session.setAllChartInfoContainer(allChartInfo.getAllChartInfoContainer());
 		}
 		
 		return null;

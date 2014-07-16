@@ -1,13 +1,10 @@
 package hu.mep.datamodells;
 
 import hu.mep.communication.ChatMessageRefresherRunnable;
-import hu.mep.communication.ChatMessagesRefresherAsyncTask;
 import hu.mep.communication.ContactListRefresherRunnable;
-import hu.mep.communication.ContactListRefresherAsyncTask;
 import hu.mep.communication.ICommunicator;
 import hu.mep.communication.RealCommunicator;
 
-import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;

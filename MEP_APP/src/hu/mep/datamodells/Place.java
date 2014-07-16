@@ -49,6 +49,10 @@ public class Place {
 		return location;
 	}	
 	
+	public String getID() {
+		return ID;
+	}
+	
 	public Place(String name, String ID, String description, String location) {
 		super();
 		this.name = name;

@@ -1,19 +1,13 @@
 package hu.mep.mep_app.activities;
 
-import java.util.Calendar;
-
-import org.afree.chart.event.ChartChangeEvent;
-import org.afree.chart.event.ChartChangeEventType;
-
-import hu.mep.communication.GetChartAsyncTask;
 import hu.mep.datamodells.Session;
 import hu.mep.mep_app.FragmentLevel3ShowTopic;
 import hu.mep.mep_app.R;
-import hu.mep.mep_app.R.id;
-import hu.mep.mep_app.R.layout;
 import hu.mep.utils.others.CalendarPrinter;
+
+import java.util.Calendar;
+
 import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
