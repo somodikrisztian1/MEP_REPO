@@ -1,20 +1,18 @@
 package hu.mep.datamodells;
 
 import hu.mep.communication.ChatMessageRefresherRunnable;
-import hu.mep.communication.ChatMessagesRefresherAsyncTask;
 import hu.mep.communication.ContactListRefresherRunnable;
-import hu.mep.communication.ContactListRefresherAsyncTask;
 import hu.mep.communication.ICommunicator;
 import hu.mep.communication.RealCommunicator;
+import hu.mep.mep_app.activities.ActivityLevel3Chat;
 
-import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -49,7 +47,7 @@ public class Session {
 
 	private static volatile ChatContactList actualChatContactList;
 	private static ChatContact actualChatPartner;
-	private static ChatMessagesList chatMessagesList;
+	private static volatile ChatMessagesList chatMessagesList;
 
 	private static List<ChartInfoContainer> allChartInfoContainer;
 	private static ChartInfoContainer actualChartInfoContainer;
@@ -179,8 +177,8 @@ public class Session {
 		Log.e(TAG, "setAllTopicsList(null);");
 		setAllTopicsList(null);
 
-		Log.e(TAG, "setChatMessagesList(null);");
-		setChatMessagesList(null);
+		Log.e(TAG, "emptyChatMessagesList()");
+		emptyChatMessagesList();
 
 		Log.e(TAG, "setActualChatPartner(null);");
 		setActualChatPartner(null);
@@ -438,13 +436,25 @@ public class Session {
 		Log.e("Session", "sortChatMessagesList()");
 		if (Session.chatMessagesList != null) {
 			/* Egy kis hack. Kézi duplikáció kiszűrés... */
-			Set<ChatMessage> tempSet = new HashSet<ChatMessage>(chatMessagesList.getChatMessagesList());
+			Set<ChatMessage> tempSet = new LinkedHashSet<ChatMessage>(chatMessagesList.getChatMessagesList());
 			Session.chatMessagesList.getChatMessagesList().clear();
+			
+			Log.d(TAG, "after Clear");
+			for (ChatMessage actMessage : chatMessagesList.getChatMessagesList()) {
+				Log.d(TAG, actMessage.toString());
+			}
+			
 			Session.chatMessagesList.getChatMessagesList().addAll(tempSet);
 			
-			Collections.sort(Session.chatMessagesList.chatMessagesList);
+			Log.i(TAG, "after addAll from set");
 			for (ChatMessage actMessage : chatMessagesList.getChatMessagesList()) {
 				Log.i(TAG, actMessage.toString());
+			}
+			
+			Collections.sort(Session.chatMessagesList.chatMessagesList);
+			Log.e(TAG, "after sorting");
+			for (ChatMessage actMessage : chatMessagesList.getChatMessagesList()) {
+				Log.e(TAG, actMessage.toString());
 			}
 		}
 	}
@@ -453,20 +463,16 @@ public class Session {
 	 * This method gives back the order value of the last ChatMessage object
 	 * from chatMessagesList or zero if the chatMessagesList is empty.
 	 */
-	public static int getLastChatMessageOrder() {
+	public synchronized static int getLastChatMessageOrder() {
 		Log.e(TAG, "getLastChatMessageOrder");
 		if (chatMessagesList == null
 				|| chatMessagesList.chatMessagesList.isEmpty()) {
 			Log.e("LastChatMessageOrder=", "" + 0);
 			return 0;
 		}
-		Log.e("LastChatMessageOrder=",
-				""
-						+ chatMessagesList.getChatMessagesList()
-								.get(chatMessagesList.getChatMessagesList()
-										.size() - 1).order);
-		return chatMessagesList.getChatMessagesList().get(
-				chatMessagesList.getChatMessagesList().size() - 1).order;
+		Log.e("LastChatMessageOrder=", "" + chatMessagesList.getChatMessagesList()
+								.get(chatMessagesList.getChatMessagesList().size() - 1).order);
+		return chatMessagesList.getChatMessagesList().get(chatMessagesList.getChatMessagesList().size() - 1).order;
 	}
 
 	// ==============================================================================

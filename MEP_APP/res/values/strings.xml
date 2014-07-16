@@ -42,6 +42,7 @@
     <string name="hint_for_reg_activity_email_textview">e-mail</string>
     <string name="hint_for_reg_activity_password_again_textview">Jelszó újra</string>
     <string name="hint_for_reg_activity_regbutton_text">Regisztráció</string>
+    <string name ="hint_for_chat_activity_input_edittext">Ide írja az üzenetét...</string>
     
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>

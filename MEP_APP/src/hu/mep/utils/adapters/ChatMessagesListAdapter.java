@@ -17,6 +17,8 @@ import android.widget.TextView;
 public class ChatMessagesListAdapter extends ArrayAdapter<ChatMessage> { 
 
 	private LayoutInflater inflater;
+	public static final int OWN_MESSAGE = 0;
+	public static final int OTHERS_MESSAGE = 1;
 	
 	public ChatMessagesListAdapter(Context context, int listviewID,
 			List<ChatMessage> listOfMessages) {
@@ -27,26 +29,59 @@ public class ChatMessagesListAdapter extends ArrayAdapter<ChatMessage> {
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		
-			View newRow;
-			if(Session.getChatMessagesList().getChatMessagesList().get(position).getFromID() == Session.getActualUser().getMepID()) {
-				newRow = inflater.inflate(R.layout.chat_listitem_own_message, parent, false);
-				TextView textview = (TextView) newRow.findViewById(R.id.chat_listitem_textview);	
-				ImageView profilePictureView = (ImageView) newRow.findViewById(R.id.chat_listitem_imageview);
-				textview.setText(Session.getChatMessagesList().getChatMessagesList().get(position).getMessage());
-				profilePictureView.setImageBitmap(Session.getActualUser().getProfilePicture());
-			} else {
-				newRow = inflater.inflate(R.layout.chat_listitem_others_message, parent, false);
-				TextView textview = (TextView) newRow.findViewById(R.id.chat_listitem_textview);	
-				ImageView profilePictureView = (ImageView) newRow.findViewById(R.id.chat_listitem_imageview);
-				textview.setText(Session.getChatMessagesList().getChatMessagesList().get(position).getMessage());
-				profilePictureView.setImageBitmap(Session.getActualChatPartner().getProfilePicture());
+		ViewHolder holder = null;
+		
+		if(convertView == null) {
+			
+			holder = new ViewHolder();
+			
+			if(getItemViewType(position) == OWN_MESSAGE) {
+				convertView = inflater.inflate(R.layout.chat_listitem_own_message, parent, false);
+				holder.messageTextview = (TextView) convertView.findViewById(R.id.chat_listitem_textview);	
+				holder.profilePictureImageview = (ImageView) convertView.findViewById(R.id.chat_listitem_imageview);
+				} 
+			else if (getItemViewType(position) == OTHERS_MESSAGE) {
+				convertView = inflater.inflate(R.layout.chat_listitem_others_message, parent, false);
+				holder.messageTextview  = (TextView) convertView.findViewById(R.id.chat_listitem_textview);	
+				holder.profilePictureImageview = (ImageView) convertView.findViewById(R.id.chat_listitem_imageview);
 			}
-			return newRow;
+			convertView.setTag(holder);
+		}
+		else {
+			holder = (ViewHolder) convertView.getTag();
+		}
+		
+		holder.messageTextview.setText(Session.getChatMessagesList().getChatMessagesList().get(position).getMessage());
+		if(getItemViewType(position) == OWN_MESSAGE) {
+			holder.profilePictureImageview.setImageBitmap(Session.getActualUser().getProfilePicture());		
+		} else if(getItemViewType(position) == OTHERS_MESSAGE) {
+			holder.profilePictureImageview.setImageBitmap(Session.getActualChatPartner().getProfilePicture());
+		}
+		
+		return convertView;
 	}
 	
 	@Override
 	public long getItemId(int position) {
 		return Session.getChatMessagesList().getChatMessagesList().get(position).getOrder();
+	}
+	
+	@Override
+	public int getItemViewType(int position) {
+		if(Session.getChatMessagesList().getChatMessagesList().get(position).getFromID() == Session.getActualUser().getMepID()) {
+			return OWN_MESSAGE;
+		}
+		return OTHERS_MESSAGE;
+	}
+	
+	@Override
+	public int getViewTypeCount() {
+		return 2;
+	}
+	
+	public static class ViewHolder {
+		public TextView messageTextview;
+		public ImageView profilePictureImageview;
 	}
 	
 }

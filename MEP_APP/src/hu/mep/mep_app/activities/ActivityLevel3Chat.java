@@ -1,5 +1,7 @@
 package hu.mep.mep_app.activities;
 
+import java.util.ArrayList;
+
 import hu.mep.datamodells.ChatMessage;
 import hu.mep.datamodells.Session;
 import hu.mep.mep_app.R;
@@ -18,25 +20,28 @@ import android.widget.ListView;
 
 public class ActivityLevel3Chat extends Activity {
 
-	private static ListView chatMessagesListview;
+
 	private static EditText chatInputTextView;
-	private static final String TAG = "ActivityLevel3Chat";
 	public static ArrayAdapter<ChatMessage> adapter;
+	
+	private static final String TAG = "ActivityLevel3Chat";
+
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		Log.d(TAG, "onCreate running");
 		setContentView(R.layout.activity_thirdlevel_chat);
-		chatMessagesListview = (ListView) findViewById(R.id.activity_thirdlevel_chat_listview);
+		ListView chatMessagesListview = (ListView) findViewById(R.id.activity_thirdlevel_chat_listview);
 
 		Session.getActualCommunicationInterface().getChatMessages();
-
-		adapter = new ChatMessagesListAdapter(this,
-				R.id.activity_thirdlevel_chat_listview, Session
-						.getChatMessagesList().getChatMessagesList());
+		Session.startMessageRefresherThread();
 		
-		//chatMessagesListview.setTranscriptMode(AbsListView.TRANSCRIPT_MODE_ALWAYS_SCROLL);
+		adapter = new ChatMessagesListAdapter(this, R.id.activity_thirdlevel_chat_listview, 
+				Session.getChatMessagesList().getChatMessagesList());
+
+		
+		
 		chatMessagesListview.setStackFromBottom(true);
 		chatMessagesListview.setAdapter(adapter);
 		chatMessagesListview.setOnScrollListener(new OnScrollListener() {
@@ -70,8 +75,8 @@ public class ActivityLevel3Chat extends Activity {
 					String message = chatInputTextView.getText().toString();
 					if ((message != null) && (checkChatMessage(message))) {
 						Session.getActualCommunicationInterface().sendChatMessage(message);
-						chatInputTextView.setText(null);
-						Session.getActualCommunicationInterface().getChatMessages();
+						chatInputTextView.setText("");
+						//Session.getActualCommunicationInterface().getChatMessages();
 					}
 				}
 				return false;
@@ -82,7 +87,6 @@ public class ActivityLevel3Chat extends Activity {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		//Session.startMessageRefresherAT();
 		Session.startMessageRefresherThread();
 	}
 
