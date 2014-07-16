@@ -2,7 +2,10 @@ package hu.mep.datamodells;
 
 import java.util.List;
 
+import android.util.Log;
+
 public class ChatMessagesList {
+	private static final String TAG = "ChatMessagesList";
 	List<ChatMessage> chatMessagesList;
 
 	public ChatMessagesList(List<ChatMessage> newChatMessagesList) {
@@ -21,9 +24,11 @@ public class ChatMessagesList {
 	public void addFurtherMessages(ChatMessagesList newChatMessagesList) {
 		//this.chatMessagesList.removeAll(newChatMessagesList.getChatMessagesList());
 		if (newChatMessagesList != null) {
-			this.chatMessagesList.addAll(newChatMessagesList
-					.getChatMessagesList());
+			this.chatMessagesList.addAll(newChatMessagesList.getChatMessagesList());
 		}
+		/*for (ChatMessage actMessage : chatMessagesList) {
+			Log.e(TAG, actMessage.toString());
+		}*/
 	}
 
 }

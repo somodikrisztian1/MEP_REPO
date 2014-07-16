@@ -25,6 +25,7 @@ public class GetChatMessagesListAsyncTask extends AsyncTask<Void, Void, Void> {
 
 	String hostURI;
 	String resourceURI;
+	private static final String TAG = "GetChatMessagesListAsyncTask";
 
 	public GetChatMessagesListAsyncTask(String hostURI) {
 		this.hostURI = hostURI;
@@ -59,7 +60,10 @@ public class GetChatMessagesListAsyncTask extends AsyncTask<Void, Void, Void> {
 	@Override
 	protected void onPostExecute(Void result) {
 		super.onPostExecute(result);
-		ActivityLevel3Chat.adapter.notifyDataSetChanged();
-
+		
+		if(ActivityLevel3Chat.adapter != null) {
+			Log.e(TAG, "onPostExecute: ActivityLevel3Chat.adapter.notifyDataSetChanged()");
+			ActivityLevel3Chat.adapter.notifyDataSetChanged();
+		}
 	}
 }
