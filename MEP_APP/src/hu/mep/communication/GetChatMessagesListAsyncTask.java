@@ -47,8 +47,7 @@ public class GetChatMessagesListAsyncTask extends AsyncTask<Void, Void, Void> {
 		response = RealCommunicator.dohttpGet(fullURI);
 		
 		GsonBuilder gsonBuilder = new GsonBuilder();
-		gsonBuilder.registerTypeAdapter(ChatMessagesList.class,
-				new ChatMessagesListDeserializer());
+		gsonBuilder.registerTypeAdapter(ChatMessagesList.class, new ChatMessagesListDeserializer());
 		Gson gson = gsonBuilder.create();
 		ChatMessagesList messages = gson.fromJson(response, ChatMessagesList.class);
 		Log.e("GSON", "Beérkezett üzenetek száma: " + messages.getChatMessagesList().size());

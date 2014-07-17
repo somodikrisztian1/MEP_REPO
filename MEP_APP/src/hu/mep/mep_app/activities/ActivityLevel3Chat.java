@@ -8,6 +8,8 @@ import hu.mep.mep_app.R;
 import hu.mep.utils.adapters.ChatMessagesListAdapter;
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.v4.text.TextUtilsCompat;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -72,12 +74,12 @@ public class ActivityLevel3Chat extends Activity {
 			@Override
 			public boolean onKey(View v, int keyCode, KeyEvent event) {
 				if (keyCode == KeyEvent.KEYCODE_ENTER) {
-					String message = chatInputTextView.getText().toString();
+					String message = chatInputTextView.getText().toString().trim();
 					if ((message != null) && (checkChatMessage(message))) {
 						Session.getActualCommunicationInterface().sendChatMessage(message);
-						chatInputTextView.setText("");
-						//Session.getActualCommunicationInterface().getChatMessages();
+						chatInputTextView.setText(null);
 					}
+					
 				}
 				return false;
 			}
