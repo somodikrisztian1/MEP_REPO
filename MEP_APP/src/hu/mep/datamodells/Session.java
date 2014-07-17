@@ -4,7 +4,7 @@ import hu.mep.communication.ChatMessageRefresherRunnable;
 import hu.mep.communication.ContactListRefresherRunnable;
 import hu.mep.communication.ICommunicator;
 import hu.mep.communication.RealCommunicator;
-import hu.mep.mep_app.activities.ActivityLevel3Chat;
+import hu.mep.mep_app.R;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -22,6 +22,7 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.util.Log;
 
 public class Session {
@@ -33,6 +34,7 @@ public class Session {
 
 	private static List<String> galleryImageURLSList = new ArrayList<String>();
 	private static List<Bitmap> galleryImagesList = new ArrayList<Bitmap>();
+	private static Bitmap emptyProfilePicture;
 
 	private static boolean successfulRegistration = false;
 	private static String unsuccessfulRegistrationMessage = "";
@@ -73,17 +75,20 @@ public class Session {
 	// ==============================================================================
 	// SESSION + COMMUNICATION + REGISTRATION
 	// ==============================================================================
-	private Session(Context context) {
-		this.context = context;
+	private Session(Context newContext) {
+		context = newContext;
 		actualCommunicationInterface = RealCommunicator.getInstance(context);
+		emptyProfilePicture = Bitmap.createScaledBitmap(
+				BitmapFactory.decodeResource(context.getResources(),R.drawable.chat_profile_picture_empty),
+				250, 250, true);
 		emptyChatMessagesList();
 	}
 
-	public static Session getInstance(Context context) {
+	public static Session getInstance(Context newContext) {
 		if (instance == null) {
-			instance = new Session(context);
-		} else if (instance.context != context) {
-			instance.context = context;
+			instance = new Session(newContext);
+		} else if (context != newContext) {
+			context = newContext;
 		}
 		return instance;
 	}
@@ -136,6 +141,10 @@ public class Session {
 
 	public static void setGalleryImagesList(List<Bitmap> galleryImagesList) {
 		Session.galleryImagesList = galleryImagesList;
+	}
+	
+	public static Bitmap getEmptyProfilePicture() {
+		return emptyProfilePicture;
 	}
 
 	// ==============================================================================

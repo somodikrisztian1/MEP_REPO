@@ -37,7 +37,7 @@ public class ChatContactList {
 		Bitmap result = null;
 		for (ChatContact actContact : this.contacts) {
 			if(actContact.getUserID() == id) {
-				result = Bitmap.createBitmap(actContact.getProfilePicture());
+				result = actContact.getProfilePicture();
 				return result;
 			}
 		}

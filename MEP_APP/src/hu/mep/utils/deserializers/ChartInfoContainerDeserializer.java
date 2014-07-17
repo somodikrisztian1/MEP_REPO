@@ -14,28 +14,30 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 
-public class ChartInfoContainerDeserializer implements JsonDeserializer<AllChartInfoContainer> {
+public class ChartInfoContainerDeserializer implements
+		JsonDeserializer<AllChartInfoContainer> {
 
 	@Override
 	public AllChartInfoContainer deserialize(JsonElement element, Type type,
 			JsonDeserializationContext context) throws JsonParseException {
-	
-		JsonObject jsonObject = element.getAsJsonObject();
-		List<ChartInfoContainer> allChartInfoContainer = new ArrayList<ChartInfoContainer>();
 
-		for (Map.Entry<String, JsonElement> entry : jsonObject.entrySet()) {
-			allChartInfoContainer.add((ChartInfoContainer) context.deserialize(entry.getValue(),
-					ChartInfoContainer.class));
-		}
+		List<ChartInfoContainer> allChartInfoContainer = new ArrayList<ChartInfoContainer>();
 		
+		if (!element.isJsonArray()) {
+			JsonObject jsonObject = element.getAsJsonObject();
+
+			for (Map.Entry<String, JsonElement> entry : jsonObject.entrySet()) {
+				allChartInfoContainer.add(
+						(ChartInfoContainer) context.deserialize(entry.getValue(), ChartInfoContainer.class));
+			}
+		}
 		return new AllChartInfoContainer(allChartInfoContainer);
 	}
-	
+/*
 	private void logAllChartInfoContainer(AllChartInfoContainer all) {
 		for (ChartInfoContainer actChartInfoContainer : all.getAllChartInfoContainer()) {
 			actChartInfoContainer.getId();
-			
 		}
-	}
-	
+	}*/
+
 }
