@@ -88,26 +88,28 @@ public class GetContactListAsyncTaskPRELOAD extends AsyncTask<Void, Void, Void> 
 					|| contact.getImageURL().toUpperCase().endsWith(".GIF")
 					|| contact.getImageURL().toUpperCase().endsWith(".BMP")) {
 				imgURL = new URL(contact.getImageURL());
+				//Log.e("GetContactListAsyncTask", contact.getName());
+				//Log.e("GetContactListAsyncTask", "Kép letöltése...");
+				HttpURLConnection connection = (HttpURLConnection) imgURL.openConnection();
+				connection.setDoInput(true);
+				connection.connect();
+				InputStream input = connection.getInputStream();
+				bmp = BitmapFactory.decodeStream(input);
+				// Megnézzük, álló vagy fekvő tájolású-e.
+				int fixSize = (bmp.getWidth() < bmp.getHeight() ? bmp.getWidth()
+						: bmp.getHeight());
+				// A rövidebb oldal szerint vágunk egy nagy négyzetre.
+				bmp = Bitmap.createBitmap(bmp, 0, 0, fixSize, fixSize);
+				// Skálázás 200×200-as négyzetre.
+				bmp = Bitmap.createScaledBitmap(bmp, 250, 250, true);
+				contact.setProfilePicture(bmp);
+				
 			} else {
-				imgURL = new URL(
-						"http://megujuloenergiapark.hu/images/avatar/empty.jpg");
+				//imgURL = new URL("http://megujuloenergiapark.hu/images/avatar/empty.jpg");
+				contact.setProfilePicture(Session.getEmptyProfilePicture());
+			
 			}
-			Log.e("GetContactListAsyncTask", contact.getName());
-			Log.e("GetContactListAsyncTask", "Kép letöltése...");
-			HttpURLConnection connection = (HttpURLConnection) imgURL
-					.openConnection();
-			connection.setDoInput(true);
-			connection.connect();
-			InputStream input = connection.getInputStream();
-			bmp = BitmapFactory.decodeStream(input);
-			// Megnézzük, álló vagy fekvő tájolású-e.
-			int fixSize = (bmp.getWidth() < bmp.getHeight() ? bmp.getWidth()
-					: bmp.getHeight());
-			// A rövidebb oldal szerint vágunk egy nagy négyzetre.
-			bmp = Bitmap.createBitmap(bmp, 0, 0, fixSize, fixSize);
-			// Skálázás 200×200-as négyzetre.
-			bmp = Bitmap.createScaledBitmap(bmp, 250, 250, true);
-			contact.setProfilePicture(bmp);
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 			Log.e("getBmpFromUrl error: ", e.getMessage().toString());
