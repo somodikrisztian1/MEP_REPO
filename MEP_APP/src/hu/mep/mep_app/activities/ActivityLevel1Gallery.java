@@ -28,7 +28,7 @@ public class ActivityLevel1Gallery extends FragmentActivity {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_firstlevel_gallery);
 
-		Session.getActualCommunicationInterface().getGalleryURLsAndPictures();
+		Session.getInstance(this).getActualCommunicationInterface().getGalleryURLsAndPictures();
 		NUM_PAGES = Session.getGalleryImageURLSList().size();
 		
 		mPager = (ViewPager) findViewById(R.id.activity_firstlevel_gallery_viewpager);
