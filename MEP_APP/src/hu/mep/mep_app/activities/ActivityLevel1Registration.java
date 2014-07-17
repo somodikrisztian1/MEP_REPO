@@ -3,20 +3,17 @@ package hu.mep.mep_app.activities;
 import hu.mep.datamodells.Session;
 import hu.mep.mep_app.R;
 import hu.mep.utils.others.AlertDialogFactory;
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 public class ActivityLevel1Registration extends ActionBarActivity implements
 		OnClickListener {
@@ -44,6 +41,13 @@ public class ActivityLevel1Registration extends ActionBarActivity implements
 		ab.setHomeButtonEnabled(true);
 		ab.setDisplayUseLogoEnabled(true);
 		ab.setDisplayHomeAsUpEnabled(true);
+	}
+	
+	@Override
+	public boolean onPrepareOptionsMenu(Menu menu) {
+		menu.findItem(R.id.action_settings).setVisible(false);
+		
+		return true;
 	}
 
 	@Override

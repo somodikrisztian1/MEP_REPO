@@ -5,7 +5,9 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp" >
 
         <RelativeLayout
             android:id="@+id/relative_layout1"
@@ -13,7 +15,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
-            android:paddingTop="20dp" >
+            android:paddingTop="20dp"
+            android:paddingBottom="10dp" >
 
             <ImageView
                 android:id="@+id/fragment_main_screen_logo_imageview"
@@ -22,7 +25,7 @@
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
                 android:paddingRight="10dp"
-                android:src="@drawable/mep_logo" />
+                android:src="@drawable/mep_logo_for_main_screen" />
 
             <TextView
                 android:id="@+id/fragment_main_screen_logo_textview"
@@ -36,53 +39,49 @@
                 android:textAppearance="?android:attr/textAppearanceLarge" />
         </RelativeLayout>
 
-       
-
-        <TextView
-            android:id="@+id/contact_mail_textview"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/contact_address_textview"
-            android:paddingBottom="10dp"
-            android:layout_centerHorizontal="true"
-            android:text="@string/contact_mail"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
-
         <TextView
             android:id="@+id/contact_address_textview"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/contact_mail_textview"
-            android:layout_below="@+id/contact_phone_textview"
-            android:paddingBottom="10dp"
+            android:layout_below="@+id/relative_layout1"
+            android:gravity="center_horizontal"
             android:text="@string/contact_address"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <TextView
-            android:id="@+id/contact_phone_textview"
-            android:layout_width="wrap_content"
+            android:id="@+id/contact_mail_textview"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/contact_mail_textview"
-            android:layout_below="@+id/relative_layout1"
-            android:paddingBottom="10dp"
-            android:text="@string/contact_phone_number"
+            android:layout_below="@+id/contact_address_textview"
+            android:gravity="center_horizontal"
+            android:text="@string/contact_mail"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <TextView
             android:id="@+id/contact_mail_opening_hours_textview"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/contact_mail_textview"
             android:layout_below="@+id/contact_mail_textview"
-            android:paddingBottom="10dp"
+            android:gravity="center_horizontal"
             android:text="@string/contact_opening_hours"
             android:textAppearance="?android:attr/textAppearanceMedium" />
         
+        <TextView
+            android:id="@+id/contact_phone_textview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:layout_below="@+id/contact_mail_opening_hours_textview"
+            android:paddingTop="5dp"
+            android:text="@string/contact_phone_number"
+            android:textAppearance="?android:attr/textAppearanceMedium" />  
+        
          <ImageView
             android:id="@+id/contact_map_imageview"
-            android:layout_width="250dp"
-            android:layout_height="250dp"
-            android:layout_below="@+id/contact_mail_opening_hours_textview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/contact_phone_textview"
+            android:paddingTop="5dp"
             android:paddingBottom="10dp"
             android:layout_centerHorizontal="true"
             android:src="@drawable/mep_map" />
