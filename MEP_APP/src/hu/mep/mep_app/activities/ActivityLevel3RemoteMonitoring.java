@@ -42,13 +42,12 @@ public class ActivityLevel3RemoteMonitoring extends ActionBarActivity implements
 	private Calendar beginDate;
 	private Calendar endDate;
 	private Calendar tempDate = Calendar.getInstance();
+	private Menu menu;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
-		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE); 
-		
+		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 		Session.getActualCommunicationInterface().getChartNames(true);
 		setContentView(R.layout.activity_thirdlevel_charts);
 
@@ -85,6 +84,9 @@ public class ActivityLevel3RemoteMonitoring extends ActionBarActivity implements
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.activity_thirdlevel_showtopic_menu, menu);
+		// ki kell menteni a menü-t, hogy az onClick-ben el lehessen kapni az
+		// elemeit
+		this.menu = menu;
 		if (beginDate == null) {
 			beginDate = Calendar.getInstance();
 			beginDate.set(Calendar.YEAR,
@@ -110,12 +112,29 @@ public class ActivityLevel3RemoteMonitoring extends ActionBarActivity implements
 			endDate.set(Calendar.MINUTE,
 					Session.endChartDate.get(Calendar.MINUTE));
 		}
+
+		// betöltésnél, beállítja az időpontokat a kiválasztós gombokra
+		((MenuItem) menu.findItem(R.id.action_datetime_begin))
+				.setTitle(beginDate.get(Calendar.YEAR) + "."
+						+ beginDate.get(Calendar.MONTH) + "."
+						+ beginDate.get(Calendar.DAY_OF_MONTH) + " "
+						+ beginDate.get(Calendar.HOUR_OF_DAY) + ":"
+						+ beginDate.get(Calendar.MINUTE) + ".");
+		((MenuItem) menu.findItem(R.id.action_datetime_end)).setTitle(endDate
+				.get(Calendar.YEAR)
+				+ "."
+				+ endDate.get(Calendar.MONTH)
+				+ "."
+				+ endDate.get(Calendar.DAY_OF_MONTH)
+				+ " "
+				+ endDate.get(Calendar.HOUR_OF_DAY)
+				+ ":"
+				+ endDate.get(Calendar.MINUTE) + ".");
 		return super.onCreateOptionsMenu(menu);
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-
 		if (item.getItemId() == R.id.action_datetime_begin) {
 			final Dialog d = new Dialog(ActivityLevel3RemoteMonitoring.this);
 
@@ -155,6 +174,15 @@ public class ActivityLevel3RemoteMonitoring extends ActionBarActivity implements
 								Toast.LENGTH_SHORT).show();
 					} else {
 						beginDate = (Calendar) tempDate.clone();
+						// begom time, felülírja a kiválasztásnál a title-t
+						((MenuItem) menu.findItem(R.id.action_datetime_begin))
+								.setTitle(beginDate.get(Calendar.YEAR) + "."
+										+ beginDate.get(Calendar.MONTH) + "."
+										+ beginDate.get(Calendar.DAY_OF_MONTH)
+										+ " "
+										+ beginDate.get(Calendar.HOUR_OF_DAY)
+										+ ":" + beginDate.get(Calendar.MINUTE)
+										+ ".");
 						d.dismiss();
 					}
 				}
@@ -228,6 +256,15 @@ public class ActivityLevel3RemoteMonitoring extends ActionBarActivity implements
 								Toast.LENGTH_SHORT).show();
 					} else {
 						endDate = (Calendar) tempDate.clone();
+						// end time, felülírja a kiválasztásnál a title-t
+						((MenuItem) menu.findItem(R.id.action_datetime_end))
+								.setTitle(endDate.get(Calendar.YEAR) + "."
+										+ endDate.get(Calendar.MONTH) + "."
+										+ endDate.get(Calendar.DAY_OF_MONTH)
+										+ " "
+										+ endDate.get(Calendar.HOUR_OF_DAY)
+										+ ":" + endDate.get(Calendar.MINUTE)
+										+ ".");
 						d.dismiss();
 					}
 				}
@@ -331,8 +368,8 @@ public class ActivityLevel3RemoteMonitoring extends ActionBarActivity implements
 		Log.e(TAG, "refreshFragments: fragments number is "
 				+ mSectionsPagerAdapter.getCount());
 
-		mViewPager.setAdapter(mSectionsPagerAdapter);
 		mSectionsPagerAdapter.notifyDataSetChanged();
+		mViewPager.setAdapter(mSectionsPagerAdapter);
 
 		for (int i = 0; i < mSectionsPagerAdapter.getCount(); ++i) {
 			FragmentLevel3ShowTopic actFragment = (FragmentLevel3ShowTopic) mSectionsPagerAdapter
