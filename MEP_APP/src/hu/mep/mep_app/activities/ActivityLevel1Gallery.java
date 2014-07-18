@@ -37,6 +37,7 @@ public class ActivityLevel1Gallery extends FragmentActivity {
 			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 		}
 		Session.getActualCommunicationInterface().getGalleryURLsAndPictures();
+
 		NUM_PAGES = Session.getGalleryImageURLSList().size();
 		
 		mPager = (ViewPager) findViewById(R.id.activity_firstlevel_gallery_viewpager);
