@@ -46,7 +46,7 @@ public class FragmentLevel2RemoteMonitorings extends Fragment implements OnItemC
 		Session.setActualRemoteMonitoring(
 				Session.getActualUser().getUsersPlaces().getPlaces().get(position));
 
-		Session.getActualCommunicationInterface().getChartNames();
+		Session.getActualCommunicationInterface().getChartNames(true);
 		
 		Intent intent = new Intent(getActivity(),
 				ActivityLevel3RemoteMonitoring.class);

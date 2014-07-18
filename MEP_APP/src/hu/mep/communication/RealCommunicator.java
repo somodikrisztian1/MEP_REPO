@@ -180,8 +180,8 @@ public class RealCommunicator implements ICommunicator {
 	}
 
 	@Override
-	public void getChartNames() {
-		GetAllChartInfoContainerAsyncTask chartNameGetter = new GetAllChartInfoContainerAsyncTask(MainURL, false);
+	public void getChartNames(boolean forRemoteMonitoring) {
+		GetAllChartInfoContainerAsyncTask chartNameGetter = new GetAllChartInfoContainerAsyncTask(MainURL, forRemoteMonitoring);
 		try {
 			chartNameGetter.execute().get();
 		} catch (InterruptedException e) {

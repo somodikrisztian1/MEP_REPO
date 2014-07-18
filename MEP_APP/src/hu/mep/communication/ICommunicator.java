@@ -12,7 +12,7 @@ public interface ICommunicator {
 
 	public void getTopicList();
 
-	public void getChartNames();
+	public void getChartNames(boolean forRemoteMonitoring);
 
 	public void authenticateUser(String username, String password);
 

@@ -45,7 +45,7 @@ public class ActivityLevel3RemoteMonitoring extends ActionBarActivity implements
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		Session.getActualCommunicationInterface().getChartNames();
+		Session.getActualCommunicationInterface().getChartNames(true);
 		setContentView(R.layout.activity_thirdlevel_charts);
 
 		mSectionsPagerAdapter = new SectionsPagerAdapter(
