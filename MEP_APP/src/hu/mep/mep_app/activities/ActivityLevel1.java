@@ -25,6 +25,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -59,7 +60,6 @@ public class ActivityLevel1 extends ActionBarActivity implements
 	private ActionBar mActionBar;
 
 	private CharSequence drawerTitle;
-	private CharSequence mainTitle;
 
 	private static final int DRAWER_LIST_MAIN_PAGE_NUMBER = -1;
 	private static final int DRAWER_LIST_PRESENTATION_PARK_NUMBER = 0;
@@ -76,18 +76,23 @@ public class ActivityLevel1 extends ActionBarActivity implements
 	public Button loginButton;
 	private ArrayAdapter<String> drawerAdapter;
 
-	private Context context;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		if (Session.getInstance(this).isTablet()) {
+			Log.e(TAG, "IT'S A TABLET");
+			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE); 
+		}
+		else {
+			Log.e(TAG, "IT'S NOT A TABLET");
+			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+		}
 
-		context = getApplicationContext();
 		fragmentManager = getSupportFragmentManager();
 		setContentView(R.layout.activity_first);
 
-		mainTitle = getResources().getString(
-				R.string.fragment_main_screen_title);
 		// Log.e("FirstActivity", "onCreate 2");
 		drawerTitle = getTitle();
 		firstActivityDrawerLayout = (DrawerLayout) findViewById(R.id.first_activity_drawer_layout);
@@ -197,10 +202,10 @@ public class ActivityLevel1 extends ActionBarActivity implements
 			Log.e("FirstActivity", "handleDrawerClick() -> Representation Park");
 			break;
 		case DRAWER_LIST_GALLERY_NUMBER:
-			if (NetThread.isOnline(context)) {
+			if (NetThread.isOnline(this)) {
 				Session.setProgressDialog(prepareProgressDialogForLoading3());
 				Session.showProgressDialog();
-				Intent i = new Intent(context, ActivityLevel1Gallery.class);
+				Intent i = new Intent(this, ActivityLevel1Gallery.class);
 				startActivity(i);
 			} else {
 				Session.setAlertDialog(AlertDialogFactory.prepareAlertDialogForNoConnection(ActivityLevel1.this));
@@ -318,7 +323,7 @@ public class ActivityLevel1 extends ActionBarActivity implements
 	@Override
 	public boolean onLoginButtonPressed(final String username, final String password) {
 
-		if (NetThread.isOnline(context)) {
+		if (NetThread.isOnline(this)) {
 			Log.e(TAG, "prepareProgressDialogForLoading1");
 			Session.setProgressDialog(prepareProgressDialogForLoading1());
 			Session.showProgressDialog();

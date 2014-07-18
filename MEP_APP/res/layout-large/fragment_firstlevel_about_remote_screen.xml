@@ -9,50 +9,79 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingLeft="15dp"
-        android:paddingRight="15dp" >
+        android:paddingRight="15dp"
+        android:paddingBottom="15dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp" >
 
-        <bluejamesbond.textviewjustifier.TextViewEx
-            android:id="@+id/fragment_firstlevel_about_remote_textview_content_0"
+        <LinearLayout
+            android:id="@+id/fragment_firstlevel_about_remote_linear_layout_1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_marginTop="10dp" />
+            android:layout_margin="15dp"
+            android:orientation="horizontal"
+            android:weightSum="2" >
 
-        <ImageView
-            android:id="@+id/fragment_firstlevel_about_remote_imageview_1"
+            <bluejamesbond.textviewjustifier.TextViewEx
+                android:id="@+id/fragment_firstlevel_about_remote_textview_content_0"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:layout_weight="1" />
+
+            <ImageView
+                android:id="@+id/fragment_firstlevel_about_remote_imageview_1"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:adjustViewBounds="true"
+                android:src="@drawable/tavfel_inverterek" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/fragment_firstlevel_about_remote_linear_layout_2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/fragment_firstlevel_about_remote_textview_content_0"
-            android:adjustViewBounds="true"
-            android:src="@drawable/tavfel_inverterek" />
+            android:layout_below="@+id/fragment_firstlevel_about_remote_linear_layout_1"
+            android:layout_margin="15dp"
+            android:orientation="horizontal"
+            android:weightSum="2" >
 
-        <TextView
-            android:id="@+id/fragment_firstlevel_about_remote_textview_title_1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/fragment_firstlevel_about_remote_imageview_1"
-            android:text="@string/fragment_firstlevel_about_remote_text_title_1"
-            android:textStyle="bold" />
+            <ImageView
+                android:id="@+id/fragment_firstlevel_about_remote_imageview_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:adjustViewBounds="true"
+                android:src="@drawable/tavfel_napelem" />
 
-        <bluejamesbond.textviewjustifier.TextViewEx
-            android:id="@+id/fragment_firstlevel_about_remote_textview_content_1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/fragment_firstlevel_about_remote_textview_title_1" />
+            <LinearLayout
+                android:id="@+id/fragment_firstlevel_about_remote_linear_layout_2_2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_weight="1"
+                android:orientation="vertical" >
 
-        <ImageView
-            android:id="@+id/fragment_firstlevel_about_remote_imageview_2"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/fragment_firstlevel_about_remote_textview_content_1"
-            android:adjustViewBounds="true"
-            android:src="@drawable/tavfel_napelem" />
+                <TextView
+                    android:id="@+id/fragment_firstlevel_about_remote_textview_title_1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/fragment_firstlevel_about_remote_text_title_1"
+                    android:textStyle="bold" />
+
+                <bluejamesbond.textviewjustifier.TextViewEx
+                    android:id="@+id/fragment_firstlevel_about_remote_textview_content_1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+        </LinearLayout>
 
         <TextView
             android:id="@+id/fragment_firstlevel_about_remote_textview_title_2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/fragment_firstlevel_about_remote_imageview_2"
+            android:layout_below="@+id/fragment_firstlevel_about_remote_linear_layout_2"
             android:text="@string/fragment_firstlevel_about_remote_text_title_2"
             android:textStyle="bold" />
 

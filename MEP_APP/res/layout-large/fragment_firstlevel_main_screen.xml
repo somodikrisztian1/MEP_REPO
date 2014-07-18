@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_gravity="center_horizontal" >
+    android:layout_gravity="center_horizontal"
+    tools:context=".MainActivity" >
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -12,15 +14,16 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center">
+            android:layout_marginTop="25dp"
+            android:gravity="center"
+            android:orientation="horizontal" >
 
             <ImageView
                 android:id="@+id/imageview_for_logo"
                 android:layout_width="150dp"
                 android:layout_height="150dp"
-                android:layout_marginTop="5dp"
                 android:layout_gravity="center"
+                android:layout_marginTop="5dp"
                 android:src="@drawable/mep_logo_for_main_screen" />
 
             <RelativeLayout
@@ -34,18 +37,18 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
+                    android:layout_marginLeft="20dp"
                     android:text="@string/company_name"
-                    android:textSize="26sp" />
+                    android:textSize="50sp" />
             </RelativeLayout>
         </LinearLayout>
 
-        <TextView
+        <bluejamesbond.textviewjustifier.TextViewEx
             android:id="@+id/fragment_main_screen_welcome_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginBottom="15dp"
-            android:text="@string/fragment_firstlevel_mainscreen_welcome_text" />
+            android:layout_margin="70dp"
+            android:textSize="18sp" />
     </LinearLayout>
 
 </ScrollView>

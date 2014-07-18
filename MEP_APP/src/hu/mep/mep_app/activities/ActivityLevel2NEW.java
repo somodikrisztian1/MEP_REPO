@@ -6,6 +6,7 @@ import hu.mep.mep_app.ActivityLevel2SectionsPagerAdapter;
 import hu.mep.mep_app.R;
 import hu.mep.utils.others.FragmentLevel2EventHandler;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.NavUtils;
@@ -34,6 +35,16 @@ public class ActivityLevel2NEW extends ActionBarActivity implements
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		if (Session.getInstance(this).isTablet()) {
+			Log.e(TAG, "IT'S A TABLET");
+			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE); 
+		}
+		else {
+			Log.e(TAG, "IT'S NOT A TABLET");
+			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+		}
+		
 		setContentView(R.layout.activity_secondlevel);
 		
 		
@@ -62,7 +73,7 @@ public class ActivityLevel2NEW extends ActionBarActivity implements
 	@Override
 	protected void onResume() {
 		super.onResume();
-		
+		Session.getInstance(this);
 		Session.dismissAndMakeNullProgressDialog();
 		Session.startContactRefresherThread();	
 	}

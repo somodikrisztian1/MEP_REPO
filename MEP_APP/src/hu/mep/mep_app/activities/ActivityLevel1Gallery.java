@@ -11,10 +11,12 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.Window;
 
 public class ActivityLevel1Gallery extends FragmentActivity {
 
+	private static final String TAG = "ActivityLevel1Gallery";
 	private static int NUM_PAGES;
 	private ViewPager mPager;
 	private PagerAdapter mPagerAdapter;
@@ -26,11 +28,14 @@ public class ActivityLevel1Gallery extends FragmentActivity {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_firstlevel_gallery);
 		
-		if (Session.getInstance(this).isTablet())
-			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-		else
+		if (Session.getInstance(this).isTablet()) {
+			Log.e(TAG, "IT'S A TABLET");
+			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE); 
+		}
+		else {
+			Log.e(TAG, "IT'S NOT A TABLET");
 			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-
+		}
 		Session.getActualCommunicationInterface().getGalleryURLsAndPictures();
 		NUM_PAGES = Session.getGalleryImageURLSList().size();
 		

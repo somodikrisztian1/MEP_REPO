@@ -1,17 +1,19 @@
 package hu.mep.mep_app.activities;
 
-import java.util.ArrayList;
-
 import hu.mep.datamodells.ChatMessage;
 import hu.mep.datamodells.Session;
 import hu.mep.mep_app.R;
 import hu.mep.utils.adapters.ChatMessagesListAdapter;
 import android.app.Activity;
 import android.os.Bundle;
-import android.support.v4.text.TextUtilsCompat;
-import android.text.TextUtils;
+import android.support.v4.app.NavUtils;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnKeyListener;
 import android.widget.AbsListView;
@@ -20,7 +22,7 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 
-public class ActivityLevel3Chat extends Activity {
+public class ActivityLevel3Chat extends ActionBarActivity {
 
 
 	private static EditText chatInputTextView;
@@ -28,12 +30,13 @@ public class ActivityLevel3Chat extends Activity {
 	
 	private static final String TAG = "ActivityLevel3Chat";
 
-	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		Log.d(TAG, "onCreate running");
 		setContentView(R.layout.activity_thirdlevel_chat);
+		setTitle("Chat (" + Session.getActualChatPartner().getName() + ")");
+		
 		ListView chatMessagesListview = (ListView) findViewById(R.id.activity_thirdlevel_chat_listview);
 
 		Session.getActualCommunicationInterface().getChatMessages();
@@ -84,6 +87,10 @@ public class ActivityLevel3Chat extends Activity {
 				return false;
 			}
 		});
+		
+		ActionBar ab = getSupportActionBar();
+		ab.setDisplayHomeAsUpEnabled(true);
+		
 	}
 
 	@Override
@@ -98,6 +105,28 @@ public class ActivityLevel3Chat extends Activity {
 		Session.stopMessageRefresherThread();
 	}
 
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.empty_menu, menu);
+		return super.onCreateOptionsMenu(menu);
+	}
+
+	@Override
+	public boolean onPrepareOptionsMenu(Menu menu) {
+		return super.onPrepareOptionsMenu(menu);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		if(item.getItemId() == R.id.homeAsUp) {
+			NavUtils.navigateUpFromSameTask(this);
+			return true;
+		}
+		return super.onOptionsItemSelected(item);
+	}
+	
+	
 	/**
 	 * Check the chat message before sending, if it has any alphabetic character, so it does not contain only whitespaces.
 	 */

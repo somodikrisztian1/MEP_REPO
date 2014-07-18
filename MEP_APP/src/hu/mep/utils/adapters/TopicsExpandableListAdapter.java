@@ -1,5 +1,6 @@
 package hu.mep.utils.adapters;
 
+import hu.mep.datamodells.Session;
 import hu.mep.datamodells.Topic;
 import hu.mep.datamodells.TopicCategory;
 import hu.mep.mep_app.R;
@@ -10,6 +11,7 @@ import hu.mep.utils.others.FragmentLevel2EventHandler;
 import java.util.List;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.sax.StartElementListener;
 import android.util.Log;
@@ -66,8 +68,9 @@ public class TopicsExpandableListAdapter extends BaseExpandableListAdapter {
 			public void onClick(View v) {
 				Toast.makeText(activity, children.getTopicName(),
 						Toast.LENGTH_SHORT).show();
-				//TODO! Interfészen keresztül küldeni egy üzit, hogy 
-				//lehet indítani az ActivityLevel3ShowTopic activity-t.
+				Session.setProgressDialog(prepareProgressDialogForLoading());
+				Session.showProgressDialog();
+				
 				fragmentEventHandler.onTopicSelected(children);
 				
 				
@@ -75,6 +78,14 @@ public class TopicsExpandableListAdapter extends BaseExpandableListAdapter {
 			}
 		});
 		return convertView;
+	}
+	
+	private ProgressDialog prepareProgressDialogForLoading() {
+		ProgressDialog pd = new ProgressDialog(Session.getContext());
+		pd.setCancelable(false);
+		pd.setTitle("Kérem várjon!");
+		pd.setMessage("Gráf adatok letöltése folyamatban...");
+		return pd;
 	}
 
 	@Override

@@ -4,10 +4,12 @@ import hu.mep.datamodells.Session;
 import hu.mep.mep_app.R;
 import hu.mep.utils.others.AlertDialogFactory;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,6 +20,7 @@ import android.widget.EditText;
 public class ActivityLevel1Registration extends ActionBarActivity implements
 		OnClickListener {
 
+	private static final String TAG = "ActivityLevel1Registration";
 	private EditText fullNameEdittext;
 	private EditText emailEdittext;
 	private EditText userNameEdittext;
@@ -28,6 +31,16 @@ public class ActivityLevel1Registration extends ActionBarActivity implements
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		if (Session.getInstance(this).isTablet()) {
+			Log.e(TAG, "IT'S A TABLET");
+			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE); 
+		}
+		else {
+			Log.e(TAG, "IT'S NOT A TABLET");
+			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+		}
+		
 		setContentView(R.layout.activity_level1_registration);
 		setTitle("Regisztráció");
 		fullNameEdittext = (EditText) findViewById(R.id.reg_fullname);
@@ -53,7 +66,7 @@ public class ActivityLevel1Registration extends ActionBarActivity implements
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.activity_level1_registration, menu);
+		getMenuInflater().inflate(R.menu.empty_menu, menu);
 		return true;
 	}
 

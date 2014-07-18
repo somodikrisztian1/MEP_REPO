@@ -1,5 +1,6 @@
 package hu.mep.mep_app;
 
+import bluejamesbond.textviewjustifier.TextViewEx;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -22,7 +23,12 @@ public class FragmentLevel1MainScreen extends Fragment {
         if(index == -1) {
         	newTitle = getResources().getString(R.string.fragment_main_screen_title);
         }
-
+        
+        TextViewEx welcomeText = (TextViewEx) rootView.findViewById(R.id.fragment_main_screen_welcome_text);
+        welcomeText.setText(getResources().getString(R.string.fragment_firstlevel_mainscreen_welcome_text));
+        welcomeText.setPadding(0, 0, 0, 0);
+        welcomeText.setDrawingCacheEnabled(true);
+        
         getActivity().setTitle(newTitle);
         return rootView;
     }

@@ -17,6 +17,7 @@ import android.view.WindowManager;
 
 public class GetGalleryImagesAsyncTask extends AsyncTask<Void, Void, Void> {
 
+	private static final String TAG = "GetGalleryImagesAsyncTask";
 	String hostURI;
 	String resourceURI;
 	Context context;
@@ -35,29 +36,26 @@ public class GetGalleryImagesAsyncTask extends AsyncTask<Void, Void, Void> {
 	@Override
 	protected Void doInBackground(Void... params) {
 
-//		String response = "";
-
-		// Log.e("ASYNCTASK", "fullURI: " + fullURI);
-
 		try {
 			for (String actImageURL : Session.getGalleryImageURLSList()) {
 				URL fullURI = new URL(hostURI + resourceURI + actImageURL);
-				HttpURLConnection connection = (HttpURLConnection) fullURI
-						.openConnection();
+				HttpURLConnection connection = (HttpURLConnection) fullURI.openConnection();
 				connection.setDoInput(true);
 				connection.connect();
 				InputStream input = connection.getInputStream();
-
 				Bitmap bm = BitmapFactory.decodeStream(input);
 
-				WindowManager wm = (WindowManager) context
-						.getSystemService(Context.WINDOW_SERVICE);
-
+				WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
 				DisplayMetrics displayMetrics = new DisplayMetrics();
 				wm.getDefaultDisplay().getMetrics(displayMetrics);
 
 				int width;
 				int height;
+
+				int pictureWidth;
+				int pictureHeight;
+
+				double ratio = 0.0;
 				
 				if ( !Session.isTablet() )
 				{
@@ -69,11 +67,8 @@ public class GetGalleryImagesAsyncTask extends AsyncTask<Void, Void, Void> {
 					width = displayMetrics.heightPixels;
 					height = displayMetrics.widthPixels;
 				}
+				Log.e(TAG, "KÉPERNYŐ! szélesség: " + width + " magasság: " + height);
 
-				int pictureWidth = 0;
-				int pictureHeight = 0;
-
-				double ratio = 0.0;
 				
 				if (width > bm.getWidth()) {
 					pictureWidth = width;
@@ -82,22 +77,34 @@ public class GetGalleryImagesAsyncTask extends AsyncTask<Void, Void, Void> {
 					pictureWidth = bm.getWidth();
 					ratio = ((double) pictureWidth) / width;
 				}
-				
+				Log.e(TAG, "bm.getWidth() = " + bm.getWidth());
+				Log.e(TAG, "display width = " + width);
+				Log.e(TAG, "pictureWidth = " + pictureWidth );
+
+				Log.e(TAG, "ratio = " + ratio);
+
+				Log.e(TAG, "bm.getHeight() = " + bm.getHeight() );
+				Log.e(TAG, "display height = " + height);
+				/*
 				if (height > bm.getHeight()) {
 					pictureHeight = height;
 				}
 				else {
 					pictureHeight = bm.getHeight();
-				}
+				}*/
 				
 				pictureHeight = (int) Math.ceil( bm.getHeight() * ratio );
-
-//				Log.e("galéria", "pictureHeight: " + pictureHeight + " számolás: bm.get: " + bm.getHeight() + " ratio: " + ratio );
+				
+				Log.e(TAG, "bm.getHeight() * ratio = pictureHeight --> " 
+						+ bm.getHeight()+" * "+ratio+" = "+pictureHeight );
 				
 				bm = Bitmap.createScaledBitmap(bm, pictureWidth, pictureHeight, true);
 				
-				bm = Bitmap.createBitmap(bm, 0, 0, pictureWidth, height-this.getStatusBarHeight());
-
+				if( height - this.getStatusBarHeight() < pictureHeight) {
+					bm = Bitmap.createBitmap(bm, 0, 0, pictureWidth, height-this.getStatusBarHeight());
+				} else {
+					bm = Bitmap.createBitmap(bm, 0, 0, pictureWidth, pictureHeight);
+				}
 				Session.addPictureToGallery(bm);
 
 			}
@@ -115,7 +122,7 @@ public class GetGalleryImagesAsyncTask extends AsyncTask<Void, Void, Void> {
 		Session.dismissAndMakeNullProgressDialog();
 	}
 	
-	public int getStatusBarHeight() { 
+	public int getStatusBarHeight() {
 	      int result = 0;
 	      int resourceId = context.getResources().getIdentifier("status_bar_height", "dimen", "android");
 	      if (resourceId > 0) {

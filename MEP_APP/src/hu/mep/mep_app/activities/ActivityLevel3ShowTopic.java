@@ -8,6 +8,8 @@ import hu.mep.utils.others.CalendarPrinter;
 import java.util.Calendar;
 
 import android.app.Dialog;
+import android.app.ProgressDialog;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -45,6 +47,10 @@ public class ActivityLevel3ShowTopic extends ActionBarActivity implements
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE); 
+		Session.getInstance(this);
+		
 		Session.getActualCommunicationInterface().getChartNames(false);
 		setContentView(R.layout.activity_thirdlevel_charts);
 
@@ -281,6 +287,9 @@ public class ActivityLevel3ShowTopic extends ActionBarActivity implements
 			Session.setActualChartInfoContainer(Session
 					.getAllChartInfoContainer().get(position));
 			Session.getActualCommunicationInterface().getActualChart();
+			if(position == getCount() - 1 ) {
+				Session.dismissAndMakeNullProgressDialog();
+			}
 			return new FragmentLevel3ShowTopic(Session.getActualChart());
 		}
 
@@ -324,22 +333,11 @@ public class ActivityLevel3ShowTopic extends ActionBarActivity implements
 		mSectionsPagerAdapter.notifyDataSetChanged();
 
 		for (int i = 0; i < mSectionsPagerAdapter.getCount(); ++i) {
-			FragmentLevel3ShowTopic actFragment = (FragmentLevel3ShowTopic) mSectionsPagerAdapter
-					.getItem(i);
+			FragmentLevel3ShowTopic actFragment = (FragmentLevel3ShowTopic) mSectionsPagerAdapter.getItem(i);
 			actFragment.mChart = Session.getActualChart();
 			Log.e(TAG, "fragment No." + i);
 
 		}
 
 	}
-
-	/*
-	private ProgressDialog prepareProgressDialogForLoading() {
-		ProgressDialog pd = new ProgressDialog(ActivityLevel3ShowTopic.this);
-		pd.setCancelable(false);
-		pd.setTitle("Kérem várjon!");
-		pd.setMessage("Gráf adatok letöltése folyamatban...");
-		return pd;
-	}
-*/
 }

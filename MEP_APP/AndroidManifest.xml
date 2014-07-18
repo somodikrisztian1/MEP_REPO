@@ -37,6 +37,8 @@
         <activity
             android:name=".activities.ActivityLevel3Chat"
             android:label="@string/app_name" >
+             <meta-data android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.ActivityLevel2NEW"/>
         </activity>
         <activity android:name=".activities.ActivityLevel3RemoteMonitoring" >
         </activity>

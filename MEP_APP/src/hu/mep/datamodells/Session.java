@@ -94,6 +94,10 @@ public class Session {
 		return instance;
 	}
 
+	public static Context getContext() {
+		return context;
+	}
+	
 	public static ICommunicator getActualCommunicationInterface() {
 		if (actualCommunicationInterface == null) {
 			actualCommunicationInterface = RealCommunicator
@@ -486,7 +490,7 @@ public class Session {
 	}
 
 	// ==============================================================================
-	// ACTUAL CHART
+	// ACTUAL CHART + CHART INTERVALS
 	// ==============================================================================
 	public static Chart getActualChart() {
 		Log.e(TAG, "getActualChart");
@@ -498,51 +502,7 @@ public class Session {
 		Session.actualChart = actualChart;
 		refreshChartIntervals();
 	}
-
-	// ==============================================================================
-	// PROGRESS DIALOG + ALERT DIALOG
-	// ==============================================================================
-	public static void setProgressDialog(ProgressDialog p_ProgressDialog) {
-		if (progressDialog == null) {
-			Log.e(TAG, "setProgressDialog");
-			Session.progressDialog = p_ProgressDialog;
-		}
-	}
-
-	public static void showProgressDialog() {
-		if (progressDialog != null) {
-			Log.e(TAG, "showProgressDialog");
-			progressDialog.show();
-		}
-	}
-
-	public static void dismissAndMakeNullProgressDialog() {
-//		progressDialog.dismiss();
-//		progressDialog = null;
-		
-		  if (progressDialog != null) { Log.e(TAG, "Dismiss progress dialog");
-		  progressDialog.dismiss(); progressDialog = null; }
-		 
-	}
-
-	public static void setAlertDialog(AlertDialog ad) {
-		Log.e(TAG, "setAlertDialog");
-		Session.alertDialog = ad;
-	}
-
-	public static void showAlertDialog() {
-		Log.e(TAG, "showAlertDialog");
-		alertDialog.show();
-	}
-
-	public static void dismissAndMakeNullAlertDialog() {
-		if (alertDialog != null) {
-			Log.d(TAG, "Dismiss alert dialog");
-			alertDialog.dismiss();
-			alertDialog = null;
-		}
-	}
-
+	
 	public static Calendar getMinimalChartDate() {
 		return beginChartDate;
 	}
@@ -621,6 +581,54 @@ public class Session {
 			}
 		}
 	}
+
+	// ==============================================================================
+	// PROGRESS DIALOG + ALERT DIALOG
+	// ==============================================================================
+	public static void setProgressDialog(ProgressDialog p_ProgressDialog) {
+		if (progressDialog != null) {
+			Log.e(TAG, "setProgressDialog");
+			dismissAndMakeNullProgressDialog();
+		}
+		Session.progressDialog = p_ProgressDialog;
+
+	}
+
+	public static void showProgressDialog() {
+		if (progressDialog != null) {
+			Log.e(TAG, "showProgressDialog");
+			progressDialog.show();
+		}
+	}
+
+	public static void dismissAndMakeNullProgressDialog() {
+//		progressDialog.dismiss();
+//		progressDialog = null;
+		
+		  if (progressDialog != null) { Log.e(TAG, "Dismiss progress dialog");
+		  progressDialog.dismiss(); progressDialog = null; }
+		 
+	}
+
+	public static void setAlertDialog(AlertDialog ad) {
+		Log.e(TAG, "setAlertDialog");
+		Session.alertDialog = ad;
+	}
+
+	public static void showAlertDialog() {
+		Log.e(TAG, "showAlertDialog");
+		alertDialog.show();
+	}
+
+	public static void dismissAndMakeNullAlertDialog() {
+		if (alertDialog != null) {
+			Log.d(TAG, "Dismiss alert dialog");
+			alertDialog.dismiss();
+			alertDialog = null;
+		}
+	}
+
+	
 	
 	/**
 	   * Determine if the device is a tablet (i.e. it has a large screen).
@@ -632,5 +640,7 @@ public class Session {
 	            & Configuration.SCREENLAYOUT_SIZE_MASK)
 	            >= Configuration.SCREENLAYOUT_SIZE_LARGE;
 	  }
+
+
 
 }
