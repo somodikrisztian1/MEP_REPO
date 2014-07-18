@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/actionbar_secondlevel"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:background="@drawable/tabbar_shadow"
+    android:orientation="horizontal"
+    android:weightSum="4" >
+
+    <ImageView
+        android:id="@+id/actionbar_secondlevel_button_menu"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:onClick="menuItemClickListener"
+        android:scaleType="centerInside"
+        android:text="menu" />
+
+    <ImageView
+        android:id="@+id/actionbar_secondlevel_button_topics"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:onClick="menuItemClickListener"
+        android:scaleType="centerInside"
+        android:text="topics" />
+
+    <ImageView
+        android:id="@+id/actionbar_secondlevel_button_remote_monitorings"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:onClick="menuItemClickListener"
+        android:scaleType="centerInside"
+        android:text="remote" />
+
+    <ImageView
+        android:id="@+id/actionbar_secondlevel_button_chat"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:onClick="menuItemClickListener"
+        android:scaleType="centerInside"
+        android:text="chat" />
+
+</LinearLayout>

@@ -1,0 +1,75 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    tools:context="hu.mep.mep_app.activities.ActivityLevel1Registration"
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp"
+    android:paddingTop="10dp" >
+    
+    <EditText
+        android:id="@+id/reg_fullname"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:ems="30"
+        android:inputType="textPersonName"
+        android:hint="@string/hint_for_reg_activity_fullname_textview" >
+    </EditText>
+    
+    <EditText
+        android:id="@+id/reg_email"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:ems="30"
+        android:inputType="textEmailAddress"
+        android:layout_below="@+id/reg_fullname"
+        android:hint="@string/hint_for_reg_activity_email_textview" >
+    </EditText>
+    
+    <EditText
+        android:id="@+id/reg_username"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:ems="30"
+        android:inputType="text"
+        android:layout_below="@+id/reg_email"
+        android:hint="@string/hint_for_login_activity_username_textview" >
+    </EditText>
+    
+    <EditText
+        android:id="@+id/reg_password"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:ems="30"
+        android:inputType="textPassword"
+        android:layout_below="@+id/reg_username" 
+        android:hint="@string/hint_for_login_activity_password_textview" >
+    </EditText>
+    
+    <EditText
+        android:id="@+id/reg_passowrdagain"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:ems="30"
+        android:inputType="textPassword"
+        android:layout_below="@+id/reg_password"
+        android:hint="@string/hint_for_reg_activity_password_again_textview" >
+    </EditText>
+    
+    <Button 
+        android:id="@+id/registrate_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/reg_passowrdagain"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="15dp"
+        android:text="@string/hint_for_reg_activity_regbutton_text" />
+    
+</RelativeLayout>
