@@ -21,6 +21,7 @@ import java.util.Set;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
@@ -620,5 +621,16 @@ public class Session {
 			}
 		}
 	}
+	
+	/**
+	   * Determine if the device is a tablet (i.e. it has a large screen).
+	   * 
+	   * @param context The calling context.
+	   */
+	  public static boolean isTablet() {
+	    return (context.getResources().getConfiguration().screenLayout
+	            & Configuration.SCREENLAYOUT_SIZE_MASK)
+	            >= Configuration.SCREENLAYOUT_SIZE_LARGE;
+	  }
 
 }
