@@ -3,6 +3,7 @@ package hu.mep.mep_app.activities;
 import hu.mep.datamodells.Session;
 import hu.mep.mep_app.FragmentLevel1GalleryPicture;
 import hu.mep.mep_app.R;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -24,8 +25,13 @@ public class ActivityLevel1Gallery extends FragmentActivity {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_firstlevel_gallery);
+		
+		if (Session.getInstance(this).isTablet())
+			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+		else
+			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
-		Session.getInstance(this).getActualCommunicationInterface().getGalleryURLsAndPictures();
+		Session.getActualCommunicationInterface().getGalleryURLsAndPictures();
 		NUM_PAGES = Session.getGalleryImageURLSList().size();
 		
 		mPager = (ViewPager) findViewById(R.id.activity_firstlevel_gallery_viewpager);

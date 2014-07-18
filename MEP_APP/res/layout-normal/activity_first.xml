@@ -3,7 +3,8 @@
     android:id="@+id/first_activity_drawer_layout"
     style="@style/AppTheme"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+     >
     
     <!-- The main content view -->
     <FrameLayout
@@ -20,4 +21,5 @@
         android:divider="@android:color/transparent"
         android:dividerHeight="0dp"
         android:background="#111" />
+    
 </android.support.v4.widget.DrawerLayout>

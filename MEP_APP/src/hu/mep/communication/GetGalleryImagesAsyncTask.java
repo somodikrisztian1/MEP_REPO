@@ -56,8 +56,19 @@ public class GetGalleryImagesAsyncTask extends AsyncTask<Void, Void, Void> {
 				DisplayMetrics displayMetrics = new DisplayMetrics();
 				wm.getDefaultDisplay().getMetrics(displayMetrics);
 
-				int width = displayMetrics.widthPixels;
-				int height = displayMetrics.heightPixels;
+				int width;
+				int height;
+				
+				if ( !Session.isTablet() )
+				{
+					width = displayMetrics.widthPixels;
+					height = displayMetrics.heightPixels;
+				}
+				else
+				{
+					width = displayMetrics.heightPixels;
+					height = displayMetrics.widthPixels;
+				}
 
 				int pictureWidth = 0;
 				int pictureHeight = 0;
