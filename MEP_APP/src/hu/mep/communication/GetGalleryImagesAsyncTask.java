@@ -13,7 +13,6 @@ import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.Display;
 import android.view.WindowManager;
 
 public class GetGalleryImagesAsyncTask extends AsyncTask<Void, Void, Void> {
@@ -36,7 +35,7 @@ public class GetGalleryImagesAsyncTask extends AsyncTask<Void, Void, Void> {
 	@Override
 	protected Void doInBackground(Void... params) {
 
-		String response = "";
+//		String response = "";
 
 		// Log.e("ASYNCTASK", "fullURI: " + fullURI);
 
@@ -63,20 +62,30 @@ public class GetGalleryImagesAsyncTask extends AsyncTask<Void, Void, Void> {
 				int pictureWidth = 0;
 				int pictureHeight = 0;
 
+				double ratio = 0.0;
+				
 				if (width > bm.getWidth()) {
 					pictureWidth = width;
+					ratio = ((double) pictureWidth) / bm.getWidth();
 				} else {
 					pictureWidth = bm.getWidth();
+					ratio = ((double) pictureWidth) / width;
 				}
-
+				
 				if (height > bm.getHeight()) {
 					pictureHeight = height;
-				} else {
+				}
+				else {
 					pictureHeight = bm.getHeight();
 				}
+				
+				pictureHeight = (int) Math.ceil( bm.getHeight() * ratio );
 
-				bm = Bitmap.createScaledBitmap(bm, pictureWidth, pictureHeight,
-						true);
+//				Log.e("galéria", "pictureHeight: " + pictureHeight + " számolás: bm.get: " + bm.getHeight() + " ratio: " + ratio );
+				
+				bm = Bitmap.createScaledBitmap(bm, pictureWidth, pictureHeight, true);
+				
+				bm = Bitmap.createBitmap(bm, 0, 0, pictureWidth, height-this.getStatusBarHeight());
 
 				Session.addPictureToGallery(bm);
 
@@ -93,6 +102,17 @@ public class GetGalleryImagesAsyncTask extends AsyncTask<Void, Void, Void> {
 	protected void onPostExecute(Void result) {
 		super.onPostExecute(result);
 		Session.dismissAndMakeNullProgressDialog();
+	}
+	
+	public int getStatusBarHeight() { 
+	      int result = 0;
+	      int resourceId = context.getResources().getIdentifier("status_bar_height", "dimen", "android");
+	      if (resourceId > 0) {
+	          result = context.getResources().getDimensionPixelSize(resourceId);
+	      } 
+	      
+	      Log.e("getStatusBarHeight", "result: " + result);
+	      return result;
 	}
 
 }
