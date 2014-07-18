@@ -62,9 +62,10 @@ public class ActivityLevel2NEW extends ActionBarActivity implements
 	@Override
 	protected void onResume() {
 		super.onResume();
+		
+		Session.dismissAndMakeNullProgressDialog();
 		Session.startContactRefresherThread();	
 	}
-
 
 	private void addTabsForActionBar() {
 		for (int i = 0; i < mSectionsPagerAdapter.getCount(); i++) {

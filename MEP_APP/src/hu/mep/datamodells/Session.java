@@ -516,12 +516,12 @@ public class Session {
 	}
 
 	public static void dismissAndMakeNullProgressDialog() {
-		progressDialog.dismiss();
-		progressDialog = null;
-		/*
-		 * if (progressDialog != null) { Log.e(TAG, "Dismiss progress dialog");
-		 * progressDialog.dismiss(); progressDialog = null; }
-		 */
+//		progressDialog.dismiss();
+//		progressDialog = null;
+		
+		  if (progressDialog != null) { Log.e(TAG, "Dismiss progress dialog");
+		  progressDialog.dismiss(); progressDialog = null; }
+		 
 	}
 
 	public static void setAlertDialog(AlertDialog ad) {
