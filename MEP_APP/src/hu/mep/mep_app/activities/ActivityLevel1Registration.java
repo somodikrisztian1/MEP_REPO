@@ -51,6 +51,10 @@ public class ActivityLevel1Registration extends ActionBarActivity implements
 		emailEdittext = (EditText) findViewById(R.id.reg_email);
 		userNameEdittext = (EditText) findViewById(R.id.reg_username);
 		passwordEdittext = (EditText) findViewById(R.id.reg_password);
+		
+		
+		
+		
 		passwordAgainEdittext = (EditText) findViewById(R.id.reg_passowrdagain);
 		registrateButton = (Button) findViewById(R.id.registrate_button);
 		registrateButton.setOnClickListener(this);
