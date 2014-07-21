@@ -14,6 +14,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.webkit.WebSettings;
+import android.webkit.WebSettings.LayoutAlgorithm;
+import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -31,7 +34,7 @@ public class ActivityLevel1Registration extends ActionBarActivity implements
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
+
 		if (Session.getInstance(this).isTablet()) {
 			Log.e(TAG, "IT'S A TABLET");
 			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE); 
@@ -43,6 +46,7 @@ public class ActivityLevel1Registration extends ActionBarActivity implements
 		
 		setContentView(R.layout.activity_level1_registration);
 		setTitle("Regisztráció");
+		
 		fullNameEdittext = (EditText) findViewById(R.id.reg_fullname);
 		emailEdittext = (EditText) findViewById(R.id.reg_email);
 		userNameEdittext = (EditText) findViewById(R.id.reg_username);
@@ -50,6 +54,15 @@ public class ActivityLevel1Registration extends ActionBarActivity implements
 		passwordAgainEdittext = (EditText) findViewById(R.id.reg_passowrdagain);
 		registrateButton = (Button) findViewById(R.id.registrate_button);
 		registrateButton.setOnClickListener(this);
+		
+		WebView html = (WebView)findViewById(R.id.reg_html);
+		html.getSettings().setLayoutAlgorithm(LayoutAlgorithm.SINGLE_COLUMN);
+		
+		WebSettings settings = html.getSettings();
+		settings.setDefaultTextEncodingName("utf-8");
+		
+		html.loadUrl("file:///android_asset/reg.html");
+		
 		ActionBar ab = getSupportActionBar();
 		ab.setHomeButtonEnabled(true);
 		ab.setDisplayUseLogoEnabled(true);
