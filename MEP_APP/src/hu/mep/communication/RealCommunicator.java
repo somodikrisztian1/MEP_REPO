@@ -239,6 +239,19 @@ public class RealCommunicator implements ICommunicator {
 		return;
 	}
 
+	@Override
+	public void getActualRemoteMonitoringSettings() {
+		GetSettingsAsyncTask settingsGetter = new GetSettingsAsyncTask();
+		try {
+			settingsGetter.execute().get();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		} catch (ExecutionException e) {
+			e.printStackTrace();
+		}
+		return;
+	}
+
 	
 
 }

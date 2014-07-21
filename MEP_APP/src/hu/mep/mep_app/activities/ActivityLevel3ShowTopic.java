@@ -21,7 +21,6 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBar.Tab;
 import android.support.v7.app.ActionBar.TabListener;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -82,17 +81,13 @@ public class ActivityLevel3ShowTopic extends ActionBarActivity implements
 
 			mActionBar.addTab(mActionBar.newTab()
 					.setText(mSectionsPagerAdapter.getPageTitle(i))
-					// .setIcon(mSectionsPagerAdapter.getPageIcon(i))
 					.setTabListener(this));
 		}
-		// Session.refreshChartIntervals();
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
-		// ki kell menteni a menü-t, hogy az onClick-ben el lehessen kapni az
-		// elemeit
 		this.menu = menu;
 		inflater.inflate(R.menu.activity_thirdlevel_showtopic_menu, menu);
 		if (beginDate == null) {
@@ -113,7 +108,6 @@ public class ActivityLevel3ShowTopic extends ActionBarActivity implements
 			
 		}
 
-		// betöltésnél, beállítja az időpontokat a kiválasztós gombokra
 		((MenuItem) menu.findItem(R.id.action_datetime_begin)).setTitle("ma " + veryShortFormatter.format(beginDate.getTime()));
 		((MenuItem) menu.findItem(R.id.action_datetime_end)).setTitle("ma " + veryShortFormatter.format(endDate.getTime()));
 
@@ -194,11 +188,8 @@ public class ActivityLevel3ShowTopic extends ActionBarActivity implements
 							tempDate.set(Calendar.YEAR, year);
 							tempDate.set(Calendar.MONTH, monthOfYear);
 							tempDate.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-							// CalendarPrinter.logCalendar(TAG, "tempDate",
-							// tempDate);
 						}
 					});
-			// dp.setMaxDate(actDate.getTimeInMillis());
 			tp.setIs24HourView(true);
 			tp.setCurrentHour(beginDate.get(Calendar.HOUR_OF_DAY));
 			tp.setCurrentMinute(beginDate.get(Calendar.MINUTE));
@@ -209,7 +200,6 @@ public class ActivityLevel3ShowTopic extends ActionBarActivity implements
 						int minute) {
 					tempDate.set(Calendar.HOUR_OF_DAY, hourOfDay);
 					tempDate.set(Calendar.MINUTE, minute);
-					// CalendarPrinter.logCalendar(TAG, "tempDate", tempDate);
 				}
 			});
 			d.show();
@@ -281,12 +271,6 @@ public class ActivityLevel3ShowTopic extends ActionBarActivity implements
 							tempDate.set(Calendar.YEAR, year);
 							tempDate.set(Calendar.MONTH, monthOfYear);
 							tempDate.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-							// CalendarPrinter.logCalendar(TAG, "tempDate",
-							// tempDate);
-							/*
-							 * Toast.makeText(ActivityLevel3ShowTopic.this,
-							 * beginDate.toString(), Toast.LENGTH_SHORT) .show();
-							 */
 						}
 					});
 			tp.setIs24HourView(true);
@@ -299,19 +283,12 @@ public class ActivityLevel3ShowTopic extends ActionBarActivity implements
 						int minute) {
 					tempDate.set(Calendar.HOUR_OF_DAY, hourOfDay);
 					tempDate.set(Calendar.MINUTE, minute);
-					// CalendarPrinter.logCalendar(TAG, "endDate", endDate);
 				}
 			});
 			d.show();
 		} else if (item.getItemId() == R.id.action_datetime_refresh_button) {
-			CalendarPrinter.logCalendar(TAG, "fromDate", beginDate);
-			CalendarPrinter.logCalendar(TAG, "toDate", endDate);
-			 Session.setProgressDialog(prepareProgressDialogForLoading());
-			 Session.showProgressDialog();
-			//Session.getActualCommunicationInterface().getActualChart(beginDate,	endDate);
-			// Session.dismissAndMakeNullProgressDialog();
-			/*Toast.makeText(ActivityLevel3ShowTopic.this, "Kész!",
-					Toast.LENGTH_LONG).show();*/
+			Session.setProgressDialog(prepareProgressDialogForLoading());
+			Session.showProgressDialog();
 			mSectionsPagerAdapter.notifyDataSetChanged();
 		}
 		return super.onOptionsItemSelected(item);
@@ -345,7 +322,6 @@ public class ActivityLevel3ShowTopic extends ActionBarActivity implements
 
 		@Override
 		public int getItemPosition(Object object) {
-			// TODO Auto-generated method stub
 			return POSITION_NONE;
 		}
 

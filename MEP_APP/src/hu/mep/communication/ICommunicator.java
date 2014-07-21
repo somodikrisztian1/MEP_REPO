@@ -23,6 +23,8 @@ public interface ICommunicator {
 	public void getActualChart();
 	
 	public void registrateUser(String fullName, String email, String userName, String password);
+
+	public void getActualRemoteMonitoringSettings();
 	
 	
 }
