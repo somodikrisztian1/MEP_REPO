@@ -16,7 +16,7 @@
         android:allowBackup="true"
         android:icon="@drawable/mep_logo"
         android:label="@string/app_name"
-        android:theme="@style/Theme.AppCompat.Light" >
+        android:theme="@style/Theme.Meptheme" >
         <activity
             android:name=".activities.ActivityLevel1"
             android:label="@string/app_name" >
