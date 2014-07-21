@@ -1,7 +1,8 @@
-package hu.mep.communication;
+package hu.mep.communication.charts;
 
-import hu.mep.datamodells.AllChartInfoContainer;
+import hu.mep.communication.RealCommunicator;
 import hu.mep.datamodells.Session;
+import hu.mep.datamodells.charts.AllChartNames;
 import hu.mep.utils.deserializers.ChartInfoContainerDeserializer;
 
 import java.io.BufferedReader;
@@ -20,7 +21,7 @@ import android.util.Log;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-public class GetAllChartInfoContainerAsyncTask extends
+public class GetChartNamesAsyncTask extends
 		AsyncTask<Void, Void, Void> {
 
 	private static String hostURI;
@@ -28,11 +29,11 @@ public class GetAllChartInfoContainerAsyncTask extends
 	private static String fullURI;
 	private static boolean isRemoteMonitoring;
 
-	public GetAllChartInfoContainerAsyncTask(String catchedHostURI,
+	public GetChartNamesAsyncTask(String catchedHostURI,
 			boolean isRemoteMonitoring) {
 		super();
 		hostURI = catchedHostURI;
-		GetAllChartInfoContainerAsyncTask.isRemoteMonitoring = isRemoteMonitoring;
+		GetChartNamesAsyncTask.isRemoteMonitoring = isRemoteMonitoring;
 	}
 
 	private String getSSZS() {
@@ -84,10 +85,10 @@ public class GetAllChartInfoContainerAsyncTask extends
 		response = RealCommunicator.dohttpGet(fullURI);
 
 		GsonBuilder gsonBuilder = new GsonBuilder();
-		gsonBuilder.registerTypeAdapter(AllChartInfoContainer.class, new ChartInfoContainerDeserializer());
+		gsonBuilder.registerTypeAdapter(AllChartNames.class, new ChartInfoContainerDeserializer());
 		Gson gson = gsonBuilder.create();
-		AllChartInfoContainer allChartInfo = gson.fromJson(response, AllChartInfoContainer.class);
-		Session.setAllChartInfoContainer(allChartInfo.getAllChartInfoContainer());
+		AllChartNames allChartInfo = gson.fromJson(response, AllChartNames.class);
+		Session.setAllChartNames(allChartInfo.getAllChartNames());
 
 		return null;
 	}

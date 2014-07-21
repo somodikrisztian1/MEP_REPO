@@ -5,6 +5,7 @@ import hu.mep.datamodells.Session;
 import hu.mep.mep_app.R;
 import hu.mep.utils.adapters.ChatMessagesListAdapter;
 import android.app.Activity;
+import android.inputmethodservice.KeyboardView.OnKeyboardActionListener;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
@@ -65,8 +66,6 @@ public class ActivityLevel3Chat extends ActionBarActivity {
 
 			@Override
 			public void onScrollStateChanged(AbsListView view, int scrollState) {
-				// TODO Auto-generated method stub
-				
 			}
 		});
 
@@ -80,9 +79,9 @@ public class ActivityLevel3Chat extends ActionBarActivity {
 					String message = chatInputTextView.getText().toString().trim();
 					if ((message != null) && (checkChatMessage(message))) {
 						Session.getActualCommunicationInterface().sendChatMessage(message);
-						chatInputTextView.setText(null);
+						chatInputTextView.setText(null);						
+						return true;
 					}
-					
 				}
 				return false;
 			}
@@ -127,12 +126,13 @@ public class ActivityLevel3Chat extends ActionBarActivity {
 	}
 	
 	
-	/**
-	 * Check the chat message before sending, if it has any alphabetic character, so it does not contain only whitespaces.
-	 */
+	/** Check the chat message before sending, if it has any alphabetic character, so it does not contain only whitespaces. */
 	private boolean checkChatMessage(String message) {
 		for (Character actChar : message.toCharArray()) {
-			if (Character.isLetterOrDigit(actChar)) {
+			/*if (Character.isLetterOrDigit(actChar)) {
+				return true;
+			}*/
+			if(!Character.isWhitespace(actChar)) {
 				return true;
 			}
 		}

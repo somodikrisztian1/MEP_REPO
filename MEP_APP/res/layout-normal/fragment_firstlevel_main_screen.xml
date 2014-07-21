@@ -39,10 +39,11 @@
             </RelativeLayout>
         </LinearLayout>
 
-        <TextView
+        <bluejamesbond.textviewjustifier.TextViewEx
             android:id="@+id/fragment_main_screen_welcome_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
             android:layout_marginLeft="20dp"
             android:layout_marginBottom="15dp"
             android:text="@string/fragment_firstlevel_mainscreen_welcome_text" />

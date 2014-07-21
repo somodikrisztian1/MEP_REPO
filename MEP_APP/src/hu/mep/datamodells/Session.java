@@ -4,6 +4,9 @@ import hu.mep.communication.ChatMessageRefresherRunnable;
 import hu.mep.communication.ContactListRefresherRunnable;
 import hu.mep.communication.ICommunicator;
 import hu.mep.communication.RealCommunicator;
+import hu.mep.datamodells.charts.Chart;
+import hu.mep.datamodells.charts.ChartName;
+import hu.mep.datamodells.charts.SubChart;
 import hu.mep.mep_app.R;
 
 import java.text.ParseException;
@@ -39,7 +42,7 @@ public class Session {
 
 	private static boolean successfulRegistration = false;
 	private static String unsuccessfulRegistrationMessage = "";
-	
+
 	private static User actualUser;
 	private static boolean isAnyUserLoggedIn = false;
 
@@ -52,18 +55,17 @@ public class Session {
 	private static ChatContact actualChatPartner;
 	private static volatile ChatMessagesList chatMessagesList;
 
-	private static List<ChartInfoContainer> allChartInfoContainer;
-	private static ChartInfoContainer actualChartInfoContainer;
+	private static List<ChartName> allChartNames;
+	private static ChartName actualChartName;
 	private static Chart actualChart;
 
-	/*private static ContactListRefresherAsyncTask contactRefresherAsyncTask;
-	private static ChatMessagesRefresherAsyncTask messageRefresher = new ChatMessagesRefresherAsyncTask();
-	*/
 	private static ContactListRefresherRunnable contactRefresherRunnable = new ContactListRefresherRunnable();
-	private static Thread contactRefresherThread = new Thread(contactRefresherRunnable);
+	private static Thread contactRefresherThread = new Thread(
+			contactRefresherRunnable);
 
 	private static ChatMessageRefresherRunnable messageRefresherRunnable = new ChatMessageRefresherRunnable();
-	private static Thread messageRefresherThread = new Thread(messageRefresherRunnable);
+	private static Thread messageRefresherThread = new Thread(
+			messageRefresherRunnable);
 
 	private static ProgressDialog progressDialog;
 	private static AlertDialog alertDialog;
@@ -79,9 +81,9 @@ public class Session {
 	private Session(Context newContext) {
 		context = newContext;
 		actualCommunicationInterface = RealCommunicator.getInstance(context);
-		emptyProfilePicture = Bitmap.createScaledBitmap(
-				BitmapFactory.decodeResource(context.getResources(),R.drawable.chat_profile_picture_empty),
-				250, 250, true);
+		emptyProfilePicture = Bitmap.createScaledBitmap(BitmapFactory
+				.decodeResource(context.getResources(),
+						R.drawable.chat_profile_picture_empty), 250, 250, true);
 		emptyChatMessagesList();
 	}
 
@@ -97,7 +99,7 @@ public class Session {
 	public static Context getContext() {
 		return context;
 	}
-	
+
 	public static ICommunicator getActualCommunicationInterface() {
 		if (actualCommunicationInterface == null) {
 			actualCommunicationInterface = RealCommunicator
@@ -105,16 +107,14 @@ public class Session {
 		}
 		return actualCommunicationInterface;
 	}
-	
+
 	public static boolean isSuccessfulRegistration() {
 		return successfulRegistration;
 	}
-	
 
 	public static void setSuccessfulRegistration(boolean successfulRegistration) {
 		Session.successfulRegistration = successfulRegistration;
 	}
-	
 
 	public static String getUnsuccessfulRegistrationMessage() {
 		return unsuccessfulRegistrationMessage;
@@ -147,7 +147,7 @@ public class Session {
 	public static void setGalleryImagesList(List<Bitmap> galleryImagesList) {
 		Session.galleryImagesList = galleryImagesList;
 	}
-	
+
 	public static Bitmap getEmptyProfilePicture() {
 		return emptyProfilePicture;
 	}
@@ -173,17 +173,17 @@ public class Session {
 		Log.i(TAG, "setAnyUserLoggedIn " + isAnyUserLoggedIn);
 		Session.isAnyUserLoggedIn = n_isAnyUserLoggedIn;
 	}
-	
+
 	public static void logOffActualUser() {
 
 		Log.e(TAG, "setActualChart(null);");
 		setActualChart(null);
 
 		Log.e(TAG, "setActualChartInfoContainer(null);");
-		setActualChartInfoContainer(null);
+		setActualChartName(null);
 
 		Log.e(TAG, "setAllChartInfoContainer(null);");
-		setAllChartInfoContainer(null);
+		setAllChartNames(null);
 
 		Log.e(TAG, "setActualTopic(null);");
 		setActualTopic(null);
@@ -250,35 +250,36 @@ public class Session {
 	// ==============================================================================
 	// ALL CHART INFO CONTAINAR + ACTUAL CHART INFO CONTAINER
 	// ==============================================================================
-	public static List<ChartInfoContainer> getAllChartInfoContainer() {
+	public static List<ChartName> getAllChartNames() {
 		Log.e(TAG, "getAllChartInfoContainer");
-		return allChartInfoContainer;
+		return allChartNames;
 	}
 
-	public static void setAllChartInfoContainer(
-			List<ChartInfoContainer> allChartInfoContainer) {
+	public static void setAllChartNames(List<ChartName> allChartInfoContainer) {
 		Log.e(TAG, "setAllChartInfoContainer");
-		Session.allChartInfoContainer = allChartInfoContainer;
-		// logAllChartInfoContainer();
+		Session.allChartNames = allChartInfoContainer;
+		logAllChartNames();
+		;
 	}
 
-	public static ChartInfoContainer getActualChartInfoContainer() {
+	public static ChartName getActualChartName() {
 		Log.e(TAG, "getActualChartInfoContainer");
-		return actualChartInfoContainer;
+		return actualChartName;
 	}
 
-	public static void setActualChartInfoContainer(
-			ChartInfoContainer actualChartInfoContainer) {
+	public static void setActualChartName(ChartName actualChartInfoContainer) {
 		Log.e(TAG, "setActualChartInfoContainer");
-		Session.actualChartInfoContainer = actualChartInfoContainer;
+		Session.actualChartName = actualChartInfoContainer;
 	}
 
-	private static void logAllChartInfoContainer() {
-		for (ChartInfoContainer actChartInfoContainer : getAllChartInfoContainer()) {
-			String s = "id=" + actChartInfoContainer.getId() + "\n";
-			s += "name=" + actChartInfoContainer.getName() + "\n";
-			s += "ssz=" + actChartInfoContainer.getSerialNumber() + "\n";
-			Log.e("Session.logAllChartInfoContainer()", s);
+	private static void logAllChartNames() {
+		if (allChartNames != null) {
+			for (ChartName actChartInfoContainer : allChartNames) {
+				String s = "id=" + actChartInfoContainer.getId() + "\n";
+				s += "name=" + actChartInfoContainer.getName() + "\n";
+				s += "ssz=" + actChartInfoContainer.getSerialNumber() + "\n";
+				Log.e("Session.logAllChartInfoContainer()", s);
+			}
 		}
 	}
 
@@ -298,24 +299,21 @@ public class Session {
 	// ==============================================================================
 	// CONTACT REFRESHER + CHAT CONTACT LIST + ACTUAL CHAT PARTNER
 	// ==============================================================================
-	/*public static void startContactRefresherAsyncTask() {
-		Log.e(TAG, "startContactRefresherAsyncTask");
-
-		if (contactRefresherAsyncTask == null) {
-			contactRefresherAsyncTask = new ContactListRefresherAsyncTask();
-			contactRefresherAsyncTask.execute(5000L);
-		}
-
-	}
-
-	public static void stopContactRefresherAsyncTask() {
-		Log.e(TAG, "stopContactRefresherAsyncTask");
-		if (contactRefresherAsyncTask != null) {
-			contactRefresherAsyncTask.cancel(true);
-			contactRefresherAsyncTask = null;
-		}
-	}
-	*/
+	/*
+	 * public static void startContactRefresherAsyncTask() { Log.e(TAG,
+	 * "startContactRefresherAsyncTask");
+	 * 
+	 * if (contactRefresherAsyncTask == null) { contactRefresherAsyncTask = new
+	 * ContactListRefresherAsyncTask();
+	 * contactRefresherAsyncTask.execute(5000L); }
+	 * 
+	 * }
+	 * 
+	 * public static void stopContactRefresherAsyncTask() { Log.e(TAG,
+	 * "stopContactRefresherAsyncTask"); if (contactRefresherAsyncTask != null)
+	 * { contactRefresherAsyncTask.cancel(true); contactRefresherAsyncTask =
+	 * null; } }
+	 */
 	public static void startContactRefresherThread() {
 
 		if (contactRefresherThread.getState().equals(Thread.State.NEW)) {
@@ -335,15 +333,17 @@ public class Session {
 		return actualChatContactList;
 	}
 
-	public static void setActualChatContactList(ChatContactList newChatContactList) {
+	public static void setActualChatContactList(
+			ChatContactList newChatContactList) {
 		Log.e(TAG, "setActualChatContactList");
 		if (newChatContactList != null) {
-			Session.actualChatContactList = new ChatContactList(newChatContactList.getContacts());
+			Session.actualChatContactList = new ChatContactList(
+					newChatContactList.getContacts());
 		}
 	}
 
 	public static ChatContact getActualChatPartner() {
-		//Log.e(TAG, "getActualChatPartner");
+		// Log.e(TAG, "getActualChatPartner");
 		return actualChatPartner;
 	}
 
@@ -371,22 +371,16 @@ public class Session {
 	// MESSAGE REFRESHER + CHAT MESSAGE LIST
 	// ==============================================================================
 	/*
-	public static void startMessageRefresherAT() {
-		Log.e(TAG, "startMessageRefresher");
-		if (messageRefresher == null) {
-			messageRefresher = new ChatMessagesRefresherAsyncTask();
-			messageRefresher.execute(1500l);
-		}
-	}
+	 * public static void startMessageRefresherAT() { Log.e(TAG,
+	 * "startMessageRefresher"); if (messageRefresher == null) {
+	 * messageRefresher = new ChatMessagesRefresherAsyncTask();
+	 * messageRefresher.execute(1500l); } }
+	 * 
+	 * public static void stopMessageRefresherAT() { Log.e(TAG,
+	 * "stopMessageRefresher"); if (messageRefresher != null) {
+	 * messageRefresher.cancel(true); messageRefresher = null; } }
+	 */
 
-	public static void stopMessageRefresherAT() {
-		Log.e(TAG, "stopMessageRefresher");
-		if (messageRefresher != null) {
-			messageRefresher.cancel(true);
-			messageRefresher = null;
-		}
-	}*/
-	
 	public static void startMessageRefresherThread() {
 
 		if (messageRefresherThread.getState().equals(Thread.State.NEW)) {
@@ -402,9 +396,10 @@ public class Session {
 	}
 
 	public static ChatMessagesList getChatMessagesList() {
-		//Log.e(TAG, "getChatMessagesList");
+		// Log.e(TAG, "getChatMessagesList");
 		if (chatMessagesList == null) {
-			chatMessagesList = new ChatMessagesList(new ArrayList<ChatMessage>());
+			chatMessagesList = new ChatMessagesList(
+					new ArrayList<ChatMessage>());
 		}
 		return chatMessagesList;
 	}
@@ -421,8 +416,7 @@ public class Session {
 		if (newChatMessagesList == null) {
 			Log.e("Session.setChatmessagesList()",
 					"The newChatMessagesList parameter IS NULL!!!!");
-		}
-		else if (chatMessagesList == null
+		} else if (chatMessagesList == null
 				|| chatMessagesList.getChatMessagesList().isEmpty()) {
 			chatMessagesList = newChatMessagesList;
 		} else {
@@ -450,24 +444,28 @@ public class Session {
 		Log.e("Session", "sortChatMessagesList()");
 		if (Session.chatMessagesList != null) {
 			/* Egy kis hack. Kézi duplikáció kiszűrés... */
-			Set<ChatMessage> tempSet = new LinkedHashSet<ChatMessage>(chatMessagesList.getChatMessagesList());
+			Set<ChatMessage> tempSet = new LinkedHashSet<ChatMessage>(
+					chatMessagesList.getChatMessagesList());
 			Session.chatMessagesList.getChatMessagesList().clear();
-			
+
 			Log.d(TAG, "after Clear");
-			for (ChatMessage actMessage : chatMessagesList.getChatMessagesList()) {
+			for (ChatMessage actMessage : chatMessagesList
+					.getChatMessagesList()) {
 				Log.d(TAG, actMessage.toString());
 			}
-			
+
 			Session.chatMessagesList.getChatMessagesList().addAll(tempSet);
-			
+
 			Log.i(TAG, "after addAll from set");
-			for (ChatMessage actMessage : chatMessagesList.getChatMessagesList()) {
+			for (ChatMessage actMessage : chatMessagesList
+					.getChatMessagesList()) {
 				Log.i(TAG, actMessage.toString());
 			}
-			
+
 			Collections.sort(Session.chatMessagesList.chatMessagesList);
 			Log.e(TAG, "after sorting");
-			for (ChatMessage actMessage : chatMessagesList.getChatMessagesList()) {
+			for (ChatMessage actMessage : chatMessagesList
+					.getChatMessagesList()) {
 				Log.e(TAG, actMessage.toString());
 			}
 		}
@@ -484,9 +482,13 @@ public class Session {
 			Log.e("LastChatMessageOrder=", "" + 0);
 			return 0;
 		}
-		Log.e("LastChatMessageOrder=", "" + chatMessagesList.getChatMessagesList()
-								.get(chatMessagesList.getChatMessagesList().size() - 1).order);
-		return chatMessagesList.getChatMessagesList().get(chatMessagesList.getChatMessagesList().size() - 1).order;
+		Log.e("LastChatMessageOrder=",
+				""
+						+ chatMessagesList.getChatMessagesList()
+								.get(chatMessagesList.getChatMessagesList()
+										.size() - 1).order);
+		return chatMessagesList.getChatMessagesList().get(
+				chatMessagesList.getChatMessagesList().size() - 1).order;
 	}
 
 	// ==============================================================================
@@ -502,7 +504,7 @@ public class Session {
 		Session.actualChart = actualChart;
 		refreshChartIntervals();
 	}
-	
+
 	public static Calendar getMinimalChartDate() {
 		return beginChartDate;
 	}
@@ -602,12 +604,15 @@ public class Session {
 	}
 
 	public static void dismissAndMakeNullProgressDialog() {
-//		progressDialog.dismiss();
-//		progressDialog = null;
-		
-		  if (progressDialog != null) { Log.e(TAG, "Dismiss progress dialog");
-		  progressDialog.dismiss(); progressDialog = null; }
-		 
+		// progressDialog.dismiss();
+		// progressDialog = null;
+
+		if (progressDialog != null) {
+			Log.e(TAG, "Dismiss progress dialog");
+			progressDialog.dismiss();
+			progressDialog = null;
+		}
+
 	}
 
 	public static void setAlertDialog(AlertDialog ad) {
@@ -628,19 +633,14 @@ public class Session {
 		}
 	}
 
-	
-	
 	/**
-	   * Determine if the device is a tablet (i.e. it has a large screen).
-	   * 
-	   * @param context The calling context.
-	   */
-	  public static boolean isTablet() {
-	    return (context.getResources().getConfiguration().screenLayout
-	            & Configuration.SCREENLAYOUT_SIZE_MASK)
-	            >= Configuration.SCREENLAYOUT_SIZE_LARGE;
-	  }
-
-
+	 * Determine if the device is a tablet (i.e. it has a large screen).
+	 * 
+	 * @param context
+	 *            The calling context.
+	 */
+	public static boolean isTablet() {
+		return (context.getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_LARGE;
+	}
 
 }

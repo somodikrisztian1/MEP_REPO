@@ -1,7 +1,7 @@
 package hu.mep.utils.deserializers;
 
-import hu.mep.datamodells.AllChartInfoContainer;
-import hu.mep.datamodells.ChartInfoContainer;
+import hu.mep.datamodells.charts.AllChartNames;
+import hu.mep.datamodells.charts.ChartName;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -15,29 +15,21 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 
 public class ChartInfoContainerDeserializer implements
-		JsonDeserializer<AllChartInfoContainer> {
+		JsonDeserializer<AllChartNames> {
 
 	@Override
-	public AllChartInfoContainer deserialize(JsonElement element, Type type,
+	public AllChartNames deserialize(JsonElement element, Type type,
 			JsonDeserializationContext context) throws JsonParseException {
 
-		List<ChartInfoContainer> allChartInfoContainer = new ArrayList<ChartInfoContainer>();
+		List<ChartName> allChartInfoContainer = new ArrayList<ChartName>();
 		
 		if (!element.isJsonArray()) {
 			JsonObject jsonObject = element.getAsJsonObject();
 
 			for (Map.Entry<String, JsonElement> entry : jsonObject.entrySet()) {
-				allChartInfoContainer.add(
-						(ChartInfoContainer) context.deserialize(entry.getValue(), ChartInfoContainer.class));
+				allChartInfoContainer.add((ChartName) context.deserialize(entry.getValue(), ChartName.class));
 			}
 		}
-		return new AllChartInfoContainer(allChartInfoContainer);
+		return new AllChartNames(allChartInfoContainer);
 	}
-/*
-	private void logAllChartInfoContainer(AllChartInfoContainer all) {
-		for (ChartInfoContainer actChartInfoContainer : all.getAllChartInfoContainer()) {
-			actChartInfoContainer.getId();
-		}
-	}*/
-
 }

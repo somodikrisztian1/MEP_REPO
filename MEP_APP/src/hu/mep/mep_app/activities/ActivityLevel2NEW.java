@@ -125,7 +125,6 @@ public class ActivityLevel2NEW extends ActionBarActivity implements
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		if (item.getItemId() == R.id.action_logoff) {
-			//Session.logOffActualUser();
 			Session.setAnyUserLoggedIn(false);
 			NavUtils.navigateUpFromSameTask(this);
 			return true;
@@ -142,15 +141,6 @@ public class ActivityLevel2NEW extends ActionBarActivity implements
 		super.onPause();
 		Log.d(TAG, "onPause running... stopContactRefresher()");
 		Session.stopContactRefresherThread();
-	}
-
-	
-	@Override
-	protected void onDestroy() {
-		super.onDestroy();
-		Log.e(TAG, "##########################ONDESTROY##################################");
-	}
-	
-
+	}	
 	
 }

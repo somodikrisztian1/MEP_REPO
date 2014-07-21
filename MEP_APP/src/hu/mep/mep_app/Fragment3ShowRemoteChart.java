@@ -1,7 +1,7 @@
 package hu.mep.mep_app;
 
 import hu.mep.charts.TimeLineChartView;
-import hu.mep.datamodells.Chart;
+import hu.mep.datamodells.charts.Chart;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;

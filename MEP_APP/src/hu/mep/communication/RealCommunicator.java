@@ -1,5 +1,7 @@
 package hu.mep.communication;
 
+import hu.mep.communication.charts.GetActualChartAsyncTask;
+import hu.mep.communication.charts.GetChartNamesAsyncTask;
 import hu.mep.datamodells.Session;
 
 import java.io.BufferedReader;
@@ -147,7 +149,7 @@ public class RealCommunicator implements ICommunicator {
 
 	@Override
 	public void getChatPartners() {
-		GetContactListAsyncTaskNEW getContactListAsyncTask = new GetContactListAsyncTaskNEW(context, MainURL);
+		GetContactListAsyncTask getContactListAsyncTask = new GetContactListAsyncTask(context, MainURL);
 		getContactListAsyncTask.execute();
 	}
 
@@ -181,7 +183,7 @@ public class RealCommunicator implements ICommunicator {
 
 	@Override
 	public void getChartNames(boolean forRemoteMonitoring) {
-		GetAllChartInfoContainerAsyncTask chartNameGetter = new GetAllChartInfoContainerAsyncTask(MainURL, forRemoteMonitoring);
+		GetChartNamesAsyncTask chartNameGetter = new GetChartNamesAsyncTask(MainURL, forRemoteMonitoring);
 		try {
 			chartNameGetter.execute().get();
 		} catch (InterruptedException e) {
@@ -193,7 +195,7 @@ public class RealCommunicator implements ICommunicator {
 
 	@Override
 	public void getActualChart() {
-		GetChartAsyncTask getChart = new GetChartAsyncTask(context, MainURL);
+		GetActualChartAsyncTask getChart = new GetActualChartAsyncTask(context, MainURL);
 		try {
 			getChart.execute().get();
 		} catch (InterruptedException e) {
@@ -205,7 +207,7 @@ public class RealCommunicator implements ICommunicator {
 	
 	@Override
 	public void getActualChart(Calendar beginDate, Calendar endDate) {
-		GetChartAsyncTask getChart = new GetChartAsyncTask(context, MainURL, beginDate, endDate);
+		GetActualChartAsyncTask getChart = new GetActualChartAsyncTask(context, MainURL, beginDate, endDate);
 		try {
 			getChart.execute().get();
 		} catch (InterruptedException e) {

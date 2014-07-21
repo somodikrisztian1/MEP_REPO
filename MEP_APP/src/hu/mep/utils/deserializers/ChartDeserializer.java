@@ -1,7 +1,7 @@
 package hu.mep.utils.deserializers;
 
-import hu.mep.datamodells.Chart;
-import hu.mep.datamodells.SubChart;
+import hu.mep.datamodells.charts.Chart;
+import hu.mep.datamodells.charts.SubChart;
 import hu.mep.utils.others.CalendarPrinter;
 
 import java.lang.reflect.Type;

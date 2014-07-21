@@ -1,4 +1,4 @@
-package hu.mep.datamodells;
+package hu.mep.datamodells.charts;
 
 import java.util.Calendar;
 import java.util.Date;

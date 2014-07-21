@@ -1,8 +1,8 @@
 package hu.mep.utils.adapters;
 
-import hu.mep.datamodells.Chart;
 import hu.mep.datamodells.Session;
-import hu.mep.datamodells.SubChart;
+import hu.mep.datamodells.charts.Chart;
+import hu.mep.datamodells.charts.SubChart;
 import hu.mep.utils.others.CalendarPrinter;
 
 import java.util.Calendar;

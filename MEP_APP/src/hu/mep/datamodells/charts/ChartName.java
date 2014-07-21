@@ -1,8 +1,8 @@
-package hu.mep.datamodells;
+package hu.mep.datamodells.charts;
 
 import com.google.gson.annotations.SerializedName;
 
-public class ChartInfoContainer {
+public class ChartName {
 
 	@SerializedName("id")
 	private int id;

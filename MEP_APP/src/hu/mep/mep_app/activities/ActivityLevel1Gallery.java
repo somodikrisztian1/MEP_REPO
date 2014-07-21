@@ -30,7 +30,7 @@ public class ActivityLevel1Gallery extends FragmentActivity {
 		
 		if (Session.getInstance(this).isTablet()) {
 			Log.e(TAG, "IT'S A TABLET");
-			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE); 
+			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 		}
 		else {
 			Log.e(TAG, "IT'S NOT A TABLET");

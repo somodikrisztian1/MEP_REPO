@@ -20,14 +20,14 @@ import android.os.AsyncTask;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-public class GetContactListAsyncTaskNEW extends AsyncTask<Void, Void, String> {
+public class GetContactListAsyncTask extends AsyncTask<Void, Void, String> {
 
 	String hostURI;
 	String resourceURI;
 	Context context;
 	ChatContactList before = new ChatContactList(new ArrayList<ChatContact>());
 
-	public GetContactListAsyncTaskNEW(Context context, String hostURI) {
+	public GetContactListAsyncTask(Context context, String hostURI) {
 		this.context = context;
 		this.hostURI = hostURI;
 	}

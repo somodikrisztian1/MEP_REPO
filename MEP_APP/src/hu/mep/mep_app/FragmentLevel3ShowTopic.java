@@ -1,8 +1,8 @@
 package hu.mep.mep_app;
 
 import hu.mep.charts.TimeLineChartView;
-import hu.mep.datamodells.Chart;
 import hu.mep.datamodells.Session;
+import hu.mep.datamodells.charts.Chart;
 import hu.mep.utils.adapters.TimeSeriesAdapter;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -26,12 +26,9 @@ public class FragmentLevel3ShowTopic extends Fragment {
 			Bundle savedInstanceState) {
 
 		if (mChart.getSubCharts().isEmpty()) {
-			Toast.makeText(getActivity(),
-					"Ehhez a témához nem tartozik grafikon.", Toast.LENGTH_SHORT).show();
-			//getActivity().onBackPressed();
+			Toast.makeText(getActivity(), "Ehhez a témához nem tartozik grafikon.", Toast.LENGTH_SHORT).show();
 		} else {
 			mView = new TimeLineChartView(getActivity(), mChart);
-			//getActivity().requestWindowFeature(Window.FEATURE_NO_TITLE);
 		}
 		return mView;
 	}

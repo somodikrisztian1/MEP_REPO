@@ -1,7 +1,7 @@
 package hu.mep.charts;
 
-import hu.mep.datamodells.Chart;
 import hu.mep.datamodells.Session;
+import hu.mep.datamodells.charts.Chart;
 import hu.mep.utils.adapters.TimeSeriesAdapter;
 
 import java.text.SimpleDateFormat;

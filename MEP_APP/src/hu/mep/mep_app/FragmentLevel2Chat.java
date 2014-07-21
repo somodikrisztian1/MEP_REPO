@@ -1,6 +1,5 @@
 package hu.mep.mep_app;
 
-import hu.mep.communication.ContactListRefresherAsyncTask;
 import hu.mep.datamodells.ChatContact;
 import hu.mep.datamodells.Session;
 import hu.mep.mep_app.activities.ActivityLevel3Chat;
@@ -21,8 +20,6 @@ public class FragmentLevel2Chat extends Fragment implements OnItemClickListener 
 	public static ListView listview;
 	public static ArrayAdapter<ChatContact> contactAdapter;
 	
-	ContactListRefresherAsyncTask refresher;
-	//private static final long REFRESH_WAIT_TIME = 3000;
 	private static final String TAG = "FragmentLevel2Chat";
 	
 	public FragmentLevel2Chat() {
@@ -43,9 +40,6 @@ public class FragmentLevel2Chat extends Fragment implements OnItemClickListener 
 		listview.setAdapter(contactAdapter);
 		listview.setOnItemClickListener(this);
 		
-		
-		//Session.startContactRefresher();
-		
 		return v;
 	}
 
@@ -61,8 +55,6 @@ public class FragmentLevel2Chat extends Fragment implements OnItemClickListener 
 	
 	@Override
 	public void onDestroyView() {
-
-		//Session.stopContactRefresher();
 		super.onDestroyView();
 	}
 
