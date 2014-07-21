@@ -3,7 +3,7 @@ package hu.mep.communication.charts;
 import hu.mep.communication.RealCommunicator;
 import hu.mep.datamodells.Session;
 import hu.mep.datamodells.charts.AllChartNames;
-import hu.mep.utils.deserializers.ChartInfoContainerDeserializer;
+import hu.mep.utils.deserializers.ChartNamesDeserializer;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -38,15 +38,7 @@ public class GetChartNamesAsyncTask extends
 
 	private String getSSZS() {
 		String result = "";
-		if (isRemoteMonitoring) {
-			/* NINCS MIBŐL AZ SSZ-EKET KINYERNI!!! */
-			/*
-			 * Iterator<Integer> iterator =
-			 * Session.getActualRemoteMonitoring().ge while(iterator.hasNext())
-			 * { result += String.valueOf(iterator.next());
-			 * if(iterator.hasNext()) { result += ","; } }
-			 */
-		} else {
+		if (!isRemoteMonitoring) {
 			Iterator<Integer> iterator = Session.getActualTopic()
 					.getTabSerialNumbers().iterator();
 			while (iterator.hasNext()) {
@@ -85,7 +77,7 @@ public class GetChartNamesAsyncTask extends
 		response = RealCommunicator.dohttpGet(fullURI);
 
 		GsonBuilder gsonBuilder = new GsonBuilder();
-		gsonBuilder.registerTypeAdapter(AllChartNames.class, new ChartInfoContainerDeserializer());
+		gsonBuilder.registerTypeAdapter(AllChartNames.class, new ChartNamesDeserializer());
 		Gson gson = gsonBuilder.create();
 		AllChartNames allChartInfo = gson.fromJson(response, AllChartNames.class);
 		Session.setAllChartNames(allChartInfo.getAllChartNames());

@@ -22,6 +22,8 @@ public class Place {
 	public static final String idTag = "tsz1_id";
 	public static final String descriptionTag = "leiras";
 	public static final String locationTag = "helyszin";
+	public static final String solarPanelTag = "is_napelem";
+	
 	
 	@SerializedName(nameTag)
 	private String name;
@@ -35,16 +37,32 @@ public class Place {
 	@SerializedName(locationTag)
 	private String location;
 	
+	@SerializedName(solarPanelTag)
+	private boolean solarPanel;
+	
+	public Place(String name, String ID, String description, String location, boolean solarPanel) {
+		super();
+		this.name = name;
+		this.ID = ID;
+		this.description = description;
+		this.location = location;
+		this.solarPanel = solarPanel;
+		
+		Log.d(TAG, "New Place For Remote Monitoring Has Been Succesfully Created With The Following Values:");
+		Log.d(TAG, "name=" + name);
+		Log.d(TAG, "id=" + ID);
+		Log.d(TAG, "description=" + description);
+		Log.d(TAG, "location=" + location);
+		Log.d(TAG, "solarPanel=" + solarPanel);
+	}
 	
 	public String getName() {
 		return name;
 	}
 
-
 	public String getDescription() {
 		return description;
 	}
-
 
 	public String getLocation() {
 		return location;
@@ -53,19 +71,9 @@ public class Place {
 	public String getID() {
 		return ID;
 	}
-	
-	public Place(String name, String ID, String description, String location) {
-		super();
-		this.name = name;
-		this.ID = ID;
-		this.description = description;
-		this.location = location;
-		
-		Log.d(TAG, "New Place For Remote Monitoring Has Been Succesfully Created With The Following Values:");
-		Log.d(TAG, "name=" + name);
-		Log.d(TAG, "id=" + ID);
-		Log.d(TAG, "description=" + description);
-		Log.d(TAG, "location=" + location);
-	}
 
+	public boolean isSolarPanel() {
+		return solarPanel;
+	}
+	
 }

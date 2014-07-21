@@ -3,18 +3,8 @@ package hu.mep.communication;
 import hu.mep.datamodells.AllTopicsList;
 import hu.mep.datamodells.Session;
 import hu.mep.utils.deserializers.TopicListDeserializer;
-
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-
-import org.apache.http.HttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
-
 import android.content.Context;
 import android.os.AsyncTask;
-import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
