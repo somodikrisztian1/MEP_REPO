@@ -1,9 +1,9 @@
 package hu.mep.mep_app.activities;
 
 import hu.mep.datamodells.Session;
+import hu.mep.mep_app.FragmentLevel3ShowSettings;
 import hu.mep.mep_app.FragmentLevel3ShowTopic;
 import hu.mep.mep_app.R;
-import hu.mep.utils.others.CalendarPrinter;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -16,6 +16,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.NavUtils;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBar.Tab;
@@ -55,7 +56,7 @@ public class ActivityLevel3ShowRemoteMonitoring extends ActionBarActivity implem
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 		Session.getInstance(this);
 
-		Session.getActualCommunicationInterface().getChartNames(false);
+		Session.getActualCommunicationInterface().getChartNames(true);
 		setContentView(R.layout.activity_thirdlevel_charts);
 
 		mSectionsPagerAdapter = new SectionsPagerAdapter(
@@ -74,7 +75,7 @@ public class ActivityLevel3ShowRemoteMonitoring extends ActionBarActivity implem
 
 		mActionBar = getSupportActionBar();
 		mActionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-		mActionBar.setDisplayShowHomeEnabled(false);
+		mActionBar.setDisplayHomeAsUpEnabled(true);
 		mActionBar.setDisplayShowTitleEnabled(false);
 
 		for (int i = 0; i < mSectionsPagerAdapter.getCount(); i++) {
@@ -116,6 +117,11 @@ public class ActivityLevel3ShowRemoteMonitoring extends ActionBarActivity implem
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
+		
+		if(item.getItemId() == R.id.homeAsUp) {
+			NavUtils.navigateUpFromSameTask(this);
+			return true;
+		}
 		
 		final Calendar actDate = Calendar.getInstance();
 

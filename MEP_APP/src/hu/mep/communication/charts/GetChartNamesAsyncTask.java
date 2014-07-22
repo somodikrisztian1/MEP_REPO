@@ -24,16 +24,16 @@ import com.google.gson.GsonBuilder;
 public class GetChartNamesAsyncTask extends
 		AsyncTask<Void, Void, Void> {
 
-	private static String hostURI;
-	private static String resourceURI;
-	private static String fullURI;
-	private static boolean isRemoteMonitoring;
+	private String hostURI;
+	private String resourceURI;
+	private String fullURI;
+	private boolean isRemoteMonitoring;
 
-	public GetChartNamesAsyncTask(String catchedHostURI,
+	public GetChartNamesAsyncTask(String hostURI,
 			boolean isRemoteMonitoring) {
 		super();
-		hostURI = catchedHostURI;
-		GetChartNamesAsyncTask.isRemoteMonitoring = isRemoteMonitoring;
+		this.hostURI = hostURI;
+		this.isRemoteMonitoring = isRemoteMonitoring;
 	}
 
 	private String getSSZS() {

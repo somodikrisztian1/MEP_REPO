@@ -3,6 +3,7 @@
     android:id="@+id/activity_thirdlevel_linear_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#FFFFFF"
     android:orientation="vertical"
     android:paddingLeft="5dp"
     android:paddingRight="5dp" >
@@ -11,16 +12,40 @@
         android:id="@+id/activity_thirdlevel_chat_listview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/activity_thirdlevel_chat_input_edittext"
-        android:fadeScrollbars="false" >
+        android:layout_above="@+id/activity_thirdlevel_input_field"
+        android:fadeScrollbars="false"
+        android:scrollbarStyle="outsideInset" >
     </ListView>
 
-    <EditText
-        android:id="@+id/activity_thirdlevel_chat_input_edittext"
+    <LinearLayout
+        android:id="@+id/activity_thirdlevel_input_field"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:hint="@string/hint_for_chat_activity_input_edittext" >
-    </EditText>
+        android:layout_marginRight="5dp"
+        android:orientation="horizontal"
+        android:weightSum="2" >
+
+        <EditText
+            android:id="@+id/activity_thirdlevel_chat_input_edittext"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="@string/hint_for_chat_activity_input_edittext"
+            android:paddingRight="5dp" >
+        </EditText>
+
+        <ImageButton
+            android:id="@+id/activity_thirdlevel_chat_send_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="5dp"
+            android:layout_weight="1"
+            android:background="#FFFFFF"
+            android:paddingLeft="5dp"
+            android:paddingRight="10dp"
+            android:src="@drawable/ic_action_send_now" />
+    </LinearLayout>
 
 </RelativeLayout>

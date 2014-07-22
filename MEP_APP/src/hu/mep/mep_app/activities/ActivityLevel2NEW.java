@@ -1,5 +1,6 @@
 package hu.mep.mep_app.activities;
 
+import hu.mep.datamodells.Place;
 import hu.mep.datamodells.Session;
 import hu.mep.datamodells.Topic;
 import hu.mep.mep_app.ActivityLevel2SectionsPagerAdapter;
@@ -108,6 +109,14 @@ public class ActivityLevel2NEW extends ActionBarActivity implements
 		Session.setActualTopic(selectedTopic);
 		Intent i = new Intent(this, ActivityLevel3ShowTopic.class);
 		startActivity(i);
+	}
+	
+	@Override
+	public void onRemoteMonitoringSelected(Place selectedPlace) {
+		Session.setActualRemoteMonitoring(selectedPlace);
+
+		Intent intent = new Intent(this, ActivityLevel3ShowRemoteMonitoring.class);
+		startActivity(intent);
 	}
 
 	@Override

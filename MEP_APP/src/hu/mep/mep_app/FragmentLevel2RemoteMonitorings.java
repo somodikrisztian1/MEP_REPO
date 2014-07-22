@@ -2,10 +2,9 @@ package hu.mep.mep_app;
 
 import hu.mep.datamodells.Place;
 import hu.mep.datamodells.Session;
-import hu.mep.mep_app.activities.ActivityLevel3Chat;
-import hu.mep.mep_app.activities.ActivityLevel3RemoteMonitoring;
 import hu.mep.utils.adapters.PlaceListAdapter;
-import android.content.Intent;
+import hu.mep.utils.others.FragmentLevel2EventHandler;
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -20,6 +19,7 @@ public class FragmentLevel2RemoteMonitorings extends Fragment implements OnItemC
 	
 	private static ListView listview;
 	public static ArrayAdapter<Place> placeAdapter;
+	private static FragmentLevel2EventHandler fragmentEventHandler;
 	
 	public FragmentLevel2RemoteMonitorings() {
 	}
@@ -41,15 +41,17 @@ public class FragmentLevel2RemoteMonitorings extends Fragment implements OnItemC
 	}
 
 	@Override
-	public void onItemClick(AdapterView<?> parent, View view, int position,
-			long id) {
-		Session.setActualRemoteMonitoring(
-				Session.getActualUser().getUsersPlaces().getPlaces().get(position));
-
-		Session.getActualCommunicationInterface().getChartNames(true);
-		
-		Intent intent = new Intent(getActivity(),
-				ActivityLevel3RemoteMonitoring.class);
-		startActivity(intent);
+	public void onItemClick(AdapterView<?> parent, View view, int position,	long id) {
+		fragmentEventHandler.onRemoteMonitoringSelected(Session.getActualUser().getUsersPlaces().getPlaces().get(position));
+	}
+	
+	@Override
+	public void onAttach(Activity activity) {
+		super.onAttach(activity);
+		try {
+			fragmentEventHandler = (FragmentLevel2EventHandler) activity;
+		} catch (ClassCastException e) {
+			throw new ClassCastException(activity.toString() + " must implement FragmentEventHandler interface...");
+		}
 	}
 }

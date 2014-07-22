@@ -16,6 +16,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.NavUtils;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBar.Tab;
@@ -74,7 +75,7 @@ public class ActivityLevel3ShowTopic extends ActionBarActivity implements
 
 		mActionBar = getSupportActionBar();
 		mActionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-		mActionBar.setDisplayShowHomeEnabled(false);
+		mActionBar.setDisplayHomeAsUpEnabled(true);
 		mActionBar.setDisplayShowTitleEnabled(false);
 
 		for (int i = 0; i < mSectionsPagerAdapter.getCount(); i++) {
@@ -116,6 +117,10 @@ public class ActivityLevel3ShowTopic extends ActionBarActivity implements
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
+		if(item.getItemId() == R.id.homeAsUp) {
+			NavUtils.navigateUpFromSameTask(this);
+			return true;
+		}
 		
 		final Calendar actDate = Calendar.getInstance();
 

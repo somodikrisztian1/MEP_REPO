@@ -2,7 +2,8 @@
 <resources>
 
     <string name="app_name">MEP APP</string>
-    <string name="fragment_firstlevel_mainscreen_welcome_text">Üdvözöljük a Megújuló Energiapark alkalmazásában!\n\nAz alkalmazás használatával tájékozódhat a Megújuló Energiaparkról, és amennyiben Ön regisztrált felhasználó, megfelelő jogosultságokkal megtekintheti a megújuló energiaforrásokkal kapcsolatos kutatási eredményeinket, illetve gyorsan és egyszerűen kezelheti távfelügyeleteit.</string>
+    <string name="fragment_firstlevel_mainscreen_welcome_title">Üdvözöljük a Megújuló Energiapark alkalmazásában!</string>
+    <string name="fragment_firstlevel_mainscreen_welcome_text">Az alkalmazás használatával tájékozódhat a Megújuló Energiaparkról, és amennyiben Ön regisztrált felhasználó, megfelelő jogosultságokkal megtekintheti a megújuló energiaforrásokkal kapcsolatos kutatási eredményeinket, illetve gyorsan és egyszerűen kezelheti távfelügyeleteit.</string>
     <string name="fragment_firstlevel_representation_park_page_title">Bemutatópark</string>
     <string name="fragment_firstlevel_representation_park_text_title_1">„Zöld” folt az iparterület közepén, avagy mi található a Kishegyesi út 187. szám alatt</string>
     <string name="fragment_firstlevel_representation_park_text_content_1_1">2013. szeptember 10-én Debrecenben nyitotta meg kapuit a térségben egyedülállónak számító Megújuló Energiapark. Különlegessége, hogy az energiamérlege pozitív, illetve kizárólag megújuló energiát hasznosítva üzemel. A különböző, efféle energiát hasznosító rendszerek működtetésénél viszont nagyon fontos, hogy ezek hatékonysága növelhető legyen. Erre az alapkoncepcióra alapult ez a park: megismertetni, bemutatni, kutatni, elősegíteni a fejlődést.</string>
@@ -57,6 +58,5 @@
     <string name="title_activity_activity_level1_registration">ActivityLevel1Registration</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
-    
-    
+
 </resources>

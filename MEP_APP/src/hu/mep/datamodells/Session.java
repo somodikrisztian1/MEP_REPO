@@ -7,6 +7,7 @@ import hu.mep.communication.RealCommunicator;
 import hu.mep.datamodells.charts.Chart;
 import hu.mep.datamodells.charts.ChartName;
 import hu.mep.datamodells.charts.SubChart;
+import hu.mep.datamodells.settings.Settings;
 import hu.mep.mep_app.R;
 
 import java.text.ParseException;
@@ -50,6 +51,7 @@ public class Session {
 	private static Topic actualTopic;
 
 	private static Place actualRemoteMonitoring;
+	private static Settings actualSettings;
 
 	private static volatile ChatContactList actualChatContactList;
 	private static ChatContact actualChatPartner;
@@ -294,6 +296,14 @@ public class Session {
 	public static void setActualRemoteMonitoring(Place actualRemoteMonitoring) {
 		Log.e(TAG, "setActualRemoteMonitoring");
 		Session.actualRemoteMonitoring = actualRemoteMonitoring;
+	}
+
+	public static Settings getActualSettings() {
+		return actualSettings;
+	}
+
+	public static void setActualSettings(Settings actualSettings) {
+		Session.actualSettings = actualSettings;
 	}
 
 	// ==============================================================================

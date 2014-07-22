@@ -4,8 +4,6 @@ import hu.mep.datamodells.ChatMessage;
 import hu.mep.datamodells.Session;
 import hu.mep.mep_app.R;
 import hu.mep.utils.adapters.ChatMessagesListAdapter;
-import android.app.Activity;
-import android.inputmethodservice.KeyboardView.OnKeyboardActionListener;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
@@ -16,17 +14,21 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.View.OnKeyListener;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ListView;
 
 public class ActivityLevel3Chat extends ActionBarActivity {
 
 
 	private static EditText chatInputTextView;
+	private static ImageButton sendButton;
 	public static ArrayAdapter<ChatMessage> adapter;
 	
 	private static final String TAG = "ActivityLevel3Chat";
@@ -84,6 +86,19 @@ public class ActivityLevel3Chat extends ActionBarActivity {
 					}
 				}
 				return false;
+			}
+		});
+		
+		sendButton = (ImageButton) findViewById(R.id.activity_thirdlevel_chat_send_button);
+		sendButton.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				String message = chatInputTextView.getText().toString().trim();
+				if ((message != null) && (checkChatMessage(message))) {
+					Session.getActualCommunicationInterface().sendChatMessage(message);
+					chatInputTextView.setText(null);
+				}
 			}
 		});
 		

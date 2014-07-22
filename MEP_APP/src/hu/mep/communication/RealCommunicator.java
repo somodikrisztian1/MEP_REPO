@@ -241,7 +241,7 @@ public class RealCommunicator implements ICommunicator {
 
 	@Override
 	public void getActualRemoteMonitoringSettings() {
-		GetSettingsAsyncTask settingsGetter = new GetSettingsAsyncTask();
+		GetSettingsAsyncTask settingsGetter = new GetSettingsAsyncTask(MainURL);
 		try {
 			settingsGetter.execute().get();
 		} catch (InterruptedException e) {
