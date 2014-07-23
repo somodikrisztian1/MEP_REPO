@@ -18,7 +18,6 @@ import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 
-import hu.mep.datamodells.Session;
 import android.content.Context;
 import android.os.AsyncTask;
 

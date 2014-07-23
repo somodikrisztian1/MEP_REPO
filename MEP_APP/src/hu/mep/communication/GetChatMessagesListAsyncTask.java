@@ -4,17 +4,6 @@ import hu.mep.datamodells.ChatMessagesList;
 import hu.mep.datamodells.Session;
 import hu.mep.mep_app.activities.ActivityLevel3Chat;
 import hu.mep.utils.deserializers.ChatMessagesListDeserializer;
-
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-
-import org.apache.http.HttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
-
-import android.app.ProgressDialog;
-import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 

@@ -2,7 +2,6 @@ package hu.mep.communication;
 
 import hu.mep.datamodells.Session;
 import hu.mep.datamodells.User;
-import hu.mep.mep_app.activities.ActivityLevel1;
 import hu.mep.utils.deserializers.UserDeserializer;
 import hu.mep.utils.others.AlertDialogFactory;
 import hu.mep.utils.others.MD5Encoder;

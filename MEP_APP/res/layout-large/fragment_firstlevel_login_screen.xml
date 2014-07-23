@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-        android:paddingBottom="10dp" >
+    android:layout_height="match_parent" >
 
     <EditText
         android:id="@+id/fragment_login_screen_username_edittext"
@@ -50,7 +49,6 @@
         android:layout_below="@+id/fragment_login_screen_login_button"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="30dp"
-        android:paddingBottom="10dp"
         android:layout_alignLeft="@+id/fragment_login_screen_login_button"
         android:layout_alignRight="@+id/fragment_login_screen_login_button"
         android:text="@string/fragment_login_screen_registration_button" />

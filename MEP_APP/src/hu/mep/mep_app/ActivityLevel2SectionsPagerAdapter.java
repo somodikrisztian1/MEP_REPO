@@ -1,9 +1,6 @@
 package hu.mep.mep_app;
 
 import hu.mep.datamodells.Session;
-
-import java.util.Locale;
-
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;

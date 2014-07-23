@@ -1,5 +1,9 @@
 package hu.mep.utils.deserializers;
 
+import hu.mep.datamodells.Place;
+import hu.mep.datamodells.PlaceList;
+import hu.mep.datamodells.User;
+
 import java.lang.reflect.Type;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -7,12 +11,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import hu.mep.datamodells.Place;
-import hu.mep.datamodells.PlaceList;
-import hu.mep.datamodells.User;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;

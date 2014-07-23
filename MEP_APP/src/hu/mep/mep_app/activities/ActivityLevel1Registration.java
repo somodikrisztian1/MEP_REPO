@@ -3,7 +3,6 @@ package hu.mep.mep_app.activities;
 import hu.mep.datamodells.Session;
 import hu.mep.mep_app.R;
 import hu.mep.utils.others.AlertDialogFactory;
-import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;

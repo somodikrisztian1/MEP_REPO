@@ -1,13 +1,11 @@
 package hu.mep.utils.deserializers;
 
+import hu.mep.datamodells.ImageURLList;
+
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import hu.mep.datamodells.ImageURLList;
-import hu.mep.datamodells.Session;
 
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;

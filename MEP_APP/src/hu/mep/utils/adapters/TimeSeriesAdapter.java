@@ -6,10 +6,7 @@ import hu.mep.datamodells.charts.SubChart;
 import hu.mep.utils.others.CalendarPrinter;
 
 import java.util.Calendar;
-import java.util.Date;
-import java.util.Iterator;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import org.afree.data.time.Millisecond;
 import org.afree.data.time.Second;
