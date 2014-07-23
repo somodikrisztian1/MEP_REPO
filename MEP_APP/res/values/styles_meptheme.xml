@@ -30,11 +30,23 @@
         <item name="actionModeBackground">@drawable/cab_background_top_meptheme</item>
         <item name="actionModeSplitBackground">@drawable/cab_background_bottom_meptheme</item>
         <item name="actionModeCloseButtonStyle">@style/ActionButton.CloseMode.Meptheme</item>
+        <item name="android:buttonStyle">@style/button_style</item>
+        
+        <item name="android:editTextStyle">@style/EditTextAppTheme</item>
+        <item name="android:textColorHighlight">#991d84cb</item>
+        <item name="android:autoCompleteTextViewStyle">@style/AutoCompleteTextViewAppTheme</item>
+        <item name="android:spinnerStyle">@style/SpinnerAppTheme</item>
+        <item name="android:spinnerDropDownItemStyle">@style/SpinnerDropDownItemAppTheme</item>
+        <item name="android:progressBarStyleHorizontal">@style/ProgressBarAppTheme</item>
+        <item name="android:seekBarStyle">@style/SeekBarAppTheme</item>
+        <item name="android:listViewStyle">@style/ListViewAppTheme</item>
+        <item name="android:listViewWhiteStyle">@style/ListViewAppTheme.White</item>
+        <item name="android:spinnerItemStyle">@style/SpinnerItemAppTheme</item>
         
         
     </style>
 
-    <style name="button_style">
+    <style name="button_style" parent="@android:style/Widget.Button">
         <item name="android:textColor">#1d84cb</item>
         <item name="android:layout_margin">3dp</item>
         <item name="android:textSize">12sp</item>
@@ -43,6 +55,7 @@
         <item name="android:shadowDx">1</item>
         <item name="android:shadowDy">1</item>
         <item name="android:shadowRadius">2</item>
+        <item name="android:background">@drawable/button</item>
     </style>
 
     <style name="ActionBar.Solid.Meptheme" parent="@style/Widget.AppCompat.Light.ActionBar.Solid">
