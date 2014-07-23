@@ -135,16 +135,10 @@ public class RealCommunicator implements ICommunicator {
 	}
 
 	@Override
-	public void authenticateUser(String username, String password) {
+	public void authenticateUser( Activity activity, String username, String password) {
 
-		AuthenticationAsyncTask authenticationAsyncTask = new AuthenticationAsyncTask(username, password, MainURL);
-		try {
-			authenticationAsyncTask.execute().get();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		} catch (ExecutionException e) {
-			e.printStackTrace();
-		}
+		AuthenticationAsyncTask authenticationAsyncTask = new AuthenticationAsyncTask(activity, username, password, MainURL);
+		authenticationAsyncTask.execute();
 	}
 
 	@Override
@@ -155,8 +149,7 @@ public class RealCommunicator implements ICommunicator {
 
 	@Override
 	public void getTopicList() {
-		GetTopicListAsyncTask getTopicListAsyncTask = new GetTopicListAsyncTask(
-				context, MainURL);
+		GetTopicListAsyncTask getTopicListAsyncTask = new GetTopicListAsyncTask(context, MainURL);
 		getTopicListAsyncTask.execute();
 
 	}
@@ -169,8 +162,7 @@ public class RealCommunicator implements ICommunicator {
 		postDatas.put("toId", "" + Session.getActualChatPartner().getUserID());
 		postDatas.put("msg", messageText);
 
-		SendChatMessageAsyncTask sendChatMessage = new SendChatMessageAsyncTask(
-				context, MainURL, postDatas);
+		SendChatMessageAsyncTask sendChatMessage = new SendChatMessageAsyncTask(context, MainURL, postDatas);
 		try {
 			sendChatMessage.execute().get();
 		} catch (InterruptedException e) {

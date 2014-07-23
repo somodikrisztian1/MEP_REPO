@@ -1,9 +1,13 @@
 package hu.mep.communication;
 
+import hu.mep.datamodells.Session;
+import hu.mep.mep_app.activities.ActivityLevel2NEW;
+
 import java.util.concurrent.ExecutionException;
 
-import hu.mep.datamodells.Session;
-import android.content.Context;
+import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.util.Log;
@@ -11,24 +15,32 @@ import android.util.Log;
 public class ActivityLevel2PreloaderAsyncTask extends AsyncTask<Void, Void, Void> {
 
 	private static final String TAG = "ActivityLevel2PreloaderAsyncTask";
-	private Context context;
+	private Activity activity;
 	private String hostURI = "http://www.megujuloenergiapark.hu/";
+	private ProgressDialog pd;
 	
-	public ActivityLevel2PreloaderAsyncTask(Context context) {
-		this.context = context;
+	public ActivityLevel2PreloaderAsyncTask(Activity activity) {
+		this.activity = activity;
+		this.pd = new ProgressDialog(this.activity);
+		this.pd.setCancelable(false);
+		this.pd.setTitle("Kérem várjon!");
+		this.pd.setMessage("Felhasználói adatok betöltése folyamatban...");
 	}
 	
 	@Override
 	protected void onPreExecute() {
 		super.onPreExecute();
 		Log.i(TAG, "onPreExecute running");
+		
+		Session.setProgressDialog(pd);
+		Session.showProgressDialog();
 	}
 	
 	
 	@Override
 	protected Void doInBackground(Void... params) {
 		Log.i(TAG, "doInBackground running");
-		GetContactListAsyncTaskPRELOAD getContactListAsyncTask = new GetContactListAsyncTaskPRELOAD(context, hostURI);
+		GetContactListAsyncTaskPRELOAD getContactListAsyncTask = new GetContactListAsyncTaskPRELOAD(activity, hostURI);
 		
 		
 		try {
@@ -46,7 +58,7 @@ public class ActivityLevel2PreloaderAsyncTask extends AsyncTask<Void, Void, Void
 		}
 		
 		if (Session.getActualUser().isMekut()) {
-			GetTopicListAsyncTask getTopicListAsyncTask = new GetTopicListAsyncTask(context, hostURI);		
+			GetTopicListAsyncTask getTopicListAsyncTask = new GetTopicListAsyncTask(activity, hostURI);		
 			
 			try {
 				/** Ez ezért kell, mert az AsyncTask által indított AsyncTask e verzió fölött nem jól működik!!!!! */
@@ -63,6 +75,18 @@ public class ActivityLevel2PreloaderAsyncTask extends AsyncTask<Void, Void, Void
 		}
 		Log.i(TAG, "doInBackground finished");
 		return null;
+	}
+	
+	@Override
+	protected void onPostExecute(Void result) {
+		super.onPostExecute(result);
+	
+		Session.dismissAndMakeNullProgressDialog();
+		Session.setAnyUserLoggedIn(true);
+		
+		Intent i = new Intent(activity, ActivityLevel2NEW.class);
+		activity.startActivity(i);
+	
 	}
 
 }

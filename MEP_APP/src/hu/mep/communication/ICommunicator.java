@@ -2,6 +2,8 @@ package hu.mep.communication;
 
 import java.util.Calendar;
 
+import android.app.Activity;
+
 public interface ICommunicator {
 
 	public void getChatPartners();
@@ -14,7 +16,7 @@ public interface ICommunicator {
 
 	public void getChartNames(boolean forRemoteMonitoring);
 
-	public void authenticateUser(String username, String password);
+	public void authenticateUser(Activity activity, String username, String password);
 
 	public void getGalleryURLsAndPictures();
 

@@ -52,9 +52,6 @@ public class ActivityLevel1Registration extends ActionBarActivity implements
 		userNameEdittext = (EditText) findViewById(R.id.reg_username);
 		passwordEdittext = (EditText) findViewById(R.id.reg_password);
 		
-		
-		
-		
 		passwordAgainEdittext = (EditText) findViewById(R.id.reg_passowrdagain);
 		registrateButton = (Button) findViewById(R.id.registrate_button);
 		registrateButton.setOnClickListener(this);
@@ -76,22 +73,17 @@ public class ActivityLevel1Registration extends ActionBarActivity implements
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
 		menu.findItem(R.id.action_settings).setVisible(false);
-		
 		return true;
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.empty_menu, menu);
 		return true;
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle action bar item clicks here. The action bar will
-		// automatically handle clicks on the Home/Up button, so long
-		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
 		if (id == R.id.homeAsUp) {
 			NavUtils.navigateUpFromSameTask(this);
@@ -115,36 +107,40 @@ public class ActivityLevel1Registration extends ActionBarActivity implements
 				userName.length() == 0 ||
 				password.length() == 0 ||
 				passwordAgain.length() == 0) {
-				Session.setAlertDialog(AlertDialogFactory.prepareAlertDialogForNoFullyLoadedCells(ActivityLevel1Registration.this));
+				Session.setAlertDialog(AlertDialogFactory.prepareAlertDialogForNoFullyLoadedCells(
+						ActivityLevel1Registration.this));
 				Session.showAlertDialog();
 			}
 			else if(userName.trim().equals("")) {
-				Session.setAlertDialog(AlertDialogFactory.prepareAlertDialogForBadUsername(ActivityLevel1Registration.this));
+				Session.setAlertDialog(AlertDialogFactory.prepareAlertDialogForBadUsername(
+						ActivityLevel1Registration.this));
 				Session.showAlertDialog();
 			}
 			else if(!password.equals(passwordAgain)) {
-				Session.setAlertDialog(AlertDialogFactory.prepareAlertDialogForNoMatchingPasswords(ActivityLevel1Registration.this));
+				Session.setAlertDialog(AlertDialogFactory.prepareAlertDialogForNoMatchingPasswords(
+						ActivityLevel1Registration.this));
 				Session.showAlertDialog();
 			}
 			else if(trimmedPassword.equals("")) {
-				Session.setAlertDialog(AlertDialogFactory.prepareAlertDialogForBadPasswords(ActivityLevel1Registration.this));
+				Session.setAlertDialog(AlertDialogFactory.prepareAlertDialogForBadPasswords(
+						ActivityLevel1Registration.this));
 				Session.showAlertDialog();
 			}
 			else if(!password.equals(trimmedPassword)) {
-				Session.setAlertDialog(AlertDialogFactory.prepareAlertDialogForTrimmedPasswords(ActivityLevel1Registration.this, userName, trimmedPassword, email, fullName));
+				Session.setAlertDialog(AlertDialogFactory.prepareAlertDialogForTrimmedPasswords(
+						ActivityLevel1Registration.this, userName, trimmedPassword, email, fullName));
 				Session.showAlertDialog();
 			}
 			else if(trimmedPassword.equals(trimmedPasswordAgain)) {
 				Session.getActualCommunicationInterface().registrateUser(fullName, email, userName, trimmedPassword);
 				
 				if(Session.isSuccessfulRegistration()) {
-					Session.getActualCommunicationInterface().authenticateUser(userName, trimmedPassword);
-					
-					Intent i = new Intent(this, ActivityLevel2NEW.class);
-					startActivity(i);
+					Session.getActualCommunicationInterface().authenticateUser(
+							ActivityLevel1Registration.this, userName, trimmedPassword);
 				}
 				else if(Session.isSuccessfulRegistration() == false) {
-					Session.setAlertDialog(AlertDialogFactory.prepareAlertDialogWithText(ActivityLevel1Registration.this, Session.getUnsuccessfulRegistrationMessage()));
+					Session.setAlertDialog(AlertDialogFactory.prepareAlertDialogWithText(
+							ActivityLevel1Registration.this, Session.getUnsuccessfulRegistrationMessage()));
 					Session.showAlertDialog();
 				}
 			}
