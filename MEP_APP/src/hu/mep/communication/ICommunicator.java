@@ -18,8 +18,6 @@ public interface ICommunicator {
 
 	public void authenticateUser(Activity activity, String username, String password);
 
-	public void getGalleryURLsAndPictures();
-
 	public void getActualChart(Calendar beginDate, Calendar endDate);
 
 	public void getActualChart();
@@ -27,6 +25,8 @@ public interface ICommunicator {
 	public void registrateUser(String fullName, String email, String userName, String password);
 
 	public void getActualRemoteMonitoringSettings();
+
+	public void getGalleryURLsAndPictures(Activity activity);
 	
 	
 }

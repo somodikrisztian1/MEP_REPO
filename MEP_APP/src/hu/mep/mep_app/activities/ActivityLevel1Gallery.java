@@ -36,7 +36,6 @@ public class ActivityLevel1Gallery extends FragmentActivity {
 			Log.e(TAG, "IT'S NOT A TABLET");
 			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 		}
-		Session.getActualCommunicationInterface().getGalleryURLsAndPictures();
 
 		NUM_PAGES = Session.getGalleryImageURLSList().size();
 		

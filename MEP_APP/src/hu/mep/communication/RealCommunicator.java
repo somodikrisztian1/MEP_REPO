@@ -93,18 +93,9 @@ public class RealCommunicator implements ICommunicator {
 	}
 	
 	@Override
-	public void getGalleryURLsAndPictures() {
-		GetGalleryURLsAsyncTask urlGetter = new GetGalleryURLsAsyncTask(MainURL, context);
-		GetGalleryImagesAsyncTask imageGetter = new GetGalleryImagesAsyncTask(MainURL, context);
-		try {
-			urlGetter.execute().get();
-			imageGetter.execute().get();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		} catch (ExecutionException e) {
-			e.printStackTrace();
-		}
-		
+	public void getGalleryURLsAndPictures(Activity activity) {
+		GetGalleryURLsAsyncTask urlGetter = new GetGalleryURLsAsyncTask(activity, MainURL);
+		urlGetter.execute();		
 	}
 
 	@Override
@@ -239,6 +230,8 @@ public class RealCommunicator implements ICommunicator {
 		}
 		return;
 	}
+	
+	
 
 	
 

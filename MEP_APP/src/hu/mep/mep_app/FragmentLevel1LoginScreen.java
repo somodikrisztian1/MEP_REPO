@@ -47,7 +47,6 @@ public class FragmentLevel1LoginScreen extends Fragment implements
 		regButton = (Button) rootView.findViewById(R.id.fragment_login_screen_registration_button);
 
 		usernameEdittext.setFocusable(true);
-		// usernameEdittext.requestFocus();
 		passwordEdittext.setFocusable(true);
 
 		loginButton.setOnClickListener(this);
@@ -97,14 +96,6 @@ public class FragmentLevel1LoginScreen extends Fragment implements
 		default:
 			break;
 		}
-	}
-	
-	private ProgressDialog prepareProgressDialogForLoading1() {
-		ProgressDialog pd = new ProgressDialog(getActivity());
-		pd.setCancelable(false);
-		pd.setTitle("Kérem várjon!");
-		pd.setMessage("Felhasználói adatok ellenőrzése folyamatban...");
-		return pd;
 	}
 
 }

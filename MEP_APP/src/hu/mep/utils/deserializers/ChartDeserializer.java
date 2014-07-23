@@ -65,7 +65,7 @@ public class ChartDeserializer implements JsonDeserializer<Chart> {
 				JsonObject actualChartJSONObj = entry.getValue().getAsJsonObject();
 				String actualChartLabel = actualChartJSONObj.get("label").getAsString();
 				//Log.e(TAG, "Label:" + actualChartLabel);
-				Log.e(TAG, "Label:" + actualChartLabel);
+				//Log.e(TAG, "Label:" + actualChartLabel);
 				HashMap<Calendar, Double> actualChartDatas = new HashMap<Calendar, Double>();
 
 				JsonObject actualChartDataJSONObj = (actualChartJSONObj.get("adat")
@@ -80,7 +80,7 @@ public class ChartDeserializer implements JsonDeserializer<Chart> {
 						try {
 							actualDate.setTime(dateFormatter.parse(actData
 									.getKey()));
-							CalendarPrinter.logCalendar(TAG, actualDate, actData.getValue().getAsDouble());
+							//CalendarPrinter.logCalendar(TAG, actualDate, actData.getValue().getAsDouble());
 						} catch (ParseException e) {
 							e.printStackTrace();
 						}

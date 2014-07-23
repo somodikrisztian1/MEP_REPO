@@ -20,40 +20,6 @@ public class TimeSeriesAdapter {
 
 	private static final String TAG = "TimeSeriesAdapter";
 
-	// TODO Ez csak egy teszt metódus! Végül ki kell majd venni!!!
-	public XYDataset getTimeSeriesFromTheFly() {
-
-		TimeSeriesCollection dataset = new TimeSeriesCollection();
-		TimeSeries[] s = new TimeSeries[2];
-
-		s[0] = new TimeSeries("Első görbe");
-		s[0].add(new Millisecond(00, 00, 01, 16, 18, 06, 2014), 56.6);
-		s[0].add(new Millisecond(00, 10, 01, 16, 18, 06, 2014), 58.0);
-		s[0].add(new Millisecond(00, 20, 01, 16, 18, 06, 2014), 60.6);
-		s[0].add(new Millisecond(00, 30, 01, 16, 18, 06, 2014), 54.6);
-		s[0].add(new Millisecond(00, 40, 01, 16, 18, 06, 2014), 50.6);
-		s[0].add(new Millisecond(00, 50, 01, 16, 18, 06, 2014), 43.6);
-		s[0].add(new Millisecond(00, 00, 02, 16, 18, 06, 2014), 36.6);
-		s[0].add(new Millisecond(00, 10, 02, 16, 18, 06, 2014), 42.6);
-
-		s[1] = new TimeSeries("Másik görbe");
-		s[1].add(new Millisecond(00, 20, 02, 16, 18, 06, 2014), 40.6);
-		s[1].add(new Millisecond(00, 30, 02, 16, 18, 06, 2014), 39.6);
-		s[1].add(new Millisecond(00, 40, 02, 16, 18, 06, 2014), 45.6);
-		s[1].add(new Millisecond(00, 50, 02, 16, 18, 06, 2014), 46.6);
-		s[1].add(new Millisecond(00, 00, 03, 16, 18, 06, 2014), 47.6);
-		s[1].add(new Millisecond(00, 10, 03, 16, 18, 06, 2014), 48.6);
-		s[1].add(new Millisecond(00, 20, 03, 16, 18, 06, 2014), 50.6);
-		s[1].add(new Millisecond(00, 30, 03, 16, 18, 06, 2014), 60.6);
-		s[1].add(new Millisecond(00, 40, 03, 16, 18, 06, 2014), 55.6);
-		s[1].add(new Millisecond(00, 50, 03, 16, 18, 06, 2014), 53.6);
-
-		for (int i = 0; i < s.length; ++i) {
-			dataset.addSeries(s[i]);
-		}
-		return dataset;
-	}
-
 	public XYDataset getTimeSeriesFromActualChart() {
 
 		if (Session.getActualChart().getSubCharts() == null) {
@@ -112,7 +78,7 @@ public class TimeSeriesAdapter {
 
 		for (SubChart actSubChart : cchart.getSubCharts()) {
 			ts[++i] = new TimeSeries(actSubChart.getLabel());
-			Log.e(TAG, "Label:" + actSubChart.getLabel());
+			//Log.e(TAG, "Label:" + actSubChart.getLabel());
 
 			for (Map.Entry<Calendar, Double> actualValues : actSubChart
 					.getChartValues().entrySet()) {
@@ -125,7 +91,7 @@ public class TimeSeriesAdapter {
 								date.get(Calendar.MONTH), 
 								date.get(Calendar.YEAR)),
 						actualValues.getValue());
-				CalendarPrinter.logCalendar(TAG, date, actualValues.getValue());
+				//CalendarPrinter.logCalendar(TAG, date, actualValues.getValue());
 			}
 		}
 

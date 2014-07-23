@@ -25,7 +25,6 @@ public class DatePickerHacker {
 				}
 				((View)calendarView).setVisibility(View.GONE);
 			}
-			Log.e(TAG, "field.name=" + actField.getName());
 		}
 	}
 	
