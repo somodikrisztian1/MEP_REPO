@@ -87,9 +87,6 @@ public class FragmentLevel1LoginScreen extends Fragment implements
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.fragment_login_screen_login_button:
-
-			Session.setProgressDialog(prepareProgressDialogForLoading1());
-			Session.showProgressDialog();
 			
 			String username_for_send = usernameEdittext.getText().toString();
 			String password_for_send = passwordEdittext.getText().toString();

@@ -282,11 +282,12 @@ public class ActivityLevel1 extends ActionBarActivity implements
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		Log.e("FirstActivity", "onOptionsItemSelected");
-		if(!Session.isAnyUserLoggedIn()) {
-			Session.logOffActualUser();
-		}
-		switch (item.getItemId()) {
+				switch (item.getItemId()) {
 		case R.id.action_login:
+			if(!Session.isAnyUserLoggedIn()) {
+				Session.logOffActualUser();
+			}
+
 			if (Session.getActualUser() == null) {
 				Fragment newFragment = null;
 				Bundle args;
@@ -295,15 +296,12 @@ public class ActivityLevel1 extends ActionBarActivity implements
 
 				args = new Bundle();
 				actualFragmentNumber = DRAWER_LIST_LOGIN_LOGOUT_NUMBER;
-				args.putInt(
-						FragmentLevel1MainScreen.CLICKED_DRAWER_ITEM_NUMBER,
-						actualFragmentNumber);
-
+				args.putInt(FragmentLevel1MainScreen.CLICKED_DRAWER_ITEM_NUMBER, actualFragmentNumber);
 				newFragment.setArguments(args);
+				
 				ft.replace(R.id.first_activity_frame, newFragment);
 				ft.addToBackStack("addLogin");
 				ft.commit();
-				// setTitle(firstActivityDrawerStrings[DRAWER_LIST_LOGIN_LOGOUT_NUMBER]);
 			} else {
 				Intent i = new Intent(this, ActivityLevel2NEW.class);
 				startActivity(i);
@@ -314,7 +312,6 @@ public class ActivityLevel1 extends ActionBarActivity implements
 			break;
 		}
 		if (drawerToggle.onOptionsItemSelected(item)) {
-			// handleDrawerClick(DRAWER_LIST_MAIN_PAGE_NUMBER);
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
@@ -322,55 +319,15 @@ public class ActivityLevel1 extends ActionBarActivity implements
 
 	@Override
 	public boolean onLoginButtonPressed(final String username, final String password) {
-
+		
 		if (NetThread.isOnline(this)) {
-			Log.e(TAG, "prepareProgressDialogForLoading1");
-			Session.setProgressDialog(prepareProgressDialogForLoading1());
-			Session.showProgressDialog();
-			Session.getActualCommunicationInterface().authenticateUser(username, password);
-//			Session.dismissAndMakeNullProgressDialog();
-			if (Session.getActualUser() == null) {
-				Session.setAlertDialog(AlertDialogFactory.prepareAlertDialogForBadCredentials(ActivityLevel1.this));
-				Session.showAlertDialog();
-			} else {
-				Log.e(TAG, "prepareProgressDialogForLoading2");
-				Session.setProgressDialog(prepareProgressDialogForLoading2());
-				Session.showProgressDialog();
-				ActivityLevel2PreloaderAsyncTask at = new ActivityLevel2PreloaderAsyncTask(ActivityLevel1.this);
-				try {
-					at.execute().get();
-					//at = null;
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				} catch (ExecutionException e) {
-					e.printStackTrace();
-				}
-				//Session.dismissAndMakeNullProgressDialog();
-				Session.setAnyUserLoggedIn(true);
-				Intent i = new Intent(this, ActivityLevel2NEW.class);
-				startActivity(i);
-			}
+			Log.e(TAG, "prepareProgressDialogForLoading1");		
+			Session.getActualCommunicationInterface().authenticateUser(ActivityLevel1.this, username, password);
 		} else {
 			Session.setAlertDialog(AlertDialogFactory.prepareAlertDialogForNoConnection(ActivityLevel1.this));
 			Session.showAlertDialog();
 		}
 		return false;
-	}
-
-	private ProgressDialog prepareProgressDialogForLoading1() {
-		ProgressDialog pd = new ProgressDialog(ActivityLevel1.this);
-		pd.setCancelable(false);
-		pd.setTitle("Kérem várjon!");
-		pd.setMessage("Felhasználói adatok ellenőrzése folyamatban...");
-		return pd;
-	}
-
-	private ProgressDialog prepareProgressDialogForLoading2() {
-		ProgressDialog pd = new ProgressDialog(ActivityLevel1.this);
-		pd.setCancelable(false);
-		pd.setTitle("Kérem várjon!");
-		pd.setMessage("Felhasználói adatok betöltése folyamatban...");
-		return pd;
 	}
 
 	private ProgressDialog prepareProgressDialogForLoading3() {
