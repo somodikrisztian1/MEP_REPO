@@ -1,11 +1,7 @@
 package hu.mep.charts;
 
-import hu.mep.datamodells.Session;
 import hu.mep.datamodells.charts.Chart;
 import hu.mep.utils.adapters.TimeSeriesAdapter;
-
-import java.text.SimpleDateFormat;
-import java.util.Locale;
 
 import org.afree.chart.AFreeChart;
 import org.afree.chart.ChartFactory;
@@ -17,19 +13,12 @@ import org.afree.chart.plot.Plot;
 import org.afree.chart.plot.XYPlot;
 import org.afree.chart.renderer.xy.XYItemRenderer;
 import org.afree.chart.renderer.xy.XYLineAndShapeRenderer;
-import org.afree.data.time.Month;
-import org.afree.data.time.TimeSeries;
-import org.afree.data.time.TimeSeriesCollection;
 import org.afree.data.xy.XYDataset;
-import org.afree.graphics.PaintType;
 import org.afree.graphics.SolidColor;
-import org.afree.graphics.geom.Shape;
 import org.afree.ui.RectangleInsets;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.graphics.PathEffect;
-import android.util.Log;
 
 public class TimeLineChartView extends DemoView {
 

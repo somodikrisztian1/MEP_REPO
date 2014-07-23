@@ -48,9 +48,7 @@
     <style name="button_style" parent="@android:style/Widget.Button">
         <item name="android:textColor">#1d84cb</item>
         <item name="android:layout_margin">3dp</item>
-        <item name="android:textSize">14sp</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:shadowColor">#ffffff</item>
         <item name="android:shadowDx">1</item>
         <item name="android:shadowDy">1</item>
         <item name="android:shadowRadius">2</item>

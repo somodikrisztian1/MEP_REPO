@@ -1,8 +1,5 @@
 package hu.mep.mep_app.activities;
 
-import java.util.concurrent.ExecutionException;
-
-import hu.mep.communication.ActivityLevel2PreloaderAsyncTask;
 import hu.mep.communication.NetThread;
 import hu.mep.datamodells.Session;
 import hu.mep.mep_app.FragmentLevel1AboutRemoteScreen;
@@ -12,23 +9,13 @@ import hu.mep.mep_app.FragmentLevel1MainScreen;
 import hu.mep.mep_app.FragmentLevel1RepresentationParkScreen;
 import hu.mep.mep_app.FragmentLevel1ResearchCenterScreen;
 import hu.mep.mep_app.R;
-import hu.mep.mep_app.R.array;
-import hu.mep.mep_app.R.drawable;
-import hu.mep.mep_app.R.id;
-import hu.mep.mep_app.R.layout;
-import hu.mep.mep_app.R.menu;
-import hu.mep.mep_app.R.string;
 import hu.mep.utils.others.AlertDialogFactory;
 import hu.mep.utils.others.FragmentLevel1EventHandler;
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -46,7 +33,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.Toast;
 
 public class ActivityLevel1 extends ActionBarActivity implements
 		FragmentLevel1EventHandler {
@@ -98,6 +84,9 @@ public class ActivityLevel1 extends ActionBarActivity implements
 		firstActivityDrawerLayout = (DrawerLayout) findViewById(R.id.first_activity_drawer_layout);
 		firstActivityDrawerListView = (ListView) findViewById(R.id.first_activity_drawer_listview);
 
+		//firstActivityDrawerListView.setBackgroundColor(getResources().getColor(R.color.white) );
+		
+		
 		firstActivityDrawerStrings = getResources().getStringArray(
 				R.array.activity_level1_drawer_items_list);
 

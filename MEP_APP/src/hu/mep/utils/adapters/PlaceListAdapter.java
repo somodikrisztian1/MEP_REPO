@@ -4,11 +4,9 @@ import hu.mep.datamodells.Place;
 import hu.mep.datamodells.Session;
 import hu.mep.mep_app.R;
 
-import java.util.HashMap;
 import java.util.List;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;

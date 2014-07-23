@@ -4,17 +4,12 @@ import hu.mep.datamodells.Session;
 import hu.mep.datamodells.Topic;
 import hu.mep.datamodells.TopicCategory;
 import hu.mep.mep_app.R;
-import hu.mep.mep_app.activities.ActivityLevel2NEW;
-import hu.mep.mep_app.activities.ActivityLevel3ShowTopic;
 import hu.mep.utils.others.FragmentLevel2EventHandler;
 
 import java.util.List;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.Intent;
-import android.sax.StartElementListener;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;

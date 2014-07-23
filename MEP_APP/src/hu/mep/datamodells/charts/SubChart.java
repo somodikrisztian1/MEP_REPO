@@ -1,7 +1,6 @@
 package hu.mep.datamodells.charts;
 
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 
 import com.google.gson.annotations.SerializedName;

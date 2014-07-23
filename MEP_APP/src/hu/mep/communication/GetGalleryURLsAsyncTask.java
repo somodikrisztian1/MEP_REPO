@@ -1,16 +1,13 @@
 package hu.mep.communication;
 
-import hu.mep.datamodells.ChatContactList;
 import hu.mep.datamodells.ImageURLList;
 import hu.mep.datamodells.Session;
-import hu.mep.utils.deserializers.ChatContactListDeserializer;
 import hu.mep.utils.deserializers.ImageURLDeserializer;
+import android.content.Context;
+import android.os.AsyncTask;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-
-import android.content.Context;
-import android.os.AsyncTask;
 
 public class GetGalleryURLsAsyncTask extends AsyncTask<Void, Void, Void> {
 

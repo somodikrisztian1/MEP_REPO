@@ -2,8 +2,6 @@ package hu.mep.datamodells;
 
 import java.util.List;
 
-import android.util.Log;
-
 public class ChatMessagesList {
 	private static final String TAG = "ChatMessagesList";
 	List<ChatMessage> chatMessagesList;

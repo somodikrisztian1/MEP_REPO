@@ -3,7 +3,6 @@ package hu.mep.communication.charts;
 import hu.mep.communication.RealCommunicator;
 import hu.mep.datamodells.Session;
 import hu.mep.datamodells.charts.Chart;
-import hu.mep.mep_app.activities.ActivityLevel3ShowTopic;
 import hu.mep.utils.deserializers.ChartDeserializer;
 
 import java.text.SimpleDateFormat;
