@@ -49,13 +49,15 @@
     <style name="button_style" parent="@android:style/Widget.Button">
         <item name="android:textColor">#1d84cb</item>
         <item name="android:layout_margin">3dp</item>
-        <item name="android:textSize">12sp</item>
+        <item name="android:textSize">14sp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:shadowColor">#ffffff</item>
         <item name="android:shadowDx">1</item>
         <item name="android:shadowDy">1</item>
         <item name="android:shadowRadius">2</item>
         <item name="android:background">@drawable/button</item>
+        <item name="android:ems">10</item>
+        
     </style>
 
     <style name="ActionBar.Solid.Meptheme" parent="@style/Widget.AppCompat.Light.ActionBar.Solid">
