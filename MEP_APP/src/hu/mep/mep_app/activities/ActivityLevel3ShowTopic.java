@@ -3,8 +3,9 @@ package hu.mep.mep_app.activities;
 import hu.mep.datamodells.Session;
 import hu.mep.mep_app.FragmentLevel3ShowTopic;
 import hu.mep.mep_app.R;
-import hu.mep.utils.others.CalendarPrinter;
+import hu.mep.utils.others.DatePickerHacker;
 
+import java.lang.reflect.Field;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
@@ -22,6 +23,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBar.Tab;
 import android.support.v7.app.ActionBar.TabListener;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -135,6 +137,8 @@ public class ActivityLevel3ShowTopic extends ActionBarActivity implements
 			Button cancelButton = (Button) d.findViewById(R.id.datePickerCancelButton);
 			Button setButton = (Button) d.findViewById(R.id.datePickerSettedButton);
 
+			DatePickerHacker.hideCalendarView(dp);
+			
 			cancelButton.setOnClickListener(new OnClickListener() {
 
 				@Override
@@ -218,6 +222,8 @@ public class ActivityLevel3ShowTopic extends ActionBarActivity implements
 			TimePicker tp = (TimePicker) d.findViewById(R.id.timePicker);
 			Button cancelButton = (Button) d.findViewById(R.id.datePickerCancelButton);
 			Button setButton = (Button) d.findViewById(R.id.datePickerSettedButton);
+			
+			DatePickerHacker.hideCalendarView(dp);
 
 			cancelButton.setOnClickListener(new OnClickListener() {
 
