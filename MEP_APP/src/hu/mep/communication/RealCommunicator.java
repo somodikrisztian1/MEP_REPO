@@ -2,6 +2,7 @@ package hu.mep.communication;
 
 import hu.mep.communication.charts.GetActualChartAsyncTask;
 import hu.mep.communication.charts.GetChartNamesAsyncTask;
+import hu.mep.communication.charts.GetChartsAsyncTask;
 import hu.mep.datamodells.Session;
 
 import java.io.BufferedReader;
@@ -97,6 +98,35 @@ public class RealCommunicator implements ICommunicator {
 		GetGalleryURLsAsyncTask urlGetter = new GetGalleryURLsAsyncTask(activity, MainURL);
 		urlGetter.execute();		
 	}
+	
+	@Override
+	public void registrateUser(String fullName, String email, String userName, String password)
+	{
+		HashMap<String, String> postDatas = new HashMap<String, String>();
+		
+		postDatas.put("name", "" + fullName);
+		postDatas.put("username", "" + userName);
+		postDatas.put("password", password);
+		postDatas.put("email", email);
+
+		RegistrationAssyncTask sendRegistration = new RegistrationAssyncTask(MainURL, postDatas);
+		try {
+			sendRegistration.execute().get();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		} catch (ExecutionException e) {
+			e.printStackTrace();
+		}
+		
+		return;
+	}
+	
+	@Override
+	public void authenticateUser( Activity activity, String username, String password) {
+
+		AuthenticationAsyncTask authenticationAsyncTask = new AuthenticationAsyncTask(activity, username, password, MainURL);
+		authenticationAsyncTask.execute();
+	}
 
 	@Override
 	public void getChatMessages() {
@@ -122,10 +152,10 @@ public class RealCommunicator implements ICommunicator {
 	}
 
 	@Override
-	public void authenticateUser( Activity activity, String username, String password) {
+	public void getTopicList() {
+		GetTopicListAsyncTask getTopicListAsyncTask = new GetTopicListAsyncTask(context, MainURL);
+		getTopicListAsyncTask.execute();
 
-		AuthenticationAsyncTask authenticationAsyncTask = new AuthenticationAsyncTask(activity, username, password, MainURL);
-		authenticationAsyncTask.execute();
 	}
 
 	@Override
@@ -134,12 +164,7 @@ public class RealCommunicator implements ICommunicator {
 		getContactListAsyncTask.execute();
 	}
 
-	@Override
-	public void getTopicList() {
-		GetTopicListAsyncTask getTopicListAsyncTask = new GetTopicListAsyncTask(context, MainURL);
-		getTopicListAsyncTask.execute();
 
-	}
 
 	@Override
 	public void sendChatMessage(String messageText) {
@@ -161,17 +186,11 @@ public class RealCommunicator implements ICommunicator {
 	}
 
 	@Override
-	public void getChartNames(boolean forRemoteMonitoring) {
-		GetChartNamesAsyncTask chartNameGetter = new GetChartNamesAsyncTask(MainURL, forRemoteMonitoring);
-		try {
-			chartNameGetter.execute().get();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		} catch (ExecutionException e) {
-			e.printStackTrace();
-		}
+	public void getChartNames(Activity activity, boolean forRemoteMonitoring) {
+		GetChartNamesAsyncTask chartNameGetter = new GetChartNamesAsyncTask(activity, MainURL, forRemoteMonitoring);
+		chartNameGetter.execute();
 	}
-
+	/*
 	@Override
 	public void getActualChart() {
 		GetActualChartAsyncTask getChart = new GetActualChartAsyncTask(context, MainURL);
@@ -194,45 +213,21 @@ public class RealCommunicator implements ICommunicator {
 		} catch (ExecutionException e) {
 			e.printStackTrace();
 		}
-	}
+	}*/
 
 	@Override
-	public void registrateUser(String fullName, String email, String userName, String password)
-	{
-		HashMap<String, String> postDatas = new HashMap<String, String>();
+	public void getAllCharts(Activity activity, boolean forRemoteMonitoring, Calendar beginDate, Calendar endDate) {
+		GetChartsAsyncTask chartsGetter = new GetChartsAsyncTask(activity, MainURL, forRemoteMonitoring, beginDate, endDate);
+		chartsGetter.execute();
 		
-		postDatas.put("name", "" + fullName);
-		postDatas.put("username", "" + userName);
-		postDatas.put("password", password);
-		postDatas.put("email", email);
+	};
 
-		RegistrationAssyncTask sendRegistration = new RegistrationAssyncTask(MainURL, postDatas);
-		try {
-			sendRegistration.execute().get();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		} catch (ExecutionException e) {
-			e.printStackTrace();
-		}
-		
-		return;
-	}
 
 	@Override
-	public void getActualRemoteMonitoringSettings() {
-		GetSettingsAsyncTask settingsGetter = new GetSettingsAsyncTask(MainURL);
-		try {
-			settingsGetter.execute().get();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		} catch (ExecutionException e) {
-			e.printStackTrace();
-		}
+	public void getActualRemoteMonitoringSettings(Activity activity) {
+		GetSettingsAsyncTask settingsGetter = new GetSettingsAsyncTask(activity, MainURL);
+		settingsGetter.execute();
 		return;
-	}
-	
-	
-
-	
+	}	
 
 }

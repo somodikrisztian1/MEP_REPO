@@ -59,6 +59,7 @@ public class Session {
 
 	private static List<ChartName> allChartNames;
 	private static ChartName actualChartName;
+	private static List<Chart> allCharts;
 	private static Chart actualChart;
 
 	private static ContactListRefresherRunnable contactRefresherRunnable = new ContactListRefresherRunnable();
@@ -270,6 +271,14 @@ public class Session {
 	public static void setActualChartName(ChartName actualChartInfoContainer) {
 		Log.e(TAG, "setActualChartInfoContainer");
 		Session.actualChartName = actualChartInfoContainer;
+	}
+
+	public static List<Chart> getAllCharts() {
+		return allCharts;
+	}
+
+	public static void setAllCharts(List<Chart> allCharts) {
+		Session.allCharts = allCharts;
 	}
 
 	private static void logAllChartNames() {

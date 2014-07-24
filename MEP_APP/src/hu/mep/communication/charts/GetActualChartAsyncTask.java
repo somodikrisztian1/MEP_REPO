@@ -44,7 +44,6 @@ public class GetActualChartAsyncTask extends AsyncTask<Void, Void, Void> {
 		Log.e(TAG, "Formatted Date: " + format.format(date.getTime()));
 		
 		return format.format(date.getTime());
-		
 	}
 
 	@Override

@@ -75,8 +75,7 @@ public class SettingsDeserializer implements JsonDeserializer<Settings> {
 			JsonObject relaysRoot = rootObject.get("relays").getAsJsonObject();
 			for (Entry<String, JsonElement> relayElement : relaysRoot.entrySet()) {
 				String name = relayElement.getKey();
-				String value = relayElement.getValue().getAsJsonObject()
-						.getAsString();
+				String value = relayElement.getValue().getAsJsonPrimitive().getAsString();
 				boolean status = (value.equals("0") ? false : true);
 				Relay newRelay = new Relay(name, status);
 				relays.add(newRelay);

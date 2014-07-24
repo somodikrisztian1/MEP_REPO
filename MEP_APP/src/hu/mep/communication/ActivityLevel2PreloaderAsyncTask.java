@@ -23,7 +23,6 @@ public class ActivityLevel2PreloaderAsyncTask extends AsyncTask<Void, Void, Void
 		this.activity = activity;
 		this.pd = new ProgressDialog(this.activity);
 		this.pd.setCancelable(false);
-		this.pd.setTitle("Kérem várjon!");
 		this.pd.setMessage("Felhasználói adatok betöltése folyamatban...");
 	}
 	

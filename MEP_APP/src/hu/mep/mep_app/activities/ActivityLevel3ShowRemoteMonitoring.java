@@ -4,6 +4,7 @@ import hu.mep.datamodells.Session;
 import hu.mep.mep_app.FragmentLevel3ShowSettings;
 import hu.mep.mep_app.FragmentLevel3ShowTopic;
 import hu.mep.mep_app.R;
+import hu.mep.utils.others.DatePickerHacker;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -39,7 +40,7 @@ public class ActivityLevel3ShowRemoteMonitoring extends ActionBarActivity implem
 
 	private static final String TAG = "ActivityLevel3ShowTopic";
 	private static ActionBar mActionBar;
-	private static SectionsPagerAdapter mSectionsPagerAdapter;
+	public static SectionsPagerAdapter mSectionsPagerAdapter;
 	private static ViewPager mViewPager;
 	private Calendar beginDate;
 	private Calendar endDate;
@@ -56,7 +57,6 @@ public class ActivityLevel3ShowRemoteMonitoring extends ActionBarActivity implem
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 		Session.getInstance(this);
 
-		Session.getActualCommunicationInterface().getChartNames(true);
 		setContentView(R.layout.activity_thirdlevel_charts);
 
 		mSectionsPagerAdapter = new SectionsPagerAdapter(
@@ -136,6 +136,8 @@ public class ActivityLevel3ShowRemoteMonitoring extends ActionBarActivity implem
 			Button cancelButton = (Button) d.findViewById(R.id.datePickerCancelButton);
 			Button setButton = (Button) d.findViewById(R.id.datePickerSettedButton);
 
+			DatePickerHacker.hideCalendarView(dp);
+			
 			cancelButton.setOnClickListener(new OnClickListener() {
 
 				@Override
@@ -220,6 +222,8 @@ public class ActivityLevel3ShowRemoteMonitoring extends ActionBarActivity implem
 			Button cancelButton = (Button) d.findViewById(R.id.datePickerCancelButton);
 			Button setButton = (Button) d.findViewById(R.id.datePickerSettedButton);
 
+			DatePickerHacker.hideCalendarView(dp);
+			
 			cancelButton.setOnClickListener(new OnClickListener() {
 
 				@Override
@@ -293,9 +297,7 @@ public class ActivityLevel3ShowRemoteMonitoring extends ActionBarActivity implem
 			});
 			d.show();
 		} else if (item.getItemId() == R.id.action_datetime_refresh_button) {
-			Session.setProgressDialog(prepareProgressDialogForLoading());
-			Session.showProgressDialog();
-			mSectionsPagerAdapter.notifyDataSetChanged();
+			Session.getActualCommunicationInterface().getAllCharts(this,true, beginDate, endDate);
 		}
 		return super.onOptionsItemSelected(item);
 	}
@@ -309,12 +311,9 @@ public class ActivityLevel3ShowRemoteMonitoring extends ActionBarActivity implem
 		@Override
 		public Fragment getItem(int position) {
 			if(position < getCount() -1) {
-				Session.setActualChartName(Session.getAllChartNames().get(position));
-				Session.getActualCommunicationInterface().getActualChart(beginDate, endDate);
+				Session.setActualChart(Session.getAllCharts().get(position));
 				return new FragmentLevel3ShowTopic(Session.getActualChart());
 			} else {
-				Session.getActualCommunicationInterface().getActualRemoteMonitoringSettings();
-				Session.dismissAndMakeNullProgressDialog();
 				return new FragmentLevel3ShowSettings();
 			}			
 		}

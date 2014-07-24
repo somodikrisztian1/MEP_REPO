@@ -1,30 +1,48 @@
 package hu.mep.communication;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
 import hu.mep.datamodells.Session;
 import hu.mep.datamodells.settings.Settings;
+import hu.mep.mep_app.activities.ActivityLevel2NEW;
+import hu.mep.mep_app.activities.ActivityLevel3ShowRemoteMonitoring;
 import hu.mep.utils.deserializers.SettingsDeserializer;
+import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.Log;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 public class GetSettingsAsyncTask extends AsyncTask<Void, Void, Void> {
 
 	private static final String TAG = "GetSettingsAsyncTask";
+
+	private Activity activity;
 	private String hostURI;
 	private String fullURI;
 	private String resourceURI;
+	private ProgressDialog pd;
 	
-	public GetSettingsAsyncTask(String hostURI) {
+	public GetSettingsAsyncTask(Activity activity, String hostURI) {
+		this.activity = activity;
 		this.hostURI = hostURI;
+		
+		this.pd = new ProgressDialog(activity);
+		this.pd.setMessage("Frissítés...");
+		this.pd.setCancelable(false);
 	}
 	
 	@Override
 	protected void onPreExecute() {
 		super.onPreExecute();
-		resourceURI = "ios_getSettings.php?tsz1_id=" +
-				Session.getActualRemoteMonitoring().getID();
+		
+		if(activity instanceof ActivityLevel3ShowRemoteMonitoring) {
+			Session.setProgressDialog(pd);
+			Session.showProgressDialog();
+		}
+		
+		resourceURI = "ios_getSettings.php?tsz1_id=" +	Session.getActualRemoteMonitoring().getID();
 		fullURI = hostURI + resourceURI;
 	}
 	
@@ -42,6 +60,21 @@ public class GetSettingsAsyncTask extends AsyncTask<Void, Void, Void> {
 		Session.setActualSettings(settings);
 		
 		return null;
+	}
+	
+	@Override
+	protected void onPostExecute(Void result) {
+		super.onPostExecute(result);
+		
+		Session.dismissAndMakeNullProgressDialog();
+		
+		if (activity instanceof ActivityLevel3ShowRemoteMonitoring) {
+			((ActivityLevel3ShowRemoteMonitoring)activity).mSectionsPagerAdapter.notifyDataSetChanged();
+		} else if (activity instanceof ActivityLevel2NEW) {
+			Intent intent = new Intent(activity, ActivityLevel3ShowRemoteMonitoring.class);
+			activity.startActivity(intent);
+		}
+		
 	}
 
 
