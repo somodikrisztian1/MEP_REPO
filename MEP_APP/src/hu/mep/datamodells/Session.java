@@ -62,12 +62,10 @@ public class Session {
 	private static Chart actualChart;
 
 	private static ContactListRefresherRunnable contactRefresherRunnable = new ContactListRefresherRunnable();
-	private static Thread contactRefresherThread = new Thread(
-			contactRefresherRunnable);
+	private static Thread contactRefresherThread = new Thread(contactRefresherRunnable);
 
 	private static ChatMessageRefresherRunnable messageRefresherRunnable = new ChatMessageRefresherRunnable();
-	private static Thread messageRefresherThread = new Thread(
-			messageRefresherRunnable);
+	private static Thread messageRefresherThread = new Thread(messageRefresherRunnable);
 
 	private static ProgressDialog progressDialog;
 	private static AlertDialog alertDialog;

@@ -192,10 +192,7 @@ public class ActivityLevel1 extends ActionBarActivity implements
 			break;
 		case DRAWER_LIST_GALLERY_NUMBER:
 			if (NetThread.isOnline(this)) {
-				Session.setProgressDialog(prepareProgressDialogForLoading3());
-				Session.showProgressDialog();
-				Intent i = new Intent(this, ActivityLevel1Gallery.class);
-				startActivity(i);
+				Session.getActualCommunicationInterface().getGalleryURLsAndPictures(this);
 			} else {
 				Session.setAlertDialog(AlertDialogFactory.prepareAlertDialogForNoConnection(ActivityLevel1.this));
 				Session.showAlertDialog();

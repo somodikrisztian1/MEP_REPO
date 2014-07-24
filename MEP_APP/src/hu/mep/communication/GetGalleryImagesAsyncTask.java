@@ -1,13 +1,16 @@
 package hu.mep.communication;
 
 import hu.mep.datamodells.Session;
+import hu.mep.mep_app.activities.ActivityLevel1Gallery;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
@@ -20,22 +23,23 @@ public class GetGalleryImagesAsyncTask extends AsyncTask<Void, Void, Void> {
 	private static final String TAG = "GetGalleryImagesAsyncTask";
 	String hostURI;
 	String resourceURI;
-	Context context;
+	Activity activity;
 
-	public GetGalleryImagesAsyncTask(String hostURI, Context context) {
+	public GetGalleryImagesAsyncTask(Activity activity, String hostURI) {
+		this.activity = activity;
 		this.hostURI = hostURI;
-		this.context = context;
+
 	}
 
 	@Override
 	protected void onPreExecute() {
-		// Log.e("ASYNCTASK", "onPreExecute() running");
+		Log.e(TAG, "onPreExecute() running");
 		resourceURI = "images/iphone/";
 	}
 
 	@Override
 	protected Void doInBackground(Void... params) {
-
+		Log.e(TAG, "doInBackGround begin");
 		try {
 			for (String actImageURL : Session.getGalleryImageURLSList()) {
 				URL fullURI = new URL(hostURI + resourceURI + actImageURL);
@@ -45,7 +49,7 @@ public class GetGalleryImagesAsyncTask extends AsyncTask<Void, Void, Void> {
 				InputStream input = connection.getInputStream();
 				Bitmap bm = BitmapFactory.decodeStream(input);
 
-				WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+				WindowManager wm = (WindowManager) activity.getSystemService(Context.WINDOW_SERVICE);
 				DisplayMetrics displayMetrics = new DisplayMetrics();
 				wm.getDefaultDisplay().getMetrics(displayMetrics);
 
@@ -106,13 +110,14 @@ public class GetGalleryImagesAsyncTask extends AsyncTask<Void, Void, Void> {
 					bm = Bitmap.createBitmap(bm, 0, 0, pictureWidth, pictureHeight);
 				}
 				Session.addPictureToGallery(bm);
-
+				//bm.recycle();
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
 			Log.e("getBmpFromUrl error: ", e.getMessage().toString());
 			return null;
 		}
+		Log.e(TAG, "doInBackGround finish");
 		return null;
 	}
 
@@ -120,13 +125,16 @@ public class GetGalleryImagesAsyncTask extends AsyncTask<Void, Void, Void> {
 	protected void onPostExecute(Void result) {
 		super.onPostExecute(result);
 		Session.dismissAndMakeNullProgressDialog();
+
+		Intent i = new Intent(activity, ActivityLevel1Gallery.class);
+		activity.startActivity(i);
 	}
 	
 	public int getStatusBarHeight() {
 	      int result = 0;
-	      int resourceId = context.getResources().getIdentifier("status_bar_height", "dimen", "android");
+	      int resourceId = activity.getResources().getIdentifier("status_bar_height", "dimen", "android");
 	      if (resourceId > 0) {
-	          result = context.getResources().getDimensionPixelSize(resourceId);
+	          result = activity.getResources().getDimensionPixelSize(resourceId);
 	      } 
 	      
 	      Log.e("getStatusBarHeight", "result: " + result);
