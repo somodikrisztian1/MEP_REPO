@@ -123,10 +123,10 @@ public class ActivityLevel3ShowTopic extends ActionBarActivity implements
 		final Calendar actDate = Calendar.getInstance();
 
 		if (item.getItemId() == R.id.action_datetime_begin) {
-			final Dialog d = new Dialog(ActivityLevel3ShowTopic.this);
+			final Dialog d = new Dialog(ActivityLevel3ShowTopic.this, R.style.dialog_style);
 
 			d.setContentView(R.layout.date_and_time_picker);
-			d.setTitle("Kezdő időpont");
+			//d.setTitle("Kezdő időpont");
 
 			DatePicker dp = (DatePicker) d.findViewById(R.id.datePicker);
 			TimePicker tp = (TimePicker) d.findViewById(R.id.timePicker);
@@ -210,9 +210,9 @@ public class ActivityLevel3ShowTopic extends ActionBarActivity implements
 			d.show();
 
 		} else if (item.getItemId() == R.id.action_datetime_end) {
-			final Dialog d = new Dialog(ActivityLevel3ShowTopic.this);
+			final Dialog d = new Dialog(ActivityLevel3ShowTopic.this, R.style.dialog_style);
 			d.setContentView(R.layout.date_and_time_picker);
-			d.setTitle("Záró időpont");
+			//d.setTitle("Záró időpont");
 
 			DatePicker dp = (DatePicker) d.findViewById(R.id.datePicker);
 			TimePicker tp = (TimePicker) d.findViewById(R.id.timePicker);

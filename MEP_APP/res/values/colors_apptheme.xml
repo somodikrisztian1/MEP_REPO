@@ -2,4 +2,7 @@
 <resources>
     <color name="apptheme_color">#1d84cb</color>
     <color name="white">#ffffff</color>
+    <color name="mep_color">#1d84cb</color>
+    
+    
 </resources>

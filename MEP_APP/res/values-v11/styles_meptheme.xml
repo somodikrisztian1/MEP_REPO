@@ -21,16 +21,20 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
     <style name="Theme.Meptheme" parent="@style/Theme.AppCompat.Light">
-        <item name="android:actionBarItemBackground">@drawable/selectable_background_meptheme</item>
-        <item name="android:popupMenuStyle">@style/PopupMenu.Meptheme</item>
-        <item name="android:dropDownListViewStyle">@style/DropDownListView.Meptheme</item>
-        <item name="android:actionBarTabStyle">@style/ActionBarTabStyle.Meptheme</item>
-        <item name="android:actionDropDownStyle">@style/DropDownNav.Meptheme</item>
-        <item name="android:actionBarStyle">@style/ActionBar.Solid.Meptheme</item>
-        <item name="android:actionModeBackground">@drawable/cab_background_top_meptheme</item>
-        <item name="android:actionModeSplitBackground">@drawable/cab_background_bottom_meptheme</item>
-        <item name="android:actionModeCloseButtonStyle">@style/ActionButton.CloseMode.Meptheme</item>
+        <item name="actionBarItemBackground">@drawable/selectable_background_meptheme</item>
+        <item name="popupMenuStyle">@style/PopupMenu.Meptheme</item>
+        <item name="dropDownListViewStyle">@style/DropDownListView.Meptheme</item>
+        <item name="actionBarTabStyle">@style/ActionBarTabStyle.Meptheme</item>
+        <item name="actionDropDownStyle">@style/DropDownNav.Meptheme</item>
+        <item name="actionBarStyle">@style/ActionBar.Solid.Meptheme</item>
+        <item name="actionModeBackground">@drawable/cab_background_top_meptheme</item>
+        <item name="actionModeSplitBackground">@drawable/cab_background_bottom_meptheme</item>
+        <item name="actionModeCloseButtonStyle">@style/ActionButton.CloseMode.Meptheme</item>
+
+        <!-- button -->
         <item name="android:buttonStyle">@style/button_style</item>
+
+        <!-- holo -->
         <item name="android:editTextStyle">@style/EditTextAppTheme</item>
         <item name="android:textColorHighlight">#991d84cb</item>
         <item name="android:autoCompleteTextViewStyle">@style/AutoCompleteTextViewAppTheme</item>
@@ -41,14 +45,15 @@
         <item name="android:listViewStyle">@style/ListViewAppTheme</item>
         <item name="android:listViewWhiteStyle">@style/ListViewAppTheme.White</item>
         <item name="android:spinnerItemStyle">@style/SpinnerItemAppTheme</item>
-        
+
+        <!-- dialog -->
         <item name="android:alertDialogStyle">@style/dialog_style</item>
-        
+        <!-- <item name="android:alertDialogTheme">@style/dialog_theme</item> -->
     </style>
-    
-    <style name="dialog_style" parent="@android:style/Theme.DeviceDefault.Light.NoActionBar" >
+
+    <style name="dialog_style" parent= "@android:style/Theme.Holo.Light" >
         <item name="android:windowFrame">@null</item>
-        <item name="android:windowBackground">@android:color/white</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:windowIsFloating">true</item>
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:windowTitleStyle">@style/dialog_title_style</item>
@@ -66,7 +71,7 @@
     </style>
 
     <style name="button_style" parent="@android:style/Widget.Button">
-        <item name="android:textColor">#1d84cb</item>
+        <item name="android:textColor">@color/mep_color</item>
         <item name="android:layout_margin">3dp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:shadowDx">1</item>
@@ -77,21 +82,47 @@
     </style>
 
     <style name="ActionBar.Solid.Meptheme" parent="@style/Widget.AppCompat.Light.ActionBar.Solid">
-        <item name="android:background">@drawable/ab_solid_meptheme</item>
-        <item name="android:backgroundStacked">@drawable/ab_stacked_solid_meptheme</item>
-        <item name="android:backgroundSplit">@drawable/ab_bottom_solid_meptheme</item>
-        <item name="android:progressBarStyle">@style/ProgressBar.Meptheme</item>
+        <item name="background">@drawable/ab_solid_meptheme</item>
+        <item name="backgroundStacked">@drawable/ab_stacked_solid_meptheme</item>
+        <item name="backgroundSplit">@drawable/ab_bottom_solid_meptheme</item>
+        <item name="progressBarStyle">@style/ProgressBar.Meptheme</item>
     </style>
 
     <style name="ActionBar.Transparent.Meptheme" parent="@style/Widget.AppCompat.Light.ActionBar">
-        <item name="android:background">@drawable/ab_transparent_meptheme</item>
-        <item name="android:progressBarStyle">@style/ProgressBar.Meptheme</item>
+        <item name="background">@drawable/ab_transparent_meptheme</item>
+        <item name="progressBarStyle">@style/ProgressBar.Meptheme</item>
+    </style>
+
+    <style name="PopupMenu.Meptheme" parent="@style/Widget.AppCompat.Light.PopupMenu">
+        <item name="android:popupBackground">@drawable/menu_dropdown_panel_meptheme</item>
+    </style>
+
+    <style name="DropDownListView.Meptheme" parent="@style/Widget.AppCompat.Light.ListView.DropDown">
+        <item name="android:listSelector">@drawable/selectable_background_meptheme</item>
+    </style>
+
+    <style name="ActionBarTabStyle.Meptheme" parent="@style/Widget.AppCompat.Light.ActionBar.TabView">
+        <item name="android:background">@drawable/tab_indicator_ab_meptheme</item>
+    </style>
+
+    <style name="DropDownNav.Meptheme" parent="@style/Widget.AppCompat.Light.Spinner.DropDown.ActionBar">
+        <item name="android:background">@drawable/spinner_background_ab_meptheme</item>
+        <item name="android:popupBackground">@drawable/menu_dropdown_panel_meptheme</item>
+        <item name="android:dropDownSelector">@drawable/selectable_background_meptheme</item>
+    </style>
+
+    <style name="ProgressBar.Meptheme" parent="@style/Widget.AppCompat.ProgressBar.Horizontal">
+        <item name="android:progressDrawable">@drawable/progress_horizontal_meptheme</item>
+    </style>
+
+    <style name="ActionButton.CloseMode.Meptheme" parent="@style/Widget.AppCompat.Light.ActionButton.CloseMode">
+        <item name="android:background">@drawable/btn_cab_done_meptheme</item>
     </style>
 
     <!-- this style is only referenced in a Light.DarkActionBar based theme -->
     <style name="Theme.Meptheme.Widget" parent="@style/Theme.AppCompat">
-        <item name="android:popupMenuStyle">@style/PopupMenu.Meptheme</item>
-        <item name="android:dropDownListViewStyle">@style/DropDownListView.Meptheme</item>
+        <item name="popupMenuStyle">@style/PopupMenu.Meptheme</item>
+        <item name="dropDownListViewStyle">@style/DropDownListView.Meptheme</item>
     </style>
 
 </resources>
