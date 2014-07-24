@@ -4,6 +4,7 @@ import hu.mep.datamodells.Session;
 import hu.mep.mep_app.FragmentLevel3ShowSettings;
 import hu.mep.mep_app.FragmentLevel3ShowTopic;
 import hu.mep.mep_app.R;
+import hu.mep.utils.others.DatePickerHacker;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -135,6 +136,8 @@ public class ActivityLevel3ShowRemoteMonitoring extends ActionBarActivity implem
 			Button cancelButton = (Button) d.findViewById(R.id.datePickerCancelButton);
 			Button setButton = (Button) d.findViewById(R.id.datePickerSettedButton);
 
+			DatePickerHacker.hideCalendarView(dp);
+			
 			cancelButton.setOnClickListener(new OnClickListener() {
 
 				@Override
@@ -219,6 +222,8 @@ public class ActivityLevel3ShowRemoteMonitoring extends ActionBarActivity implem
 			Button cancelButton = (Button) d.findViewById(R.id.datePickerCancelButton);
 			Button setButton = (Button) d.findViewById(R.id.datePickerSettedButton);
 
+			DatePickerHacker.hideCalendarView(dp);
+			
 			cancelButton.setOnClickListener(new OnClickListener() {
 
 				@Override
