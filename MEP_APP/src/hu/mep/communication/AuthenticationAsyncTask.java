@@ -40,7 +40,6 @@ public class AuthenticationAsyncTask extends AsyncTask<Void, Void, Boolean> {
 		
 		this.pd = new ProgressDialog(this.activity);
 		this.pd.setCancelable(false);
-		this.pd.setTitle("Kérem várjon!");
 		this.pd.setMessage("Felhasználói adatok ellenőrzése folyamatban...");
 		
 	}

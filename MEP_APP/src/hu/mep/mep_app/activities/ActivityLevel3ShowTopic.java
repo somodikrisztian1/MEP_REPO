@@ -5,12 +5,10 @@ import hu.mep.mep_app.FragmentLevel3ShowTopic;
 import hu.mep.mep_app.R;
 import hu.mep.utils.others.DatePickerHacker;
 
-import java.lang.reflect.Field;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -23,7 +21,6 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBar.Tab;
 import android.support.v7.app.ActionBar.TabListener;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -41,7 +38,7 @@ public class ActivityLevel3ShowTopic extends ActionBarActivity implements
 
 	private static final String TAG = "ActivityLevel3ShowTopic";
 	private static ActionBar mActionBar;
-	private static SectionsPagerAdapter mSectionsPagerAdapter;
+	public static SectionsPagerAdapter mSectionsPagerAdapter;
 	private static ViewPager mViewPager;
 	private Calendar beginDate;
 	private Calendar endDate;
@@ -58,7 +55,6 @@ public class ActivityLevel3ShowTopic extends ActionBarActivity implements
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 		Session.getInstance(this);
 
-		Session.getActualCommunicationInterface().getChartNames(false);
 		setContentView(R.layout.activity_thirdlevel_charts);
 
 		mSectionsPagerAdapter = new SectionsPagerAdapter(
@@ -298,9 +294,7 @@ public class ActivityLevel3ShowTopic extends ActionBarActivity implements
 			});
 			d.show();
 		} else if (item.getItemId() == R.id.action_datetime_refresh_button) {
-			Session.setProgressDialog(prepareProgressDialogForLoading());
-			Session.showProgressDialog();
-			mSectionsPagerAdapter.notifyDataSetChanged();
+			Session.getActualCommunicationInterface().getAllCharts(this,false, beginDate, endDate);
 		}
 		return super.onOptionsItemSelected(item);
 	}
@@ -313,11 +307,7 @@ public class ActivityLevel3ShowTopic extends ActionBarActivity implements
 
 		@Override
 		public Fragment getItem(int position) {
-			Session.setActualChartName(Session.getAllChartNames().get(position));
-			Session.getActualCommunicationInterface().getActualChart(beginDate, endDate);
-			if (position == getCount() - 1) {
-				Session.dismissAndMakeNullProgressDialog();
-			}
+			Session.setActualChart(Session.getAllCharts().get(position));
 			return new FragmentLevel3ShowTopic(Session.getActualChart());
 		}
 
@@ -350,14 +340,6 @@ public class ActivityLevel3ShowTopic extends ActionBarActivity implements
 
 	@Override
 	public void onTabUnselected(Tab tab, FragmentTransaction ft) {
-	}
-	
-	private ProgressDialog prepareProgressDialogForLoading() {
-		ProgressDialog pd = new ProgressDialog(ActivityLevel3ShowTopic.this);
-		pd.setCancelable(false);
-		pd.setTitle("Kérem várjon!");
-		pd.setMessage("Gráf adatok letöltése...");
-		return pd;
 	}
 
 }

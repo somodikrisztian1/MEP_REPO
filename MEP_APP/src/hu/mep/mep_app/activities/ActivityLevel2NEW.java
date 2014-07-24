@@ -72,6 +72,13 @@ public class ActivityLevel2NEW extends ActionBarActivity implements
 	}
 	
 	@Override
+	protected void onPause() {
+		super.onPause();
+		Log.d(TAG, "onPause running... stopContactRefresher()");
+		Session.stopContactRefresherThread();
+	}
+	
+	@Override
 	protected void onResume() {
 		super.onResume();
 		Session.getInstance(this);
@@ -105,21 +112,6 @@ public class ActivityLevel2NEW extends ActionBarActivity implements
 	}
 
 	@Override
-	public void onTopicSelected(Topic selectedTopic) {
-		Session.setActualTopic(selectedTopic);
-		Intent i = new Intent(this, ActivityLevel3ShowTopic.class);
-		startActivity(i);
-	}
-	
-	@Override
-	public void onRemoteMonitoringSelected(Place selectedPlace) {
-		Session.setActualRemoteMonitoring(selectedPlace);
-
-		Intent intent = new Intent(this, ActivityLevel3ShowRemoteMonitoring.class);
-		startActivity(intent);
-	}
-
-	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.activity_secondlevel_menu, menu);
@@ -146,10 +138,16 @@ public class ActivityLevel2NEW extends ActionBarActivity implements
 	}
 	
 	@Override
-	protected void onPause() {
-		super.onPause();
-		Log.d(TAG, "onPause running... stopContactRefresher()");
-		Session.stopContactRefresherThread();
-	}	
+	public void onTopicSelected(Topic selectedTopic) {
+		Session.setActualTopic(selectedTopic);
+		Session.getActualCommunicationInterface().getChartNames(this, false);
+	}
+	
+	@Override
+	public void onRemoteMonitoringSelected(Place selectedPlace) {
+		Session.setActualRemoteMonitoring(selectedPlace);
+		Session.getActualCommunicationInterface().getChartNames(this, true);
+		
+	}
 	
 }
