@@ -6,8 +6,12 @@ import hu.mep.communication.ICommunicator;
 import hu.mep.communication.RealCommunicator;
 import hu.mep.datamodells.charts.Chart;
 import hu.mep.datamodells.charts.ChartName;
+import hu.mep.datamodells.charts.OneLineAndTwoBarChartContainer;
 import hu.mep.datamodells.charts.SubChart;
+import hu.mep.datamodells.settings.Function;
+import hu.mep.datamodells.settings.Relay;
 import hu.mep.datamodells.settings.Settings;
+import hu.mep.datamodells.settings.Slider;
 import hu.mep.mep_app.R;
 
 import java.text.ParseException;
@@ -51,7 +55,10 @@ public class Session {
 	private static Topic actualTopic;
 
 	private static Place actualRemoteMonitoring;
+	private static Settings tempSettings;
 	private static Settings actualSettings;
+	
+	private static OneLineAndTwoBarChartContainer actualLineAndBarChartContainer;
 
 	private static volatile ChatContactList actualChatContactList;
 	private static ChatContact actualChatPartner;
@@ -71,8 +78,8 @@ public class Session {
 	private static ProgressDialog progressDialog;
 	private static AlertDialog alertDialog;
 
-	public static Calendar beginChartDate;
-	public static Calendar endChartDate;
+	public static Calendar beginChartDate = Calendar.getInstance();
+	public static Calendar endChartDate = Calendar.getInstance();
 	public static double minimalChartValue;
 	public static double maximalChartValue;
 
@@ -311,6 +318,33 @@ public class Session {
 
 	public static void setActualSettings(Settings actualSettings) {
 		Session.actualSettings = actualSettings;
+		for (Slider actSlider : Session.actualSettings.getSliders()) {
+			Log.e(TAG, "SLIDER: " + actSlider.label + " " + actSlider.value);
+		}
+		for (Relay actRelay : Session.getActualSettings().getRelays()) {
+			Log.e(TAG, "RELAY: " +actRelay.name + " " + (actRelay.status ? "on" : "off" ));
+		}
+		for (Function actFunc : Session.getActualSettings().getFunctions()) {
+			Log.e(TAG, "RELAY: " +actFunc.label + " " + (actFunc.status ? "on" : "off" ));
+		}
+	}
+
+	public static Settings getTempSettings() {
+		return tempSettings;
+	}
+
+	public static void setTempSettings(Settings tempSettings) {
+		Session.tempSettings = tempSettings;
+	}
+
+	public static OneLineAndTwoBarChartContainer getActualLineAndBarChartContainer() {
+		return actualLineAndBarChartContainer;
+	}
+
+	public static void setActualLineAndBarChartContainer(
+			OneLineAndTwoBarChartContainer actualLineAndBarChartContainer) {
+		Session.actualLineAndBarChartContainer = actualLineAndBarChartContainer;
+		Session.setActualChart(actualLineAndBarChartContainer.getLineChart());
 	}
 
 	// ==============================================================================
@@ -541,17 +575,13 @@ public class Session {
 	public static void refreshChartIntervals() {
 		double minValue = Double.MAX_VALUE;
 		double maxValue = Double.MIN_VALUE;
-		Calendar minDate = null;
-		Calendar maxDate = null;
+		Calendar minDate = Calendar.getInstance();;
+		Calendar maxDate = Calendar.getInstance();
 		try {
-			minDate = Calendar.getInstance();
-			maxDate = Calendar.getInstance();
-			maxDate.setTime(new SimpleDateFormat("yyyy.MM.dd hh:mm:ss")
-					.parse("1900.01.01 00:00:00"));
+			maxDate.setTime(new SimpleDateFormat("yyyy.MM.dd hh:mm:ss").parse("1900.01.01 00:00:00"));
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
-
 		Map.Entry<Calendar, Double> keyValuePair;
 		Calendar date;
 		Double value;
@@ -567,10 +597,10 @@ public class Session {
 							date = keyValuePair.getKey();
 							value = keyValuePair.getValue();
 							if (date.after(maxDate)) {
-								maxDate = date;
+								maxDate.setTime(date.getTime());
 							}
 							if (date.before(minDate)) {
-								minDate = date;
+								minDate.setTime(date.getTime());
 							}
 							if (value > maxValue) {
 								maxValue = value;
@@ -580,20 +610,13 @@ public class Session {
 							}
 						}
 					}
-					endChartDate = maxDate;
-					beginChartDate = minDate;
+					endChartDate.setTime(maxDate.getTime());
+					beginChartDate.setTime(minDate.getTime());
 					maximalChartValue = maxValue;
 					minimalChartValue = minValue;
-					SimpleDateFormat formatter = new SimpleDateFormat(
-							"yyyy-MM-dd_HH:mm");
-					Log.d("maximalChartDate",
-							""
-									+ formatter.format(endChartDate
-											.getTimeInMillis()));
-					Log.d("minimalChartDate",
-							""
-									+ formatter.format(beginChartDate
-											.getTimeInMillis()));
+					SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm");
+					Log.d("maximalChartDate", "" + formatter.format(endChartDate.getTime()));
+					Log.d("minimalChartDate", "" + formatter.format(beginChartDate.getTime()));
 					Log.d("maximalChartValue", "" + maximalChartValue);
 					Log.d("minimalChartValue", "" + minimalChartValue);
 				}

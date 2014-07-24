@@ -1,24 +1,28 @@
 package hu.mep.mep_app;
 
+import hu.mep.utils.adapters.SettingsExpandableListAdapter;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
+import android.widget.ExpandableListView;
 
 public class FragmentLevel3ShowSettings extends Fragment {
 	
-	ListView listview;
+	public static SettingsExpandableListAdapter adapter;
 	
-	// TODO! Listview feltöltése sliderekkel, stb.
+	public FragmentLevel3ShowSettings() {
+	}
+	
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 
 		View rootView = inflater.inflate(R.layout.fragment_thirdlevel_settings, container, false);
-		listview = (ListView) rootView.findViewById(R.id.fragment_thirdlevel_settings_listview);
 		
-		//listview.setAdapter(); FOLYTATÁSA KÖVETKEZIK!
+		ExpandableListView listView = (ExpandableListView) rootView.findViewById(R.id.fragment_thirdlevel_settings_listview);
+		adapter  = new SettingsExpandableListAdapter(getActivity());
+		listView.setAdapter(adapter);
 		
 		return rootView;
 	}

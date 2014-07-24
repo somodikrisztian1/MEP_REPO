@@ -78,8 +78,7 @@ public class ChartDeserializer implements JsonDeserializer<Chart> {
 							.entrySet()) {
 						Calendar actualDate = Calendar.getInstance();
 						try {
-							actualDate.setTime(dateFormatter.parse(actData
-									.getKey()));
+							actualDate.setTime(dateFormatter.parse(actData.getKey()));
 							//CalendarPrinter.logCalendar(TAG, actualDate, actData.getValue().getAsDouble());
 						} catch (ParseException e) {
 							e.printStackTrace();

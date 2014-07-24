@@ -24,12 +24,9 @@ public class FragmentLevel2Topics extends Fragment {
 			Bundle savedInstanceState) {
 		View v = inflater.inflate(R.layout.fragment_secondlevel_topics, container, false);
 		
-		ExpandableListView listview = (ExpandableListView) v
-				.findViewById(R.id.fragment_topics_expandable_listview);
+		ExpandableListView listview = (ExpandableListView) v.findViewById(R.id.fragment_topics_expandable_listview);
 
-		adapter = new TopicsExpandableListAdapter(getActivity(),
-				Session.getTopicsList(),
-				fragmentEventHandler);
+		adapter = new TopicsExpandableListAdapter(getActivity(), Session.getTopicsList(), fragmentEventHandler);
 		listview.setAdapter(adapter);
 
 		return v;

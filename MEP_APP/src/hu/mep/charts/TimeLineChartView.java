@@ -27,7 +27,7 @@ public class TimeLineChartView extends DemoView {
 	private static final LegendItemCollection myColorPalette = new LegendItemCollection();
 	private static final SolidColor[] colorPalette = new SolidColor[] {
 	/* http://www.rapidtables.com/web/color/RGB_Color.htm */
-	new SolidColor(Color.rgb(0, 0, 205)), // MEDIUM BLUE
+			new SolidColor(Color.rgb(0, 0, 205)), // MEDIUM BLUE
 			new SolidColor(Color.rgb(255, 140, 0)), // DARK ORANGE
 			new SolidColor(Color.rgb(0, 100, 0)), // DARK GREEN
 			new SolidColor(Color.rgb(255, 0, 0)), // RED
@@ -40,7 +40,6 @@ public class TimeLineChartView extends DemoView {
 			new SolidColor(Color.rgb(75, 0, 130)), // INDIGO
 			new SolidColor(Color.rgb(128, 128, 0)), // OLIVE
 			new SolidColor(Color.rgb(0, 128, 128)), // TEAL
-
 			new SolidColor(Color.rgb(0, 255, 0)) // LIME
 
 	};
@@ -49,16 +48,10 @@ public class TimeLineChartView extends DemoView {
 		super(context);
 		mChart = chart;
 
-//		for (int i = 0; i < 15; ++i) {
-//			myColorPalette.add(new LegendItem("1", new SolidColor(Color.rgb(
-//					17 * i, 17 * i, 17 * i))));
-//		}
-
 		final AFreeChart aChart = createChart(
 				TimeSeriesAdapter.getTimeSeriesFromChart(mChart), "", "",
 				mChart.getyAxisTitle());
 		setChart(aChart);
-
 	}
 
 	private static AFreeChart createChart(XYDataset dataset, String title,
