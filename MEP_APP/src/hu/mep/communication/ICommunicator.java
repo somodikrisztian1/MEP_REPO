@@ -29,6 +29,9 @@ public interface ICommunicator {
 	public void getGalleryURLsAndPictures(Activity activity);
 
 	public void getAllCharts(Activity activity,	boolean forRemoteMonitoring, Calendar beginDate, Calendar endDate);
+
+	public void getSolarPanelJson(Activity activity, Calendar beginDate,
+			Calendar endDate);
 	
 	
 }

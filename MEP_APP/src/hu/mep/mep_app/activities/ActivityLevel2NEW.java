@@ -146,8 +146,11 @@ public class ActivityLevel2NEW extends ActionBarActivity implements
 	@Override
 	public void onRemoteMonitoringSelected(Place selectedPlace) {
 		Session.setActualRemoteMonitoring(selectedPlace);
-		Session.getActualCommunicationInterface().getChartNames(this, true);
-		
+		if(selectedPlace.isSolarPanel()) {
+			Session.getActualCommunicationInterface().getSolarPanelJson(this, null, null);
+		} else {
+			Session.getActualCommunicationInterface().getChartNames(this, true);
+		}
 	}
 	
 }

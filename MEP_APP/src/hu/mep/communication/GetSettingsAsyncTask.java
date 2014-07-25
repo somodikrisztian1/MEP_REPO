@@ -52,13 +52,15 @@ public class GetSettingsAsyncTask extends AsyncTask<Void, Void, Void> {
 		
 		String response = RealCommunicator.dohttpGet(fullURI);
 		
+		Log.e(TAG, response);
+		
 		GsonBuilder builder = new GsonBuilder();
 		builder.registerTypeAdapter(Settings.class, new SettingsDeserializer());
 		Gson gson = builder.create();
 		Settings settings = gson.fromJson(response, Settings.class);
 		
 		Session.setActualSettings(settings);
-		
+		Session.setTempSettings(settings);
 		return null;
 	}
 	

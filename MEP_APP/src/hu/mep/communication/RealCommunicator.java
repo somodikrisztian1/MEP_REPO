@@ -3,6 +3,7 @@ package hu.mep.communication;
 import hu.mep.communication.charts.GetActualChartAsyncTask;
 import hu.mep.communication.charts.GetChartNamesAsyncTask;
 import hu.mep.communication.charts.GetChartsAsyncTask;
+import hu.mep.communication.charts.GetSolarPanelJsonAsyncTask;
 import hu.mep.datamodells.Session;
 
 import java.io.BufferedReader;
@@ -190,30 +191,6 @@ public class RealCommunicator implements ICommunicator {
 		GetChartNamesAsyncTask chartNameGetter = new GetChartNamesAsyncTask(activity, MainURL, forRemoteMonitoring);
 		chartNameGetter.execute();
 	}
-	/*
-	@Override
-	public void getActualChart() {
-		GetActualChartAsyncTask getChart = new GetActualChartAsyncTask(context, MainURL);
-		try {
-			getChart.execute().get();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		} catch (ExecutionException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	@Override
-	public void getActualChart(Calendar beginDate, Calendar endDate) {
-		GetActualChartAsyncTask getChart = new GetActualChartAsyncTask(context, MainURL, beginDate, endDate);
-		try {
-			getChart.execute().get();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		} catch (ExecutionException e) {
-			e.printStackTrace();
-		}
-	}*/
 
 	@Override
 	public void getAllCharts(Activity activity, boolean forRemoteMonitoring, Calendar beginDate, Calendar endDate) {
@@ -221,6 +198,12 @@ public class RealCommunicator implements ICommunicator {
 		chartsGetter.execute();
 		
 	};
+	
+	@Override
+	public void getSolarPanelJson(Activity activity, Calendar beginDate, Calendar endDate) {
+		GetSolarPanelJsonAsyncTask chartGetter = new GetSolarPanelJsonAsyncTask(activity, MainURL, beginDate, endDate);
+		chartGetter.execute();
+	}
 
 
 	@Override
