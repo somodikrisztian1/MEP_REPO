@@ -62,16 +62,14 @@ public class ActivityLevel1 extends ActionBarActivity implements
 	public Button loginButton;
 	private ArrayAdapter<String> drawerAdapter;
 
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
+
 		if (Session.getInstance(this).isTablet()) {
 			Log.e(TAG, "IT'S A TABLET");
-			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE); 
-		}
-		else {
+			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+		} else {
 			Log.e(TAG, "IT'S NOT A TABLET");
 			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 		}
@@ -84,9 +82,9 @@ public class ActivityLevel1 extends ActionBarActivity implements
 		firstActivityDrawerLayout = (DrawerLayout) findViewById(R.id.first_activity_drawer_layout);
 		firstActivityDrawerListView = (ListView) findViewById(R.id.first_activity_drawer_listview);
 
-		//firstActivityDrawerListView.setBackgroundColor(getResources().getColor(R.color.white) );
-		
-		
+		// firstActivityDrawerListView.setBackgroundColor(getResources().getColor(R.color.white)
+		// );
+
 		firstActivityDrawerStrings = getResources().getStringArray(
 				R.array.activity_level1_drawer_items_list);
 
@@ -152,15 +150,18 @@ public class ActivityLevel1 extends ActionBarActivity implements
 	protected void onResume() {
 		super.onResume();
 		if (actualFragmentNumber == DRAWER_LIST_LOGIN_LOGOUT_NUMBER) {
-			fragmentManager.popBackStack("addLogin", FragmentManager.POP_BACK_STACK_INCLUSIVE);
+			fragmentManager.popBackStack("addLogin",
+					FragmentManager.POP_BACK_STACK_INCLUSIVE);
 			actualFragmentNumber = DRAWER_LIST_MAIN_PAGE_NUMBER;
 		}
 	}
 
 	/* The click listener for ListView in the navigation drawer */
-	private class DrawerItemClickListener implements ListView.OnItemClickListener {
+	private class DrawerItemClickListener implements
+			ListView.OnItemClickListener {
 		@Override
-		public void onItemClick(AdapterView<?> parent, View view, int position,	long id) {
+		public void onItemClick(AdapterView<?> parent, View view, int position,
+				long id) {
 			handleDrawerClick(position);
 		}
 	}
@@ -169,7 +170,8 @@ public class ActivityLevel1 extends ActionBarActivity implements
 	public void onBackPressed() {
 		super.onBackPressed();
 		if (actualFragmentNumber == DRAWER_LIST_LOGIN_LOGOUT_NUMBER) {
-			Log.e(TAG, "onBackPressed() and actualFragmentNumber is " + actualFragmentNumber);
+			Log.e(TAG, "onBackPressed() and actualFragmentNumber is "
+					+ actualFragmentNumber);
 			// fragmentManager.popBackStack("login", 0);
 		}
 	}
@@ -178,10 +180,12 @@ public class ActivityLevel1 extends ActionBarActivity implements
 
 		actualFragmentNumber = position;
 		Fragment newFragment = null;
-		/*Bundle args;*/
+		/* Bundle args; */
 		FragmentTransaction ft = fragmentManager.beginTransaction();
-		/*Toast waitForIt = Toast.makeText(context,
-				"Under construction...Try it later! :)", Toast.LENGTH_SHORT);*/
+		/*
+		 * Toast waitForIt = Toast.makeText(context,
+		 * "Under construction...Try it later! :)", Toast.LENGTH_SHORT);
+		 */
 		boolean readyForFragmentLoading = false;
 		switch (actualFragmentNumber) {
 
@@ -192,9 +196,11 @@ public class ActivityLevel1 extends ActionBarActivity implements
 			break;
 		case DRAWER_LIST_GALLERY_NUMBER:
 			if (NetThread.isOnline(this)) {
-				Session.getActualCommunicationInterface().getGalleryURLsAndPictures(this);
+				Session.getActualCommunicationInterface()
+						.getGalleryURLsAndPictures(this);
 			} else {
-				Session.setAlertDialog(AlertDialogFactory.prepareAlertDialogForNoConnection(ActivityLevel1.this));
+				Session.setAlertDialog(AlertDialogFactory
+						.prepareAlertDialogForNoConnection(ActivityLevel1.this));
 				Session.showAlertDialog();
 			}
 			break;
@@ -268,9 +274,9 @@ public class ActivityLevel1 extends ActionBarActivity implements
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		Log.e("FirstActivity", "onOptionsItemSelected");
-				switch (item.getItemId()) {
+		switch (item.getItemId()) {
 		case R.id.action_login:
-			if(!Session.isAnyUserLoggedIn()) {
+			if (!Session.isAnyUserLoggedIn()) {
 				Session.logOffActualUser();
 			}
 
@@ -282,9 +288,11 @@ public class ActivityLevel1 extends ActionBarActivity implements
 
 				args = new Bundle();
 				actualFragmentNumber = DRAWER_LIST_LOGIN_LOGOUT_NUMBER;
-				args.putInt(FragmentLevel1MainScreen.CLICKED_DRAWER_ITEM_NUMBER, actualFragmentNumber);
+				args.putInt(
+						FragmentLevel1MainScreen.CLICKED_DRAWER_ITEM_NUMBER,
+						actualFragmentNumber);
 				newFragment.setArguments(args);
-				
+
 				ft.replace(R.id.first_activity_frame, newFragment);
 				ft.addToBackStack("addLogin");
 				ft.commit();
@@ -304,13 +312,16 @@ public class ActivityLevel1 extends ActionBarActivity implements
 	}
 
 	@Override
-	public boolean onLoginButtonPressed(final String username, final String password) {
-		
+	public boolean onLoginButtonPressed(final String username,
+			final String password) {
+
 		if (NetThread.isOnline(this)) {
-			Log.e(TAG, "prepareProgressDialogForLoading1");		
-			Session.getActualCommunicationInterface().authenticateUser(ActivityLevel1.this, username, password);
+			Log.e(TAG, "prepareProgressDialogForLoading1");
+			Session.getActualCommunicationInterface().authenticateUser(
+					ActivityLevel1.this, username, password);
 		} else {
-			Session.setAlertDialog(AlertDialogFactory.prepareAlertDialogForNoConnection(ActivityLevel1.this));
+			Session.setAlertDialog(AlertDialogFactory
+					.prepareAlertDialogForNoConnection(ActivityLevel1.this));
 			Session.showAlertDialog();
 		}
 		return false;
@@ -323,6 +334,5 @@ public class ActivityLevel1 extends ActionBarActivity implements
 		pd.setMessage("Képek letöltése folyamatban...");
 		return pd;
 	}
-
 
 }
