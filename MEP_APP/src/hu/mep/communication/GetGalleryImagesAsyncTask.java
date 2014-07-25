@@ -1,6 +1,7 @@
 package hu.mep.communication;
 
 import hu.mep.datamodells.Session;
+import hu.mep.mep_app.activities.ActivityLevel1;
 import hu.mep.mep_app.activities.ActivityLevel1Gallery;
 
 import java.io.IOException;
@@ -9,6 +10,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -24,16 +26,23 @@ public class GetGalleryImagesAsyncTask extends AsyncTask<Void, Void, Void> {
 	String hostURI;
 	String resourceURI;
 	Activity activity;
+	ProgressDialog pd;
 
 	public GetGalleryImagesAsyncTask(Activity activity, String hostURI) {
 		this.activity = activity;
 		this.hostURI = hostURI;
-
+		/*
+		pd = new ProgressDialog(this.activity);
+		pd.setCancelable(false);
+		pd.setMessage("Képek letöltése folyamatban...");
+		*/
 	}
 
 	@Override
 	protected void onPreExecute() {
 		Log.e(TAG, "onPreExecute() running");
+		/*Session.setProgressDialog(pd);
+		Session.showProgressDialog();*/
 		resourceURI = "images/iphone/";
 	}
 
@@ -110,7 +119,6 @@ public class GetGalleryImagesAsyncTask extends AsyncTask<Void, Void, Void> {
 					bm = Bitmap.createBitmap(bm, 0, 0, pictureWidth, pictureHeight);
 				}
 				Session.addPictureToGallery(bm);
-				//bm.recycle();
 			}
 		} catch (IOException e) {
 			e.printStackTrace();

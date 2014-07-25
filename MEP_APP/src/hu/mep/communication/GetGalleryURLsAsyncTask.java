@@ -30,8 +30,7 @@ public class GetGalleryURLsAsyncTask extends AsyncTask<Void, Void, Boolean> {
 		
 		this.pd = new ProgressDialog(this.activity);
 		this.pd.setCancelable(false);
-		this.pd.setTitle("Kérem várjon!");
-		this.pd.setMessage("Képek letöltése folyamatban");
+		this.pd.setMessage("Képek betöltése...");
 		
 	}
 

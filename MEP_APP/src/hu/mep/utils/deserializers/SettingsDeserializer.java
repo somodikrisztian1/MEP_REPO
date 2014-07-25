@@ -28,9 +28,9 @@ public class SettingsDeserializer implements JsonDeserializer<Settings> {
 	public Settings deserialize(JsonElement element, Type type,
 			JsonDeserializationContext context) throws JsonParseException {
 
-		List<Slider> sliders = new ArrayList<Slider>();
-		List<Relay> relays = new ArrayList<Relay>();
-		List<Function> functions = new ArrayList<Function>();
+		List<Slider> sliders = null;
+		List<Relay> relays = null;
+		List<Function> functions = null;
 
 		if (element.isJsonObject()) {
 			JsonObject rootObject = element.getAsJsonObject();
@@ -43,9 +43,7 @@ public class SettingsDeserializer implements JsonDeserializer<Settings> {
 		Session.setActualSettings(result);
 		return null;
 	}
-
 	
-
 	private List<Slider> readSliders(JsonObject rootObject) {
 
 		List<Slider> sliders = new ArrayList<Slider>();

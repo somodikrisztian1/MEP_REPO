@@ -204,6 +204,12 @@ public class Session {
 
 		Log.e(TAG, "setActualChatPartner(null);");
 		setActualChatPartner(null);
+		
+		if(actualChatContactList != null) {
+			for (ChatContact actualContact : Session.getActualChatContactList().contacts) {
+				actualContact.getProfilePicture().recycle();
+			}
+		}
 
 		Log.e(TAG, "setActualChatContactList(null);");
 		setActualChatContactList(null);
@@ -318,12 +324,15 @@ public class Session {
 
 	public static void setActualSettings(Settings actualSettings) {
 		Session.actualSettings = actualSettings;
+		Log.e(TAG, "SLIDERS size = " + Session.getActualSettings().getSliders().size());
 		for (Slider actSlider : Session.actualSettings.getSliders()) {
 			Log.e(TAG, "SLIDER: " + actSlider.label + " " + actSlider.value);
 		}
+		Log.e(TAG, "RELAYS size = " + Session.getActualSettings().getRelays().size());
 		for (Relay actRelay : Session.getActualSettings().getRelays()) {
 			Log.e(TAG, "RELAY: " +actRelay.name + " " + (actRelay.status ? "on" : "off" ));
 		}
+		Log.e(TAG, "FUNCTIONS size = " + Session.getActualSettings().getFunctions().size());
 		for (Function actFunc : Session.getActualSettings().getFunctions()) {
 			Log.e(TAG, "RELAY: " +actFunc.label + " " + (actFunc.status ? "on" : "off" ));
 		}

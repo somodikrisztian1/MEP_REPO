@@ -316,13 +316,4 @@ public class ActivityLevel1 extends ActionBarActivity implements
 		return false;
 	}
 
-	private ProgressDialog prepareProgressDialogForLoading3() {
-		ProgressDialog pd = new ProgressDialog(ActivityLevel1.this);
-		pd.setCancelable(false);
-		pd.setTitle("Kérem várjon!");
-		pd.setMessage("Képek letöltése folyamatban...");
-		return pd;
-	}
-
-
 }
