@@ -7,11 +7,10 @@
     android:layout_marginLeft="8dp"
     android:gravity="left"
     android:paddingLeft="32dp"
-    android:paddingTop="8dp"
-    android:paddingBottom="8dp"
+    android:paddingBottom="15dp"
+    android:paddingTop="15dp"
     android:text="TestGroup"
     android:textAlignment="textEnd"
-    android:textSize="20sp"
-    android:textStyle="bold" >
+    android:textSize="20sp" >
 
 </CheckedTextView>
