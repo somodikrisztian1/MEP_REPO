@@ -37,10 +37,9 @@ public class FragmentLevel2Topics extends Fragment {
 		DisplayMetrics metrics = new DisplayMetrics();
 	    getActivity().getWindowManager().getDefaultDisplay().getMetrics(metrics);
 	    
-	    
-	    int height = metrics.heightPixels; 
+//	    int height = metrics.heightPixels; 
 
-	    listview.setIndicatorBounds(GetPixelFromDips(0), GetPixelFromDips( 20 ) );  
+	    listview.setIndicatorBounds(GetPixelFromDips(10), GetPixelFromDips( 20 ) );  
 
 		return v;
 	}
