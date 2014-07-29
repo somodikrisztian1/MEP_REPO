@@ -1,8 +1,13 @@
 package hu.mep.utils.adapters;
 
+import java.util.List;
+
 import org.afree.data.time.Minute;
 
 import hu.mep.datamodells.Session;
+import hu.mep.datamodells.settings.Function;
+import hu.mep.datamodells.settings.Relay;
+import hu.mep.datamodells.settings.Slider;
 import hu.mep.mep_app.R;
 import android.app.Activity;
 import android.graphics.Color;
@@ -21,11 +26,14 @@ import android.widget.TextView;
 
 public class SettingsExpandableListAdapter extends BaseExpandableListAdapter {
 
+	private static final String TAG = "SettingsExpandableListAdapter";
 	private final String[] titles = { "Beállítások", "Relék", "Funkciók" };
 	public LayoutInflater inflater;
+	private Activity activity;
 
 	public SettingsExpandableListAdapter(Activity activity) {
-		this.inflater = activity.getLayoutInflater();
+		this.activity = activity;
+		this.inflater = this.activity.getLayoutInflater();
 	}
 	
 	@Override
@@ -45,18 +53,17 @@ public class SettingsExpandableListAdapter extends BaseExpandableListAdapter {
 	}
 
 	@Override
-	public View getChildView(int groupPosition, final int childPosition,
+	public View getChildView(final int groupPosition, final int childPosition,
 			boolean isLastChild, View convertView, ViewGroup parent) {
 		
 		if(groupPosition == 0) {
-			
-			if(convertView == null) {
-				convertView = inflater.inflate(R.layout.settings_listitem_slider, parent, false);
-			}
+			Log.e(TAG, "groupPosition = 0");
+			convertView = inflater.inflate(R.layout.settings_listitem_slider, parent, false);
+			//Log.e(TAG, "findViews...");
 			TextView nameTextView = (TextView)convertView.findViewById(R.id.fragment_thirdlevel_setting_slider_name);
-			TextView valueTextView = (TextView)convertView.findViewById(R.id.fragment_thirdlevel_setting_slider_value);
+			final TextView valueTextView = (TextView)convertView.findViewById(R.id.fragment_thirdlevel_setting_slider_value);
 			SeekBar valueSeekBar = (SeekBar)convertView.findViewById(R.id.fragment_thirdlevel_settings_slider_seekbar);
-			
+			//Log.e(TAG, "set values...");
 			nameTextView.setText(Session.getActualSettings().getSliders().get(childPosition).label);
 			valueTextView.setText(Session.getActualSettings().getSliders().get(childPosition).value + " C°");
 			final int lowerBound = (int)Session.getActualSettings().getSliders().get(childPosition).minValue;
@@ -66,33 +73,34 @@ public class SettingsExpandableListAdapter extends BaseExpandableListAdapter {
 			valueSeekBar.setProgress(initProgressValues - lowerBound);
 			valueSeekBar.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
 				
+				private int lastValue;
+				
 				@Override
-				public void onStopTrackingTouch(SeekBar seekBar) {
-					// TODO! ADATOK FELTÖLTÉSE!!!!					
-					Log.e("onStopTrackingTouch", "itt kell majd feltölteni az adatokat");
+				public void onStopTrackingTouch(SeekBar seekBar) {	
+					Session.getTempSettings().getSliders().get(childPosition).value = lastValue;
+					Session.getActualCommunicationInterface().sendSettings(activity);
 				}
 				
 				@Override
 				public void onStartTrackingTouch(SeekBar seekBar) {
-					Log.e("onStartTrackingTouch", childPosition + ". slider húzgálva...");
+					/*Log.e("onStartTrackingTouch", childPosition + ". slider húzgálva...");*/
 				}
 				
 				@Override
-				public void onProgressChanged(SeekBar seekBar, int progress,
-						boolean fromUser) {
-					Session.getTempSettings().getSliders().get(childPosition).value = progress + lowerBound;
-					Log.e("onProgressChanged", "new value: " + progress+lowerBound);
+				public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+					lastValue = progress + lowerBound;
+					valueTextView.setText(lastValue + " C°");
 				}
 			});
 			
 		} else if(groupPosition == 1) {
-			if(convertView == null) {
-				convertView = inflater.inflate(R.layout.settings_listitem_relay, parent, false);
-			}
+			Log.e(TAG, "groupPosition = 1");
+			convertView = inflater.inflate(R.layout.settings_listitem_relay, parent, false);
+			Log.e(TAG, "findViews...");
 			TextView nameTextView = (TextView) convertView.findViewById(R.id.fragment_thirdlevel_setting_relay_name);
 			TextView statusTextView = (TextView) convertView.findViewById(R.id.fragment_thirdlevel_setting_relay_status);
+			Log.e(TAG, "set values...");
 			nameTextView.setText(Session.getActualSettings().getRelays().get(childPosition).name);
-			
 			boolean on = Session.getActualSettings().getRelays().get(childPosition).status;
 			String statusText = ( on ? "on" : "off");
 			if(on) {
@@ -103,18 +111,20 @@ public class SettingsExpandableListAdapter extends BaseExpandableListAdapter {
 			statusTextView.setText(statusText);
 		}
 		else {
-			if(convertView == null) {
-				convertView = inflater.inflate(R.layout.settings_listitem_function, parent, false);
-			}
+			Log.e(TAG, "groupPosition != 0 && groupPosition != 1 ... maybe kettő lesz az :D");
+			convertView = inflater.inflate(R.layout.settings_listitem_function, parent, false);
+			Log.e(TAG, "findViews...");
 			TextView nameTextView = (TextView) convertView.findViewById(R.id.settings_listitem_function_name_textview);
 			ToggleButton onOffButton = (ToggleButton) convertView.findViewById(R.id.settings_listitem_function_value_switch);
+			Log.e(TAG, "set values...");
 			nameTextView.setText(Session.getActualSettings().getFunctions().get(childPosition).label);
 			onOffButton.setChecked(Session.getActualSettings().getFunctions().get(childPosition).status);
 			onOffButton.setOnCheckedChangeListener(new OnCheckedChangeListener() {				
 				@Override
 				public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-					Session.getTempSettings().getFunctions().get(childPosition).status = isChecked;					
-					// TODO! KÜLDÉS!
+					/*Log.e(TAG, ((Function)getChild(groupPosition, childPosition)).label + " funkció állapota megváltoztatba erre: " + (isChecked ? "on" : "off"));*/
+					Session.getTempSettings().getFunctions().get(childPosition).status = isChecked;
+					Session.getActualCommunicationInterface().sendSettings(activity);
 				}
 			});
 		}
@@ -124,11 +134,11 @@ public class SettingsExpandableListAdapter extends BaseExpandableListAdapter {
 	@Override
 	public int getChildrenCount(int groupPosition) {
 		if(groupPosition == 0) {
-			return Session.getActualSettings().getSliders().size();
+			return ((List<Slider>)getGroup(groupPosition)).size();
 		} else if(groupPosition == 1) {
-			return Session.getActualSettings().getRelays().size();
+			return ((List<Relay>)getGroup(groupPosition)).size();
 		} else {
-			return Session.getActualSettings().getFunctions().size();
+			return ((List<Function>)getGroup(groupPosition)).size();
 		}
 	}
 	
@@ -186,4 +196,9 @@ public class SettingsExpandableListAdapter extends BaseExpandableListAdapter {
 		return false;
 	}
 	
+	@Override
+	public int getChildTypeCount() {
+		return titles.length;
+	}
+
 }

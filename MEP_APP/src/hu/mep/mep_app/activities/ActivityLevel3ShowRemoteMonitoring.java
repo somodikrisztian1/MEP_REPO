@@ -24,6 +24,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBar.Tab;
 import android.support.v7.app.ActionBar.TabListener;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -350,23 +351,42 @@ public class ActivityLevel3ShowRemoteMonitoring extends ActionBarActivity
 
 		@Override
 		public Fragment getItem(int position) {
+		
 			if (Session.getActualRemoteMonitoring().isSolarPanel()) {
 				if (position == 0) {
+					Log.e(TAG, "lineChartos Fragment");
 					return new FragmentLevel3ShowTopic(Session
 							.getActualLineAndBarChartContainer().getLineChart());
 				} else if (position == 1) {
+					Log.e(TAG, "havi bartChartos Fragment");
 					return new FragmentLevel3ShowBarChart(Session
 							.getActualLineAndBarChartContainer().getMonthly());
 				} else {
+					Log.e(TAG, "éves bartChartos Fragment");
 					return new FragmentLevel3ShowBarChart(Session
 							.getActualLineAndBarChartContainer().getAnnually());
 				}
 			} else {
-				if (position < getCount() - 1) {
-					Session.setActualChart(Session.getAllCharts().get(position));
-					return new FragmentLevel3ShowTopic(Session.getActualChart());
+				if(Session.getActualRemoteMonitoring().getID().equals("10.1E4C2F020800")) {
+					if (position == 0) {
+						return null;
+					} else if((position > 0) && (position < getCount() - 1 )) {
+						Log.e(TAG, "lineChartos Fragment");
+						Session.setActualChart(Session.getAllCharts().get(position));
+						return new FragmentLevel3ShowTopic(Session.getActualChart());
+					} else {
+						Log.e(TAG, "settingses Fragment");
+						return new FragmentLevel3ShowSettings();
+					}
 				} else {
-					return new FragmentLevel3ShowSettings();
+					if (position < getCount() - 1) {
+						Log.e(TAG, "lineChartos Fragment");
+						Session.setActualChart(Session.getAllCharts().get(position));
+						return new FragmentLevel3ShowTopic(Session.getActualChart());
+					} else {
+						Log.e(TAG, "settingses Fragment");
+						return new FragmentLevel3ShowSettings();
+					}
 				}
 			}
 		}
@@ -374,8 +394,10 @@ public class ActivityLevel3ShowRemoteMonitoring extends ActionBarActivity
 		@Override
 		public int getCount() {
 			if (Session.getActualRemoteMonitoring().isSolarPanel()) {
+				Log.e(TAG, "3 tab lesz");
 				return 3;
 			} else {
+				Log.e(TAG, Session.getAllChartNames().size() + " tab lesz");
 				return Session.getAllChartNames().size();
 			}
 		}
@@ -384,13 +406,17 @@ public class ActivityLevel3ShowRemoteMonitoring extends ActionBarActivity
 		public CharSequence getPageTitle(int position) {
 			if (Session.getActualRemoteMonitoring().isSolarPanel()) {
 				if (position == 0) {
+					Log.e(TAG, "tabnév: Napi");
 					return "Napi";
 				} else if (position == 1) {
+					Log.e(TAG, "tabnév: Havi");
 					return "Havi";
 				} else {
+					Log.e(TAG, "tabnév: Éves");
 					return "Éves";
 				}
 			} else {
+				Log.e(TAG, "tabnév: " + Session.getAllChartNames().get(position).getName());
 				return Session.getAllChartNames().get(position).getName();
 			}
 		}

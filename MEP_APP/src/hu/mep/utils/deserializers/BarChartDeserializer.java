@@ -55,8 +55,7 @@ public class BarChartDeserializer implements JsonDeserializer<OneLineAndTwoBarCh
 		}
 		
 		OneLineAndTwoBarChartContainer result = new OneLineAndTwoBarChartContainer(lineChart, monthly, annual);
-		Session.setActualLineAndBarChartContainer(result);
-		return null;
+		return result;
 	}
 
 	private BarChart readAnnual(JsonElement annualRoot) {
@@ -132,8 +131,7 @@ public class BarChartDeserializer implements JsonDeserializer<OneLineAndTwoBarCh
 					}
 					/* actualSubChart = new SubChart(actualChartLabel, actualChartDatas); */
 					subchartsForResult.add(new SubChart(actualChartLabel, actualChartDatas));
-					actualChartDatas = null;
-
+					actualChartDatas.clear();
 				}
 			}
 			result.setSubCharts(subchartsForResult);

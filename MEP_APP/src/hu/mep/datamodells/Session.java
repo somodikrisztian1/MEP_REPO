@@ -45,9 +45,9 @@ public class Session {
 	private static List<Bitmap> galleryImagesList = new ArrayList<Bitmap>();
 	private static Bitmap emptyProfilePicture;
 
-	private static boolean successfulRegistration = false;
+	/**private static boolean successfulRegistration = false;
 	private static String unsuccessfulRegistrationMessage = "";
-
+*/
 	private static User actualUser;
 	private static boolean isAnyUserLoggedIn = false;
 
@@ -116,7 +116,7 @@ public class Session {
 		return actualCommunicationInterface;
 	}
 
-	public static boolean isSuccessfulRegistration() {
+	/*public static boolean isSuccessfulRegistration() {
 		return successfulRegistration;
 	}
 
@@ -132,7 +132,7 @@ public class Session {
 			String unsuccessfulRegistrationMessage) {
 		Session.unsuccessfulRegistrationMessage = unsuccessfulRegistrationMessage;
 	}
-
+*/
 	// ==============================================================================
 	// GALLERY IMAGE URL + IMAGES
 	// ==============================================================================
@@ -322,9 +322,14 @@ public class Session {
 		return actualSettings;
 	}
 
-	public static void setActualSettings(Settings actualSettings) {
-		Session.actualSettings = actualSettings;
-		Log.e(TAG, "SLIDERS size = " + Session.getActualSettings().getSliders().size());
+	public static void setActualSettings(Settings newActualSettings) {
+		if(actualSettings != null) {
+			Session.actualSettings = newActualSettings;
+		} else {
+			Session.actualSettings = new Settings(newActualSettings.getSliders(), newActualSettings.getRelays(),
+					newActualSettings.getFunctions());
+		}
+		/*Log.e(TAG, "SLIDERS size = " + Session.getActualSettings().getSliders().size());
 		for (Slider actSlider : Session.actualSettings.getSliders()) {
 			Log.e(TAG, "SLIDER: " + actSlider.label + " " + actSlider.value);
 		}
@@ -335,15 +340,20 @@ public class Session {
 		Log.e(TAG, "FUNCTIONS size = " + Session.getActualSettings().getFunctions().size());
 		for (Function actFunc : Session.getActualSettings().getFunctions()) {
 			Log.e(TAG, "RELAY: " +actFunc.label + " " + (actFunc.status ? "on" : "off" ));
-		}
+		}*/
 	}
 
 	public static Settings getTempSettings() {
 		return tempSettings;
 	}
 
-	public static void setTempSettings(Settings tempSettings) {
-		Session.tempSettings = tempSettings;
+	public static void setTempSettings(Settings newTempSettings) {
+		if(tempSettings != null) {
+			Session.tempSettings = newTempSettings;
+		} else {
+			Session.tempSettings = new Settings(newTempSettings.getSliders(), newTempSettings.getRelays(),
+					newTempSettings.getFunctions());
+		}
 	}
 
 	public static OneLineAndTwoBarChartContainer getActualLineAndBarChartContainer() {
@@ -353,27 +363,9 @@ public class Session {
 	public static void setActualLineAndBarChartContainer(
 			OneLineAndTwoBarChartContainer actualLineAndBarChartContainer) {
 		Session.actualLineAndBarChartContainer = actualLineAndBarChartContainer;
-		Session.setActualChart(actualLineAndBarChartContainer.getLineChart());
+		Session.setActualChart(Session.actualLineAndBarChartContainer.getLineChart());
 	}
 
-	// ==============================================================================
-	// CONTACT REFRESHER + CHAT CONTACT LIST + ACTUAL CHAT PARTNER
-	// ==============================================================================
-	/*
-	 * public static void startContactRefresherAsyncTask() { Log.e(TAG,
-	 * "startContactRefresherAsyncTask");
-	 * 
-	 * if (contactRefresherAsyncTask == null) { contactRefresherAsyncTask = new
-	 * ContactListRefresherAsyncTask();
-	 * contactRefresherAsyncTask.execute(5000L); }
-	 * 
-	 * }
-	 * 
-	 * public static void stopContactRefresherAsyncTask() { Log.e(TAG,
-	 * "stopContactRefresherAsyncTask"); if (contactRefresherAsyncTask != null)
-	 * { contactRefresherAsyncTask.cancel(true); contactRefresherAsyncTask =
-	 * null; } }
-	 */
 	public static void startContactRefresherThread() {
 
 		if (contactRefresherThread.getState().equals(Thread.State.NEW)) {

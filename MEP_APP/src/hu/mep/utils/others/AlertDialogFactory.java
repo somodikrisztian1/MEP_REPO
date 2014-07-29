@@ -124,7 +124,7 @@ public class AlertDialogFactory {
 							@Override
 							public void onClick(DialogInterface dialog, int which) {
 								if(which == DialogInterface.BUTTON_POSITIVE) {
-									Session.getActualCommunicationInterface().registrateUser(fullname, email, username, password);
+									Session.getActualCommunicationInterface().registrateUser(act, fullname, email, username, password);
 									Session.dismissAndMakeNullAlertDialog();
 								}
 							}
