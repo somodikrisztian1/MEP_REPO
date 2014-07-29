@@ -1,6 +1,7 @@
 package hu.mep.communication;
 
 import hu.mep.datamodells.Session;
+import hu.mep.mep_app.NotificationService;
 import hu.mep.mep_app.activities.ActivityLevel2NEW;
 
 import java.util.concurrent.ExecutionException;
@@ -82,6 +83,7 @@ public class ActivityLevel2PreloaderAsyncTask extends AsyncTask<Void, Void, Void
 	
 		Session.dismissAndMakeNullProgressDialog();
 		Session.setAnyUserLoggedIn(true);
+		
 		
 		Intent i = new Intent(activity, ActivityLevel2NEW.class);
 		activity.startActivity(i);

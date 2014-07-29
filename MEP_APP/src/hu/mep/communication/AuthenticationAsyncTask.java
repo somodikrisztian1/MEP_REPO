@@ -2,6 +2,7 @@ package hu.mep.communication;
 
 import hu.mep.datamodells.Session;
 import hu.mep.datamodells.User;
+import hu.mep.mep_app.NotificationService;
 import hu.mep.utils.deserializers.UserDeserializer;
 import hu.mep.utils.others.AlertDialogFactory;
 import hu.mep.utils.others.MD5Encoder;
@@ -12,6 +13,7 @@ import java.net.HttpURLConnection;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -73,6 +75,7 @@ public class AuthenticationAsyncTask extends AsyncTask<Void, Void, Boolean> {
 			downloadProfilePictureForActualUser();
 			return true;
 		}
+		
 		Log.e(TAG, "doInBackground finished...");
 		return false;
 	}

@@ -3,42 +3,53 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
-    android:orientation="horizontal" >
+    android:orientation="vertical" >
 
-    <DatePicker
-        android:id="@+id/datePicker"
-        android:layout_width="0dp"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="3" />
+        android:layout_gravity="center_horizontal"
+        android:orientation="horizontal"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp" >
 
-    <TimePicker
-        android:id="@+id/timePicker"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="2"  />
-
-    <RelativeLayout
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_weight="1" >
-
-        <Button
-            android:id="@+id/datePickerSettedButton"
-            android:layout_width="wrap_content"
+        <DatePicker
+            android:id="@+id/datePicker"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:ems="5"
-            android:text="Kész" />
+            android:layout_weight="29" />
+
+        <TimePicker
+            android:id="@+id/timePicker"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="16" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:orientation="horizontal"
+        android:paddingTop="5dp" >
 
         <Button
             android:id="@+id/datePickerCancelButton"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/datePickerSettedButton"
-            android:gravity="center"
+            android:layout_marginLeft="15dp"
+            android:layout_weight="1"
             android:ems="5"
             android:text="Mégse" />
-    </RelativeLayout>
+
+        <Button
+            android:id="@+id/datePickerSettedButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="15dp"
+            android:layout_weight="1"
+            android:ems="5"
+            android:text="Kész" />
+    </LinearLayout>
 
 </LinearLayout>
