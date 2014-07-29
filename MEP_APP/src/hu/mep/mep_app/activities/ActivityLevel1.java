@@ -11,7 +11,6 @@ import hu.mep.mep_app.FragmentLevel1ResearchCenterScreen;
 import hu.mep.mep_app.R;
 import hu.mep.utils.others.AlertDialogFactory;
 import hu.mep.utils.others.FragmentLevel1EventHandler;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
@@ -315,14 +314,4 @@ public class ActivityLevel1 extends ActionBarActivity implements
 		}
 		return false;
 	}
-
-
-	private ProgressDialog prepareProgressDialogForLoading3() {
-		ProgressDialog pd = new ProgressDialog(ActivityLevel1.this);
-		pd.setCancelable(false);
-		pd.setTitle("Kérem várjon!");
-		pd.setMessage("Képek letöltése folyamatban...");
-		return pd;
-	}
-
 }
