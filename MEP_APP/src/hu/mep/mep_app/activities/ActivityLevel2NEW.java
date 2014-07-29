@@ -4,6 +4,7 @@ import hu.mep.datamodells.Place;
 import hu.mep.datamodells.Session;
 import hu.mep.datamodells.Topic;
 import hu.mep.mep_app.ActivityLevel2SectionsPagerAdapter;
+import hu.mep.mep_app.NotificationService;
 import hu.mep.mep_app.R;
 import hu.mep.utils.others.FragmentLevel2EventHandler;
 import android.content.Intent;
@@ -36,6 +37,9 @@ public class ActivityLevel2NEW extends ActionBarActivity implements
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		//noti service elindítása
+				this.startService(new Intent(this, NotificationService.class));
 		
 		if (Session.getInstance(this).isTablet()) {
 			Log.e(TAG, "IT'S A TABLET");
@@ -127,6 +131,10 @@ public class ActivityLevel2NEW extends ActionBarActivity implements
 	public boolean onOptionsItemSelected(MenuItem item) {
 		if (item.getItemId() == R.id.action_logoff) {
 			Session.setAnyUserLoggedIn(false);
+			
+			//noti service elindítása
+			stopService(new Intent(this, NotificationService.class));
+			
 			NavUtils.navigateUpFromSameTask(this);
 			return true;
 		}
