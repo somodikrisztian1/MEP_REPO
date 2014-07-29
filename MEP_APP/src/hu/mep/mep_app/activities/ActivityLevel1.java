@@ -270,6 +270,8 @@ public class ActivityLevel1 extends ActionBarActivity implements
 				switch (item.getItemId()) {
 		case R.id.action_login:
 			if(!Session.isAnyUserLoggedIn()) {
+				Session.getInstance(this);
+				
 				Session.logOffActualUser();
 			}
 

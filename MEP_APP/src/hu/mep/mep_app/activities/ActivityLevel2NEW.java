@@ -37,22 +37,21 @@ public class ActivityLevel2NEW extends ActionBarActivity implements
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
-		//noti service elindítása
-				this.startService(new Intent(this, NotificationService.class));
-		
+
+		// noti service elindítása
+		startService(new Intent(this, NotificationService.class).putExtra("mepId", Session.getActualUser().getMepID()));
+		Log.e("Noti activitiben", "Noti started, mepId: " + Session.getActualUser().getMepID());
+
 		if (Session.getInstance(this).isTablet()) {
 			Log.e(TAG, "IT'S A TABLET");
-			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE); 
-		}
-		else {
+			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+		} else {
 			Log.e(TAG, "IT'S NOT A TABLET");
 			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 		}
-		
+
 		setContentView(R.layout.activity_secondlevel);
-		
-		
+
 		mSectionsPagerAdapter = new ActivityLevel2SectionsPagerAdapter(
 				getSupportFragmentManager());
 
@@ -66,7 +65,7 @@ public class ActivityLevel2NEW extends ActionBarActivity implements
 						mActionBar.setSelectedNavigationItem(position);
 					}
 				});
-		
+
 		mActionBar = getSupportActionBar();
 		mActionBar.setDisplayShowHomeEnabled(true);
 		mActionBar.setDisplayHomeAsUpEnabled(true);
@@ -74,20 +73,20 @@ public class ActivityLevel2NEW extends ActionBarActivity implements
 		mActionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 		addTabsForActionBar();
 	}
-	
+
 	@Override
 	protected void onPause() {
 		super.onPause();
 		Log.d(TAG, "onPause running... stopContactRefresher()");
 		Session.stopContactRefresherThread();
 	}
-	
+
 	@Override
 	protected void onResume() {
 		super.onResume();
 		Session.getInstance(this);
 		Session.dismissAndMakeNullProgressDialog();
-		Session.startContactRefresherThread();	
+		Session.startContactRefresherThread();
 	}
 
 	private void addTabsForActionBar() {
@@ -131,34 +130,34 @@ public class ActivityLevel2NEW extends ActionBarActivity implements
 	public boolean onOptionsItemSelected(MenuItem item) {
 		if (item.getItemId() == R.id.action_logoff) {
 			Session.setAnyUserLoggedIn(false);
-			
-			//noti service elindítása
+
+			// noti service elindítása
 			stopService(new Intent(this, NotificationService.class));
-			
+
 			NavUtils.navigateUpFromSameTask(this);
 			return true;
-		}
-		else if(item.getItemId() == R.id.homeAsUp) {
+		} else if (item.getItemId() == R.id.homeAsUp) {
 			NavUtils.navigateUpFromSameTask(this);
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
 	}
-	
+
 	@Override
 	public void onTopicSelected(Topic selectedTopic) {
 		Session.setActualTopic(selectedTopic);
 		Session.getActualCommunicationInterface().getChartNames(this, false);
 	}
-	
+
 	@Override
 	public void onRemoteMonitoringSelected(Place selectedPlace) {
 		Session.setActualRemoteMonitoring(selectedPlace);
-		if(selectedPlace.isSolarPanel()) {
-			Session.getActualCommunicationInterface().getSolarPanelJson(this, null, null);
+		if (selectedPlace.isSolarPanel()) {
+			Session.getActualCommunicationInterface().getSolarPanelJson(this,
+					null, null);
 		} else {
 			Session.getActualCommunicationInterface().getChartNames(this, true);
 		}
 	}
-	
+
 }

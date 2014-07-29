@@ -13,6 +13,7 @@ import java.net.HttpURLConnection;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
@@ -48,7 +49,7 @@ public class AuthenticationAsyncTask extends AsyncTask<Void, Void, Boolean> {
 
 	@Override
 	protected void onPreExecute() {
-
+		
 		Session.setProgressDialog(pd);
 		Session.showProgressDialog();
 
@@ -105,6 +106,8 @@ public class AuthenticationAsyncTask extends AsyncTask<Void, Void, Boolean> {
 		if(result) {
 			Log.e(TAG, "onPostExecute -> successful login --> dismissDialog");
 			Session.dismissAndMakeNullProgressDialog();
+			
+			
 			
 			ActivityLevel2PreloaderAsyncTask at = new ActivityLevel2PreloaderAsyncTask(activity);
 			at.execute();

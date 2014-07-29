@@ -4,7 +4,8 @@
     android:layout_height="match_parent"
     android:layout_gravity="center"
     android:orientation="horizontal"
-    android:weightSum="100">
+	android:paddingTop="1dp"
+	android:paddingBottom="1dp" >
     
     <ImageView
         android:id="@+id/activity_secondlevel_chat_imageview_for_profile_picture"
