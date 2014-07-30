@@ -131,20 +131,22 @@ public class NotiRunnable implements Runnable {
 	public Boolean gotWrongRemotes() {
 		int count = 0;
 		try {
-			JSONObject json = new JSONObject(
-					responseFromUnreadMessagesPHP.trim());
-			Iterator<?> keys = json.keys();
+			if (responseFromUnreadMessagesPHP.compareTo("[]") != 0) {
+				JSONObject json = new JSONObject(
+						responseFromUnreadMessagesPHP.trim());
+				Iterator<?> keys = json.keys();
 
-			while (keys.hasNext()) {
-				String key = (String) keys.next();
+				while (keys.hasNext()) {
+					String key = (String) keys.next();
 
-				if (json.get(key) instanceof JSONObject) {
-					if (((JSONObject) json.get(key)).get("notify").toString()
-							.compareTo("1") == 0) {
-						count++;
+					if (json.get(key) instanceof JSONObject) {
+						if (((JSONObject) json.get(key)).get("notify")
+								.toString().compareTo("1") == 0) {
+							count++;
+						}
 					}
-				}
 
+				}
 			}
 		} catch (JSONException e) {
 			e.printStackTrace();
