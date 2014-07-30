@@ -4,6 +4,7 @@ import hu.mep.mep_app.activities.ActivityLevel1;
 
 import java.io.IOException;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Iterator;
 
 import org.apache.http.HttpEntity;
@@ -32,6 +33,9 @@ public class NotiRunnable implements Runnable {
 	private Boolean msgNotiShown = false;
 	private Boolean remoteNotiShown = false;
 
+	private int today;
+	private Calendar calendar;
+
 	private String TAG = "NotiRunnable";
 	private long WAIT_TIME = 5000L;
 	private String responseFromUnreadMessagesPHP = "";
@@ -46,9 +50,9 @@ public class NotiRunnable implements Runnable {
 		this.running = false;
 	}
 
-	public void resume() {
-		this.running = true;
-	}
+	// public void resume() {
+	// this.running = true;
+	// }
 
 	public NotiRunnable(int newMepId, Context newContext) {
 		super();
@@ -59,39 +63,44 @@ public class NotiRunnable implements Runnable {
 	@Override
 	public void run() {
 
-		while (true) {
-			if (this.running) {
-				Log.e(TAG, "__________NotiRunnable.run() ==> true__________");
+		while (this.running == true) {
+			calendar = Calendar.getInstance();
+			Log.e(TAG, "__________NotiRunnable.run() ==> true__________");
+			Log.e(TAG,
+					"calendar, day (int): "
+							+ calendar.get(Calendar.DAY_OF_MONTH));
+			Log.e(TAG, "today (int): " + today);
 
-				// ha be van jelentkezve
-				if (this.mepId != 0) {
-					Log.e(TAG, "noti, user logged in, mepId: " + mepId);
+			// ha be van jelentkezve
+			if (this.mepId != 0 && today != calendar.get(Calendar.DAY_OF_MONTH)) {
+				Log.e(TAG, "noti, user logged in, mepId: " + mepId);
 
-					getRemotes(Integer.toString(mepId));
+				getRemotes(Integer.toString(mepId));
 
-					if (!isNotificationVisible(gotNewMessageNotificationID)
-							&& gotWrongRemotes() && msgNotiShown == false) {
-						createNotification(
-								Calendar.getInstance().getTimeInMillis(),
-								"MepApp",
-								"Jelenleg nincs internet kapcsolata a távfelügyeleti rendszernek. Kérjük a részletekért lépjen be az alkalmazásba.",
-								"", context, gotNewMessageNotificationID);
-						msgNotiShown = true;
+				if (!isNotificationVisible(gotNewMessageNotificationID)
+						&& gotWrongRemotes() && msgNotiShown == false) {
+					createNotification(
+							Calendar.getInstance().getTimeInMillis(),
+							"MepApp",
+							"Jelenleg nincs internet kapcsolata a távfelügyeleti rendszernek. Kérjük a részletekért lépjen be az alkalmazásba.",
+							"", context, gotNewMessageNotificationID);
+					msgNotiShown = true;
 
-					} else {
-						msgNotiShown = false;
-					}
-					
-					if (!isNotificationVisible(remoteNotificationID) && remoteNotiShown == false && gotUnreadMsg()){
-						
-					}
+				} else {
+					msgNotiShown = false;
 				}
 
-				try {
-					Thread.sleep(WAIT_TIME);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
+				if (!isNotificationVisible(remoteNotificationID)
+						&& remoteNotiShown == false && gotUnreadMsg()) {
 				}
+
+				today = calendar.get(Calendar.DAY_OF_MONTH);
+			}
+
+			try {
+				Thread.sleep(WAIT_TIME);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
 			}
 		}
 	}
@@ -168,10 +177,9 @@ public class NotiRunnable implements Runnable {
 		else
 			return false;
 	}
-	
-	private Boolean gotUnreadMsg(){
-		
-		
+
+	private Boolean gotUnreadMsg() {
+
 		return true;
 	}
 

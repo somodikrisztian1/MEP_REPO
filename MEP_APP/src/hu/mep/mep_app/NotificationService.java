@@ -1,11 +1,9 @@
 package hu.mep.mep_app;
 
-import hu.mep.datamodells.Session;
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
 import android.util.Log;
-import android.widget.Toast;
 
 public class NotificationService extends Service {
 
@@ -30,7 +28,7 @@ public class NotificationService extends Service {
 		Log.e(TAG, "onStart");
 //		Toast.makeText(this, "My Service Started", Toast.LENGTH_LONG).show();
 
-		if (intent != null && intent.getExtras() != null) {
+		if (intent != null && intent.getExtras() != null && notiRunnable == null) {
 
 			Log.e(TAG, "onStartCommand, getExtra: "
 					+ intent.getExtras().getInt("mepId"));
@@ -40,12 +38,14 @@ public class NotificationService extends Service {
 
 		Thread thread = new Thread(notiRunnable);
 		thread.start();
-		notiRunnable.resume();
+//		notiRunnable.resume();
 	}
 
 	@Override
 	public void onDestroy() {
 		notiRunnable.stop();
+		
+		notiRunnable = null;
 
 //		Toast.makeText(this, "MyService Stopped", Toast.LENGTH_LONG).show();
 		Log.e(TAG, "onDestroy");
