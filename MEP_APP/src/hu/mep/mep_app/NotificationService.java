@@ -39,7 +39,7 @@ public class NotificationService extends Service {
 		}
 
 		Thread thread = new Thread(notiRunnable);
-		thread.run();
+		thread.start();
 		notiRunnable.resume();
 	}
 

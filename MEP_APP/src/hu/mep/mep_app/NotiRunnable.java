@@ -29,7 +29,9 @@ import android.util.Log;
 public class NotiRunnable implements Runnable {
 
 	private Boolean running = true;
-	private Boolean notiShown = false;
+	private Boolean msgNotiShown = false;
+	private Boolean remoteNotiShown = false;
+
 	private String TAG = "NotiRunnable";
 	private long WAIT_TIME = 5000L;
 	private String responseFromUnreadMessagesPHP = "";
@@ -63,21 +65,25 @@ public class NotiRunnable implements Runnable {
 
 				// ha be van jelentkezve
 				if (this.mepId != 0) {
-					Log.e(TAG, "noti, user logged in");
+					Log.e(TAG, "noti, user logged in, mepId: " + mepId);
 
 					getRemotes(Integer.toString(mepId));
 
 					if (!isNotificationVisible(gotNewMessageNotificationID)
-							&& gotWrongRemotes() && notiShown == false) {
+							&& gotWrongRemotes() && msgNotiShown == false) {
 						createNotification(
 								Calendar.getInstance().getTimeInMillis(),
 								"MepApp",
 								"Jelenleg nincs internet kapcsolata a távfelügyeleti rendszernek. Kérjük a részletekért lépjen be az alkalmazásba.",
 								"", context, gotNewMessageNotificationID);
-						notiShown = true;
+						msgNotiShown = true;
 
 					} else {
-						notiShown = false;
+						msgNotiShown = false;
+					}
+					
+					if (!isNotificationVisible(remoteNotificationID) && remoteNotiShown == false && gotUnreadMsg()){
+						
 					}
 				}
 
@@ -90,7 +96,9 @@ public class NotiRunnable implements Runnable {
 		}
 	}
 
-	protected String getRemotes(String dataToSend) {
+	// http://www.megujuloenergiapark.hu/ios_getContactList.php?userId=
+
+	private String getRemotes(String dataToSend) {
 		Log.e("FROM STATS SERVICE DoBackgroundTask", dataToSend);
 		HttpClient httpClient = new DefaultHttpClient();
 		HttpPost httpPost = new HttpPost(
@@ -159,6 +167,12 @@ public class NotiRunnable implements Runnable {
 			return true;
 		else
 			return false;
+	}
+	
+	private Boolean gotUnreadMsg(){
+		
+		
+		return true;
 	}
 
 	public void createNotification(long when, String notificationTitle,
