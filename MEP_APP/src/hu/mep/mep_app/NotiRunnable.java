@@ -4,7 +4,6 @@ import hu.mep.mep_app.activities.ActivityLevel1;
 
 import java.io.IOException;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Iterator;
 
 import org.apache.http.HttpEntity;
@@ -28,31 +27,27 @@ import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 public class NotiRunnable implements Runnable {
+	private String TAG = "NotiRunnable";
 
+	private Context context;
 	private Boolean running = true;
-	private Boolean msgNotiShown = false;
-	private Boolean remoteNotiShown = false;
+	private long WAIT_TIME = 60000L;
+
+	private int mepId = 0;
+
+	public static int gotNewMessageNotificationID = 1;
+	public static int remoteNotificationID = 2;
 
 	private int today;
 	private Calendar calendar;
 
-	private String TAG = "NotiRunnable";
-	private long WAIT_TIME = 5000L;
 	private String responseFromUnreadMessagesPHP = "";
-	private int mepId = 0;
-	private Context context;
-	public static int gotNewMessageNotificationID = 1;
-	public static int remoteNotificationID = 2;
+	private String responseFromWrongRemotes = "";
 
 	public void stop() {
 		Log.e(TAG, "stop()");
-
 		this.running = false;
 	}
-
-	// public void resume() {
-	// this.running = true;
-	// }
 
 	public NotiRunnable(int newMepId, Context newContext) {
 		super();
@@ -62,39 +57,49 @@ public class NotiRunnable implements Runnable {
 
 	@Override
 	public void run() {
-
 		while (this.running == true) {
 			calendar = Calendar.getInstance();
 			Log.e(TAG, "__________NotiRunnable.run() ==> true__________");
-			Log.e(TAG,
-					"calendar, day (int): "
-							+ calendar.get(Calendar.DAY_OF_MONTH));
-			Log.e(TAG, "today (int): " + today);
+//			Log.e(TAG,
+//					"calendar, day (int): "
+//							+ calendar.get(Calendar.DAY_OF_MONTH));
+//			Log.e(TAG, "today (int): " + today);
 
-			// ha be van jelentkezve
-			if (this.mepId != 0 && today != calendar.get(Calendar.DAY_OF_MONTH)) {
-				Log.e(TAG, "noti, user logged in, mepId: " + mepId);
+			// távfelügyeletekre:
+			if (this.mepId != 0 && today != calendar.get(Calendar.DAY_OF_MONTH)
+					&& !isNotificationVisible(remoteNotificationID)) {
+
+//				Log.e(TAG, "remoteNoti, user logged in, mepId: " + mepId);
 
 				getRemotes(Integer.toString(mepId));
 
-				if (!isNotificationVisible(gotNewMessageNotificationID)
-						&& gotWrongRemotes() && msgNotiShown == false) {
+				if (gotWrongRemotes()) {
 					createNotification(
 							Calendar.getInstance().getTimeInMillis(),
-							"MepApp",
+							"Távfelügyelet",
 							"Jelenleg nincs internet kapcsolata a távfelügyeleti rendszernek. Kérjük a részletekért lépjen be az alkalmazásba.",
-							"", context, gotNewMessageNotificationID);
-					msgNotiShown = true;
+							"", context, remoteNotificationID);
 
-				} else {
-					msgNotiShown = false;
-				}
-
-				if (!isNotificationVisible(remoteNotificationID)
-						&& remoteNotiShown == false && gotUnreadMsg()) {
 				}
 
 				today = calendar.get(Calendar.DAY_OF_MONTH);
+			}
+
+			// üzenetekre:
+			if (this.mepId != 0
+					&& !isNotificationVisible(gotNewMessageNotificationID)) {
+
+//				Log.e(TAG, "msgNoti, user logged in, mepId: " + mepId);
+
+				getUnreadMessages(Integer.toString(mepId));
+
+				if (gotUnreadMsg()) {
+					createNotification(
+							Calendar.getInstance().getTimeInMillis(),
+							"Új üzenet", "Új üzenete érkezett.", "", context,
+							gotNewMessageNotificationID);
+
+				}
 			}
 
 			try {
@@ -105,13 +110,84 @@ public class NotiRunnable implements Runnable {
 		}
 	}
 
-	// http://www.megujuloenergiapark.hu/ios_getContactList.php?userId=
-
-	private String getRemotes(String dataToSend) {
-		Log.e("FROM STATS SERVICE DoBackgroundTask", dataToSend);
+	// rossz távf. lekérése
+	private void getRemotes(String dataToSend) {
+//		Log.e(TAG, "getRemotes, userId:  " + dataToSend);
 		HttpClient httpClient = new DefaultHttpClient();
 		HttpPost httpPost = new HttpPost(
 				"http://www.megujuloenergiapark.hu/ios_getHibasTf.php?userId="
+						+ dataToSend + "type=daily");
+
+		try {
+			// httpPost.setEntity(new StringEntity(dataToSend, "UTF-8"));
+
+			// Set up the header types needed to properly transfer JSON
+			httpPost.setHeader("Content-Type", "application/json");
+			httpPost.setHeader("Accept-Encoding", "application/json");
+			httpPost.setHeader("Accept-Language", "en-US");
+
+			// Execute POST
+			HttpResponse httpResponse = httpClient.execute(httpPost);
+			HttpEntity responseEntity = httpResponse.getEntity();
+			if (responseEntity != null) {
+				responseFromWrongRemotes = EntityUtils.toString(responseEntity);
+			} else {
+				responseFromWrongRemotes = "{\"NO DATA:\"NO DATA\"}";
+			}
+		} catch (ClientProtocolException e) {
+			responseFromWrongRemotes = "{\"ERROR\":"
+					+ e.getMessage().toString() + "}";
+		} catch (IOException e) {
+			responseFromWrongRemotes = "{\"ERROR\":"
+					+ e.getMessage().toString() + "}";
+		}
+
+//		Log.e(TAG, "response: " + responseFromWrongRemotes.toString());
+
+		// return responseFromUnreadMessagesPHP;
+	}
+
+	// van-e a rossz távf.
+	public Boolean gotWrongRemotes() {
+		int count = 0;
+		try {
+			if (responseFromWrongRemotes.compareTo("[]") != 0) {
+				JSONObject json = new JSONObject(
+						responseFromWrongRemotes.trim());
+				Iterator<?> keys = json.keys();
+
+				while (keys.hasNext()) {
+					String key = (String) keys.next();
+
+					if (json.get(key) instanceof JSONObject) {
+						if (((JSONObject) json.get(key)).get("notify")
+								.toString().compareTo("1") == 0) {
+							count++;
+						}
+					}
+
+				}
+			}
+		} catch (JSONException e) {
+			e.printStackTrace();
+			Log.e(TAG, "gotWrongRemotes catch: " + e.toString());
+		}
+
+//		Log.e(TAG, "gotWrongRemotes: " + Integer.toString(count));
+
+		if (count > 0)
+			return true;
+		else
+			return false;
+	}
+
+	// olvasatlan üzenetek lekérése
+	private void getUnreadMessages(String dataToSend) {
+//		Log.e(TAG, "getUnreadMessages, userId:  " + dataToSend);
+		
+		HttpClient httpClient = new DefaultHttpClient();
+		HttpPost httpPost = new HttpPost(
+				"http://www.megujuloenergiapark.hu/ios_getContactList.php?userId="
 						+ dataToSend);
 
 		try {
@@ -139,13 +215,11 @@ public class NotiRunnable implements Runnable {
 					+ e.getMessage().toString() + "}";
 		}
 
-		Log.e("response",
-				"response: " + responseFromUnreadMessagesPHP.toString());
-
-		return responseFromUnreadMessagesPHP;
+//		Log.e(TAG, "response: " + responseFromUnreadMessagesPHP.toString());
 	}
 
-	public Boolean gotWrongRemotes() {
+	// van-e olvasatlan üzenet
+	private Boolean gotUnreadMsg() {
 		int count = 0;
 		try {
 			if (responseFromUnreadMessagesPHP.compareTo("[]") != 0) {
@@ -157,30 +231,23 @@ public class NotiRunnable implements Runnable {
 					String key = (String) keys.next();
 
 					if (json.get(key) instanceof JSONObject) {
-						if (((JSONObject) json.get(key)).get("notify")
-								.toString().compareTo("1") == 0) {
+						if (((JSONObject) json.get(key))
+								.get("vanOlvasatlanTole").toString()
+								.compareTo("1") == 0) {
 							count++;
 						}
 					}
-
 				}
 			}
 		} catch (JSONException e) {
 			e.printStackTrace();
-			Log.e(TAG, "gotWrongRemotes catch: " + e.toString());
+//			Log.e(TAG, "gotUnreadMsg catch: " + e.toString());
 		}
-
-		Log.e(TAG, "gotWrongRemotes: " + Integer.toString(count));
 
 		if (count > 0)
 			return true;
 		else
 			return false;
-	}
-
-	private Boolean gotUnreadMsg() {
-
-		return true;
 	}
 
 	public void createNotification(long when, String notificationTitle,
@@ -246,6 +313,12 @@ public class NotiRunnable implements Runnable {
 		Intent notificationIntent = new Intent(context, ActivityLevel1.class);
 		PendingIntent test = PendingIntent.getActivity(context, id,
 				notificationIntent, PendingIntent.FLAG_NO_CREATE);
+
+//		if (test != null) {
+//			Log.e(TAG, "test != null");
+//		} else {
+//			Log.e(TAG, "test == null");
+//		}
 
 		return test != null;
 	}
