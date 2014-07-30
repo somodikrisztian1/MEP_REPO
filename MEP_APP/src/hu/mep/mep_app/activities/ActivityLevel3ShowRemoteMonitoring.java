@@ -11,7 +11,6 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -40,7 +39,7 @@ import android.widget.Toast;
 public class ActivityLevel3ShowRemoteMonitoring extends ActionBarActivity
 		implements TabListener {
 
-	private static final String TAG = "ActivityLevel3ShowTopic";
+	private static final String TAG = "ActivityLevel3ShowRemoteMonitoring";
 	private static ActionBar mActionBar;
 	public static SectionsPagerAdapter mSectionsPagerAdapter;
 	private static ViewPager mViewPager;
@@ -48,12 +47,9 @@ public class ActivityLevel3ShowRemoteMonitoring extends ActionBarActivity
 	private Calendar endDate;
 	private Calendar tempDate = Calendar.getInstance();
 	private Menu menu;
-	private static final SimpleDateFormat formatter = new SimpleDateFormat(
-			"yyyy.MM.dd. HH:mm");
-	private static final SimpleDateFormat shortFormatter = new SimpleDateFormat(
-			"MMMdd. HH:mm");
-	private static final SimpleDateFormat veryShortFormatter = new SimpleDateFormat(
-			"HH:mm");
+	private static final SimpleDateFormat formatter = new SimpleDateFormat("yyyy.MM.dd. HH:mm");
+	private static final SimpleDateFormat shortFormatter = new SimpleDateFormat("MMMdd. HH:mm");
+	private static final SimpleDateFormat veryShortFormatter = new SimpleDateFormat("HH:mm");
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -98,30 +94,10 @@ public class ActivityLevel3ShowRemoteMonitoring extends ActionBarActivity
 		if (beginDate == null) {
 			beginDate = Calendar.getInstance();
 			beginDate.setTime(Session.beginChartDate.getTime());
-			/*beginDate.set(Calendar.YEAR,
-					Session.beginChartDate.get(Calendar.YEAR));
-			beginDate.set(Calendar.MONTH,
-					Session.beginChartDate.get(Calendar.MONTH));
-			beginDate.set(Calendar.DAY_OF_MONTH,
-					Session.beginChartDate.get(Calendar.DAY_OF_MONTH));
-			beginDate.set(Calendar.HOUR_OF_DAY,
-					Session.beginChartDate.get(Calendar.HOUR_OF_DAY));
-			beginDate.set(Calendar.MINUTE,
-					Session.beginChartDate.get(Calendar.MINUTE));*/
 		}
 		if (endDate == null) {
 			endDate = Calendar.getInstance();
 			endDate.setTime(Session.endChartDate.getTime());
-			/*endDate.set(Calendar.YEAR, Session.endChartDate.get(Calendar.YEAR));
-			endDate.set(Calendar.MONTH,
-					Session.endChartDate.get(Calendar.MONTH));
-			endDate.set(Calendar.DAY_OF_MONTH,
-					Session.endChartDate.get(Calendar.DAY_OF_MONTH));
-			endDate.set(Calendar.HOUR_OF_DAY,
-					Session.endChartDate.get(Calendar.HOUR_OF_DAY));
-			endDate.set(Calendar.MINUTE,
-					Session.endChartDate.get(Calendar.MINUTE));
-			 */
 		}
 
 		((MenuItem) menu.findItem(R.id.action_datetime_begin)).setTitle("ma "
@@ -394,10 +370,10 @@ public class ActivityLevel3ShowRemoteMonitoring extends ActionBarActivity
 		@Override
 		public int getCount() {
 			if (Session.getActualRemoteMonitoring().isSolarPanel()) {
-				Log.e(TAG, "3 tab lesz");
+				//Log.e(TAG, "3 tab lesz");
 				return 3;
 			} else {
-				Log.e(TAG, Session.getAllChartNames().size() + " tab lesz");
+				//Log.e(TAG, Session.getAllChartNames().size() + " tab lesz");
 				return Session.getAllChartNames().size();
 			}
 		}
@@ -406,17 +382,17 @@ public class ActivityLevel3ShowRemoteMonitoring extends ActionBarActivity
 		public CharSequence getPageTitle(int position) {
 			if (Session.getActualRemoteMonitoring().isSolarPanel()) {
 				if (position == 0) {
-					Log.e(TAG, "tabnév: Napi");
+					//Log.e(TAG, "tabnév: Napi");
 					return "Napi";
 				} else if (position == 1) {
-					Log.e(TAG, "tabnév: Havi");
+					//Log.e(TAG, "tabnév: Havi");
 					return "Havi";
 				} else {
-					Log.e(TAG, "tabnév: Éves");
+					//Log.e(TAG, "tabnév: Éves");
 					return "Éves";
 				}
 			} else {
-				Log.e(TAG, "tabnév: " + Session.getAllChartNames().get(position).getName());
+				//Log.e(TAG, "tabnév: " + Session.getAllChartNames().get(position).getName());
 				return Session.getAllChartNames().get(position).getName();
 			}
 		}
