@@ -131,17 +131,7 @@ public class ActivityLevel1Registration extends ActionBarActivity implements
 				Session.showAlertDialog();
 			}
 			else if(trimmedPassword.equals(trimmedPasswordAgain)) {
-				Session.getActualCommunicationInterface().registrateUser(fullName, email, userName, trimmedPassword);
-				
-				if(Session.isSuccessfulRegistration()) {
-					Session.getActualCommunicationInterface().authenticateUser(
-							ActivityLevel1Registration.this, userName, trimmedPassword);
-				}
-				else if(Session.isSuccessfulRegistration() == false) {
-					Session.setAlertDialog(AlertDialogFactory.prepareAlertDialogWithText(
-							ActivityLevel1Registration.this, Session.getUnsuccessfulRegistrationMessage()));
-					Session.showAlertDialog();
-				}
+				Session.getActualCommunicationInterface().registrateUser(this, fullName, email, userName, trimmedPassword);
 			}
 		}
 	}

@@ -86,18 +86,29 @@ public class GetChartsAsyncTask extends AsyncTask<Void, Void, Void> {
 		GsonBuilder gsonBuilder = new GsonBuilder();
 		gsonBuilder.registerTypeAdapter(Chart.class, new ChartDeserializer());
 		Gson gson = gsonBuilder.create();
-		for (ChartName actChartName : Session.getAllChartNames()) {
-			if(!actChartName.getName().equals("Rendszerállapot")) {
-				Log.e(TAG, "letöltés name: " + actChartName.getName());
-				fullURI = hostURI + resourceURIBeginning + actChartName.getId() + resourceURIDateEnding;
-				String response = "";
-				response = RealCommunicator.dohttpGet(fullURI);
-				Chart chart = gson.fromJson(response, Chart.class);
-				charts.add(chart);
+		int i = 0;
+		if(forRemoteMonitoring) {
+			if(Session.getActualRemoteMonitoring().getID().equals("10.1E4C2F020800")) {
+				Log.e(TAG, "EZ IBOLYA!!!!");
+				i = 1;
 			} else {
-				Log.e(TAG, "Nincs letöltés <-- name: " + actChartName.getName());
+				Log.e(TAG, "Hallelujah, ez nem Ibolya...");
+				i = 0;
 			}
 		}
+			for(; i < Session.getAllChartNames().size(); ++i ) {
+				ChartName actChartName = Session.getAllChartNames().get(i);
+				if(!actChartName.getName().equals("Rendszerállapot")) {
+					Log.e(TAG, "letöltés name: " + actChartName.getName());
+					fullURI = hostURI + resourceURIBeginning + actChartName.getId() + resourceURIDateEnding;
+					String response = "";
+					response = RealCommunicator.dohttpGet(fullURI);
+					Chart chart = gson.fromJson(response, Chart.class);
+					charts.add(chart);
+				} else {
+					Log.e(TAG, "Nincs letöltés <-- name: " + actChartName.getName());
+				}
+			}
 		Session.setAllCharts(charts);
 		return null;
 	}

@@ -1,6 +1,5 @@
 package hu.mep.communication;
 
-import hu.mep.communication.charts.GetActualChartAsyncTask;
 import hu.mep.communication.charts.GetChartNamesAsyncTask;
 import hu.mep.communication.charts.GetChartsAsyncTask;
 import hu.mep.communication.charts.GetSolarPanelJsonAsyncTask;
@@ -101,7 +100,7 @@ public class RealCommunicator implements ICommunicator {
 	}
 	
 	@Override
-	public void registrateUser(String fullName, String email, String userName, String password)
+	public void registrateUser(Activity activity, String fullName, String email, String userName, String password)
 	{
 		HashMap<String, String> postDatas = new HashMap<String, String>();
 		
@@ -110,7 +109,7 @@ public class RealCommunicator implements ICommunicator {
 		postDatas.put("password", password);
 		postDatas.put("email", email);
 
-		RegistrationAssyncTask sendRegistration = new RegistrationAssyncTask(MainURL, postDatas);
+		RegistrationAssyncTask sendRegistration = new RegistrationAssyncTask(activity, MainURL, postDatas);
 		try {
 			sendRegistration.execute().get();
 		} catch (InterruptedException e) {
@@ -211,6 +210,12 @@ public class RealCommunicator implements ICommunicator {
 		GetSettingsAsyncTask settingsGetter = new GetSettingsAsyncTask(activity, MainURL);
 		settingsGetter.execute();
 		return;
-	}	
+	}
+	
+	@Override
+	public void sendSettings(Activity activity) {
+		SendSettingsAsyncTask settingsSender = new SendSettingsAsyncTask(activity);
+		settingsSender.execute();
+	}
 
 }

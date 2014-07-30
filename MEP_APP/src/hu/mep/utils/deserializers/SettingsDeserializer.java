@@ -1,6 +1,5 @@
 package hu.mep.utils.deserializers;
 
-import hu.mep.datamodells.Session;
 import hu.mep.datamodells.settings.Function;
 import hu.mep.datamodells.settings.Relay;
 import hu.mep.datamodells.settings.Settings;
@@ -33,6 +32,7 @@ public class SettingsDeserializer implements JsonDeserializer<Settings> {
 		List<Function> functions = null;
 
 		if (element.isJsonObject()) {
+			Log.e(TAG, "It's a jsonObject");
 			JsonObject rootObject = element.getAsJsonObject();
 
 			sliders = readSliders(rootObject);
@@ -40,8 +40,7 @@ public class SettingsDeserializer implements JsonDeserializer<Settings> {
 			functions = readFunctions(rootObject);
 		}
 		Settings result = new Settings(sliders, relays, functions);
-		Session.setActualSettings(result);
-		return null;
+		return result;
 	}
 	
 	private List<Slider> readSliders(JsonObject rootObject) {
@@ -60,7 +59,7 @@ public class SettingsDeserializer implements JsonDeserializer<Settings> {
 				double maxValue = actSliderJson.get("max").getAsDouble();
 				String name = actSliderJson.get("name").getAsString();
 				String label = actSliderJson.get("label").getAsString();
-				Log.e("SLIDER", label + " " + minValue + " < " + value + " < " + maxValue);
+				Log.e(TAG, "SLIDER: " + label + " " + minValue + " < " + value + " < " + maxValue);
 				Slider newSlider = new Slider(serialNumber, value, minValue,
 						maxValue, name, label);
 				sliders.add(newSlider);
@@ -80,7 +79,7 @@ public class SettingsDeserializer implements JsonDeserializer<Settings> {
 				String name = relayElement.getKey();
 				String value = relayElement.getValue().getAsJsonPrimitive().getAsString();
 				boolean status = (value.equals("0") ? false : true);
-				Log.e("RELAY", "name - value: " + name + " - " + (status ? "on" : "off"));
+				Log.e(TAG, "RELAY name - value: " + name + " - " + (status ? "on" : "off"));
 				Relay newRelay = new Relay(name, status);
 				relays.add(newRelay);
 			}
@@ -105,7 +104,7 @@ public class SettingsDeserializer implements JsonDeserializer<Settings> {
 				String name = actFunctionJson.get("name").getAsString();
 				String label = actFunctionJson.get("label").getAsString();
 
-				Log.e("FUNCTION", "name - value: " + name + " - " + (status ? "on" : "off"));
+				Log.e(TAG, "FUNCTION name - value: " + name + " - " + (status ? "on" : "off"));
 				Function newFunction = new Function(serialNumber, status, name, label);
 				functions.add(newFunction);
 			}

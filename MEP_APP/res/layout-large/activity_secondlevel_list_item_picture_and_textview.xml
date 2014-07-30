@@ -4,7 +4,8 @@
     android:layout_height="match_parent"
     android:layout_gravity="center"
     android:orientation="horizontal"
-    android:weightSum="100">
+    android:paddingTop="1dp"
+    android:paddingBottom="1dp">
     
     <ImageView
         android:id="@+id/activity_secondlevel_chat_imageview_for_profile_picture"
@@ -22,7 +23,6 @@
         android:paddingLeft="10dp"
         android:layout_centerVertical="true"
         android:layout_toRightOf="@+id/activity_secondlevel_chat_imageview_for_profile_picture"
-        android:text="Helloka! Szia-szia! :)"
         android:textColor="#000000"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textSize="20sp"/>
