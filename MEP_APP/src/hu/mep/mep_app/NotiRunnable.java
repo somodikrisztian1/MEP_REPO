@@ -4,6 +4,7 @@ import hu.mep.mep_app.activities.ActivityLevel1;
 
 import java.io.IOException;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Iterator;
 
 import org.apache.http.HttpEntity;
@@ -29,7 +30,12 @@ import android.util.Log;
 public class NotiRunnable implements Runnable {
 
 	private Boolean running = true;
-	private Boolean notiShown = false;
+	private Boolean msgNotiShown = false;
+	private Boolean remoteNotiShown = false;
+
+	private int today;
+	private Calendar calendar;
+
 	private String TAG = "NotiRunnable";
 	private long WAIT_TIME = 5000L;
 	private String responseFromUnreadMessagesPHP = "";
@@ -44,9 +50,9 @@ public class NotiRunnable implements Runnable {
 		this.running = false;
 	}
 
-	public void resume() {
-		this.running = true;
-	}
+	// public void resume() {
+	// this.running = true;
+	// }
 
 	public NotiRunnable(int newMepId, Context newContext) {
 		super();
@@ -57,40 +63,51 @@ public class NotiRunnable implements Runnable {
 	@Override
 	public void run() {
 
-		while (true) {
-			if (this.running) {
-				Log.e(TAG, "__________NotiRunnable.run() ==> true__________");
+		while (this.running == true) {
+			calendar = Calendar.getInstance();
+			Log.e(TAG, "__________NotiRunnable.run() ==> true__________");
+			Log.e(TAG,
+					"calendar, day (int): "
+							+ calendar.get(Calendar.DAY_OF_MONTH));
+			Log.e(TAG, "today (int): " + today);
 
-				// ha be van jelentkezve
-				if (this.mepId != 0) {
-					Log.e(TAG, "noti, user logged in");
+			// ha be van jelentkezve
+			if (this.mepId != 0 && today != calendar.get(Calendar.DAY_OF_MONTH)) {
+				Log.e(TAG, "noti, user logged in, mepId: " + mepId);
 
-					getRemotes(Integer.toString(mepId));
+				getRemotes(Integer.toString(mepId));
 
-					if (!isNotificationVisible(gotNewMessageNotificationID)
-							&& gotWrongRemotes() && notiShown == false) {
-						createNotification(
-								Calendar.getInstance().getTimeInMillis(),
-								"MepApp",
-								"Jelenleg nincs internet kapcsolata a távfelügyeleti rendszernek. Kérjük a részletekért lépjen be az alkalmazásba.",
-								"", context, gotNewMessageNotificationID);
-						notiShown = true;
+				if (!isNotificationVisible(gotNewMessageNotificationID)
+						&& gotWrongRemotes() && msgNotiShown == false) {
+					createNotification(
+							Calendar.getInstance().getTimeInMillis(),
+							"MepApp",
+							"Jelenleg nincs internet kapcsolata a távfelügyeleti rendszernek. Kérjük a részletekért lépjen be az alkalmazásba.",
+							"", context, gotNewMessageNotificationID);
+					msgNotiShown = true;
 
-					} else {
-						notiShown = false;
-					}
+				} else {
+					msgNotiShown = false;
 				}
 
-				try {
-					Thread.sleep(WAIT_TIME);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
+				if (!isNotificationVisible(remoteNotificationID)
+						&& remoteNotiShown == false && gotUnreadMsg()) {
 				}
+
+				today = calendar.get(Calendar.DAY_OF_MONTH);
+			}
+
+			try {
+				Thread.sleep(WAIT_TIME);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
 			}
 		}
 	}
 
-	protected String getRemotes(String dataToSend) {
+	// http://www.megujuloenergiapark.hu/ios_getContactList.php?userId=
+
+	private String getRemotes(String dataToSend) {
 		Log.e("FROM STATS SERVICE DoBackgroundTask", dataToSend);
 		HttpClient httpClient = new DefaultHttpClient();
 		HttpPost httpPost = new HttpPost(
@@ -131,20 +148,22 @@ public class NotiRunnable implements Runnable {
 	public Boolean gotWrongRemotes() {
 		int count = 0;
 		try {
-			JSONObject json = new JSONObject(
-					responseFromUnreadMessagesPHP.trim());
-			Iterator<?> keys = json.keys();
+			if (responseFromUnreadMessagesPHP.compareTo("[]") != 0) {
+				JSONObject json = new JSONObject(
+						responseFromUnreadMessagesPHP.trim());
+				Iterator<?> keys = json.keys();
 
-			while (keys.hasNext()) {
-				String key = (String) keys.next();
+				while (keys.hasNext()) {
+					String key = (String) keys.next();
 
-				if (json.get(key) instanceof JSONObject) {
-					if (((JSONObject) json.get(key)).get("notify").toString()
-							.compareTo("1") == 0) {
-						count++;
+					if (json.get(key) instanceof JSONObject) {
+						if (((JSONObject) json.get(key)).get("notify")
+								.toString().compareTo("1") == 0) {
+							count++;
+						}
 					}
-				}
 
+				}
 			}
 		} catch (JSONException e) {
 			e.printStackTrace();
@@ -157,6 +176,11 @@ public class NotiRunnable implements Runnable {
 			return true;
 		else
 			return false;
+	}
+
+	private Boolean gotUnreadMsg() {
+
+		return true;
 	}
 
 	public void createNotification(long when, String notificationTitle,
