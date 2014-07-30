@@ -18,6 +18,8 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 
 public class UserDeserializer implements JsonDeserializer<User> {
+	
+	private static final int IBOLYA_USER_MEP_ID = 33;
 
 	@Override
 	public User deserialize(JsonElement element, Type type,
@@ -43,18 +45,21 @@ public class UserDeserializer implements JsonDeserializer<User> {
 		List<Place> places = new ArrayList<Place>();
 		PlaceList placeList = null;
 		if( root.get("tavfelugyeletek").isJsonObject() ) {
-			for (Map.Entry<String, JsonElement> entry : root.get("tavfelugyeletek").getAsJsonObject().entrySet()) {
-				/*Place place = context.deserialize(entry.getValue(), Place.class);*/
-				JsonObject tavfelugyelet = entry.getValue().getAsJsonObject();
-				
-				String tsz1id = tavfelugyelet.get("tsz1_id").getAsString();
-				String name =  tavfelugyelet.get("nev").getAsString();
-				String description =  tavfelugyelet.get("leiras").getAsString();
-				String location = tavfelugyelet.get("helyszin").getAsString();
-				boolean isSolarPanel = (tavfelugyelet.get("is_napelem").getAsInt() != 0 ? true : false);
-				
-				Place place = new Place(name, tsz1id, description, location, isSolarPanel);
-				places.add(place);
+			// TODO! Ibolya itt van kihagyva!!!!!!
+			if(mep_id != IBOLYA_USER_MEP_ID) {
+				for (Map.Entry<String, JsonElement> entry : root.get("tavfelugyeletek").getAsJsonObject().entrySet()) {
+					/*Place place = context.deserialize(entry.getValue(), Place.class);*/
+					JsonObject tavfelugyelet = entry.getValue().getAsJsonObject();
+					
+					String tsz1id = tavfelugyelet.get("tsz1_id").getAsString();
+					String name =  tavfelugyelet.get("nev").getAsString();
+					String description =  tavfelugyelet.get("leiras").getAsString();
+					String location = tavfelugyelet.get("helyszin").getAsString();
+					boolean isSolarPanel = (tavfelugyelet.get("is_napelem").getAsInt() != 0 ? true : false);
+					
+					Place place = new Place(name, tsz1id, description, location, isSolarPanel);
+					places.add(place);
+				}
 			}
 			placeList = new PlaceList(places);
 		}

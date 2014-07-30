@@ -20,6 +20,7 @@ public class FragmentLevel3ShowBarChart extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 
+		chartValues.sortChartValues();
 		View rootView = new BarChartView(getActivity(), chartValues);
 		
 		return rootView;

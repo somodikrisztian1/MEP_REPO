@@ -1,5 +1,6 @@
 package hu.mep.utils.deserializers;
 
+import hu.mep.charts.BarChartView;
 import hu.mep.datamodells.Session;
 import hu.mep.datamodells.charts.BarChart;
 import hu.mep.datamodells.charts.Chart;
@@ -37,8 +38,8 @@ public class BarChartDeserializer implements JsonDeserializer<OneLineAndTwoBarCh
 			throws JsonParseException {
 		
 		Chart lineChart = new Chart("", "");
-		BarChart monthly = new BarChart(new HashMap<Calendar, Double>());
-		BarChart annual = new BarChart(new HashMap<Calendar, Double>());
+		BarChart monthly = null;
+		BarChart annual = null;
 		
 		if(element.isJsonObject()) {
 			JsonObject root = element.getAsJsonObject();
@@ -60,7 +61,7 @@ public class BarChartDeserializer implements JsonDeserializer<OneLineAndTwoBarCh
 
 	private BarChart readAnnual(JsonElement annualRoot) {
 		
-		BarChart result = new BarChart(new HashMap<Calendar, Double>());
+		BarChart result = new BarChart(new HashMap<Calendar, Double>(), BarChart.OPTION_ANNUAL);
 		
 		if(annualRoot.isJsonObject()) {
 			JsonObject annualJsonObj = annualRoot.getAsJsonObject();
@@ -78,7 +79,7 @@ public class BarChartDeserializer implements JsonDeserializer<OneLineAndTwoBarCh
 	}
 
 	private BarChart readMonthly(JsonElement monthlyRoot) {
-		BarChart result = new BarChart(new HashMap<Calendar, Double>());
+		BarChart result = new BarChart(new HashMap<Calendar, Double>(), BarChart.OPTION_MONTHLY);
 		
 		if(monthlyRoot.isJsonObject()) {
 			JsonObject annualJsonObj = monthlyRoot.getAsJsonObject();
@@ -96,7 +97,7 @@ public class BarChartDeserializer implements JsonDeserializer<OneLineAndTwoBarCh
 	}
 
 	private Chart readLine(JsonElement lineRoot) {
-		Chart result = new Chart("", "Termelés (kW)");
+		Chart result = new Chart("", "Termelés (kWh)");
 		List<SubChart> subchartsForResult = new ArrayList<SubChart>();
 		
 		if (lineRoot.isJsonObject()) {
