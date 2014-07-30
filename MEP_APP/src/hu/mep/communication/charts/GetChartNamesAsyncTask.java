@@ -3,8 +3,10 @@ package hu.mep.communication.charts;
 import hu.mep.communication.RealCommunicator;
 import hu.mep.datamodells.Session;
 import hu.mep.datamodells.charts.AllChartNames;
+import hu.mep.datamodells.charts.ChartName;
 import hu.mep.utils.deserializers.ChartNamesDeserializer;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 
 import android.app.Activity;
@@ -84,7 +86,6 @@ public class GetChartNamesAsyncTask extends	AsyncTask<Void, Void, Void> {
 		Gson gson = gsonBuilder.create();
 		AllChartNames allChartInfo = gson.fromJson(response, AllChartNames.class);
 		Session.setAllChartNames(allChartInfo.getAllChartNames());
-
 		return null;
 	}
 	

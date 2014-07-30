@@ -213,8 +213,8 @@ public class RealCommunicator implements ICommunicator {
 	}
 	
 	@Override
-	public void sendSettings(Activity activity) {
-		SendSettingsAsyncTask settingsSender = new SendSettingsAsyncTask(activity);
+	public void sendSettings(Activity activity, int option) {
+		SendSettingsAsyncTask settingsSender = new SendSettingsAsyncTask(activity, option);
 		settingsSender.execute();
 	}
 

@@ -19,5 +19,4 @@ public class AllChartNames {
 		this.allChartNames = newAllChartNames;
 	}
 	
-	
 }

@@ -3,9 +3,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:paddingBottom="5dp"
-    android:paddingLeft="15dp"
-    android:paddingTop="5dp" >
+    android:paddingBottom="10dp"
+    android:paddingLeft="30dp"
+    android:paddingTop="10dp" >
 
     <TextView
         android:id="@+id/fragment_thirdlevel_setting_relay_name"

@@ -29,6 +29,8 @@ public class ChartNamesDeserializer implements
 			for (Map.Entry<String, JsonElement> entry : jsonObject.entrySet()) {
 				allChartInfoContainer.add((ChartName) context.deserialize(entry.getValue(), ChartName.class));
 			}
+		} else {
+			allChartInfoContainer.clear();
 		}
 		return new AllChartNames(allChartInfoContainer);
 	}

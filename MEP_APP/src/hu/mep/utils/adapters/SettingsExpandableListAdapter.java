@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.afree.data.time.Minute;
 
+import hu.mep.communication.SendSettingsAsyncTask;
 import hu.mep.datamodells.Session;
 import hu.mep.datamodells.settings.Function;
 import hu.mep.datamodells.settings.Relay;
@@ -78,7 +79,12 @@ public class SettingsExpandableListAdapter extends BaseExpandableListAdapter {
 				@Override
 				public void onStopTrackingTouch(SeekBar seekBar) {	
 					Session.getTempSettings().getSliders().get(childPosition).value = lastValue;
-					Session.getActualCommunicationInterface().sendSettings(activity);
+					if(Session.getTempSettings().getSliders().get(childPosition).name.equals("th1_temp") ||
+						Session.getTempSettings().getSliders().get(childPosition).name.equals("tp1_temp"))
+					Session.getActualCommunicationInterface().sendSettings(activity, SendSettingsAsyncTask.OPTION_ONLY_TANKS);
+					else {
+						Session.getActualCommunicationInterface().sendSettings(activity, SendSettingsAsyncTask.OPTION_ONLY_THERMOSTATS);
+					}
 				}
 				
 				@Override
@@ -124,7 +130,7 @@ public class SettingsExpandableListAdapter extends BaseExpandableListAdapter {
 				public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 					/*Log.e(TAG, ((Function)getChild(groupPosition, childPosition)).label + " funkció állapota megváltoztatba erre: " + (isChecked ? "on" : "off"));*/
 					Session.getTempSettings().getFunctions().get(childPosition).status = isChecked;
-					Session.getActualCommunicationInterface().sendSettings(activity);
+					Session.getActualCommunicationInterface().sendSettings(activity, SendSettingsAsyncTask.OPTION_ALL_FUNCTION);
 				}
 			});
 		}

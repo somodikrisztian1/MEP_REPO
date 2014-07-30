@@ -129,11 +129,10 @@ public class BarChartDeserializer implements JsonDeserializer<OneLineAndTwoBarCh
 						} catch (ParseException e) {
 							e.printStackTrace();
 						}
-						actualChartDatas.put(actualDate, actData.getValue()
-								.getAsDouble());
+						actualChartDatas.put(actualDate, actData.getValue().getAsDouble());
 					}
 					subchartsForResult.add(new SubChart(actualChartLabel, actualChartDatas));
-					actualChartDatas.clear();
+					actualChartDatas = null;
 				}
 			}
 			result.setSubCharts(subchartsForResult);

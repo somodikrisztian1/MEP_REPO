@@ -28,6 +28,6 @@ public interface ICommunicator {
 
 	public void sendChatMessage(String text);
 	
-	public void sendSettings(Activity activity);
+	public void sendSettings(Activity activity, int option);
 	
 }
