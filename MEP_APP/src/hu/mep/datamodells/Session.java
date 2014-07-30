@@ -12,6 +12,7 @@ import hu.mep.datamodells.settings.Function;
 import hu.mep.datamodells.settings.Relay;
 import hu.mep.datamodells.settings.Settings;
 import hu.mep.datamodells.settings.Slider;
+import hu.mep.mep_app.NotificationService;
 import hu.mep.mep_app.R;
 
 import java.text.ParseException;
@@ -29,6 +30,7 @@ import java.util.Set;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -37,8 +39,9 @@ import android.util.Log;
 public class Session {
 
 	private static final String TAG = "Session";
-	private static Session instance;
-	private static Context context;
+	private static volatile Session instance;
+	
+	private static volatile Context context;
 	private static ICommunicator actualCommunicationInterface;
 
 	private static List<String> galleryImageURLSList = new ArrayList<String>();
@@ -46,9 +49,9 @@ public class Session {
 	private static Bitmap emptyProfilePicture;
 
 	/**private static boolean successfulRegistration = false;
-	private static String unsuccessfulRegistrationMessage = "";
-*/
-	private static User actualUser;
+	private static String unsuccessfulRegistrationMessage = "";*/
+
+	private static volatile User actualUser;
 	private static boolean isAnyUserLoggedIn = false;
 
 	private static List<TopicCategory> allTopicsList;
@@ -163,13 +166,14 @@ public class Session {
 	// ==============================================================================
 	// ACTUAL USER
 	// ==============================================================================
-	public static User getActualUser() {
+	public static synchronized User getActualUser() {
 		// Log.e(TAG, "getActualUser");
 		return actualUser;
 	}
 
-	public static void setActualUser(User newUser) {
+	public static synchronized void setActualUser(User newUser) {
 		Log.e(TAG, "setActualUser");
+
 		actualUser = newUser;
 	}
 
@@ -184,6 +188,9 @@ public class Session {
 
 	public static void logOffActualUser() {
 
+		//noti service leállítása
+		context.stopService(new Intent(context, NotificationService.class));
+		
 		Log.e(TAG, "setActualChart(null);");
 		setActualChart(null);
 
