@@ -343,26 +343,14 @@ public class ActivityLevel3ShowRemoteMonitoring extends ActionBarActivity
 							.getActualLineAndBarChartContainer().getAnnually());
 				}
 			} else {
-				if(Session.getActualRemoteMonitoring().getID().equals("10.1E4C2F020800")) {
-					if (position == 0) {
-						return null;
-					} else if((position > 0) && (position < getCount() - 1 )) {
-						Log.e(TAG, "lineChartos Fragment");
-						Session.setActualChart(Session.getAllCharts().get(position));
-						return new FragmentLevel3ShowTopic(Session.getActualChart());
-					} else {
-						Log.e(TAG, "settingses Fragment");
-						return new FragmentLevel3ShowSettings();
-					}
+				if (getPageTitle(position).equals("Rendszerállapot")) {
+					Log.e(TAG, "settingses Fragment");
+					return new FragmentLevel3ShowSettings();
 				} else {
-					if (position < getCount() - 1) {
-						Log.e(TAG, "lineChartos Fragment");
-						Session.setActualChart(Session.getAllCharts().get(position));
-						return new FragmentLevel3ShowTopic(Session.getActualChart());
-					} else {
-						Log.e(TAG, "settingses Fragment");
-						return new FragmentLevel3ShowSettings();
-					}
+					Log.e(TAG, "lineChartos Fragment");
+					Session.setActualChart(Session.getAllCharts().get(position));
+					return new FragmentLevel3ShowTopic(Session.getActualChart());
+
 				}
 			}
 		}

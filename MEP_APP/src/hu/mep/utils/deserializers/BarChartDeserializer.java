@@ -6,6 +6,7 @@ import hu.mep.datamodells.charts.BarChart;
 import hu.mep.datamodells.charts.Chart;
 import hu.mep.datamodells.charts.OneLineAndTwoBarChartContainer;
 import hu.mep.datamodells.charts.SubChart;
+import hu.mep.utils.others.CalendarPrinter;
 
 import java.lang.reflect.Type;
 import java.text.ParseException;
@@ -15,6 +16,8 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import android.util.Log;
 
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
@@ -108,13 +111,12 @@ public class BarChartDeserializer implements JsonDeserializer<OneLineAndTwoBarCh
 			for (Map.Entry<String, JsonElement> entry : lineJsonObj.entrySet()) {
 				JsonObject actualChartJSONObj = entry.getValue().getAsJsonObject();
 				String actualChartLabel = actualChartJSONObj.get("label").getAsString();
-				//Log.e(TAG, "Label:" + actualChartLabel);
-				//Log.e(TAG, "Label:" + actualChartLabel);
+				Log.e(TAG, "Label:" + actualChartLabel);
 				HashMap<Calendar, Double> actualChartDatas = new HashMap<Calendar, Double>();
 
-				JsonObject actualChartDataJSONObj = (actualChartJSONObj.get("adat")
-						.isJsonArray() ? null : actualChartJSONObj.get("adat")
-						.getAsJsonObject());
+				JsonObject actualChartDataJSONObj = 
+						(actualChartJSONObj.get("adat").isJsonArray() ? null :
+							actualChartJSONObj.get("adat").getAsJsonObject());
 
 				if (actualChartDataJSONObj != null) {
 
@@ -123,14 +125,13 @@ public class BarChartDeserializer implements JsonDeserializer<OneLineAndTwoBarCh
 						Calendar actualDate = Calendar.getInstance();
 						try {
 							actualDate.setTime(dateFormatter.parse(actData.getKey()));
-							//CalendarPrinter.logCalendar(TAG, actualDate, actData.getValue().getAsDouble());
+							CalendarPrinter.logCalendar(TAG, actualDate, actData.getValue().getAsDouble());
 						} catch (ParseException e) {
 							e.printStackTrace();
 						}
 						actualChartDatas.put(actualDate, actData.getValue()
 								.getAsDouble());
 					}
-					/* actualSubChart = new SubChart(actualChartLabel, actualChartDatas); */
 					subchartsForResult.add(new SubChart(actualChartLabel, actualChartDatas));
 					actualChartDatas.clear();
 				}

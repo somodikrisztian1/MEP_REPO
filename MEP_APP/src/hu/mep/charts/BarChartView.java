@@ -5,12 +5,14 @@ import java.util.Calendar;
 import java.util.Map.Entry;
 
 import hu.mep.datamodells.charts.BarChart;
+import hu.mep.mep_app.R;
 
 import org.afree.chart.AFreeChart;
 import org.afree.chart.ChartFactory;
 import org.afree.chart.axis.CategoryAxis;
 import org.afree.chart.axis.CategoryLabelPositions;
 import org.afree.chart.axis.NumberAxis;
+import org.afree.chart.axis.ValueAxis;
 import org.afree.chart.plot.CategoryPlot;
 import org.afree.chart.plot.PlotOrientation;
 import org.afree.chart.renderer.category.BarRenderer;
@@ -94,25 +96,27 @@ public class BarChartView extends DemoView {
 
         // get a reference to the plot for further customisation...
         CategoryPlot plot = (CategoryPlot) chart.getPlot();
+        plot.setRangePannable(false);
+        
 
         // set the range axis to display integers only...
         NumberAxis rangeAxis = (NumberAxis) plot.getRangeAxis();
         rangeAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
-
+        
+        
         // disable bar outlines...
         BarRenderer renderer = (BarRenderer) plot.getRenderer();
         renderer.setDrawBarOutline(false);
 
         // set up gradient paints for series...
-        GradientColor gp0 = new GradientColor(Color.BLUE, Color.rgb(0, 0, 64));
+        //GradientColor gp0 = new GradientColor(R.color.mep_color, Color.rgb(6, 26, 50));
+        GradientColor gp0 = new GradientColor(Color.rgb(0, 0, 255), Color.rgb(8, 150, 245));
         renderer.setSeriesPaintType(0, gp0);
      
         CategoryAxis domainAxis = plot.getDomainAxis();
-        domainAxis.setCategoryLabelPositions(
-                CategoryLabelPositions.createUpRotationLabelPositions(
-                        Math.PI / 6.0));
+        domainAxis.setCategoryLabelPositions(CategoryLabelPositions.createUpRotationLabelPositions(Math.PI / 6.0));
         // OPTIONAL CUSTOMISATION COMPLETED.
-
+        
         return chart;
 
     }
