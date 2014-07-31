@@ -1,5 +1,6 @@
 package hu.mep.charts;
 
+import hu.mep.datamodells.Session;
 import hu.mep.datamodells.charts.Chart;
 import hu.mep.utils.adapters.TimeSeriesAdapter;
 
@@ -23,7 +24,10 @@ import android.graphics.Color;
 public class TimeLineChartView extends DemoView {
 
 	private static final String TAG = "TimeLineChartView";
-	private static Chart mChart;
+	
+	private Chart mChart;
+	private boolean forRemoteMonitoring;
+	
 	private static final LegendItemCollection myColorPalette = new LegendItemCollection();
 	private static final SolidColor[] colorPalette = new SolidColor[] {
 	/* http://www.rapidtables.com/web/color/RGB_Color.htm */
@@ -44,17 +48,26 @@ public class TimeLineChartView extends DemoView {
 
 	};
 
-	public TimeLineChartView(Context context, Chart chart) {
+	public TimeLineChartView(Context context, Chart chart, boolean forRemoteMonitoring) {
 		super(context);
-		mChart = chart;
+		
+		this.mChart = chart;
+		this.forRemoteMonitoring = forRemoteMonitoring;
 
-		final AFreeChart aChart = createChart(
-				TimeSeriesAdapter.getTimeSeriesFromChart(mChart), "", "",
-				mChart.getyAxisTitle());
-		setChart(aChart);
+		if(forRemoteMonitoring) {
+			final AFreeChart aChart = createChart(
+					TimeSeriesAdapter.getTimeSeriesFromChart(mChart), Session.getActualRemoteMonitoring().getName(), "",
+					mChart.getyAxisTitle());
+			setChart(aChart);
+		} else {
+			final AFreeChart aChart = createChart(
+					TimeSeriesAdapter.getTimeSeriesFromChart(mChart), Session.getActualTopic().getTopicName(), "",
+					mChart.getyAxisTitle());
+			setChart(aChart);
+		}
 	}
 
-	private static AFreeChart createChart(XYDataset dataset, String title,
+	private AFreeChart createChart(XYDataset dataset, String title,
 			String xAxisLabel, String yAxisLabel) {
 
 		AFreeChart chart = ChartFactory.createTimeSeriesChart(title, // title

@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Map.Entry;
 
+import hu.mep.datamodells.Session;
 import hu.mep.datamodells.charts.BarChart;
 import hu.mep.mep_app.R;
 
@@ -30,17 +31,19 @@ import android.graphics.Color;
 public class BarChartView extends DemoView {
 
 	private BarChart barChart;
+	private boolean forRemoteMonitoring;
+
 	private static final SimpleDateFormat monthNameFormatter = new SimpleDateFormat("MMMM");
 	private static final SimpleDateFormat dayFormatter = new SimpleDateFormat("MM.dd.");
 	
-	public BarChartView(Context context, BarChart barChart) {
+	public BarChartView(Context context, BarChart barChart, boolean forRemoteMonitoring) {
         super(context);
 
         this.barChart = barChart;
-        //this.barChart.sortChartValues();
+        this.forRemoteMonitoring = forRemoteMonitoring;
+        
         CategoryDataset dataset = createDataset();
         AFreeChart chart = createChart(dataset);
-
         setChart(chart);
     }
 
@@ -78,8 +81,15 @@ public class BarChartView extends DemoView {
     private AFreeChart createChart(CategoryDataset dataset) {
 
         // create the chart...
+    	String title = null;
+    	if(forRemoteMonitoring) {
+    		title = Session.getActualRemoteMonitoring().getName();
+    	} else {
+    		title = Session.getActualTopic().getTopicName();
+    	}
+    	
         AFreeChart chart = ChartFactory.createBarChart(
-            "",      // chart title
+            title,      // chart title
             "",               // domain axis label
             "Termelés (kWh)",                  // range axis label
             dataset,                  // data
