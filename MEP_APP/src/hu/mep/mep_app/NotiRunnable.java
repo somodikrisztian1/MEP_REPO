@@ -48,6 +48,15 @@ public class NotiRunnable implements Runnable {
 		Log.e(TAG, "stop()");
 		this.running = false;
 	}
+	
+	public void resume() {
+		Log.e(TAG, "resume()");
+		this.running = true;
+	}
+	
+	public Boolean isRunning(){
+		return this.running;
+	}
 
 	public NotiRunnable(int newMepId, Context newContext) {
 		super();

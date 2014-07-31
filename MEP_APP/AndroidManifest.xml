@@ -16,10 +16,11 @@
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/Theme.Meptheme" >
+        android:theme="@style/Theme.Meptheme">
         <activity
             android:name=".activities.ActivityLevel1"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+            android:alwaysRetainTaskState = "true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -37,28 +38,32 @@
         </activity>
         <activity
             android:name=".activities.ActivityLevel2NEW"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+            android:alwaysRetainTaskState = "true" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.ActivityLevel1" />
         </activity>
         <activity
             android:name=".activities.ActivityLevel3ShowTopic"
-            android:screenOrientation="landscape" >
+            android:screenOrientation="landscape"
+            android:alwaysRetainTaskState = "true" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.ActivityLevel2NEW" />
         </activity>
         <activity
             android:name=".activities.ActivityLevel3ShowRemoteMonitoring"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+            android:alwaysRetainTaskState = "true" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.ActivityLevel2NEW" />
         </activity>
         <activity
             android:name=".activities.ActivityLevel3Chat"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+            android:alwaysRetainTaskState = "true" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.ActivityLevel2NEW" />
