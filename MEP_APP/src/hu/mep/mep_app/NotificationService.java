@@ -24,40 +24,35 @@ public class NotificationService extends Service {
 	public void onStart(Intent intent, int startId) {
 		// Log.e(TAG, "onStart");
 
-		if (intent != null && intent.getExtras() != null
-				&& (notiRunnable == null || thread == null)) {
+		if (intent != null && intent.getExtras() != null) {
 
-			notiRunnable = null;
-			thread = null;
 			// Log.e(TAG, "onStart, getExtra: " +
 			// intent.getExtras().getInt("mepId"));
-			
-			notiRunnable = new NotiRunnable(intent.getExtras().getInt("mepId"),
-					this);
 
-			thread = new Thread(notiRunnable);
-			thread.start();
+			if (notiRunnable != null && thread != null) {
 
-		} else if (intent != null && intent.getExtras() != null
-				&& (notiRunnable != null || thread != null)) {
-
-			if (notiRunnable.isRunning() == false && notiRunnable != null
-					&& thread != null) {
-
-				notiRunnable.resume();
-				thread.start();
+				if (notiRunnable.isRunning())
+					notiRunnable.setMepId(intent.getExtras().getInt("mepId"));
+				else {
+					initThreadWithRunnable(intent);
+				}
 			}
 			else {
-				notiRunnable = null;
-				thread = null;
-				
-				notiRunnable = new NotiRunnable(intent.getExtras().getInt("mepId"),
-						this);
-
-				thread = new Thread(notiRunnable);
-				thread.start();
+				initThreadWithRunnable(intent);
 			}
 		}
+	}
+	
+	//Thread, Runnable deklarálása és elindítása
+	private void initThreadWithRunnable(Intent intent) {
+		notiRunnable = null;
+		thread = null;
+		
+		notiRunnable = new NotiRunnable(intent.getExtras().getInt(
+				"mepId"), this);
+
+		thread = new Thread(notiRunnable);
+		thread.start();
 	}
 
 	@Override
