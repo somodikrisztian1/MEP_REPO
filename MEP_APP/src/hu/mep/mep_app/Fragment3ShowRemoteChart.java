@@ -27,7 +27,7 @@ public class Fragment3ShowRemoteChart extends Fragment {
 					"Ehhez a távfelügyelethez nem tartozik grafikon.", Toast.LENGTH_SHORT).show();
 			//getActivity().onBackPressed();
 		} else {
-			mView = new TimeLineChartView(getActivity(), mChart);
+			mView = new TimeLineChartView(getActivity(), mChart, true);
 			//getActivity().requestWindowFeature(Window.FEATURE_NO_TITLE);
 		}
 		return mView;

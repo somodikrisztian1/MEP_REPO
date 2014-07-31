@@ -13,19 +13,21 @@ public class FragmentLevel3ShowTopic extends Fragment {
 
 	public TimeLineChartView mView;
 	public Chart mChart;
+	private boolean forRemoteMonitoring;
 	
 		
-	public FragmentLevel3ShowTopic(Chart chart) {
+	public FragmentLevel3ShowTopic(Chart chart, boolean forRemoteMonitoring) {
 		this.mChart = chart;
+		this.forRemoteMonitoring = forRemoteMonitoring;
 	}
 
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 
 		if (mChart.getSubCharts().isEmpty()) {
-			Toast.makeText(getActivity(), "Ehhez a témához nem tartozik grafikon.", Toast.LENGTH_SHORT).show();
+			Toast.makeText(getActivity(), "Nem állnak rendelkezésre adatok.", Toast.LENGTH_SHORT).show();
 		} else {
-			mView = new TimeLineChartView(getActivity(), mChart);
+			mView = new TimeLineChartView(getActivity(), mChart, forRemoteMonitoring);
 		}
 		return mView;
 	}

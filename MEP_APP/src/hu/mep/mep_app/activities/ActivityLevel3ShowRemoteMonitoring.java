@@ -332,15 +332,15 @@ public class ActivityLevel3ShowRemoteMonitoring extends ActionBarActivity
 				if (position == 0) {
 					Log.e(TAG, "lineChartos Fragment");
 					return new FragmentLevel3ShowTopic(Session
-							.getActualLineAndBarChartContainer().getLineChart());
+							.getActualLineAndBarChartContainer().getLineChart(), true);
 				} else if (position == 1) {
 					Log.e(TAG, "havi bartChartos Fragment");
 					return new FragmentLevel3ShowBarChart(Session
-							.getActualLineAndBarChartContainer().getMonthly());
+							.getActualLineAndBarChartContainer().getMonthly(), true);
 				} else {
 					Log.e(TAG, "éves bartChartos Fragment");
 					return new FragmentLevel3ShowBarChart(Session
-							.getActualLineAndBarChartContainer().getAnnually());
+							.getActualLineAndBarChartContainer().getAnnually(), true);
 				}
 			} else {
 				if (getPageTitle(position).equals("Rendszerállapot")) {
@@ -349,7 +349,7 @@ public class ActivityLevel3ShowRemoteMonitoring extends ActionBarActivity
 				} else {
 					Log.e(TAG, "lineChartos Fragment");
 					Session.setActualChart(Session.getAllCharts().get(position));
-					return new FragmentLevel3ShowTopic(Session.getActualChart());
+					return new FragmentLevel3ShowTopic(Session.getActualChart(), true);
 
 				}
 			}

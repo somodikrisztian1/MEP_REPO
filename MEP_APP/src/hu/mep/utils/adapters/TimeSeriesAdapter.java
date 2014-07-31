@@ -23,7 +23,6 @@ public class TimeSeriesAdapter {
 	public XYDataset getTimeSeriesFromActualChart() {
 
 		if (Session.getActualChart().getSubCharts() == null) {
-			// Log.e(TAG, "getSubCharts is null");
 			return null;
 		}
 		int i = -1;
@@ -38,27 +37,13 @@ public class TimeSeriesAdapter {
 			for (Map.Entry<Calendar, Double> actualValues : actSubChart
 					.getChartValues().entrySet()) {
 				Calendar date = actualValues.getKey();
-				ts[i].add(
-						new Second(date.get(Calendar.SECOND), date
-								.get(Calendar.MINUTE), date
-								.get(Calendar.HOUR_OF_DAY), date
-								.get(Calendar.DAY_OF_MONTH), date
-								.get(Calendar.MONTH), date.get(Calendar.YEAR)),
-						actualValues.getValue());
-
-				// CalendarPrinter.logCalendar(TAG, date,
-				// actualValues.getValue());
+				ts[i].add(new Second(date.getTime()), actualValues.getValue());
+				// CalendarPrinter.logCalendar(TAG, date, actualValues.getValue());
 			}
 		}
 
 		TimeSeriesCollection dataset = new TimeSeriesCollection();
 		for (int i2 = 0; i2 < howManyTimeSeries; ++i2) {
-
-			/*
-			 * for (int j = 0; j < ts[i2].getItemCount(); ++j) { Log.e(TAG +
-			 * " ts[" + i2 + "][" + j + "]", "" + ts[i2].getTimePeriod(j) +
-			 * "#\t" + ts[i2].getValue(j)); }
-			 */
 			dataset.addSeries(ts[i2]);
 		}
 
@@ -83,26 +68,13 @@ public class TimeSeriesAdapter {
 			for (Map.Entry<Calendar, Double> actualValues : actSubChart
 					.getChartValues().entrySet()) {
 				Calendar date = actualValues.getKey();
-				ts[i].add(
-						new Second(date.get(Calendar.SECOND), 
-								date.get(Calendar.MINUTE), 
-								date.get(Calendar.HOUR_OF_DAY), 
-								date.get(Calendar.DAY_OF_MONTH), 
-								date.get(Calendar.MONTH), 
-								date.get(Calendar.YEAR)),
-						actualValues.getValue());
+				ts[i].add( new Second(date.getTime()),	actualValues.getValue());
 				//CalendarPrinter.logCalendar(TAG, date, actualValues.getValue());
 			}
 		}
 
 		TimeSeriesCollection dataset = new TimeSeriesCollection();
 		for (int i2 = 0; i2 < howManyTimeSeries; ++i2) {
-
-			/*
-			 * for (int j = 0; j < ts[i2].getItemCount(); ++j) { Log.e(TAG +
-			 * " ts[" + i2 + "][" + j + "]", "" + ts[i2].getTimePeriod(j) +
-			 * "#\t" + ts[i2].getValue(j)); }
-			 */
 			dataset.addSeries(ts[i2]);
 		}
 		return dataset;

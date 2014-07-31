@@ -343,7 +343,7 @@ public class ActivityLevel3ShowTopic extends ActionBarActivity implements
 		@Override
 		public Fragment getItem(int position) {
 			Session.setActualChart(Session.getAllCharts().get(position));
-			return new FragmentLevel3ShowTopic(Session.getActualChart());
+			return new FragmentLevel3ShowTopic(Session.getActualChart(), false);
 		}
 
 		@Override
