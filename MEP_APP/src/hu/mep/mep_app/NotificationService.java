@@ -5,9 +5,9 @@ import android.content.Intent;
 import android.os.IBinder;
 
 public class NotificationService extends Service {
-	
-//	private String TAG = "NotiFicationService";
+
 	private NotiRunnable notiRunnable;
+	private Thread thread;
 
 	@Override
 	public IBinder onBind(Intent intent) {
@@ -24,16 +24,34 @@ public class NotificationService extends Service {
 	public void onStart(Intent intent, int startId) {
 		// Log.e(TAG, "onStart");
 
-		if (intent != null && intent.getExtras() != null
-				&& notiRunnable == null) {
+		if (intent != null && intent.getExtras() != null) {
 
-//			Log.e(TAG, "onStart, getExtra: " + intent.getExtras().getInt("mepId"));
-			
-			notiRunnable = new NotiRunnable(intent.getExtras().getInt("mepId"),
-					this);
+			// Log.e(TAG, "onStart, getExtra: " +
+			// intent.getExtras().getInt("mepId"));
+
+			if (notiRunnable != null && thread != null) {
+
+				if (notiRunnable.isRunning())
+					notiRunnable.setMepId(intent.getExtras().getInt("mepId"));
+				else {
+					initThreadWithRunnable(intent);
+				}
+			}
+			else {
+				initThreadWithRunnable(intent);
+			}
 		}
+	}
+	
+	//Thread, Runnable deklarálása és elindítása
+	private void initThreadWithRunnable(Intent intent) {
+		notiRunnable = null;
+		thread = null;
+		
+		notiRunnable = new NotiRunnable(intent.getExtras().getInt(
+				"mepId"), this);
 
-		Thread thread = new Thread(notiRunnable);
+		thread = new Thread(notiRunnable);
 		thread.start();
 	}
 

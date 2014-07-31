@@ -49,6 +49,14 @@ public class NotiRunnable implements Runnable {
 		this.running = false;
 	}
 
+	public void setMepId(int newId) {
+		this.mepId = newId;
+	}
+	
+	public Boolean isRunning() {
+		return this.running;
+	}
+
 	public NotiRunnable(int newMepId, Context newContext) {
 		super();
 		this.mepId = newMepId;
@@ -60,16 +68,16 @@ public class NotiRunnable implements Runnable {
 		while (this.running == true) {
 			calendar = Calendar.getInstance();
 			Log.e(TAG, "__________NotiRunnable.run() ==> true__________");
-//			Log.e(TAG,
-//					"calendar, day (int): "
-//							+ calendar.get(Calendar.DAY_OF_MONTH));
-//			Log.e(TAG, "today (int): " + today);
+			// Log.e(TAG,
+			// "calendar, day (int): "
+			// + calendar.get(Calendar.DAY_OF_MONTH));
+			// Log.e(TAG, "today (int): " + today);
 
 			// távfelügyeletekre:
 			if (this.mepId != 0 && today != calendar.get(Calendar.DAY_OF_MONTH)
 					&& !isNotificationVisible(remoteNotificationID)) {
 
-//				Log.e(TAG, "remoteNoti, user logged in, mepId: " + mepId);
+				// Log.e(TAG, "remoteNoti, user logged in, mepId: " + mepId);
 
 				getRemotes(Integer.toString(mepId));
 
@@ -89,7 +97,7 @@ public class NotiRunnable implements Runnable {
 			if (this.mepId != 0
 					&& !isNotificationVisible(gotNewMessageNotificationID)) {
 
-//				Log.e(TAG, "msgNoti, user logged in, mepId: " + mepId);
+				// Log.e(TAG, "msgNoti, user logged in, mepId: " + mepId);
 
 				getUnreadMessages(Integer.toString(mepId));
 
@@ -112,7 +120,7 @@ public class NotiRunnable implements Runnable {
 
 	// rossz távf. lekérése
 	private void getRemotes(String dataToSend) {
-//		Log.e(TAG, "getRemotes, userId:  " + dataToSend);
+		// Log.e(TAG, "getRemotes, userId:  " + dataToSend);
 		HttpClient httpClient = new DefaultHttpClient();
 		HttpPost httpPost = new HttpPost(
 				"http://www.megujuloenergiapark.hu/ios_getHibasTf.php?userId="
@@ -142,7 +150,7 @@ public class NotiRunnable implements Runnable {
 					+ e.getMessage().toString() + "}";
 		}
 
-//		Log.e(TAG, "response: " + responseFromWrongRemotes.toString());
+		// Log.e(TAG, "response: " + responseFromWrongRemotes.toString());
 
 		// return responseFromUnreadMessagesPHP;
 	}
@@ -173,7 +181,7 @@ public class NotiRunnable implements Runnable {
 			Log.e(TAG, "gotWrongRemotes catch: " + e.toString());
 		}
 
-//		Log.e(TAG, "gotWrongRemotes: " + Integer.toString(count));
+		// Log.e(TAG, "gotWrongRemotes: " + Integer.toString(count));
 
 		if (count > 0)
 			return true;
@@ -183,8 +191,8 @@ public class NotiRunnable implements Runnable {
 
 	// olvasatlan üzenetek lekérése
 	private void getUnreadMessages(String dataToSend) {
-//		Log.e(TAG, "getUnreadMessages, userId:  " + dataToSend);
-		
+		// Log.e(TAG, "getUnreadMessages, userId:  " + dataToSend);
+
 		HttpClient httpClient = new DefaultHttpClient();
 		HttpPost httpPost = new HttpPost(
 				"http://www.megujuloenergiapark.hu/ios_getContactList.php?userId="
@@ -215,7 +223,7 @@ public class NotiRunnable implements Runnable {
 					+ e.getMessage().toString() + "}";
 		}
 
-//		Log.e(TAG, "response: " + responseFromUnreadMessagesPHP.toString());
+		// Log.e(TAG, "response: " + responseFromUnreadMessagesPHP.toString());
 	}
 
 	// van-e olvasatlan üzenet
@@ -241,7 +249,7 @@ public class NotiRunnable implements Runnable {
 			}
 		} catch (JSONException e) {
 			e.printStackTrace();
-//			Log.e(TAG, "gotUnreadMsg catch: " + e.toString());
+			// Log.e(TAG, "gotUnreadMsg catch: " + e.toString());
 		}
 
 		if (count > 0)
@@ -314,11 +322,11 @@ public class NotiRunnable implements Runnable {
 		PendingIntent test = PendingIntent.getActivity(context, id,
 				notificationIntent, PendingIntent.FLAG_NO_CREATE);
 
-//		if (test != null) {
-//			Log.e(TAG, "test != null");
-//		} else {
-//			Log.e(TAG, "test == null");
-//		}
+		// if (test != null) {
+		// Log.e(TAG, "test != null");
+		// } else {
+		// Log.e(TAG, "test == null");
+		// }
 
 		return test != null;
 	}
