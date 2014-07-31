@@ -40,15 +40,14 @@ public class SendSettingsAsyncTask extends AsyncTask<Void, Void, Void> {
 	@Override
 	protected Void doInBackground(Void... params) {
 		
-		/*try {
-			*/logPostDatas(preparePostDatas());
-			// TODO!
-			//RealCommunicator.httpPost(resourceURI, preparePostDatas());
-		/*} catch (ClientProtocolException e) {
+		try {
+		logPostDatas(preparePostDatas());
+		RealCommunicator.httpPost(resourceURI, preparePostDatas());
+		} catch (ClientProtocolException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
-		}*/
+		}
 		
 		return null;
 	}
@@ -56,7 +55,7 @@ public class SendSettingsAsyncTask extends AsyncTask<Void, Void, Void> {
 	@Override
 	protected void onPostExecute(Void result) {
 		super.onPostExecute(result);
-		/*Session.getActualCommunicationInterface().getActualRemoteMonitoringSettings(activity);*/
+		Session.getActualCommunicationInterface().getActualRemoteMonitoringSettings(activity);
 	}
 	
 	private HashMap<String, String> preparePostDatas() {

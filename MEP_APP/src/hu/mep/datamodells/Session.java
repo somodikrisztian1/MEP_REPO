@@ -38,6 +38,9 @@ import android.util.Log;
 
 public class Session {
 
+	public static final String USERNAME_TAG = "username";
+	public static final String PASSWORD_TAG = "password";
+	
 	private static final String TAG = "Session";
 	private static volatile Session instance;
 	
@@ -457,8 +460,7 @@ public class Session {
 	public static ChatMessagesList getChatMessagesList() {
 		// Log.e(TAG, "getChatMessagesList");
 		if (chatMessagesList == null) {
-			chatMessagesList = new ChatMessagesList(
-					new ArrayList<ChatMessage>());
+			chatMessagesList = new ChatMessagesList(new ArrayList<ChatMessage>());
 		}
 		return chatMessagesList;
 	}
@@ -472,12 +474,14 @@ public class Session {
 	 */
 	public static void setChatMessagesList(ChatMessagesList newChatMessagesList) {
 		Log.e(TAG, "setChatMessagesList()");
-		if (newChatMessagesList == null) {
-			Log.e("Session.setChatmessagesList()",
-					"The newChatMessagesList parameter IS NULL!!!!");
-		} else if (chatMessagesList == null
-				|| chatMessagesList.getChatMessagesList().isEmpty()) {
-			chatMessagesList = newChatMessagesList;
+		if(chatMessagesList == null) {
+			if(newChatMessagesList == null) {
+				chatMessagesList = new ChatMessagesList(new ArrayList<ChatMessage>());
+			} else {
+				chatMessagesList = newChatMessagesList;
+			}
+		} else if(chatMessagesList.getChatMessagesList().isEmpty()) {
+			chatMessagesList.getChatMessagesList().addAll(newChatMessagesList.getChatMessagesList());
 		} else {
 			chatMessagesList.addFurtherMessages(newChatMessagesList);
 		}
@@ -491,10 +495,8 @@ public class Session {
 	public static void emptyChatMessagesList() {
 		Log.e(TAG, "emptyChatMessagesList");
 		if (chatMessagesList == null) {
-			chatMessagesList = new ChatMessagesList(
-					new ArrayList<ChatMessage>());
-		} else if ((chatMessagesList != null)
-				&& !(chatMessagesList.chatMessagesList.isEmpty())) {
+			chatMessagesList = new ChatMessagesList(new ArrayList<ChatMessage>());
+		} else if ((chatMessagesList != null) && !(chatMessagesList.chatMessagesList.isEmpty())) {
 			chatMessagesList.chatMessagesList.clear();
 		}
 	}

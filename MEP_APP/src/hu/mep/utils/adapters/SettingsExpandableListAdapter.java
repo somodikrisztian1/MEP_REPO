@@ -110,7 +110,7 @@ public class SettingsExpandableListAdapter extends BaseExpandableListAdapter {
 			boolean on = Session.getActualSettings().getRelays().get(childPosition).status;
 			String statusText = ( on ? "on" : "off");
 			if(on) {
-				statusTextView.setTextColor(Color.rgb(255, 255, 255));
+				statusTextView.setTextColor(Color.rgb(0, 0, 0));
 			} else {
 				statusTextView.setTextColor(Color.rgb(47, 79, 79));
 			}

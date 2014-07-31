@@ -41,7 +41,7 @@ public class ActivityLevel3Chat extends ActionBarActivity {
 		
 		ListView chatMessagesListview = (ListView) findViewById(R.id.activity_thirdlevel_chat_listview);
 
-		Session.getActualCommunicationInterface().getChatMessages();
+		//Session.getActualCommunicationInterface().getChatMessages();
 		Session.startMessageRefresherThread();
 		
 		adapter = new ChatMessagesListAdapter(this, R.id.activity_thirdlevel_chat_listview, 

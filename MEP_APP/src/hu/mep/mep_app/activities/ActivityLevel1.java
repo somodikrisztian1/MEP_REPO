@@ -258,9 +258,9 @@ public class ActivityLevel1 extends ActionBarActivity implements
 
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
-		boolean drawerOpen = firstActivityDrawerLayout
-				.isDrawerOpen(firstActivityDrawerListView);
-		menu.findItem(R.id.action_login).setVisible(!drawerOpen);
+		boolean drawerOpen = firstActivityDrawerLayout.isDrawerOpen(firstActivityDrawerListView);
+		/*menu.findItem(R.id.action_login).setVisible(!drawerOpen);*/
+		menu.setGroupVisible(R.id.firstlevel_menu_buttons_group, !drawerOpen);
 		return super.onPrepareOptionsMenu(menu);
 	}
 

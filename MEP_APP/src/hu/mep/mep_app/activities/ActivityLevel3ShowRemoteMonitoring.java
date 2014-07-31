@@ -50,6 +50,7 @@ public class ActivityLevel3ShowRemoteMonitoring extends ActionBarActivity
 	private static final SimpleDateFormat formatter = new SimpleDateFormat("yyyy.MM.dd. HH:mm");
 	private static final SimpleDateFormat shortFormatter = new SimpleDateFormat("MMMdd. HH:mm");
 	private static final SimpleDateFormat veryShortFormatter = new SimpleDateFormat("HH:mm");
+	private static final SimpleDateFormat onlyDayFormatter = new SimpleDateFormat("MM.dd.");
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -397,16 +398,16 @@ public class ActivityLevel3ShowRemoteMonitoring extends ActionBarActivity
 		if(menu != null) {
 			if (Session.getActualRemoteMonitoring().isSolarPanel()) {
 				if (tab.getPosition() == 0) {
-					menu.setGroupVisible(R.id.thirdlevel_menu_buttons_group, true);
+					menu.setGroupVisible(R.id.thirdlevel_menu_3_buttons_group, true);
 				} else {
-					menu.setGroupVisible(R.id.thirdlevel_menu_buttons_group, false);
+					menu.setGroupVisible(R.id.thirdlevel_menu_3_buttons_group, false);
 				}
 			}
 			else if( mSectionsPagerAdapter.getPageTitle(tab.getPosition()).toString().equals("Rendszerállapot")) {
-				menu.setGroupVisible(R.id.thirdlevel_menu_buttons_group, false);
+				menu.setGroupVisible(R.id.thirdlevel_menu_3_buttons_group, false);
 			}
 			else {
-				menu.setGroupVisible(R.id.thirdlevel_menu_buttons_group, true);
+				menu.setGroupVisible(R.id.thirdlevel_menu_3_buttons_group, true);
 				}
 			}
 		mViewPager.setCurrentItem(tab.getPosition());
@@ -417,16 +418,16 @@ public class ActivityLevel3ShowRemoteMonitoring extends ActionBarActivity
 		if(menu != null) {
 			if (Session.getActualRemoteMonitoring().isSolarPanel()) {
 				if (tab.getPosition() == 0) {
-					menu.setGroupVisible(R.id.thirdlevel_menu_buttons_group, true);
+					menu.setGroupVisible(R.id.thirdlevel_menu_3_buttons_group, true);
 				} else {
-					menu.setGroupVisible(R.id.thirdlevel_menu_buttons_group, false);
+					menu.setGroupVisible(R.id.thirdlevel_menu_3_buttons_group, false);
 				}
 			}
 			else if( mSectionsPagerAdapter.getPageTitle(tab.getPosition()).toString().equals("Rendszerállapot")) {
-				menu.setGroupVisible(R.id.thirdlevel_menu_buttons_group, false);
+				menu.setGroupVisible(R.id.thirdlevel_menu_3_buttons_group, false);
 			}
 			else {
-				menu.setGroupVisible(R.id.thirdlevel_menu_buttons_group, true);
+				menu.setGroupVisible(R.id.thirdlevel_menu_3_buttons_group, true);
 				}
 			}
 		mViewPager.setCurrentItem(tab.getPosition());

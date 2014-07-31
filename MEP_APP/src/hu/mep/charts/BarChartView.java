@@ -47,11 +47,6 @@ public class BarChartView extends DemoView {
         setChart(chart);
     }
 
-    /**
-     * Returns a sample dataset.
-     *
-     * @return The dataset.
-     */
     private CategoryDataset createDataset() {
 
         // row keys...
@@ -71,13 +66,6 @@ public class BarChartView extends DemoView {
         return dataset;
     }
 
-    /**
-     * Creates a sample chart.
-     *
-     * @param dataset  the dataset.
-     *
-     * @return The chart.
-     */
     private AFreeChart createChart(CategoryDataset dataset) {
 
         // create the chart...

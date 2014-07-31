@@ -159,5 +159,4 @@ public class ActivityLevel2NEW extends ActionBarActivity implements
 			Session.getActualCommunicationInterface().getChartNames(this, true);
 		}
 	}
-
 }
