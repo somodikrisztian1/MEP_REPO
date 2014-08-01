@@ -33,7 +33,7 @@ import android.content.Context;
 
 public class RealCommunicator implements ICommunicator {
 
-	private static final String TAG = "RealCommunicator.java";
+	//private static final String TAG = "RealCommunicator";
 	private static HttpClient httpclient = new DefaultHttpClient();
 	Context context;
 	final static String MainURL = "http://www.megujuloenergiapark.hu/";
@@ -158,7 +158,7 @@ public class RealCommunicator implements ICommunicator {
 
 	@Override
 	public void getTopicList() {
-		GetTopicListAsyncTask getTopicListAsyncTask = new GetTopicListAsyncTask(context, MainURL);
+		GetTopicListAsyncTask getTopicListAsyncTask = new GetTopicListAsyncTask(MainURL);
 		getTopicListAsyncTask.execute();
 
 	}

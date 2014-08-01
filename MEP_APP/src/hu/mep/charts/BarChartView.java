@@ -1,19 +1,17 @@
 package hu.mep.charts;
 
+import hu.mep.datamodells.Session;
+import hu.mep.datamodells.charts.BarChart;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Map.Entry;
-
-import hu.mep.datamodells.Session;
-import hu.mep.datamodells.charts.BarChart;
-import hu.mep.mep_app.R;
 
 import org.afree.chart.AFreeChart;
 import org.afree.chart.ChartFactory;
 import org.afree.chart.axis.CategoryAxis;
 import org.afree.chart.axis.CategoryLabelPositions;
 import org.afree.chart.axis.NumberAxis;
-import org.afree.chart.axis.ValueAxis;
 import org.afree.chart.plot.CategoryPlot;
 import org.afree.chart.plot.PlotOrientation;
 import org.afree.chart.renderer.category.BarRenderer;
@@ -25,9 +23,6 @@ import org.afree.graphics.SolidColor;
 import android.content.Context;
 import android.graphics.Color;
 
-/**
- * BarChartDemo01View
- */
 public class BarChartView extends DemoView {
 
 	private BarChart barChart;

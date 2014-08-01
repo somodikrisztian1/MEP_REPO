@@ -2,9 +2,7 @@ package hu.mep.datamodells.charts;
 
 import hu.mep.utils.others.CalendarPrinter;
 
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;

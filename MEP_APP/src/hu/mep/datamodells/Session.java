@@ -120,29 +120,11 @@ public class Session {
 
 	public static ICommunicator getActualCommunicationInterface() {
 		if (actualCommunicationInterface == null) {
-			actualCommunicationInterface = RealCommunicator
-					.getInstance(context);
+			actualCommunicationInterface = RealCommunicator.getInstance(context);
 		}
 		return actualCommunicationInterface;
 	}
 
-	/*public static boolean isSuccessfulRegistration() {
-		return successfulRegistration;
-	}
-
-	public static void setSuccessfulRegistration(boolean successfulRegistration) {
-		Session.successfulRegistration = successfulRegistration;
-	}
-
-	public static String getUnsuccessfulRegistrationMessage() {
-		return unsuccessfulRegistrationMessage;
-	}
-
-	public static void setUnsuccessfulRegistrationMessage(
-			String unsuccessfulRegistrationMessage) {
-		Session.unsuccessfulRegistrationMessage = unsuccessfulRegistrationMessage;
-	}
-*/
 	// ==============================================================================
 	// GALLERY IMAGE URL + IMAGES
 	// ==============================================================================
@@ -174,13 +156,10 @@ public class Session {
 	// ACTUAL USER
 	// ==============================================================================
 	public static synchronized User getActualUser() {
-		// Log.e(TAG, "getActualUser");
 		return actualUser;
 	}
 
 	public static synchronized void setActualUser(User newUser) {
-		Log.e(TAG, "setActualUser");
-
 		actualUser = newUser;
 	}
 
@@ -189,7 +168,6 @@ public class Session {
 	}
 
 	public static void setAnyUserLoggedIn(boolean n_isAnyUserLoggedIn) {
-		Log.i(TAG, "setAnyUserLoggedIn " + isAnyUserLoggedIn);
 		Session.isAnyUserLoggedIn = n_isAnyUserLoggedIn;
 	}
 
@@ -198,25 +176,18 @@ public class Session {
 		//noti service leállítása
 		context.stopService(new Intent(context, NotificationService.class));
 		
-		Log.e(TAG, "setActualChart(null);");
 		setActualChart(null);
 
-		Log.e(TAG, "setActualChartInfoContainer(null);");
 		setActualChartName(null);
 
-		Log.e(TAG, "setAllChartInfoContainer(null);");
 		setAllChartNames(null);
 
-		Log.e(TAG, "setActualTopic(null);");
 		setActualTopic(null);
 
-		Log.e(TAG, "setAllTopicsList(null);");
 		setAllTopicsList(null);
 
-		Log.e(TAG, "emptyChatMessagesList()");
 		emptyChatMessagesList();
 
-		Log.e(TAG, "setActualChatPartner(null);");
 		setActualChatPartner(null);
 		
 		if(actualChatContactList != null) {
@@ -225,13 +196,10 @@ public class Session {
 			}
 		}
 
-		Log.e(TAG, "setActualChatContactList(null);");
 		setActualChatContactList(null);
 
-		Log.e(TAG, "setActualRemoteMonitoring(null);");
 		setActualRemoteMonitoring(null);
 
-		Log.e(TAG, "setActualUser(null);");
 		setActualUser(null);
 
 	}
@@ -240,38 +208,18 @@ public class Session {
 	// TOPICS LIST + ACTUAL TOPIC
 	// ==============================================================================
 	public static List<TopicCategory> getTopicsList() {
-		/*
-		 * int counter = 0; for (TopicCategory actTopicCategory : allTopicsList)
-		 * { for (Topic actTopic : actTopicCategory.getTopics()) { Log.d(TAG,
-		 * "Topic#" + counter + "= " + actTopic.getTopicName()); counter++; } }
-		 */
-		Log.e(TAG, "getTopicsList");
 		return allTopicsList;
 	}
 
 	public static void setAllTopicsList(List<TopicCategory> allTopicsList) {
 		Session.allTopicsList = allTopicsList;
-		int counter = 0;
-		if (allTopicsList != null) {
-			for (TopicCategory actTopicCategory : allTopicsList) {
-				for (Topic actTopic : actTopicCategory.getTopics()) {
-					Log.e(TAG,
-							"Topic#" + counter + "= " + actTopic.getTopicName());
-					counter++;
-				}
-			}
-			Log.e(TAG, "setAllTopicsList");
-			Log.e(TAG, "Összesen megkapott témakörök száma: " + counter);
-		}
 	}
 
 	public static Topic getActualTopic() {
-		Log.e(TAG, "getActualTopic");
 		return actualTopic;
 	}
 
 	public static void setActualTopic(Topic actualTopic) {
-		Log.e(TAG, "setActualTopic");
 		Session.actualTopic = actualTopic;
 	}
 
@@ -279,24 +227,19 @@ public class Session {
 	// ALL CHART INFO CONTAINAR + ACTUAL CHART INFO CONTAINER
 	// ==============================================================================
 	public static List<ChartName> getAllChartNames() {
-		Log.e(TAG, "getAllChartInfoContainer");
 		return allChartNames;
 	}
 
 	public static void setAllChartNames(List<ChartName> allChartInfoContainer) {
-		Log.e(TAG, "setAllChartInfoContainer");
 		Session.allChartNames = allChartInfoContainer;
 		logAllChartNames();
-		;
 	}
 
 	public static ChartName getActualChartName() {
-		Log.e(TAG, "getActualChartInfoContainer");
 		return actualChartName;
 	}
 
 	public static void setActualChartName(ChartName actualChartInfoContainer) {
-		Log.e(TAG, "setActualChartInfoContainer");
 		Session.actualChartName = actualChartInfoContainer;
 	}
 
@@ -308,6 +251,17 @@ public class Session {
 		Session.allCharts = allCharts;
 	}
 
+	public static OneLineAndTwoBarChartContainer getActualLineAndBarChartContainer() {
+		return actualLineAndBarChartContainer;
+	}
+
+	public static void setActualLineAndBarChartContainer(
+			OneLineAndTwoBarChartContainer actualLineAndBarChartContainer) {
+		Session.actualLineAndBarChartContainer = actualLineAndBarChartContainer;
+		Session.setActualChart(Session.actualLineAndBarChartContainer.getLineChart());
+	}
+
+	
 	private static void logAllChartNames() {
 		if (allChartNames != null) {
 			for (ChartName actChartInfoContainer : allChartNames) {
@@ -320,7 +274,7 @@ public class Session {
 	}
 
 	// ==============================================================================
-	// ACTUAL REMOTE MONITORING
+	// ACTUAL REMOTE MONITORING + SETTINGS
 	// ==============================================================================
 	public static Place getActualRemoteMonitoring() {
 		Log.e(TAG, "getActualRemoteMonitoring");
@@ -343,18 +297,6 @@ public class Session {
 			Session.actualSettings = new Settings(newActualSettings.getSliders(), newActualSettings.getRelays(),
 					newActualSettings.getFunctions());
 		}
-		/*Log.e(TAG, "SLIDERS size = " + Session.getActualSettings().getSliders().size());
-		for (Slider actSlider : Session.actualSettings.getSliders()) {
-			Log.e(TAG, "SLIDER: " + actSlider.label + " " + actSlider.value);
-		}
-		Log.e(TAG, "RELAYS size = " + Session.getActualSettings().getRelays().size());
-		for (Relay actRelay : Session.getActualSettings().getRelays()) {
-			Log.e(TAG, "RELAY: " +actRelay.name + " " + (actRelay.status ? "on" : "off" ));
-		}
-		Log.e(TAG, "FUNCTIONS size = " + Session.getActualSettings().getFunctions().size());
-		for (Function actFunc : Session.getActualSettings().getFunctions()) {
-			Log.e(TAG, "RELAY: " +actFunc.label + " " + (actFunc.status ? "on" : "off" ));
-		}*/
 	}
 
 	public static Settings getTempSettings() {
@@ -370,52 +312,36 @@ public class Session {
 		}
 	}
 
-	public static OneLineAndTwoBarChartContainer getActualLineAndBarChartContainer() {
-		return actualLineAndBarChartContainer;
-	}
-
-	public static void setActualLineAndBarChartContainer(
-			OneLineAndTwoBarChartContainer actualLineAndBarChartContainer) {
-		Session.actualLineAndBarChartContainer = actualLineAndBarChartContainer;
-		Session.setActualChart(Session.actualLineAndBarChartContainer.getLineChart());
-	}
-
 	public static void startNotWorkingPlacesRefresherThread() {
 
 		if (notWorkingPlacesRefresherThread.getState().equals(Thread.State.NEW)) {
-			Log.e(TAG, "startNotWorkingPlacesRefresherThread NEW");
 			notWorkingPlacesRefresherThread.start();
 		}
 		notWorkingPlacesRefresherRunnable.resume();
 	}
 	
 	public static void stopNotWorkingPlacesRefresherThread() {
-		Log.e(TAG, "stopNotWorkingPlacesRefresherThread");
 		notWorkingPlacesRefresherRunnable.pause();;
 	}
 	
 	public static void startContactRefresherThread() {
 
 		if (contactRefresherThread.getState().equals(Thread.State.NEW)) {
-			Log.e(TAG, "startContactRefresherThread NEW");
 			contactRefresherThread.start();
 		}
 		contactRefresherRunnable.resume();
 	}
 
 	public static void stopContactRefresherThread() {
-		Log.e(TAG, "stopContactRefresherThread");
 		contactRefresherRunnable.pause();
 	}
 
 	public static ChatContactList getActualChatContactList() {
-		// Log.e(TAG, "getActualChatContactList");
 		return actualChatContactList;
 	}
 
 	public static void setActualChatContactList(
 			ChatContactList newChatContactList) {
-		Log.e(TAG, "setActualChatContactList");
 		if (newChatContactList != null) {
 			Session.actualChatContactList = new ChatContactList(
 					newChatContactList.getContacts());
@@ -423,7 +349,6 @@ public class Session {
 	}
 
 	public static ChatContact getActualChatPartner() {
-		// Log.e(TAG, "getActualChatPartner");
 		return actualChatPartner;
 	}
 
@@ -437,7 +362,6 @@ public class Session {
 		Log.e(TAG, "setActualChatPartner");
 		if (actualChatPartner != null) {
 			if (!(actualChatPartner.equals(newPartner))) {
-				Log.e("Session.setActualChatPartner()", "Különbözik.");
 				emptyChatMessagesList();
 				Session.actualChatPartner = newPartner;
 			}
@@ -450,33 +374,20 @@ public class Session {
 	// ==============================================================================
 	// MESSAGE REFRESHER + CHAT MESSAGE LIST
 	// ==============================================================================
-	/*
-	 * public static void startMessageRefresherAT() { Log.e(TAG,
-	 * "startMessageRefresher"); if (messageRefresher == null) {
-	 * messageRefresher = new ChatMessagesRefresherAsyncTask();
-	 * messageRefresher.execute(1500l); } }
-	 * 
-	 * public static void stopMessageRefresherAT() { Log.e(TAG,
-	 * "stopMessageRefresher"); if (messageRefresher != null) {
-	 * messageRefresher.cancel(true); messageRefresher = null; } }
-	 */
 
 	public static void startMessageRefresherThread() {
 
 		if (messageRefresherThread.getState().equals(Thread.State.NEW)) {
-			Log.e(TAG, "startMessageRefresherThread NEW");
 			messageRefresherThread.start();
 		}
 		messageRefresherRunnable.resume();
 	}
 
 	public static void stopMessageRefresherThread() {
-		Log.e(TAG, "stopMessageRefresherThread");
 		messageRefresherRunnable.pause();
 	}
 
 	public static ChatMessagesList getChatMessagesList() {
-		// Log.e(TAG, "getChatMessagesList");
 		if (chatMessagesList == null) {
 			chatMessagesList = new ChatMessagesList(new ArrayList<ChatMessage>());
 		}
@@ -672,9 +583,6 @@ public class Session {
 	}
 
 	public static void dismissAndMakeNullProgressDialog() {
-		// progressDialog.dismiss();
-		// progressDialog = null;
-
 		if (progressDialog != null) {
 			Log.e(TAG, "Dismiss progress dialog");
 			progressDialog.dismiss();
@@ -701,12 +609,6 @@ public class Session {
 		}
 	}
 
-	/**
-	 * Determine if the device is a tablet (i.e. it has a large screen).
-	 * 
-	 * @param context
-	 *            The calling context.
-	 */
 	public static boolean isTablet() {
 		return (context.getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_LARGE;
 	}

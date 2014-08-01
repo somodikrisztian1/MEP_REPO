@@ -3,7 +3,7 @@ package hu.mep.datamodells;
 import java.util.List;
 
 public class ChatMessagesList {
-	private static final String TAG = "ChatMessagesList";
+	//private static final String TAG = "ChatMessagesList";
 	List<ChatMessage> chatMessagesList;
 
 	public ChatMessagesList(List<ChatMessage> newChatMessagesList) {

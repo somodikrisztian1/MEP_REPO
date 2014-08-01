@@ -20,7 +20,7 @@ public class FragmentLevel2Chat extends Fragment implements OnItemClickListener 
 	public static ListView listview;
 	public static ArrayAdapter<ChatContact> contactAdapter;
 	
-	private static final String TAG = "FragmentLevel2Chat";
+	//private static final String TAG = "FragmentLevel2Chat";
 	
 	public FragmentLevel2Chat() {
 	}

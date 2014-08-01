@@ -18,8 +18,4 @@ public class Function {
 		this.label = label;
 	}
 	
-	
-
-	
-	
 }

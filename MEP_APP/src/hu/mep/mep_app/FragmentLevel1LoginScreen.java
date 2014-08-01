@@ -3,7 +3,6 @@ package hu.mep.mep_app;
 import hu.mep.mep_app.activities.ActivityLevel1Registration;
 import hu.mep.utils.others.FragmentLevel1EventHandler;
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -19,7 +18,7 @@ import android.widget.TextView;
 public class FragmentLevel1LoginScreen extends Fragment implements
 		OnClickListener {
 
-	private static final String TAG = "FragmentLoginScreen";
+	//private static final String TAG = "FragmentLoginScreen";
 	private FragmentLevel1EventHandler fragmentEventHandler;
 
 	private EditText usernameEdittext;

@@ -1,23 +1,22 @@
 package hu.mep.communication.charts;
 
-import java.net.ResponseCache;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
 import hu.mep.communication.RealCommunicator;
 import hu.mep.datamodells.Session;
 import hu.mep.datamodells.charts.OneLineAndTwoBarChartContainer;
 import hu.mep.mep_app.activities.ActivityLevel2NEW;
 import hu.mep.mep_app.activities.ActivityLevel3ShowRemoteMonitoring;
 import hu.mep.utils.deserializers.BarChartDeserializer;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 public class GetSolarPanelJsonAsyncTask extends AsyncTask<Void, Void, Void> {
 	
@@ -28,8 +27,7 @@ public class GetSolarPanelJsonAsyncTask extends AsyncTask<Void, Void, Void> {
 	private String fullURI;
 	private Calendar beginDate;
 	private Calendar endDate;
-	private static final SimpleDateFormat dateFormatter = 
-			new SimpleDateFormat("yyyy-MM-dd_HH:mm");
+	private static final SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm");
 
 	public GetSolarPanelJsonAsyncTask(Activity activity, String hostURI, 
 			Calendar beginDate, Calendar endDate) {

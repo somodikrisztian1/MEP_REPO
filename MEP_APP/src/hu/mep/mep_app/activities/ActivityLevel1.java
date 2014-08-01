@@ -22,7 +22,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -67,25 +66,19 @@ public class ActivityLevel1 extends ActionBarActivity implements
 		super.onCreate(savedInstanceState);
 		
 		if (Session.getInstance(this).isTablet()) {
-			Log.e(TAG, "IT'S A TABLET");
 			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE); 
 		}
 		else {
-			Log.e(TAG, "IT'S NOT A TABLET");
 			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 		}
 
 		fragmentManager = getSupportFragmentManager();
 		setContentView(R.layout.activity_first);
 
-		// Log.e("FirstActivity", "onCreate 2");
 		drawerTitle = getTitle();
 		firstActivityDrawerLayout = (DrawerLayout) findViewById(R.id.first_activity_drawer_layout);
 		firstActivityDrawerListView = (ListView) findViewById(R.id.first_activity_drawer_listview);
 
-		//firstActivityDrawerListView.setBackgroundColor(getResources().getColor(R.color.white) );
-		
-		
 		firstActivityDrawerStrings = getResources().getStringArray(
 				R.array.activity_level1_drawer_items_list);
 
@@ -105,15 +98,12 @@ public class ActivityLevel1 extends ActionBarActivity implements
 			/** Called when a drawer has settled in a completely closed state. */
 			public void onDrawerClosed(View view) {
 				super.onDrawerClosed(view);
-				// mActionBar.setTitle(mainTitle);
-				Log.e(TAG, "onDrawerClosed");
 			}
 
 			/** Called when a drawer has settled in a completely open state. */
 			public void onDrawerOpened(View drawerView) {
 				super.onDrawerOpened(drawerView);
 				getSupportActionBar().setTitle(drawerTitle);
-				// Log.e(TAG, "onDrawerOpened");
 			}
 
 		};
@@ -121,12 +111,10 @@ public class ActivityLevel1 extends ActionBarActivity implements
 		// Set the drawer toggle as the DrawerListener
 		firstActivityDrawerLayout.setDrawerListener(drawerToggle);
 
-		// Log.e(TAG, "onCreate 5");
 		mActionBar.setHomeButtonEnabled(true);
 		mActionBar.setDisplayHomeAsUpEnabled(true);
 
 		if (savedInstanceState == null) {
-			// Log.e(TAG, "onCreate 6");
 			actualFragmentNumber = DRAWER_LIST_MAIN_PAGE_NUMBER;
 			/* handleDrawerClick(actualFragmentNumber); */
 			Fragment newFragment = null;
@@ -142,9 +130,7 @@ public class ActivityLevel1 extends ActionBarActivity implements
 			ft.replace(R.id.first_activity_frame, newFragment);
 			ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
 			ft.commit();
-
 		}
-		// Log.e(TAG, "onCreate 7");
 	}
 
 	@Override
@@ -163,7 +149,7 @@ public class ActivityLevel1 extends ActionBarActivity implements
 			handleDrawerClick(position);
 		}
 	}
-
+/*
 	@Override
 	public void onBackPressed() {
 		super.onBackPressed();
@@ -171,23 +157,20 @@ public class ActivityLevel1 extends ActionBarActivity implements
 			Log.e(TAG, "onBackPressed() and actualFragmentNumber is " + actualFragmentNumber);
 			// fragmentManager.popBackStack("login", 0);
 		}
-	}
+	}*/
 
 	private void handleDrawerClick(int position) {
 
 		actualFragmentNumber = position;
 		Fragment newFragment = null;
-		/*Bundle args;*/
 		FragmentTransaction ft = fragmentManager.beginTransaction();
-		/*Toast waitForIt = Toast.makeText(context,
-				"Under construction...Try it later! :)", Toast.LENGTH_SHORT);*/
+		
 		boolean readyForFragmentLoading = false;
 		switch (actualFragmentNumber) {
 
 		case DRAWER_LIST_PRESENTATION_PARK_NUMBER:
 			newFragment = new FragmentLevel1RepresentationParkScreen();
 			readyForFragmentLoading = true;
-			Log.e("FirstActivity", "handleDrawerClick() -> Representation Park");
 			break;
 		case DRAWER_LIST_GALLERY_NUMBER:
 			if (NetThread.isOnline(this)) {
@@ -200,21 +183,16 @@ public class ActivityLevel1 extends ActionBarActivity implements
 		case DRAWER_LIST_RESEARCH_CENTER_NUMBER:
 			newFragment = new FragmentLevel1ResearchCenterScreen();
 			readyForFragmentLoading = true;
-			Log.e("FirstActivity", "handleDrawerClick() -> Research Center");
 			break;
 		case DRAWER_LIST_ABOUT_REMOTE_NUMBER:
 			newFragment = new FragmentLevel1AboutRemoteScreen();
 			readyForFragmentLoading = true;
-			Log.e("FirstActivity",
-					"handleDrawerClick() -> About Remote Monitorings");
 			break;
 		case DRAWER_LIST_CONTACTS_NUMBER:
 			newFragment = new FragmentLevel1ContactsScreen();
 			readyForFragmentLoading = true;
-			Log.e("FirstActivity", "handleDrawerClick() -> Contacts");
 			break;
 		default:
-			Log.e(TAG, "Case Not Found in handleDrawerClick()");
 			break;
 		}
 		if (readyForFragmentLoading) {
@@ -227,12 +205,10 @@ public class ActivityLevel1 extends ActionBarActivity implements
 			setTitle(firstActivityDrawerStrings[position]);
 		}
 		firstActivityDrawerLayout.closeDrawer(firstActivityDrawerListView);
-		Log.e("FirstActivity", "handleDrawerClick finish");
 	}
 
 	@Override
 	public void setTitle(CharSequence title) {
-		// Log.e("FirstActivity", "setTitle");
 		getSupportActionBar().setTitle(title);
 	}
 
@@ -259,15 +235,13 @@ public class ActivityLevel1 extends ActionBarActivity implements
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
 		boolean drawerOpen = firstActivityDrawerLayout.isDrawerOpen(firstActivityDrawerListView);
-		/*menu.findItem(R.id.action_login).setVisible(!drawerOpen);*/
 		menu.setGroupVisible(R.id.firstlevel_menu_buttons_group, !drawerOpen);
 		return super.onPrepareOptionsMenu(menu);
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		Log.e("FirstActivity", "onOptionsItemSelected");
-				switch (item.getItemId()) {
+		switch (item.getItemId()) {
 		case R.id.action_login:
 			if(!Session.isAnyUserLoggedIn()) {
 				Session.getInstance(this);
@@ -308,8 +282,9 @@ public class ActivityLevel1 extends ActionBarActivity implements
 	public boolean onLoginButtonPressed(final String username, final String password) {
 		
 		if (NetThread.isOnline(this)) {
-			Log.e(TAG, "prepareProgressDialogForLoading1");		
-			Session.getActualCommunicationInterface().authenticateUser(ActivityLevel1.this, username, password);
+			if((username != null) && (password != null)) {
+				Session.getActualCommunicationInterface().authenticateUser(ActivityLevel1.this, username, password);
+			}
 		} else {
 			Session.setAlertDialog(AlertDialogFactory.prepareAlertDialogForNoConnection(ActivityLevel1.this));
 			Session.showAlertDialog();

@@ -3,25 +3,12 @@ package hu.mep.datamodells;
 import java.net.URL;
 
 import android.graphics.Bitmap;
-import android.util.Log;
 
 import com.google.gson.annotations.SerializedName;
 
-/**
- * This class represent the user, after successful login. After authorization we
- * get back a JSON file, which from we can get the next attributes by the given
- * names.
- * 
- * mepID is coming from JSON attribute "mep_id" fullName is coming from JSON
- * attribute "nev" usersPlaces is coming from JSON attribute "tavfelugyeletek"
- * mekut is coming from JSON attribute "mekut" teacher is coming from JSON
- * attribute "tanar" moderator is coming from JSON attribute "moderator"
- * 
- * @author Tibor, Török
- */
 public class User {
 
-	private static final String TAG = "User.java";
+	//private static final String TAG = "User";
 
 	public static final String mepIDTag = "mep_id";
 	public static final String nameTag = "nev";
@@ -32,20 +19,20 @@ public class User {
 	public static final String placesCountTag = "tavfelugyeletek_count";
 	public static final String placesTag = "tavfelugyeletek";
 
-	@SerializedName("mep_id")
+	@SerializedName(mepIDTag)
 	private int mepID;
-	@SerializedName("nev")
+	@SerializedName(nameTag)
 	String fullName;
-	@SerializedName("imageUrl")
+	@SerializedName(imageURLTag)
 	URL imageURL;
-	@SerializedName("mekut")
+	@SerializedName(mekutTag)
 	boolean mekut;
-	@SerializedName("tanar")
+	@SerializedName(teacherTag)
 	boolean teacher;
-	@SerializedName("moderator")
+	@SerializedName(moderatorTag)
 	boolean moderator;
 
-	@SerializedName("tavfelugyeletek")
+	@SerializedName(placesTag)
 	PlaceList usersPlaces;
 
 	Bitmap profilePicture;
@@ -93,7 +80,7 @@ public class User {
 		this.moderator = moderator;
 		this.usersPlaces = usersPlaces;
 
-		Log.e(TAG, "New User Has Been Created With The Following Values!");
+/*		Log.e(TAG, "New User Has Been Created With The Following Values!");
 		Log.e(TAG, "mepID=" + mepID);
 		Log.e(TAG, "fullName=" + fullName);
 		Log.e(TAG, "imageURL=" + imageURL);
@@ -105,7 +92,7 @@ public class User {
 		}
 		else {
 			Log.d(TAG, "usersPlaces is null");
-		}
+		}*/
 	}
 
 }

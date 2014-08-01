@@ -23,7 +23,7 @@ import android.graphics.Color;
 
 public class TimeLineChartView extends DemoView {
 
-	private static final String TAG = "TimeLineChartView";
+	//private static final String TAG = "TimeLineChartView";
 	
 	private Chart mChart;
 	private boolean forRemoteMonitoring;

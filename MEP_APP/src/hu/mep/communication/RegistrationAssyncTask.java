@@ -1,12 +1,10 @@
 package hu.mep.communication;
 
 import hu.mep.datamodells.Session;
-import hu.mep.mep_app.activities.ActivityLevel1Registration;
 import hu.mep.utils.others.AlertDialogFactory;
 
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.List;
 
 import org.apache.http.client.ClientProtocolException;
 import org.json.JSONException;
@@ -69,13 +67,10 @@ public class RegistrationAssyncTask extends AsyncTask<Void, Void, HashMap<String
 			JSONObject jsonObject = new JSONObject(response);
 			JSONObject root =  jsonObject.getJSONObject("reg_status");
 			if(root.getInt("status") == 1 ) {
-				//Session.setSuccessfulRegistration(true);
 				result.put(STATUS_TAG, SUCCESS);
 			}
 			else {
 				String errorMessage = root.getString("error");
-				/*Session.setSuccessfulRegistration(false);
-				Session.setUnsuccessfulRegistrationMessage(errorMessage);*/
 				result.put(STATUS_TAG, UNSUCCESS);
 				result.put(MESSAGE_TAG, errorMessage);
 			}

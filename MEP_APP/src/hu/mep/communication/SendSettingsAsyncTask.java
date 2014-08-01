@@ -84,8 +84,6 @@ public class SendSettingsAsyncTask extends AsyncTask<Void, Void, Void> {
 		default:
 			break;
 		}
-
-		
 		return postDatas;
 	}
 	

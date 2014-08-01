@@ -72,7 +72,6 @@ import android.graphics.Color;
 import android.graphics.PointF;
 import android.os.Handler;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -243,7 +242,6 @@ public class DemoView extends View
         switch (action & MotionEvent.ACTION_MASK) {
             case MotionEvent.ACTION_DOWN:
             case MotionEvent.ACTION_POINTER_DOWN:
-                Log.i("TouchEvent", "ACTION_DOWN");
                 if(count == 2 && this.multiTouchStartInfo == null) {
                     setMultiTouchStartInfo(ev);
                 } else if (count == 1 && this.singleTouchStartInfo == null) {
@@ -254,7 +252,6 @@ public class DemoView extends View
 
                 break;
             case MotionEvent.ACTION_MOVE:
-                Log.i("TouchEvent", "ACTION_MOVE");
                 if(count == 1 && this.singleTouchStartInfo != null) {
                     moveAdjustment(ev);
                 } else if (count == 2 && this.multiTouchStartInfo != null) {
@@ -267,7 +264,6 @@ public class DemoView extends View
                 break;
             case MotionEvent.ACTION_UP:
             case MotionEvent.ACTION_POINTER_UP:
-                Log.i("TouchEvent", "ACTION_UP");
                 if(count <= 2) {
                     this.multiTouchStartInfo = null;
                     this.singleTouchStartInfo = null;

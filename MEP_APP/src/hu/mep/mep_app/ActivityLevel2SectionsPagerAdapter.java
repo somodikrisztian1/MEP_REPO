@@ -4,11 +4,10 @@ import hu.mep.datamodells.Session;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.util.Log;
 
 public class ActivityLevel2SectionsPagerAdapter extends FragmentPagerAdapter {
 
-	private static final String TAG = "ActivityLevel2SectionsPagerAdapter";
+	//private static final String TAG = "ActivityLevel2SectionsPagerAdapter";
 
 	public ActivityLevel2SectionsPagerAdapter(FragmentManager fm) {
 		super(fm);
@@ -68,22 +67,18 @@ public class ActivityLevel2SectionsPagerAdapter extends FragmentPagerAdapter {
 
 		// MEKUT-os és van távfelügyelete is...
 		if (mekutos && tavfelugyeletes) {
-			Log.e(TAG, "getPageTitleForMekutAndOwner(" + position + ")");
 			return getPageTitleForMekutAndOwner(position);
 		}
 		// MEKUT-os és nincs távfelügyelete....
 		else if (mekutos && !tavfelugyeletes) {
-			Log.e(TAG, "getPageTitleForMekutButNotOwner(" + position + ")");
 			return getPageTitleForMekutButNotOwner(position);
 		}
 		// Nem MEKUT-os, de van távfelügyelete...
 		else if (!mekutos && tavfelugyeletes) {
-			Log.e(TAG, "getPageTitleForNotMekutButOwner(" + position + ")");
 			return getPageTitleForNotMekutButOwner(position);
 		}
 		// Nem MEKUT-os, és nincs távfelügyelete sem...
 		else if (!mekutos && !tavfelugyeletes) {
-			Log.e(TAG, "getPageTitleForNotMekutAndNotOwner(" + position + ")");
 			return getPageTitleForNotMekutAndNotOwner(position);
 		}
 		return null;
@@ -95,25 +90,20 @@ public class ActivityLevel2SectionsPagerAdapter extends FragmentPagerAdapter {
 
 		// MEKUT-os és van távfelügyelete is...
 		if (mekutos && tavfelugyeletes) {
-			Log.e(TAG, "getPageIconForMekutAndOwner(" + position + ")");
 			return getPageIconForMekutAndOwner(position);
 		}
 		// MEKUT-os és nincs távfelügyelete....
 		else if (mekutos && !tavfelugyeletes) {
-			Log.e(TAG, "getPageIconForMekutButNotOwner(" + position + ")");
 			return getPageIconForMekutButNotOwner(position);
 		}
 		// Nem MEKUT-os, de van távfelügyelete...
 		else if (!mekutos && tavfelugyeletes) {
-			Log.e(TAG, "getPageIconForNotMekutButOwner(" + position + ")");
 			return getPageIconForNotMekutButOwner(position);
 		}
 		// Nem MEKUT-os, és nincs távfelügyelete sem...
 		else if (!mekutos && !tavfelugyeletes) {
-			Log.e(TAG, "getPageIconForNotMekutAndNotOwner(" + position + ")");
 			return getPageIconForNotMekutAndNotOwner(position);
 		}
-		Log.e(TAG, "getPageIcon now returning 0");
 		return 0;
 	}
 

@@ -18,7 +18,6 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBar.Tab;
 import android.support.v7.app.ActionBar.TabListener;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -26,7 +25,7 @@ import android.view.MenuItem;
 public class ActivityLevel2NEW extends ActionBarActivity implements
 		TabListener, FragmentLevel2EventHandler {
 
-	private static final String TAG = "ActivityLevel2NEW";
+	//private static final String TAG = "ActivityLevel2NEW";
 	ActionBar mActionBar;
 	Tab tabTopics;
 	Tab tabRemoteMonitorings;
@@ -43,14 +42,12 @@ public class ActivityLevel2NEW extends ActionBarActivity implements
 		if (android.os.Build.VERSION.SDK_INT <= android.os.Build.VERSION_CODES.GINGERBREAD_MR1 || 
 				android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
 			startService(new Intent(this, NotificationService.class).putExtra("mepId", Session.getActualUser().getMepID()));
-			Log.e("Noti activitiben", "Noti started, mepId: " + Session.getActualUser().getMepID());
+			/*Log.e("Noti activitiben", "Noti started, mepId: " + Session.getActualUser().getMepID());*/
 		}
 
 		if (Session.getInstance(this).isTablet()) {
-			Log.e(TAG, "IT'S A TABLET");
 			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 		} else {
-			Log.e(TAG, "IT'S NOT A TABLET");
 			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 		}
 
@@ -81,7 +78,6 @@ public class ActivityLevel2NEW extends ActionBarActivity implements
 	@Override
 	protected void onPause() {
 		super.onPause();
-		Log.d(TAG, "onPause running... stopContactRefresher()");
 		Session.stopContactRefresherThread();
 		Session.stopNotWorkingPlacesRefresherThread();
 	}
@@ -116,8 +112,6 @@ public class ActivityLevel2NEW extends ActionBarActivity implements
 
 	@Override
 	public void onTabUnselected(Tab tab, FragmentTransaction ft) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override

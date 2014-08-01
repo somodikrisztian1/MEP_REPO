@@ -1,10 +1,6 @@
 package hu.mep.datamodells;
 
-import java.util.Calendar;
-
 import com.google.gson.annotations.SerializedName;
-
-import android.util.Log;
 
 /** This class represent the places for remote monitoring of the user.
  * After authorization we get back a JSON file, which from we can get the next attributes by the given names.
@@ -54,12 +50,12 @@ public class Place {
 		this.solarPanel = solarPanel;
 		this.workingProperly = true;
 	
-		Log.d(TAG, "New Place For Remote Monitoring Has Been Succesfully Created With The Following Values:");
+		/*Log.d(TAG, "New Place For Remote Monitoring Has Been Succesfully Created With The Following Values:");
 		Log.d(TAG, "name=" + name);
 		Log.d(TAG, "id=" + ID);
 		Log.d(TAG, "description=" + description);
 		Log.d(TAG, "location=" + location);
-		Log.d(TAG, "solarPanel=" + solarPanel);
+		Log.d(TAG, "solarPanel=" + solarPanel);*/
 	}
 	
 	public String getName() {

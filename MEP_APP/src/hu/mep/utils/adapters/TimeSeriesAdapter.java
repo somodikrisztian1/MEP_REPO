@@ -3,22 +3,18 @@ package hu.mep.utils.adapters;
 import hu.mep.datamodells.Session;
 import hu.mep.datamodells.charts.Chart;
 import hu.mep.datamodells.charts.SubChart;
-import hu.mep.utils.others.CalendarPrinter;
 
 import java.util.Calendar;
 import java.util.Map;
 
-import org.afree.data.time.Millisecond;
 import org.afree.data.time.Second;
 import org.afree.data.time.TimeSeries;
 import org.afree.data.time.TimeSeriesCollection;
 import org.afree.data.xy.XYDataset;
 
-import android.util.Log;
-
 public class TimeSeriesAdapter {
 
-	private static final String TAG = "TimeSeriesAdapter";
+	//private static final String TAG = "TimeSeriesAdapter";
 
 	public XYDataset getTimeSeriesFromActualChart() {
 

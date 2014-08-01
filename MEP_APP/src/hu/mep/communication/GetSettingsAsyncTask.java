@@ -9,14 +9,13 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 public class GetSettingsAsyncTask extends AsyncTask<Void, Void, Void> {
 
-	private static final String TAG = "GetSettingsAsyncTask";
+	//private static final String TAG = "GetSettingsAsyncTask";
 
 	private Activity activity;
 	private String hostURI;
@@ -48,11 +47,7 @@ public class GetSettingsAsyncTask extends AsyncTask<Void, Void, Void> {
 	
 	@Override
 	protected Void doInBackground(Void... params) {
-		Log.e(TAG, "doInBackground running");
-		
 		String response = RealCommunicator.dohttpGet(fullURI);
-		
-		Log.e(TAG, response);
 		
 		GsonBuilder builder = new GsonBuilder();
 		builder.registerTypeAdapter(Settings.class, new SettingsDeserializer());
@@ -75,9 +70,6 @@ public class GetSettingsAsyncTask extends AsyncTask<Void, Void, Void> {
 		} else if (activity instanceof ActivityLevel2NEW) {
 			Intent intent = new Intent(activity, ActivityLevel3ShowRemoteMonitoring.class);
 			activity.startActivity(intent);
-		}
-		
+		}	
 	}
-
-
 }

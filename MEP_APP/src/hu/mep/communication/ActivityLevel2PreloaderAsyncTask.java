@@ -1,7 +1,6 @@
 package hu.mep.communication;
 
 import hu.mep.datamodells.Session;
-import hu.mep.mep_app.NotificationService;
 import hu.mep.mep_app.activities.ActivityLevel2NEW;
 
 import java.util.concurrent.ExecutionException;
@@ -11,11 +10,10 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
-import android.util.Log;
 
 public class ActivityLevel2PreloaderAsyncTask extends AsyncTask<Void, Void, Void> {
 
-	private static final String TAG = "ActivityLevel2PreloaderAsyncTask";
+	//private static final String TAG = "ActivityLevel2PreloaderAsyncTask";
 	private Activity activity;
 	private String hostURI = "http://www.megujuloenergiapark.hu/";
 	private ProgressDialog pd;
@@ -30,8 +28,6 @@ public class ActivityLevel2PreloaderAsyncTask extends AsyncTask<Void, Void, Void
 	@Override
 	protected void onPreExecute() {
 		super.onPreExecute();
-		Log.i(TAG, "onPreExecute running");
-		
 		Session.setProgressDialog(pd);
 		Session.showProgressDialog();
 	}
@@ -39,10 +35,7 @@ public class ActivityLevel2PreloaderAsyncTask extends AsyncTask<Void, Void, Void
 	
 	@Override
 	protected Void doInBackground(Void... params) {
-		Log.i(TAG, "doInBackground running");
 		GetContactListAsyncTaskPRELOAD getContactListAsyncTask = new GetContactListAsyncTaskPRELOAD(activity, hostURI);
-		
-		
 		try {
 			/** Ez ezért kell, mert az AsyncTask által indított AsyncTask e verzió fölött nem jól működik!!!!! */
 			if(Build.VERSION.SDK_INT <= Build.VERSION_CODES.HONEYCOMB_MR1) {
@@ -58,7 +51,7 @@ public class ActivityLevel2PreloaderAsyncTask extends AsyncTask<Void, Void, Void
 		}
 		
 		if (Session.getActualUser().isMekut()) {
-			GetTopicListAsyncTask getTopicListAsyncTask = new GetTopicListAsyncTask(activity, hostURI);		
+			GetTopicListAsyncTask getTopicListAsyncTask = new GetTopicListAsyncTask(hostURI);		
 			
 			try {
 				/** Ez ezért kell, mert az AsyncTask által indított AsyncTask e verzió fölött nem jól működik!!!!! */
@@ -73,7 +66,6 @@ public class ActivityLevel2PreloaderAsyncTask extends AsyncTask<Void, Void, Void
 				e.printStackTrace();
 			}
 		}
-		Log.i(TAG, "doInBackground finished");
 		return null;
 	}
 	
@@ -84,10 +76,8 @@ public class ActivityLevel2PreloaderAsyncTask extends AsyncTask<Void, Void, Void
 		Session.dismissAndMakeNullProgressDialog();
 		Session.setAnyUserLoggedIn(true);
 		
-		
 		Intent i = new Intent(activity, ActivityLevel2NEW.class);
 		activity.startActivity(i);
-	
 	}
 
 }

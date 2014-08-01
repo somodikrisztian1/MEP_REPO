@@ -7,7 +7,6 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 public class FragmentLevel3ShowTopic extends Fragment {
 
@@ -31,7 +30,6 @@ public class FragmentLevel3ShowTopic extends Fragment {
 
 		if(mChart.getSubCharts() != null) {
 			if (mChart.getSubCharts().isEmpty()) {
-				/*Toast.makeText(getActivity(), "Nem állnak rendelkezésre adatok.", Toast.LENGTH_SHORT).show();*/
 				return inflater.inflate(R.layout.fragment_thirdlevel_no_chart_datas, container, false);
 			} else {
 				mView = new TimeLineChartView(getActivity(), mChart, forRemoteMonitoring);

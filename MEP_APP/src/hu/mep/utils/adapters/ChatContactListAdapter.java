@@ -18,7 +18,7 @@ import android.widget.TextView;
 
 public class ChatContactListAdapter extends ArrayAdapter<ChatContact> {
 
-	private static final String TAG = "ChatContactListAdapter";
+	//private static final String TAG = "ChatContactListAdapter";
 	private Context context;
 	private LayoutInflater inflater;
 	
