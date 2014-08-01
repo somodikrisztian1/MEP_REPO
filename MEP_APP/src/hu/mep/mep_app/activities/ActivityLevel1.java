@@ -60,6 +60,8 @@ public class ActivityLevel1 extends ActionBarActivity implements
 	public EditText passwordEdittext;
 	public Button loginButton;
 	private ArrayAdapter<String> drawerAdapter;
+	
+	private Menu menu;
 
 
 	@Override
@@ -174,7 +176,8 @@ public class ActivityLevel1 extends ActionBarActivity implements
 	}
 
 	private void handleDrawerClick(int position) {
-
+		menu.findItem(R.id.action_login).setVisible(true);
+		
 		actualFragmentNumber = position;
 		Fragment newFragment = null;
 		/*Bundle args;*/
@@ -251,6 +254,8 @@ public class ActivityLevel1 extends ActionBarActivity implements
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
+		this.menu = menu;
+		
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.activity_firstlevel_menu, menu);
 		return super.onCreateOptionsMenu(menu);
@@ -276,6 +281,8 @@ public class ActivityLevel1 extends ActionBarActivity implements
 			}
 
 			if (Session.getActualUser() == null) {
+				menu.findItem(R.id.action_login).setVisible(false);
+				
 				Fragment newFragment = null;
 				Bundle args;
 				FragmentTransaction ft = fragmentManager.beginTransaction();
