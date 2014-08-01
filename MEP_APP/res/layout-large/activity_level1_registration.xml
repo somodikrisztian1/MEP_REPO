@@ -7,7 +7,8 @@
     android:paddingRight="20dp"
     android:paddingTop="10dp"
     android:paddingBottom="12dp"
-    tools:context="hu.mep.mep_app.activities.ActivityLevel1Registration" >
+    tools:context="hu.mep.mep_app.activities.ActivityLevel1Registration"
+    android:background="@color/white" >
 
     <EditText
         android:id="@+id/reg_fullname"

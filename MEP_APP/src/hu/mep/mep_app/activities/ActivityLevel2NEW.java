@@ -39,8 +39,11 @@ public class ActivityLevel2NEW extends ActionBarActivity implements
 		super.onCreate(savedInstanceState);
 
 		// noti service elindítása
-		startService(new Intent(this, NotificationService.class).putExtra("mepId", Session.getActualUser().getMepID()));
-		Log.e("Noti activitiben", "Noti started, mepId: " + Session.getActualUser().getMepID());
+		if (android.os.Build.VERSION.SDK_INT <= android.os.Build.VERSION_CODES.GINGERBREAD && 
+				android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+			startService(new Intent(this, NotificationService.class).putExtra("mepId", Session.getActualUser().getMepID()));
+			Log.e("Noti activitiben", "Noti started, mepId: " + Session.getActualUser().getMepID());
+		}
 
 		if (Session.getInstance(this).isTablet()) {
 			Log.e(TAG, "IT'S A TABLET");
