@@ -52,7 +52,7 @@ public class NotiRunnable implements Runnable {
 	public void setMepId(int newId) {
 		this.mepId = newId;
 	}
-	
+
 	public Boolean isRunning() {
 		return this.running;
 	}
@@ -77,16 +77,20 @@ public class NotiRunnable implements Runnable {
 			if (this.mepId != 0 && today != calendar.get(Calendar.DAY_OF_MONTH)
 					&& !isNotificationVisible(remoteNotificationID)) {
 
-				// Log.e(TAG, "remoteNoti, user logged in, mepId: " + mepId);
+				Log.e(TAG, "remoteNoti, user logged in, mepId: " + mepId);
 
 				getRemotes(Integer.toString(mepId));
 
 				if (gotWrongRemotes()) {
-					createNotification(
-							Calendar.getInstance().getTimeInMillis(),
-							"Távfelügyelet",
-							"Jelenleg nincs internet kapcsolata a távfelügyeleti rendszernek. Kérjük a részletekért lépjen be az alkalmazásba.",
-							"", context, remoteNotificationID);
+					try {
+						createNotification(
+								Calendar.getInstance().getTimeInMillis(),
+								"Távfelügyelet",
+								"Jelenleg nincs internet kapcsolata a távfelügyeleti rendszernek. Kérjük a részletekért lépjen be az alkalmazásba.",
+								"", context, remoteNotificationID);
+					} catch (Exception e) {
+						Log.e(TAG, e.toString());
+					}
 
 				}
 
@@ -97,15 +101,19 @@ public class NotiRunnable implements Runnable {
 			if (this.mepId != 0
 					&& !isNotificationVisible(gotNewMessageNotificationID)) {
 
-				// Log.e(TAG, "msgNoti, user logged in, mepId: " + mepId);
+				Log.e(TAG, "messageNoti, user logged in, mepId: " + mepId);
 
 				getUnreadMessages(Integer.toString(mepId));
 
 				if (gotUnreadMsg()) {
-					createNotification(
-							Calendar.getInstance().getTimeInMillis(),
-							"Új üzenet", "Új üzenete érkezett.", "", context,
-							gotNewMessageNotificationID);
+					try {
+						createNotification(Calendar.getInstance()
+								.getTimeInMillis(), "Új üzenet",
+								"Új üzenete érkezett.", "", context,
+								gotNewMessageNotificationID);
+					} catch (Exception e) {
+						Log.e(TAG, e.toString());
+					}
 
 				}
 			}
@@ -120,7 +128,7 @@ public class NotiRunnable implements Runnable {
 
 	// rossz távf. lekérése
 	private void getRemotes(String dataToSend) {
-		// Log.e(TAG, "getRemotes, userId:  " + dataToSend);
+		Log.e(TAG, "getRemotes, userId:  " + dataToSend);
 		HttpClient httpClient = new DefaultHttpClient();
 		HttpPost httpPost = new HttpPost(
 				"http://www.megujuloenergiapark.hu/ios_getHibasTf.php?userId="
@@ -191,7 +199,7 @@ public class NotiRunnable implements Runnable {
 
 	// olvasatlan üzenetek lekérése
 	private void getUnreadMessages(String dataToSend) {
-		// Log.e(TAG, "getUnreadMessages, userId:  " + dataToSend);
+		Log.e(TAG, "getUnreadMessages, userId:  " + dataToSend);
 
 		HttpClient httpClient = new DefaultHttpClient();
 		HttpPost httpPost = new HttpPost(
@@ -298,18 +306,25 @@ public class NotiRunnable implements Runnable {
 
 			/* build the notification */
 			NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(
-					ctx).setWhen(when).setContentText(notificationContent)
-					.setContentTitle(notificationTitle).setSmallIcon(smalIcon)
-					.setAutoCancel(true).setTicker(notificationTitle)
-					.setLargeIcon(largeIcon).setContentIntent(pendingIntent);
+					ctx)
+			.setWhen(when)
+			.setContentText(notificationContent)
+			.setContentTitle(notificationTitle)
+			.setSmallIcon(smalIcon)
+			.setAutoCancel(true)
+			.setLargeIcon(largeIcon)
+			.setContentIntent(pendingIntent);
 
 			/*
 			 * sending notification to system.Here we use unique id (when)for
 			 * making different each notification if we use same id,then first
 			 * notification replace by the last notification
 			 */
+
 			notificationManager.notify(notificationID,
 					notificationBuilder.build());
+			
+			Log.e(TAG, "noti created");
 		} catch (Exception e) {
 			Log.e(TAG,
 					"NotificationManager ==> createNotification::"
