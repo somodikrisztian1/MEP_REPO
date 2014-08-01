@@ -10,7 +10,6 @@ public class Settings {
 	
 	private List<Function> functions;
 	
-	
 	public Settings(List<Slider> sliders, List<Relay> relays,
 			List<Function> functions) {
 		super();

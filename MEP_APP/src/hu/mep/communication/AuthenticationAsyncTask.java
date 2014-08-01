@@ -2,7 +2,6 @@ package hu.mep.communication;
 
 import hu.mep.datamodells.Session;
 import hu.mep.datamodells.User;
-import hu.mep.mep_app.NotificationService;
 import hu.mep.utils.deserializers.UserDeserializer;
 import hu.mep.utils.others.AlertDialogFactory;
 import hu.mep.utils.others.MD5Encoder;
@@ -13,18 +12,15 @@ import java.net.HttpURLConnection;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.Context;
-import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
-import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 public class AuthenticationAsyncTask extends AsyncTask<Void, Void, Boolean> {
 
-	private static final String TAG = "AuthenticationAsyncTask";
+	//private static final String TAG = "AuthenticationAsyncTask";
 
 	private Activity activity;
 	private String hostURI;
@@ -53,7 +49,6 @@ public class AuthenticationAsyncTask extends AsyncTask<Void, Void, Boolean> {
 		Session.setProgressDialog(pd);
 		Session.showProgressDialog();
 
-		Log.e(TAG, "onPreExecute");
 		resourceURI = "iphonelogin_do.php?username=" + username + "&password="
 				+ MD5Encoder.encodePasswordWithMD5(password);
 		fullURI = hostURI + resourceURI;
@@ -61,7 +56,6 @@ public class AuthenticationAsyncTask extends AsyncTask<Void, Void, Boolean> {
 	
 	@Override
 	protected Boolean doInBackground(Void... nothing) {
-		Log.e(TAG, "doInBackground begin...");
 		String response = "";
 		
 		response = RealCommunicator.dohttpGet(fullURI);
@@ -77,7 +71,6 @@ public class AuthenticationAsyncTask extends AsyncTask<Void, Void, Boolean> {
 			return true;
 		}
 		
-		Log.e(TAG, "doInBackground finished...");
 		return false;
 	}
 
@@ -93,7 +86,6 @@ public class AuthenticationAsyncTask extends AsyncTask<Void, Void, Boolean> {
 
 		} catch (IOException e) {
 			e.printStackTrace();
-			Log.e("getBmpFromUrl error: ", e.getMessage().toString());
 			return;
 		}
 		return;
@@ -104,20 +96,14 @@ public class AuthenticationAsyncTask extends AsyncTask<Void, Void, Boolean> {
 		super.onPostExecute(result);
 		
 		if(result) {
-			Log.e(TAG, "onPostExecute -> successful login --> dismissDialog");
 			Session.dismissAndMakeNullProgressDialog();
-			
-			
-			
 			ActivityLevel2PreloaderAsyncTask at = new ActivityLevel2PreloaderAsyncTask(activity);
 			at.execute();
 		} else {
-			Log.e(TAG, "onPostExecute -> unsuccessful login --> alertDialog");
 			Session.dismissAndMakeNullProgressDialog();
 			Session.setAlertDialog(AlertDialogFactory.prepareAlertDialogForBadCredentials(activity));
 			Session.showAlertDialog();
 		}
 		return;
 	}
-
 }

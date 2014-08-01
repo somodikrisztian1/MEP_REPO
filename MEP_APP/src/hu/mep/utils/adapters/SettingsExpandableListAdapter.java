@@ -2,8 +2,6 @@ package hu.mep.utils.adapters;
 
 import java.util.List;
 
-import org.afree.data.time.Minute;
-
 import hu.mep.communication.SendSettingsAsyncTask;
 import hu.mep.datamodells.Session;
 import hu.mep.datamodells.settings.Function;
@@ -12,7 +10,6 @@ import hu.mep.datamodells.settings.Slider;
 import hu.mep.mep_app.R;
 import android.app.Activity;
 import android.graphics.Color;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -58,7 +55,6 @@ public class SettingsExpandableListAdapter extends BaseExpandableListAdapter {
 			boolean isLastChild, View convertView, ViewGroup parent) {
 		
 		if(groupPosition == 0) {
-			Log.e(TAG, "groupPosition = 0");
 			convertView = inflater.inflate(R.layout.settings_listitem_slider, parent, false);
 			//Log.e(TAG, "findViews...");
 			TextView nameTextView = (TextView)convertView.findViewById(R.id.fragment_thirdlevel_setting_slider_name);
@@ -100,12 +96,9 @@ public class SettingsExpandableListAdapter extends BaseExpandableListAdapter {
 			});
 			
 		} else if(groupPosition == 1) {
-			Log.e(TAG, "groupPosition = 1");
 			convertView = inflater.inflate(R.layout.settings_listitem_relay, parent, false);
-			Log.e(TAG, "findViews...");
 			TextView nameTextView = (TextView) convertView.findViewById(R.id.fragment_thirdlevel_setting_relay_name);
 			TextView statusTextView = (TextView) convertView.findViewById(R.id.fragment_thirdlevel_setting_relay_status);
-			Log.e(TAG, "set values...");
 			nameTextView.setText(Session.getActualSettings().getRelays().get(childPosition).name);
 			boolean on = Session.getActualSettings().getRelays().get(childPosition).status;
 			String statusText = ( on ? "on" : "off");
@@ -117,12 +110,9 @@ public class SettingsExpandableListAdapter extends BaseExpandableListAdapter {
 			statusTextView.setText(statusText);
 		}
 		else {
-			Log.e(TAG, "groupPosition != 0 && groupPosition != 1 ... maybe kettő lesz az :D");
 			convertView = inflater.inflate(R.layout.settings_listitem_function, parent, false);
-			Log.e(TAG, "findViews...");
 			TextView nameTextView = (TextView) convertView.findViewById(R.id.settings_listitem_function_name_textview);
 			ToggleButton onOffButton = (ToggleButton) convertView.findViewById(R.id.settings_listitem_function_value_switch);
-			Log.e(TAG, "set values...");
 			nameTextView.setText(Session.getActualSettings().getFunctions().get(childPosition).label);
 			onOffButton.setChecked(Session.getActualSettings().getFunctions().get(childPosition).status);
 			onOffButton.setOnCheckedChangeListener(new OnCheckedChangeListener() {				

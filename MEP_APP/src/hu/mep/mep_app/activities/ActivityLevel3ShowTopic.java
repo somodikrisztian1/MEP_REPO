@@ -36,7 +36,7 @@ import android.widget.Toast;
 public class ActivityLevel3ShowTopic extends ActionBarActivity implements
 		TabListener {
 
-	private static final String TAG = "ActivityLevel3ShowTopic";
+	//private static final String TAG = "ActivityLevel3ShowTopic";
 	private static ActionBar mActionBar;
 	public static SectionsPagerAdapter mSectionsPagerAdapter;
 	private static ViewPager mViewPager;

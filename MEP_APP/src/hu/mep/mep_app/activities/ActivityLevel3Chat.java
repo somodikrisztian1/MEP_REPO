@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -30,18 +29,16 @@ public class ActivityLevel3Chat extends ActionBarActivity {
 	private static ImageButton sendButton;
 	public static ArrayAdapter<ChatMessage> adapter;
 	
-	private static final String TAG = "ActivityLevel3Chat";
+	//private static final String TAG = "ActivityLevel3Chat";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		Log.d(TAG, "onCreate running");
 		setContentView(R.layout.activity_thirdlevel_chat);
 		setTitle("Chat (" + Session.getActualChatPartner().getName() + ")");
 		
 		ListView chatMessagesListview = (ListView) findViewById(R.id.activity_thirdlevel_chat_listview);
 
-		//Session.getActualCommunicationInterface().getChatMessages();
 		Session.startMessageRefresherThread();
 		
 		adapter = new ChatMessagesListAdapter(this, R.id.activity_thirdlevel_chat_listview, 
@@ -143,9 +140,6 @@ public class ActivityLevel3Chat extends ActionBarActivity {
 	/** Check the chat message before sending, if it has any alphabetic character, so it does not contain only whitespaces. */
 	private boolean checkChatMessage(String message) {
 		for (Character actChar : message.toCharArray()) {
-			/*if (Character.isLetterOrDigit(actChar)) {
-				return true;
-			}*/
 			if(!Character.isWhitespace(actChar)) {
 				return true;
 			}

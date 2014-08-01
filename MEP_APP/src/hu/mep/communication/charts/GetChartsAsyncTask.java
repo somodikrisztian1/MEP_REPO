@@ -1,31 +1,29 @@
 package hu.mep.communication.charts;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
-import hu.mep.communication.GetSettingsAsyncTask;
 import hu.mep.communication.RealCommunicator;
 import hu.mep.datamodells.Session;
 import hu.mep.datamodells.charts.Chart;
 import hu.mep.datamodells.charts.ChartName;
 import hu.mep.mep_app.activities.ActivityLevel2NEW;
-import hu.mep.mep_app.activities.ActivityLevel3ShowRemoteMonitoring;
 import hu.mep.mep_app.activities.ActivityLevel3ShowTopic;
 import hu.mep.utils.deserializers.ChartDeserializer;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.util.Log;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 public class GetChartsAsyncTask extends AsyncTask<Void, Void, Void> {
 
-	private static final String TAG = "GetChartsAsyncTask";
+	//private static final String TAG = "GetChartsAsyncTask";
 	
 	private Activity activity;
 	private String hostURI;
@@ -60,7 +58,6 @@ public class GetChartsAsyncTask extends AsyncTask<Void, Void, Void> {
 	}
 	
 	private String formatDate(Calendar date) {
-		//Log.e(TAG, "Formatted Date: " + format.format(date.getTime()));
 		return format.format(date.getTime());
 	}
 
@@ -89,24 +86,21 @@ public class GetChartsAsyncTask extends AsyncTask<Void, Void, Void> {
 		int i = 0;
 		if(forRemoteMonitoring) {
 			if(Session.getActualRemoteMonitoring().getID().equals("10.1E4C2F020800")) {
-				Log.e(TAG, "EZ IBOLYA!!!!");
 				i = 1;
 			} else {
-				Log.e(TAG, "Hallelujah, ez nem Ibolya...");
 				i = 0;
 			}
 		}
 			for(; i < Session.getAllChartNames().size(); ++i ) {
 				ChartName actChartName = Session.getAllChartNames().get(i);
 				if(!actChartName.getName().equals("Rendszerállapot")) {
-					Log.e(TAG, "letöltés name: " + actChartName.getName());
 					fullURI = hostURI + resourceURIBeginning + actChartName.getId() + resourceURIDateEnding;
 					String response = "";
 					response = RealCommunicator.dohttpGet(fullURI);
 					Chart chart = gson.fromJson(response, Chart.class);
 					charts.add(chart);
 				} else {
-					Log.e(TAG, "Nincs letöltés <-- name: " + actChartName.getName());
+					//Log.e(TAG, "Nincs letöltés <-- name: " + actChartName.getName());
 				}
 			}
 		Session.setAllCharts(charts);

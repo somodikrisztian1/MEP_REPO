@@ -15,7 +15,7 @@ import com.google.gson.GsonBuilder;
 
 public class GetNotWorkingPlacesListAsyncTask extends AsyncTask<Void, Void, Void> {
 
-	private static final String TAG = "GetNotWorkingPlacesListAsyncTask";
+	//private static final String TAG = "GetNotWorkingPlacesListAsyncTask";
 
 	String hostURI;
 	String resourceURI;

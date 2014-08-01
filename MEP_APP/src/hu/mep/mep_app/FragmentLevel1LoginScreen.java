@@ -18,7 +18,7 @@ import android.widget.TextView;
 public class FragmentLevel1LoginScreen extends Fragment implements
 		OnClickListener {
 
-	private static final String TAG = "FragmentLoginScreen";
+	//private static final String TAG = "FragmentLoginScreen";
 	private FragmentLevel1EventHandler fragmentEventHandler;
 
 	private EditText usernameEdittext;

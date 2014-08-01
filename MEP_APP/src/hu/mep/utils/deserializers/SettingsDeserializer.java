@@ -11,8 +11,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import android.util.Log;
-
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
@@ -21,7 +19,7 @@ import com.google.gson.JsonParseException;
 
 public class SettingsDeserializer implements JsonDeserializer<Settings> {
 
-	private static final String TAG = "SettingsDeserializer";
+	//private static final String TAG = "SettingsDeserializer";
 
 	@Override
 	public Settings deserialize(JsonElement element, Type type,
@@ -32,7 +30,6 @@ public class SettingsDeserializer implements JsonDeserializer<Settings> {
 		List<Function> functions = null;
 
 		if (element.isJsonObject()) {
-			Log.e(TAG, "It's a jsonObject");
 			JsonObject rootObject = element.getAsJsonObject();
 
 			sliders = readSliders(rootObject);
@@ -59,7 +56,7 @@ public class SettingsDeserializer implements JsonDeserializer<Settings> {
 				double maxValue = actSliderJson.get("max").getAsDouble();
 				String name = actSliderJson.get("name").getAsString();
 				String label = actSliderJson.get("label").getAsString();
-				Log.e(TAG, "SLIDER: " + label + " " + minValue + " < " + value + " < " + maxValue);
+				/*Log.e(TAG, "SLIDER: " + label + " " + minValue + " < " + value + " < " + maxValue);*/
 				Slider newSlider = new Slider(serialNumber, value, minValue,
 						maxValue, name, label);
 				sliders.add(newSlider);
@@ -79,7 +76,7 @@ public class SettingsDeserializer implements JsonDeserializer<Settings> {
 				String name = relayElement.getKey();
 				String value = relayElement.getValue().getAsJsonPrimitive().getAsString();
 				boolean status = (value.equals("0") ? false : true);
-				Log.e(TAG, "RELAY name - value: " + name + " - " + (status ? "on" : "off"));
+				/*Log.e(TAG, "RELAY name - value: " + name + " - " + (status ? "on" : "off"));*/
 				Relay newRelay = new Relay(name, status);
 				relays.add(newRelay);
 			}
@@ -104,7 +101,7 @@ public class SettingsDeserializer implements JsonDeserializer<Settings> {
 				String name = actFunctionJson.get("name").getAsString();
 				String label = actFunctionJson.get("label").getAsString();
 
-				Log.e(TAG, "FUNCTION name - value: " + name + " - " + (status ? "on" : "off"));
+				/*Log.e(TAG, "FUNCTION name - value: " + name + " - " + (status ? "on" : "off"));*/
 				Function newFunction = new Function(serialNumber, status, name, label);
 				functions.add(newFunction);
 			}

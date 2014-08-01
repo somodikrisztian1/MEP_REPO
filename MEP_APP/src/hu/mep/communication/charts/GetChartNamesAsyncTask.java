@@ -3,16 +3,13 @@ package hu.mep.communication.charts;
 import hu.mep.communication.RealCommunicator;
 import hu.mep.datamodells.Session;
 import hu.mep.datamodells.charts.AllChartNames;
-import hu.mep.datamodells.charts.ChartName;
 import hu.mep.utils.deserializers.ChartNamesDeserializer;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
-import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -62,23 +59,18 @@ public class GetChartNamesAsyncTask extends	AsyncTask<Void, Void, Void> {
 		if (forRemoteMonitoring) {
 			resourceURI = "ios_getChartNames.php?tsz1_id="
 					+ Session.getActualRemoteMonitoring().getID();
-
 			fullURI = hostURI + resourceURI;
-			Log.e("GetChartNames", fullURI);
-		} else {
+			} else {
 			resourceURI = "ios_getChartNames.php?tsz1_id="
 					+ Session.getActualTopic().getTopicID() + "&sszs="
 					+ getSSZS();
-
 			fullURI = hostURI + resourceURI;
-			Log.e("GetChartNames", fullURI);
 		}
 	}
 
 	@Override
 	protected Void doInBackground(Void... params) {
 		String response = "";
-
 		response = RealCommunicator.dohttpGet(fullURI);
 
 		GsonBuilder gsonBuilder = new GsonBuilder();

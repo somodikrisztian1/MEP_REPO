@@ -1,7 +1,6 @@
 package hu.mep.communication;
 
 import hu.mep.datamodells.Session;
-import hu.mep.mep_app.activities.ActivityLevel1;
 import hu.mep.mep_app.activities.ActivityLevel1Gallery;
 
 import java.io.IOException;
@@ -17,12 +16,11 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.WindowManager;
 
 public class GetGalleryImagesAsyncTask extends AsyncTask<Void, Void, Void> {
 
-	private static final String TAG = "GetGalleryImagesAsyncTask";
+	//private static final String TAG = "GetGalleryImagesAsyncTask";
 	String hostURI;
 	String resourceURI;
 	Activity activity;
@@ -40,7 +38,6 @@ public class GetGalleryImagesAsyncTask extends AsyncTask<Void, Void, Void> {
 
 	@Override
 	protected void onPreExecute() {
-		Log.e(TAG, "onPreExecute() running");
 		/*Session.setProgressDialog(pd);
 		Session.showProgressDialog();*/
 		resourceURI = "images/iphone/";
@@ -48,7 +45,6 @@ public class GetGalleryImagesAsyncTask extends AsyncTask<Void, Void, Void> {
 
 	@Override
 	protected Void doInBackground(Void... params) {
-		Log.e(TAG, "doInBackGround begin");
 		try {
 			for (String actImageURL : Session.getGalleryImageURLSList()) {
 				URL fullURI = new URL(hostURI + resourceURI + actImageURL);
@@ -80,9 +76,7 @@ public class GetGalleryImagesAsyncTask extends AsyncTask<Void, Void, Void> {
 					width = displayMetrics.heightPixels;
 					height = displayMetrics.widthPixels;
 				}
-				Log.e(TAG, "KÉPERNYŐ! szélesség: " + width + " magasság: " + height);
-
-				
+							
 				if (width > bm.getWidth()) {
 					pictureWidth = width;
 					ratio = ((double) pictureWidth) / bm.getWidth();
@@ -90,26 +84,8 @@ public class GetGalleryImagesAsyncTask extends AsyncTask<Void, Void, Void> {
 					pictureWidth = bm.getWidth();
 					ratio = ((double) pictureWidth) / width;
 				}
-				Log.e(TAG, "bm.getWidth() = " + bm.getWidth());
-				Log.e(TAG, "display width = " + width);
-				Log.e(TAG, "pictureWidth = " + pictureWidth );
-
-				Log.e(TAG, "ratio = " + ratio);
-
-				Log.e(TAG, "bm.getHeight() = " + bm.getHeight() );
-				Log.e(TAG, "display height = " + height);
-				/*
-				if (height > bm.getHeight()) {
-					pictureHeight = height;
-				}
-				else {
-					pictureHeight = bm.getHeight();
-				}*/
 				
 				pictureHeight = (int) Math.ceil( bm.getHeight() * ratio );
-				
-				Log.e(TAG, "bm.getHeight() * ratio = pictureHeight --> " 
-						+ bm.getHeight()+" * "+ratio+" = "+pictureHeight );
 				
 				bm = Bitmap.createScaledBitmap(bm, pictureWidth, pictureHeight, true);
 				
@@ -122,10 +98,8 @@ public class GetGalleryImagesAsyncTask extends AsyncTask<Void, Void, Void> {
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
-			Log.e("getBmpFromUrl error: ", e.getMessage().toString());
 			return null;
 		}
-		Log.e(TAG, "doInBackGround finish");
 		return null;
 	}
 
@@ -145,7 +119,6 @@ public class GetGalleryImagesAsyncTask extends AsyncTask<Void, Void, Void> {
 	          result = activity.getResources().getDimensionPixelSize(resourceId);
 	      } 
 	      
-	      Log.e("getStatusBarHeight", "result: " + result);
 	      return result;
 	}
 

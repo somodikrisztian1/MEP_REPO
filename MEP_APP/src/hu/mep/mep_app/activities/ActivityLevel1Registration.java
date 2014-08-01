@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,7 +21,7 @@ import android.widget.EditText;
 public class ActivityLevel1Registration extends ActionBarActivity implements
 		OnClickListener {
 
-	private static final String TAG = "ActivityLevel1Registration";
+	//private static final String TAG = "ActivityLevel1Registration";
 	private EditText fullNameEdittext;
 	private EditText emailEdittext;
 	private EditText userNameEdittext;
@@ -35,11 +34,9 @@ public class ActivityLevel1Registration extends ActionBarActivity implements
 		super.onCreate(savedInstanceState);
 
 		if (Session.getInstance(this).isTablet()) {
-			Log.e(TAG, "IT'S A TABLET");
 			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE); 
 		}
 		else {
-			Log.e(TAG, "IT'S NOT A TABLET");
 			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 		}
 		

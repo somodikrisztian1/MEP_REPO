@@ -14,7 +14,5 @@ public class ImageURLList {
 	public List<String> getImageURLs() {
 		return imageURLs;
 	}
-	
-	
 
 }

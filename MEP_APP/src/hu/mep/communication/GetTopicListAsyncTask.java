@@ -3,7 +3,6 @@ package hu.mep.communication;
 import hu.mep.datamodells.AllTopicsList;
 import hu.mep.datamodells.Session;
 import hu.mep.utils.deserializers.TopicListDeserializer;
-import android.content.Context;
 import android.os.AsyncTask;
 
 import com.google.gson.Gson;
@@ -11,14 +10,12 @@ import com.google.gson.GsonBuilder;
 
 public class GetTopicListAsyncTask extends AsyncTask<Void, Void, Void> {
 
-	private Context context;
 	private static String hostURI;
 	private static String resourceURI;
 	private static String fullURI;
 	
 	
-	public GetTopicListAsyncTask(Context context, String catchedHostURI) {
-		this.context = context;
+	public GetTopicListAsyncTask(String catchedHostURI) {
 		hostURI = catchedHostURI;
 	}
 	
@@ -34,8 +31,6 @@ public class GetTopicListAsyncTask extends AsyncTask<Void, Void, Void> {
 		String response = "";
 
 		response = RealCommunicator.dohttpGet(fullURI);
-
-		/*Log.e("GetTopicListAsyncTask.doInBackground()", "response:" + response);*/
 
 		GsonBuilder gsonBuilder = new GsonBuilder();
 		gsonBuilder.registerTypeAdapter(AllTopicsList.class, new TopicListDeserializer());

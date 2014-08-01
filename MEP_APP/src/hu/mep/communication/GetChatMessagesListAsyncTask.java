@@ -5,14 +5,13 @@ import hu.mep.datamodells.Session;
 import hu.mep.mep_app.activities.ActivityLevel3Chat;
 import hu.mep.utils.deserializers.ChatMessagesListDeserializer;
 import android.os.AsyncTask;
-import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 public class GetChatMessagesListAsyncTask extends AsyncTask<Void, Void, Void> {
 
-	private static final String TAG = "GetChatMessagesListAsyncTask";
+	//private static final String TAG = "GetChatMessagesListAsyncTask";
 	
 	String hostURI;
 	String resourceURI;
@@ -40,7 +39,6 @@ public class GetChatMessagesListAsyncTask extends AsyncTask<Void, Void, Void> {
 		gsonBuilder.registerTypeAdapter(ChatMessagesList.class, new ChatMessagesListDeserializer());
 		Gson gson = gsonBuilder.create();
 		ChatMessagesList messages = gson.fromJson(response, ChatMessagesList.class);
-		Log.e("GSON", "Beérkezett üzenetek száma: " + messages.getChatMessagesList().size());
 		
 		Session.setChatMessagesList(messages);
 		return null;
@@ -51,7 +49,6 @@ public class GetChatMessagesListAsyncTask extends AsyncTask<Void, Void, Void> {
 		super.onPostExecute(result);
 		
 		if(ActivityLevel3Chat.adapter != null) {
-			Log.e(TAG, "onPostExecute: ActivityLevel3Chat.adapter.notifyDataSetChanged()");
 			ActivityLevel3Chat.adapter.notifyDataSetChanged();
 		}
 	}

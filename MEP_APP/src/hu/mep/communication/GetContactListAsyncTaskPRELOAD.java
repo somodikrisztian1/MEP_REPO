@@ -15,14 +15,13 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
-import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 public class GetContactListAsyncTaskPRELOAD extends AsyncTask<Void, Void, Void> {
 
-	private static final String TAG = "GetContactListAsyncTaskPRELOAD";
+	//private static final String TAG = "GetContactListAsyncTaskPRELOAD";
 	String hostURI;
 	String resourceURI;
 	Context context;
@@ -35,21 +34,16 @@ public class GetContactListAsyncTaskPRELOAD extends AsyncTask<Void, Void, Void> 
 
 	@Override
 	protected void onPreExecute() {
-		Log.e(TAG, "onPreExecute() running");
 		resourceURI = "ios_getContactList.php?userId="
 				+ Session.getActualUser().getMepID();
 	}
 
 	@Override
 	protected Void doInBackground(Void... nothing) {
-		Log.e(TAG, "doInBackground() running");
 		String response = "";
 		String fullURI = hostURI + resourceURI;
-		Log.e("ASYNCTASK", "fullURI: " + fullURI);
 		
 		response = RealCommunicator.dohttpGet(fullURI);
-
-		Log.e(TAG, "response:" + response);
 
 		GsonBuilder gsonBuilder = new GsonBuilder();
 		gsonBuilder.registerTypeAdapter(ChatContactList.class,
@@ -77,8 +71,6 @@ public class GetContactListAsyncTaskPRELOAD extends AsyncTask<Void, Void, Void> 
 					|| contact.getImageURL().toUpperCase().endsWith(".GIF")
 					|| contact.getImageURL().toUpperCase().endsWith(".BMP")) {
 				imgURL = new URL(contact.getImageURL());
-				//Log.e("GetContactListAsyncTask", contact.getName());
-				//Log.e("GetContactListAsyncTask", "Kép letöltése...");
 				HttpURLConnection connection = (HttpURLConnection) imgURL.openConnection();
 				connection.setDoInput(true);
 				connection.connect();
@@ -94,14 +86,12 @@ public class GetContactListAsyncTaskPRELOAD extends AsyncTask<Void, Void, Void> 
 				contact.setProfilePicture(bmp);
 				
 			} else {
-				//imgURL = new URL("http://megujuloenergiapark.hu/images/avatar/empty.jpg");
 				contact.setProfilePicture(Session.getEmptyProfilePicture());
 			
 			}
 			
 		} catch (IOException e) {
 			e.printStackTrace();
-			Log.e("getBmpFromUrl error: ", e.getMessage().toString());
 			return;
 		}
 		return;

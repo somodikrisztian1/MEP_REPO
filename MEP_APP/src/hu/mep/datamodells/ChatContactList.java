@@ -7,7 +7,7 @@ import android.graphics.Bitmap;
 public class ChatContactList {
 	
 	List<ChatContact> contacts;
-	private static final String TAG = "ChatContactList";
+	//private static final String TAG = "ChatContactList";
 	
 	public ChatContactList(List<ChatContact> contacts) {
 		super();
