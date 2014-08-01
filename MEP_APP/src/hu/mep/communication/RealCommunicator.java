@@ -99,6 +99,11 @@ public class RealCommunicator implements ICommunicator {
 		urlGetter.execute();		
 	}
 	
+	public void getNotWorkingPlacesList() {
+		GetNotWorkingPlacesListAsyncTask at = new GetNotWorkingPlacesListAsyncTask(MainURL);
+		at.execute();
+	}
+	
 	@Override
 	public void registrateUser(Activity activity, String fullName, String email, String userName, String password)
 	{
@@ -164,8 +169,6 @@ public class RealCommunicator implements ICommunicator {
 		getContactListAsyncTask.execute();
 	}
 
-
-
 	@Override
 	public void sendChatMessage(String messageText) {
 		HashMap<String, String> postDatas = new HashMap<String, String>();
@@ -203,7 +206,6 @@ public class RealCommunicator implements ICommunicator {
 		GetSolarPanelJsonAsyncTask chartGetter = new GetSolarPanelJsonAsyncTask(activity, MainURL, beginDate, endDate);
 		chartGetter.execute();
 	}
-
 
 	@Override
 	public void getActualRemoteMonitoringSettings(Activity activity) {

@@ -6,6 +6,7 @@ import hu.mep.datamodells.Topic;
 import hu.mep.mep_app.ActivityLevel2SectionsPagerAdapter;
 import hu.mep.mep_app.NotificationService;
 import hu.mep.mep_app.R;
+import hu.mep.utils.others.AlertDialogFactory;
 import hu.mep.utils.others.FragmentLevel2EventHandler;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -79,6 +80,7 @@ public class ActivityLevel2NEW extends ActionBarActivity implements
 		super.onPause();
 		Log.d(TAG, "onPause running... stopContactRefresher()");
 		Session.stopContactRefresherThread();
+		Session.stopNotWorkingPlacesRefresherThread();
 	}
 
 	@Override
@@ -87,6 +89,7 @@ public class ActivityLevel2NEW extends ActionBarActivity implements
 		Session.getInstance(this);
 		Session.dismissAndMakeNullProgressDialog();
 		Session.startContactRefresherThread();
+		Session.startNotWorkingPlacesRefresherThread();
 	}
 
 	private void addTabsForActionBar() {
@@ -152,11 +155,16 @@ public class ActivityLevel2NEW extends ActionBarActivity implements
 	@Override
 	public void onRemoteMonitoringSelected(Place selectedPlace) {
 		Session.setActualRemoteMonitoring(selectedPlace);
-		if (selectedPlace.isSolarPanel()) {
-			Session.getActualCommunicationInterface().getSolarPanelJson(this,
-					null, null);
+		if(selectedPlace.isWorkingProperly()) {
+			if (selectedPlace.isSolarPanel()) {
+				Session.getActualCommunicationInterface().getSolarPanelJson(this,
+						null, null);
+			} else {
+				Session.getActualCommunicationInterface().getChartNames(this, true);
+			}
 		} else {
-			Session.getActualCommunicationInterface().getChartNames(this, true);
+			Session.setAlertDialog(AlertDialogFactory.prepareAlertDialogWithText(this,
+					selectedPlace.getLastWorkingText()));
 		}
 	}
 }

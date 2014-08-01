@@ -2,6 +2,7 @@ package hu.mep.datamodells;
 
 import hu.mep.communication.ChatMessageRefresherRunnable;
 import hu.mep.communication.ContactListRefresherRunnable;
+import hu.mep.communication.GetNotWorkingPlacesListRunnable;
 import hu.mep.communication.ICommunicator;
 import hu.mep.communication.RealCommunicator;
 import hu.mep.datamodells.charts.Chart;
@@ -74,6 +75,9 @@ public class Session {
 	private static ChartName actualChartName;
 	private static List<Chart> allCharts;
 	private static Chart actualChart;
+	
+	private static GetNotWorkingPlacesListRunnable notWorkingPlacesRefresherRunnable = new GetNotWorkingPlacesListRunnable();
+	private static Thread notWorkingPlacesRefresherThread = new Thread(notWorkingPlacesRefresherRunnable);
 
 	private static ContactListRefresherRunnable contactRefresherRunnable = new ContactListRefresherRunnable();
 	private static Thread contactRefresherThread = new Thread(contactRefresherRunnable);
@@ -376,6 +380,20 @@ public class Session {
 		Session.setActualChart(Session.actualLineAndBarChartContainer.getLineChart());
 	}
 
+	public static void startNotWorkingPlacesRefresherThread() {
+
+		if (notWorkingPlacesRefresherThread.getState().equals(Thread.State.NEW)) {
+			Log.e(TAG, "startNotWorkingPlacesRefresherThread NEW");
+			notWorkingPlacesRefresherThread.start();
+		}
+		notWorkingPlacesRefresherRunnable.resume();
+	}
+	
+	public static void stopNotWorkingPlacesRefresherThread() {
+		Log.e(TAG, "stopNotWorkingPlacesRefresherThread");
+		notWorkingPlacesRefresherRunnable.pause();;
+	}
+	
 	public static void startContactRefresherThread() {
 
 		if (contactRefresherThread.getState().equals(Thread.State.NEW)) {
