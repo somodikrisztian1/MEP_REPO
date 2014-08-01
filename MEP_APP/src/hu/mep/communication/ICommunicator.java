@@ -11,6 +11,8 @@ public interface ICommunicator {
 	public void registrateUser(Activity activity, String fullName, String email, String userName, String password);
 
 	public void authenticateUser(Activity activity, String username, String password);
+	
+	public void getNotWorkingPlacesList();
 
 	public void getTopicList();
 

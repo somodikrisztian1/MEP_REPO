@@ -12,9 +12,10 @@ import com.google.gson.GsonBuilder;
 
 public class GetChatMessagesListAsyncTask extends AsyncTask<Void, Void, Void> {
 
+	private static final String TAG = "GetChatMessagesListAsyncTask";
+	
 	String hostURI;
 	String resourceURI;
-	private static final String TAG = "GetChatMessagesListAsyncTask";
 
 	public GetChatMessagesListAsyncTask(String hostURI) {
 		this.hostURI = hostURI;

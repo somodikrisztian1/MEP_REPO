@@ -1,5 +1,7 @@
 package hu.mep.datamodells;
 
+import java.util.Calendar;
+
 import com.google.gson.annotations.SerializedName;
 
 import android.util.Log;
@@ -24,7 +26,6 @@ public class Place {
 	public static final String locationTag = "helyszin";
 	public static final String solarPanelTag = "is_napelem";
 	
-	
 	@SerializedName(nameTag)
 	private String name;
 	
@@ -40,6 +41,10 @@ public class Place {
 	@SerializedName(solarPanelTag)
 	private boolean solarPanel;
 	
+	private boolean workingProperly;
+	
+	private String lastWorkingText;
+	
 	public Place(String name, String ID, String description, String location, boolean solarPanel) {
 		super();
 		this.name = name;
@@ -47,7 +52,8 @@ public class Place {
 		this.description = description;
 		this.location = location;
 		this.solarPanel = solarPanel;
-		
+		this.workingProperly = true;
+	
 		Log.d(TAG, "New Place For Remote Monitoring Has Been Succesfully Created With The Following Values:");
 		Log.d(TAG, "name=" + name);
 		Log.d(TAG, "id=" + ID);
@@ -75,5 +81,23 @@ public class Place {
 	public boolean isSolarPanel() {
 		return solarPanel;
 	}
+
+	public boolean isWorkingProperly() {
+		return workingProperly;
+	}
+
+	public void setWorkingProperly(boolean workingProperly) {
+		this.workingProperly = workingProperly;
+	}
+
+	public String getLastWorkingText() {
+		return lastWorkingText;
+	}
+
+	public void setLastWorkingText(String lastWorkingText) {
+		this.lastWorkingText = lastWorkingText;
+	}
+	
+	
 	
 }

@@ -13,7 +13,6 @@ public class AlertDialogFactory {
 	public static AlertDialog prepareAlertDialogForNoConnection(final Activity act) {
 		AlertDialog.Builder adb = new AlertDialog.Builder(act);
 		adb.setCancelable(true)
-				.setTitle("Hiba történt!")
 				.setMessage("Nincs internet kapcsolata!\nMit kíván tenni?")
 				.setPositiveButton("Wi-Fi beállítások",
 						new DialogInterface.OnClickListener() {
@@ -43,7 +42,6 @@ public class AlertDialogFactory {
 	public static AlertDialog prepareAlertDialogForBadCredentials(final Activity act) {
 		AlertDialog.Builder adb = new AlertDialog.Builder(act);
 		adb.setCancelable(true)
-				.setTitle("Hiba a bejelentkezés során!")
 				.setMessage(
 						"Sikertelen bejelentkezés!\nHelytelen felhasználónév vagy jelszó!")
 				.setNegativeButton("Vissza",
@@ -63,7 +61,6 @@ public class AlertDialogFactory {
 	public static AlertDialog prepareAlertDialogForBadUsername(final Activity act) {
 		AlertDialog.Builder adb = new AlertDialog.Builder(act);
 		adb.setCancelable(true)
-				.setTitle("Hiba a regisztráció során!")
 				.setMessage(
 						"Adjon meg egy új, érvényes felhasználónevet!")
 				.setNegativeButton("Vissza",
@@ -83,7 +80,6 @@ public class AlertDialogFactory {
 	public static AlertDialog prepareAlertDialogForBadPasswords(final Activity act) {
 		AlertDialog.Builder adb = new AlertDialog.Builder(act);
 		adb.setCancelable(true)
-				.setTitle("Hiba a regisztráció során!")
 				.setMessage(
 						"Adjon meg egy új, érvényes jelszót!\n"
 						+ "A jelszónak legalább egy szóköztől különböző karakterből kell állnia.")						
@@ -135,7 +131,6 @@ public class AlertDialogFactory {
 	public static AlertDialog prepareAlertDialogForNoFullyLoadedCells(final Activity act) {
 		AlertDialog.Builder adb = new AlertDialog.Builder(act);
 		adb.setCancelable(true)
-				.setTitle("Hiba a regisztráció során!")
 				.setMessage(
 						"Minden mezőt kötelező kitölteni az érvényes regisztrációhoz.")					
 				.setNegativeButton("Vissza",
@@ -155,7 +150,6 @@ public class AlertDialogFactory {
 	public static AlertDialog prepareAlertDialogForNoMatchingPasswords(final Activity act) {
 		AlertDialog.Builder adb = new AlertDialog.Builder(act);
 		adb.setCancelable(true)
-				.setTitle("Hiba a regisztráció során!")
 				.setMessage(
 						"A beírt jelszavak nem egyeznek meg.\nKérem adja meg újból a jelszavakat!")				
 				.setNegativeButton("Vissza",
@@ -175,7 +169,6 @@ public class AlertDialogFactory {
 	public static AlertDialog prepareAlertDialogWithText(final Activity act, String text) {
 		AlertDialog.Builder adb = new AlertDialog.Builder(act);
 		adb.setCancelable(true)
-				.setTitle("Hiba a regisztráció során!")
 				.setMessage(text)				
 				.setNegativeButton("Vissza",
 						new DialogInterface.OnClickListener() {
