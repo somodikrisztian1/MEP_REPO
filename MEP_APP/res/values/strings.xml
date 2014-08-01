@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">MEP APP</string>
+    <string name="app_name">MEP</string>
     <string name="fragment_firstlevel_mainscreen_welcome_title">Üdvözöljük a Megújuló Energiapark alkalmazásában!</string>
     <string name="fragment_firstlevel_mainscreen_welcome_text">Az alkalmazás használatával tájékozódhat a Megújuló Energiaparkról, és amennyiben Ön regisztrált felhasználó, megfelelő jogosultságokkal megtekintheti a megújuló energiaforrásokkal kapcsolatos kutatási eredményeinket, illetve gyorsan és egyszerűen kezelheti távfelügyeleteit.</string>
     <string name="fragment_firstlevel_representation_park_page_title">Bemutatópark</string>
@@ -56,7 +56,6 @@
 
     <string name="login">Bejelentkezés</string>
     <string name="title_activity_activity_level1_registration">ActivityLevel1Registration</string>
-    <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
 
 </resources>
