@@ -28,7 +28,9 @@ public class GetNotWorkingPlacesListRunnable implements Runnable {
 				
 				if (!running) continue;
 				if(Session.isAnyUserLoggedIn()) {
-					Session.getActualCommunicationInterface().getNotWorkingPlacesList();
+					if(Session.getActualUser().getUsersPlaces() != null) {
+						Session.getActualCommunicationInterface().getNotWorkingPlacesList();
+					}
 				}
 				
 					try {
