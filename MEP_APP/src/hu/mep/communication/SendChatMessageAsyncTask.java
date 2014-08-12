@@ -23,14 +23,11 @@ import android.os.AsyncTask;
 
 public class SendChatMessageAsyncTask extends AsyncTask<Void, Void, Void> {
 
-	String hostURI;
 	String resourceURI;
-	String fullURI;
 	Context context;
 	HashMap<String, String> postDatas;
 
 	public SendChatMessageAsyncTask(Context context, String hostURI, HashMap<String, String> postDatas) {
-		this.hostURI = hostURI;
 		this.context = context;
 		this.postDatas = postDatas;
 	}
@@ -38,9 +35,7 @@ public class SendChatMessageAsyncTask extends AsyncTask<Void, Void, Void> {
 	@Override
 	protected void onPreExecute() {
 		super.onPreExecute();
-		resourceURI = "ios_storeMessage.php";
-		fullURI = hostURI + resourceURI;
-		
+		resourceURI = "ios_storeMessage.php";		
 	}
 
 	@Override
@@ -54,7 +49,15 @@ public class SendChatMessageAsyncTask extends AsyncTask<Void, Void, Void> {
 			nameValuePairs.add(new BasicNameValuePair((String) pairs.getKey(),
 					(String) pairs.getValue()));
 		}
-
+		
+		try {
+			RealCommunicator.httpPost(resourceURI, postDatas);
+		} catch (ClientProtocolException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		/*
 		HttpPost httppost = new HttpPost(fullURI);
 		try {
 			httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs, "UTF-8"));
@@ -66,7 +69,7 @@ public class SendChatMessageAsyncTask extends AsyncTask<Void, Void, Void> {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
-		}
+		}*/
 		
 		return null;
 	}	

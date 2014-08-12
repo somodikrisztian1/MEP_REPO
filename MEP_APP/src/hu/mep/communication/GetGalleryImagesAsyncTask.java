@@ -1,4 +1,4 @@
-package hu.mep.communication;
+ package hu.mep.communication;
 
 import hu.mep.datamodells.Session;
 import hu.mep.mep_app.activities.ActivityLevel1Gallery;

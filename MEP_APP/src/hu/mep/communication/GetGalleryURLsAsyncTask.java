@@ -20,7 +20,6 @@ public class GetGalleryURLsAsyncTask extends AsyncTask<Void, Void, Boolean> {
 
 	String hostURI;
 	String resourceURI;
-	String fullURI;
 	Activity activity;
 	ProgressDialog pd;
 
@@ -42,14 +41,13 @@ public class GetGalleryURLsAsyncTask extends AsyncTask<Void, Void, Boolean> {
 		Session.showProgressDialog();
 		
 		resourceURI = "ios_getGalleryUrls.php";
-		fullURI = hostURI + resourceURI;
 	}
 
 	@Override
 	protected Boolean doInBackground(Void... params) {
 
 		String response = "";
-		response = RealCommunicator.dohttpGet(fullURI);
+		response = RealCommunicator.dohttpGet(resourceURI);
 
 		GsonBuilder gsonBuilder = new GsonBuilder();
 		gsonBuilder.registerTypeAdapter(ImageURLList.class,

@@ -13,11 +13,9 @@ public class GetChatMessagesListAsyncTask extends AsyncTask<Void, Void, Void> {
 
 	//private static final String TAG = "GetChatMessagesListAsyncTask";
 	
-	String hostURI;
 	String resourceURI;
 
-	public GetChatMessagesListAsyncTask(String hostURI) {
-		this.hostURI = hostURI;
+	public GetChatMessagesListAsyncTask() {
 	}
 
 	@Override
@@ -31,9 +29,7 @@ public class GetChatMessagesListAsyncTask extends AsyncTask<Void, Void, Void> {
 	@Override
 	protected Void doInBackground(Void... nothing) {
 		String response = "";
-		String fullURI = hostURI + resourceURI;
-		
-		response = RealCommunicator.dohttpGet(fullURI);
+		response = RealCommunicator.dohttpGet(resourceURI);
 		
 		GsonBuilder gsonBuilder = new GsonBuilder();
 		gsonBuilder.registerTypeAdapter(ChatMessagesList.class, new ChatMessagesListDeserializer());

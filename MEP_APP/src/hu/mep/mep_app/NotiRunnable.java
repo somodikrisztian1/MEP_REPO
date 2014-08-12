@@ -1,5 +1,7 @@
 package hu.mep.mep_app;
 
+import hu.mep.datamodells.Place;
+import hu.mep.datamodells.Session;
 import hu.mep.mep_app.activities.ActivityLevel1;
 
 import java.io.IOException;
@@ -132,7 +134,7 @@ public class NotiRunnable implements Runnable {
 		HttpClient httpClient = new DefaultHttpClient();
 		HttpPost httpPost = new HttpPost(
 				"http://www.megujuloenergiapark.hu/ios_getHibasTf.php?userId="
-						+ dataToSend + "type=daily");
+						+ dataToSend + "&type=daily");
 
 		try {
 			// httpPost.setEntity(new StringEntity(dataToSend, "UTF-8"));
@@ -165,8 +167,9 @@ public class NotiRunnable implements Runnable {
 
 	// van-e a rossz távf.
 	public Boolean gotWrongRemotes() {
-		int count = 0;
-		try {
+		Log.e(TAG, responseFromWrongRemotes);
+		/*
+		 try {
 			if (responseFromWrongRemotes.compareTo("[]") != 0) {
 				JSONObject json = new JSONObject(
 						responseFromWrongRemotes.trim());
@@ -188,15 +191,19 @@ public class NotiRunnable implements Runnable {
 			e.printStackTrace();
 			Log.e(TAG, "gotWrongRemotes catch: " + e.toString());
 		}
-
+		 */
 		// Log.e(TAG, "gotWrongRemotes: " + Integer.toString(count));
 
-		if (count > 0)
-			return true;
-		else
-			return false;
+		if(Session.getActualUser().getUsersPlaces().getPlaces() != null)
+		for (Place actPlace : Session.getActualUser().getUsersPlaces().getPlaces()) {
+			if(actPlace.isNotify()) {
+				Log.e(TAG, "TALÁLTUNK EGY NEM MŰKÖDŐ HELYET!!!!");
+				return true;
+			}
+		}
+		return false;
 	}
-
+	
 	// olvasatlan üzenetek lekérése
 	private void getUnreadMessages(String dataToSend) {
 		Log.e(TAG, "getUnreadMessages, userId:  " + dataToSend);

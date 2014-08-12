@@ -4,8 +4,9 @@ import hu.mep.datamodells.Session;
 
 public class GetNotWorkingPlacesListRunnable implements Runnable {
 
-	//private static final String TAG = "GetNotWorkingPlacesListRunnable";
-	private static long WAIT_TIME = 300000L;
+	private static final String TAG = "GetNotWorkingPlacesListRunnable";
+	//private static long WAIT_TIME = 300000L;
+	private static long WAIT_TIME = 5000L;
 	private boolean running = true;
 
 	public void pause() {

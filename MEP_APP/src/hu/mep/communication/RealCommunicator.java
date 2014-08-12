@@ -71,7 +71,8 @@ public class RealCommunicator implements ICommunicator {
 		return data;
 	}
 	
-	public static String dohttpGet(String fullURI) {
+	public static String dohttpGet(String resourceURI) {
+		String fullURI = MainURL + resourceURI;
 		String response = "";
 		
 		DefaultHttpClient client = new DefaultHttpClient();
@@ -100,7 +101,7 @@ public class RealCommunicator implements ICommunicator {
 	}
 	
 	public void getNotWorkingPlacesList() {
-		GetNotWorkingPlacesListAsyncTask at = new GetNotWorkingPlacesListAsyncTask(MainURL);
+		GetNotWorkingPlacesListAsyncTask at = new GetNotWorkingPlacesListAsyncTask();
 		at.execute();
 	}
 	
@@ -114,7 +115,7 @@ public class RealCommunicator implements ICommunicator {
 		postDatas.put("password", password);
 		postDatas.put("email", email);
 
-		RegistrationAssyncTask sendRegistration = new RegistrationAssyncTask(activity, MainURL, postDatas);
+		RegistrationAssyncTask sendRegistration = new RegistrationAssyncTask(activity, postDatas);
 		try {
 			sendRegistration.execute().get();
 		} catch (InterruptedException e) {
@@ -129,14 +130,14 @@ public class RealCommunicator implements ICommunicator {
 	@Override
 	public void authenticateUser( Activity activity, String username, String password) {
 
-		AuthenticationAsyncTask authenticationAsyncTask = new AuthenticationAsyncTask(activity, username, password, MainURL);
+		AuthenticationAsyncTask authenticationAsyncTask = new AuthenticationAsyncTask(activity, username, password);
 		authenticationAsyncTask.execute();
 	}
 
 	@Override
 	public void getChatMessages() {
 
-		GetChatMessagesListAsyncTask getMessagesAsyncTask = new GetChatMessagesListAsyncTask(MainURL);
+		GetChatMessagesListAsyncTask getMessagesAsyncTask = new GetChatMessagesListAsyncTask();
 
 		try {
 			getMessagesAsyncTask.execute().get();
@@ -158,14 +159,14 @@ public class RealCommunicator implements ICommunicator {
 
 	@Override
 	public void getTopicList() {
-		GetTopicListAsyncTask getTopicListAsyncTask = new GetTopicListAsyncTask(MainURL);
+		GetTopicListAsyncTask getTopicListAsyncTask = new GetTopicListAsyncTask();
 		getTopicListAsyncTask.execute();
 
 	}
 
 	@Override
 	public void getChatPartners() {
-		GetContactListAsyncTask getContactListAsyncTask = new GetContactListAsyncTask(context, MainURL);
+		GetContactListAsyncTask getContactListAsyncTask = new GetContactListAsyncTask(context);
 		getContactListAsyncTask.execute();
 	}
 
@@ -190,20 +191,20 @@ public class RealCommunicator implements ICommunicator {
 
 	@Override
 	public void getChartNames(Activity activity, boolean forRemoteMonitoring) {
-		GetChartNamesAsyncTask chartNameGetter = new GetChartNamesAsyncTask(activity, MainURL, forRemoteMonitoring);
+		GetChartNamesAsyncTask chartNameGetter = new GetChartNamesAsyncTask(activity, forRemoteMonitoring);
 		chartNameGetter.execute();
 	}
 
 	@Override
 	public void getAllCharts(Activity activity, boolean forRemoteMonitoring, Calendar beginDate, Calendar endDate) {
-		GetChartsAsyncTask chartsGetter = new GetChartsAsyncTask(activity, MainURL, forRemoteMonitoring, beginDate, endDate);
+		GetChartsAsyncTask chartsGetter = new GetChartsAsyncTask(activity, forRemoteMonitoring, beginDate, endDate);
 		chartsGetter.execute();
 		
 	};
 	
 	@Override
 	public void getSolarPanelJson(Activity activity, Calendar beginDate, Calendar endDate) {
-		GetSolarPanelJsonAsyncTask chartGetter = new GetSolarPanelJsonAsyncTask(activity, MainURL, beginDate, endDate);
+		GetSolarPanelJsonAsyncTask chartGetter = new GetSolarPanelJsonAsyncTask(activity, beginDate, endDate);
 		chartGetter.execute();
 	}
 

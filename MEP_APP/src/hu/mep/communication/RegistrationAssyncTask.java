@@ -18,9 +18,7 @@ import android.util.Log;
 public class RegistrationAssyncTask extends AsyncTask<Void, Void, HashMap<String, String>> {
 
 	Activity activity;
-	String hostURI;
 	String resourceURI;
-	String fullURI;
 	HashMap<String, String> postDatas;
 	ProgressDialog pd;
 	private static final String STATUS_TAG = "status";
@@ -29,9 +27,8 @@ public class RegistrationAssyncTask extends AsyncTask<Void, Void, HashMap<String
 	private static final String UNSUCCESS = "unsuccessful_registration";
 	
 	
-	public RegistrationAssyncTask(Activity activity, String hostURI, HashMap<String, String> postDatas) {
+	public RegistrationAssyncTask(Activity activity, HashMap<String, String> postDatas) {
 		this.activity = activity;
-		this.hostURI = hostURI;
 		this.postDatas = postDatas;
 		
 		this.pd = new ProgressDialog(activity);
@@ -45,7 +42,6 @@ public class RegistrationAssyncTask extends AsyncTask<Void, Void, HashMap<String
 		Session.getInstance(activity).setProgressDialog(pd);
 		Session.showProgressDialog();
 		resourceURI = "ios_reg.php";
-		fullURI = hostURI + resourceURI;
 	}
 
 	@Override

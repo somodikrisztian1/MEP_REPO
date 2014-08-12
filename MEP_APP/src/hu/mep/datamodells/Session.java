@@ -58,7 +58,7 @@ public class Session {
 	private static volatile User actualUser;
 	private static boolean isAnyUserLoggedIn = false;
 
-	private static List<TopicCategory> allTopicsList;
+	private static List<TopicCategory> allTopicsList = new ArrayList<TopicCategory>();
 	private static Topic actualTopic;
 
 	private static Place actualRemoteMonitoring;
@@ -313,7 +313,7 @@ public class Session {
 	}
 
 	public static void startNotWorkingPlacesRefresherThread() {
-
+		Log.e(TAG, "startNotWorkingPlacesRefresherThread");
 		if (notWorkingPlacesRefresherThread.getState().equals(Thread.State.NEW)) {
 			notWorkingPlacesRefresherThread.start();
 		}
@@ -321,6 +321,7 @@ public class Session {
 	}
 	
 	public static void stopNotWorkingPlacesRefresherThread() {
+		Log.e(TAG, "stopNotWorkingPlacesRefresherThread");
 		notWorkingPlacesRefresherRunnable.pause();;
 	}
 	

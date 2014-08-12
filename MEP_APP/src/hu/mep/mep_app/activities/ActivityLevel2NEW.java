@@ -53,8 +53,7 @@ public class ActivityLevel2NEW extends ActionBarActivity implements
 
 		setContentView(R.layout.activity_secondlevel);
 
-		mSectionsPagerAdapter = new ActivityLevel2SectionsPagerAdapter(
-				getSupportFragmentManager());
+		mSectionsPagerAdapter = new ActivityLevel2SectionsPagerAdapter(getSupportFragmentManager());
 
 		mViewPager = (ViewPager) findViewById(R.id.activity_secondlevel_pager);
 		mViewPager.setAdapter(mSectionsPagerAdapter);
@@ -160,7 +159,8 @@ public class ActivityLevel2NEW extends ActionBarActivity implements
 				Session.getActualCommunicationInterface().getChartNames(this, true);
 			}
 		} else {
-			Session.setAlertDialog(AlertDialogFactory.prepareAlertDialogWithText(this,
+			
+			Session.getInstance(this).setAlertDialog(AlertDialogFactory.prepareAlertDialogWithText(this,
 					selectedPlace.getLastWorkingText()));
 		}
 	}

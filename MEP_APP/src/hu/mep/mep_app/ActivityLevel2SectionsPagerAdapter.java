@@ -32,7 +32,7 @@ public class ActivityLevel2SectionsPagerAdapter extends FragmentPagerAdapter {
 		}
 		// Nem MEKUT-os és nincs távfelügyelete sem...
 		else if (!mekutos && !tavfelugyeletes) {
-			return 1;
+			return 2;
 		}
 		return 2;
 	}
@@ -228,6 +228,8 @@ public class ActivityLevel2SectionsPagerAdapter extends FragmentPagerAdapter {
 	private Fragment getItemForNotMekutAndNotOwner(int position) {
 		switch (position) {
 		case 0:
+			return new FragmentLevel2Topics();
+		case 1:
 			return new FragmentLevel2Chat();
 		default:
 			return null;
@@ -237,6 +239,8 @@ public class ActivityLevel2SectionsPagerAdapter extends FragmentPagerAdapter {
 	private CharSequence getPageTitleForNotMekutAndNotOwner(int position) {
 		switch (position) {
 		case 0:
+			return "Demo";
+		case 1:
 			return "Chat";
 		default:
 			return null;
@@ -246,6 +250,8 @@ public class ActivityLevel2SectionsPagerAdapter extends FragmentPagerAdapter {
 	private int getPageIconForNotMekutAndNotOwner(int position) {
 		switch (position) {
 		case 0:
+			return R.drawable.topics_icon;
+		case 1:
 			return R.drawable.chat_icon;
 		default:
 			return 0;

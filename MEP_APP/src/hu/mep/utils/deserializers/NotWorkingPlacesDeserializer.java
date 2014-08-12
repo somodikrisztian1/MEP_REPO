@@ -1,11 +1,15 @@
 package hu.mep.utils.deserializers;
 
+import hu.mep.datamodells.Session;
+
 import java.lang.reflect.Type;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map.Entry;
+
+import android.util.Log;
 
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
@@ -17,7 +21,7 @@ public class NotWorkingPlacesDeserializer implements JsonDeserializer<HashMap<St
 	
 	private static final SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	private static final SimpleDateFormat logFormatter = new SimpleDateFormat("yyyy.MM.dd. HH:mm");
-	//private static final String TAG = "NotWorkingPlacesDeserializer";
+	private static final String TAG = "NotWorkingPlacesDeserializer";
 
 	@Override
 	public HashMap<String, String> deserialize(JsonElement element, Type type,
@@ -47,8 +51,11 @@ public class NotWorkingPlacesDeserializer implements JsonDeserializer<HashMap<St
 				} catch (ParseException e) {
 					e.printStackTrace();
 				}
+				if( place.get("notify").getAsString().equals("1")) {
+					Session.getActualUser().getUsersPlaces().findPlaceByID(tsz1_id).setNotify(true);
+				}
 				result.put(tsz1_id, lastWorkingText);
-				//Log.e(TAG,"tsz1_id=" + tsz1_id + " " + lastWorkingText );
+				Log.e(TAG,"tsz1_id=" + tsz1_id + " " + lastWorkingText );
 			}
 		}
 		

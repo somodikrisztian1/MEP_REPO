@@ -22,18 +22,15 @@ public class GetSolarPanelJsonAsyncTask extends AsyncTask<Void, Void, Void> {
 	
 	private Activity activity;
 	private ProgressDialog pd;
-	private String hostURI;
 	private String resourceURI;
-	private String fullURI;
 	private Calendar beginDate;
 	private Calendar endDate;
 	private static final SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm");
 
-	public GetSolarPanelJsonAsyncTask(Activity activity, String hostURI, 
+	public GetSolarPanelJsonAsyncTask(Activity activity, 
 			Calendar beginDate, Calendar endDate) {
 	
 		this.activity = activity;
-		this.hostURI = hostURI;
 		
 		this.beginDate = beginDate;
 		this.endDate = endDate;
@@ -61,7 +58,6 @@ public class GetSolarPanelJsonAsyncTask extends AsyncTask<Void, Void, Void> {
 		} else {
 			resourceURI = "ios_getNapelemJson.php?id=" + Session.getActualRemoteMonitoring().getID();
 		}
-		fullURI = hostURI + resourceURI;
 	}
 	
 	@Override
@@ -69,7 +65,7 @@ public class GetSolarPanelJsonAsyncTask extends AsyncTask<Void, Void, Void> {
 
 		String response = "";
 		
-		response =RealCommunicator.dohttpGet(fullURI);
+		response =RealCommunicator.dohttpGet(resourceURI);
 		
 		GsonBuilder gsonBuilder = new GsonBuilder();
 		gsonBuilder.registerTypeAdapter(OneLineAndTwoBarChartContainer.class, new BarChartDeserializer());

@@ -39,6 +39,8 @@ public class Place {
 	
 	private boolean workingProperly;
 	
+	private boolean notify;
+	
 	private String lastWorkingText;
 	
 	public Place(String name, String ID, String description, String location, boolean solarPanel) {
@@ -93,7 +95,13 @@ public class Place {
 	public void setLastWorkingText(String lastWorkingText) {
 		this.lastWorkingText = lastWorkingText;
 	}
-	
-	
+
+	public boolean isNotify() {
+		return notify;
+	}
+
+	public void setNotify(boolean notify) {
+		this.notify = notify;
+	}
 	
 }

@@ -23,19 +23,17 @@ public class AuthenticationAsyncTask extends AsyncTask<Void, Void, Boolean> {
 	//private static final String TAG = "AuthenticationAsyncTask";
 
 	private Activity activity;
-	private String hostURI;
 	private String resourceURI;
 	private String username;
 	private String password;
-	private String fullURI;
+
 	private ProgressDialog pd;
 
 	public AuthenticationAsyncTask(Activity activity, String username,
-			String password, String hostURI) {
+			String password) {
 		this.activity = activity;
 		this.username = username;
 		this.password = password;
-		this.hostURI = hostURI;
 		
 		this.pd = new ProgressDialog(this.activity);
 		this.pd.setCancelable(false);
@@ -51,14 +49,13 @@ public class AuthenticationAsyncTask extends AsyncTask<Void, Void, Boolean> {
 
 		resourceURI = "iphonelogin_do.php?username=" + username + "&password="
 				+ MD5Encoder.encodePasswordWithMD5(password);
-		fullURI = hostURI + resourceURI;
 	}
 	
 	@Override
 	protected Boolean doInBackground(Void... nothing) {
 		String response = "";
 		
-		response = RealCommunicator.dohttpGet(fullURI);
+		response = RealCommunicator.dohttpGet(resourceURI);
 
 		GsonBuilder gsonBuilder = new GsonBuilder();
 		gsonBuilder.registerTypeAdapter(User.class, new UserDeserializer());

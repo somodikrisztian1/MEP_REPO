@@ -17,16 +17,13 @@ import com.google.gson.GsonBuilder;
 public class GetChartNamesAsyncTask extends	AsyncTask<Void, Void, Void> {
 
 	private Activity activity;
-	private String hostURI;
 	private String resourceURI;
-	private String fullURI;
 	private boolean forRemoteMonitoring;
 	private ProgressDialog pd;
 
-	public GetChartNamesAsyncTask(Activity activity, String hostURI, boolean forRemoteMonitoring) {
+	public GetChartNamesAsyncTask(Activity activity, boolean forRemoteMonitoring) {
 		super();
 		this.activity = activity;
-		this.hostURI = hostURI;
 		this.forRemoteMonitoring = forRemoteMonitoring;
 		
 		this.pd = new ProgressDialog(this.activity);
@@ -59,19 +56,17 @@ public class GetChartNamesAsyncTask extends	AsyncTask<Void, Void, Void> {
 		if (forRemoteMonitoring) {
 			resourceURI = "ios_getChartNames.php?tsz1_id="
 					+ Session.getActualRemoteMonitoring().getID();
-			fullURI = hostURI + resourceURI;
 			} else {
 			resourceURI = "ios_getChartNames.php?tsz1_id="
 					+ Session.getActualTopic().getTopicID() + "&sszs="
 					+ getSSZS();
-			fullURI = hostURI + resourceURI;
 		}
 	}
 
 	@Override
 	protected Void doInBackground(Void... params) {
 		String response = "";
-		response = RealCommunicator.dohttpGet(fullURI);
+		response = RealCommunicator.dohttpGet(resourceURI);
 
 		GsonBuilder gsonBuilder = new GsonBuilder();
 		gsonBuilder.registerTypeAdapter(AllChartNames.class, new ChartNamesDeserializer());
@@ -86,7 +81,7 @@ public class GetChartNamesAsyncTask extends	AsyncTask<Void, Void, Void> {
 		super.onPostExecute(result);
 		Session.dismissAndMakeNullProgressDialog();
 		
-		GetChartsAsyncTask chartGetter = new GetChartsAsyncTask(activity, hostURI, forRemoteMonitoring, null, null);
+		GetChartsAsyncTask chartGetter = new GetChartsAsyncTask(activity, forRemoteMonitoring, null, null);
 		chartGetter.execute();
 	}
 

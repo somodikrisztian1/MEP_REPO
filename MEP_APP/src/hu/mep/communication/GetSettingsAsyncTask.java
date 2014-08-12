@@ -18,14 +18,11 @@ public class GetSettingsAsyncTask extends AsyncTask<Void, Void, Void> {
 	//private static final String TAG = "GetSettingsAsyncTask";
 
 	private Activity activity;
-	private String hostURI;
-	private String fullURI;
 	private String resourceURI;
 	private ProgressDialog pd;
 	
 	public GetSettingsAsyncTask(Activity activity, String hostURI) {
 		this.activity = activity;
-		this.hostURI = hostURI;
 		
 		this.pd = new ProgressDialog(activity);
 		this.pd.setMessage("Frissítés...");
@@ -42,12 +39,11 @@ public class GetSettingsAsyncTask extends AsyncTask<Void, Void, Void> {
 		}
 		
 		resourceURI = "ios_getSettings.php?tsz1_id=" +	Session.getActualRemoteMonitoring().getID();
-		fullURI = hostURI + resourceURI;
 	}
 	
 	@Override
 	protected Void doInBackground(Void... params) {
-		String response = RealCommunicator.dohttpGet(fullURI);
+		String response = RealCommunicator.dohttpGet(resourceURI);
 		
 		GsonBuilder builder = new GsonBuilder();
 		builder.registerTypeAdapter(Settings.class, new SettingsDeserializer());

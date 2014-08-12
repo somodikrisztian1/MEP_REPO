@@ -14,6 +14,7 @@ import hu.mep.utils.others.FragmentLevel1EventHandler;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
@@ -22,6 +23,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -100,12 +102,22 @@ public class ActivityLevel1 extends ActionBarActivity implements
 			/** Called when a drawer has settled in a completely closed state. */
 			public void onDrawerClosed(View view) {
 				super.onDrawerClosed(view);
+				if(Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
+					supportInvalidateOptionsMenu();
+				} else {
+					invalidateOptionsMenu();
+				}
 			}
 
 			/** Called when a drawer has settled in a completely open state. */
 			public void onDrawerOpened(View drawerView) {
 				super.onDrawerOpened(drawerView);
 				getSupportActionBar().setTitle(drawerTitle);
+				if(Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
+					supportInvalidateOptionsMenu();
+				} else {
+					invalidateOptionsMenu();
+				}
 			}
 
 		};
@@ -144,25 +156,14 @@ public class ActivityLevel1 extends ActionBarActivity implements
 		}
 	}
 
-	/* The click listener for ListView in the navigation drawer */
 	private class DrawerItemClickListener implements ListView.OnItemClickListener {
 		@Override
 		public void onItemClick(AdapterView<?> parent, View view, int position,	long id) {
 			handleDrawerClick(position);
 		}
 	}
-/*
-	@Override
-	public void onBackPressed() {
-		super.onBackPressed();
-		if (actualFragmentNumber == DRAWER_LIST_LOGIN_LOGOUT_NUMBER) {
-			Log.e(TAG, "onBackPressed() and actualFragmentNumber is " + actualFragmentNumber);
-			// fragmentManager.popBackStack("login", 0);
-		}
-	}*/
 
 	private void handleDrawerClick(int position) {
-		menu.findItem(R.id.action_login).setVisible(true);
 		
 		actualFragmentNumber = position;
 		Fragment newFragment = null;
@@ -218,7 +219,6 @@ public class ActivityLevel1 extends ActionBarActivity implements
 	@Override
 	protected void onPostCreate(Bundle savedInstanceState) {
 		super.onPostCreate(savedInstanceState);
-		// Sync the toggle state after onRestoreInstanceState has occurred.
 		drawerToggle.syncState();
 	}
 
@@ -236,14 +236,18 @@ public class ActivityLevel1 extends ActionBarActivity implements
 		inflater.inflate(R.menu.activity_firstlevel_menu, menu);
 		return super.onCreateOptionsMenu(menu);
 	}
-
+	
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
 		boolean drawerOpen = firstActivityDrawerLayout.isDrawerOpen(firstActivityDrawerListView);
-		menu.setGroupVisible(R.id.firstlevel_menu_buttons_group, !drawerOpen);
+		if(actualFragmentNumber != DRAWER_LIST_LOGIN_LOGOUT_NUMBER) {
+			menu.findItem(R.id.action_login).setVisible(!drawerOpen);
+		} else {
+			menu.findItem(R.id.action_login).setVisible(false);
+		}
 		return super.onPrepareOptionsMenu(menu);
 	}
-
+	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {

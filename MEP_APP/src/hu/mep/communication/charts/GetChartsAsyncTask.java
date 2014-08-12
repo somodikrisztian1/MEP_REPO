@@ -26,10 +26,9 @@ public class GetChartsAsyncTask extends AsyncTask<Void, Void, Void> {
 	//private static final String TAG = "GetChartsAsyncTask";
 	
 	private Activity activity;
-	private String hostURI;
 	private String resourceURIBeginning;
 	private String resourceURIDateEnding;
-	private String fullURI;
+	private String fullResourceURI;
 	private ProgressDialog pd;
 	private boolean forRemoteMonitoring;
 	private Calendar startDate;
@@ -37,11 +36,10 @@ public class GetChartsAsyncTask extends AsyncTask<Void, Void, Void> {
 	private static final SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd_HH:mm");
 	
 	
-	public GetChartsAsyncTask(Activity activity, String hostURI, boolean forRemoteMonitoring, 
+	public GetChartsAsyncTask(Activity activity, boolean forRemoteMonitoring, 
 			Calendar startDate, Calendar endDate) {
 		super();
 		this.activity = activity;
-		this.hostURI = hostURI;
 		this.forRemoteMonitoring = forRemoteMonitoring;
 		this.startDate = startDate;
 		this.endDate = endDate;
@@ -94,9 +92,9 @@ public class GetChartsAsyncTask extends AsyncTask<Void, Void, Void> {
 			for(; i < Session.getAllChartNames().size(); ++i ) {
 				ChartName actChartName = Session.getAllChartNames().get(i);
 				if(!actChartName.getName().equals("Rendszerállapot")) {
-					fullURI = hostURI + resourceURIBeginning + actChartName.getId() + resourceURIDateEnding;
+					fullResourceURI = resourceURIBeginning + actChartName.getId() + resourceURIDateEnding;
 					String response = "";
-					response = RealCommunicator.dohttpGet(fullURI);
+					response = RealCommunicator.dohttpGet(fullResourceURI);
 					Chart chart = gson.fromJson(response, Chart.class);
 					charts.add(chart);
 				} else {

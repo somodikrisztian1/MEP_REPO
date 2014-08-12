@@ -5,38 +5,36 @@ import hu.mep.datamodells.Session;
 import hu.mep.mep_app.FragmentLevel2RemoteMonitorings;
 import hu.mep.utils.deserializers.NotWorkingPlacesDeserializer;
 
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 public class GetNotWorkingPlacesListAsyncTask extends AsyncTask<Void, Void, Void> {
 
-	//private static final String TAG = "GetNotWorkingPlacesListAsyncTask";
-
-	String hostURI;
+	private static final String TAG = "GetNotWorkingPlacesListAsyncTask";
+	SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	String resourceURI;
-	String fullURI;
 	
-	public GetNotWorkingPlacesListAsyncTask(String hostURI) {
-		this.hostURI = hostURI;
+	public GetNotWorkingPlacesListAsyncTask() {
 	}
 	
 	@Override
 	protected void onPreExecute() {
 		super.onPreExecute();
-		this.resourceURI = "ios_getHibasTf.php?userId=" + 
-		Session.getActualUser().getMepID();
-		fullURI = hostURI + resourceURI;
+		this.resourceURI = "ios_getHibasTf.php?userId=" + Session.getActualUser().getMepID();
 	}
 	
 	@Override
 	protected Void doInBackground(Void... params) {
+		Log.e(TAG, "doinbackground...");
 		String response = "";
-		response = RealCommunicator.dohttpGet(fullURI);
+		response = RealCommunicator.dohttpGet(resourceURI);
 		GsonBuilder gsonBuilder = new GsonBuilder();
 		gsonBuilder.registerTypeAdapter( HashMap.class, new NotWorkingPlacesDeserializer());
 		Gson gson = gsonBuilder.create();
@@ -47,7 +45,15 @@ public class GetNotWorkingPlacesListAsyncTask extends AsyncTask<Void, Void, Void
 		}
 		for (Entry<String, String> act : container.entrySet()) {
 			Session.getActualUser().getUsersPlaces().findPlaceByID(act.getKey()).setWorkingProperly(false);
-			Session.getActualUser().getUsersPlaces().findPlaceByID(act.getKey()).setLastWorkingText(act.getValue());;
+			if(act.getValue().equals("null")) {
+				Session.getActualUser().getUsersPlaces().findPlaceByID(act.getKey()).setLastWorkingText(
+						"A rendszer több mint 1 hónapja nem elérhető!");
+				Log.e(TAG, "A rendszer több mint 1 hónapja nem elérhető!");
+			} else {
+				Session.getActualUser().getUsersPlaces().findPlaceByID(act.getKey()).setLastWorkingText(
+					"A rendszer legutóbb ekkor volt elérhető: " + act.getValue());
+				Log.e(TAG, "A rendszer legutóbb ekkor volt elérhető: " + act.getValue());
+			}
 		}		
 		return null;
 	}

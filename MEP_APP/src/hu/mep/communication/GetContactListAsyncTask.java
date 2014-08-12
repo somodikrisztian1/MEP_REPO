@@ -27,9 +27,8 @@ public class GetContactListAsyncTask extends AsyncTask<Void, Void, String> {
 	Context context;
 	ChatContactList before = new ChatContactList(new ArrayList<ChatContact>());
 
-	public GetContactListAsyncTask(Context context, String hostURI) {
+	public GetContactListAsyncTask(Context context) {
 		this.context = context;
-		this.hostURI = hostURI;
 	}
 
 	@Override
@@ -42,10 +41,8 @@ public class GetContactListAsyncTask extends AsyncTask<Void, Void, String> {
 	protected String doInBackground(Void... nothing) {
 		// Log.e("ASYNCTASK", "doInBackground() running");
 		String response = "";
-		String fullURI = hostURI + resourceURI;
-		// Log.e("ASYNCTASK", "fullURI: " + fullURI);
 
-		response = RealCommunicator.dohttpGet(fullURI);
+		response = RealCommunicator.dohttpGet(resourceURI);
 
 		// Log.e("GetContactListAsyncTask.doInBackground()", response);
 

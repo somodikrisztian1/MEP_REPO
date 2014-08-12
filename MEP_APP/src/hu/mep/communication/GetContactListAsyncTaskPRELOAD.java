@@ -22,14 +22,13 @@ import com.google.gson.GsonBuilder;
 public class GetContactListAsyncTaskPRELOAD extends AsyncTask<Void, Void, Void> {
 
 	//private static final String TAG = "GetContactListAsyncTaskPRELOAD";
-	String hostURI;
+
 	String resourceURI;
 	Context context;
 	ChatContactList before = new ChatContactList(new ArrayList<ChatContact>());
 
-	public GetContactListAsyncTaskPRELOAD(Context context, String hostURI) {
+	public GetContactListAsyncTaskPRELOAD(Context context) {
 		this.context = context;
-		this.hostURI = hostURI;
 	}
 
 	@Override
@@ -41,9 +40,8 @@ public class GetContactListAsyncTaskPRELOAD extends AsyncTask<Void, Void, Void> 
 	@Override
 	protected Void doInBackground(Void... nothing) {
 		String response = "";
-		String fullURI = hostURI + resourceURI;
-		
-		response = RealCommunicator.dohttpGet(fullURI);
+
+		response = RealCommunicator.dohttpGet(resourceURI);
 
 		GsonBuilder gsonBuilder = new GsonBuilder();
 		gsonBuilder.registerTypeAdapter(ChatContactList.class,
