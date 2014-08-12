@@ -1,5 +1,6 @@
 package hu.mep.utils.deserializers;
 
+import hu.mep.datamodells.Place;
 import hu.mep.datamodells.Session;
 
 import java.lang.reflect.Type;
@@ -52,7 +53,10 @@ public class NotWorkingPlacesDeserializer implements JsonDeserializer<HashMap<St
 					e.printStackTrace();
 				}
 				if( place.get("notify").getAsString().equals("1")) {
-					Session.getActualUser().getUsersPlaces().findPlaceByID(tsz1_id).setNotify(true);
+					Place temp = Session.getActualUser().getUsersPlaces().findPlaceByID(tsz1_id);
+					if(temp != null) {
+						temp.setNotify(true);
+					}
 				}
 				result.put(tsz1_id, lastWorkingText);
 				Log.e(TAG,"tsz1_id=" + tsz1_id + " " + lastWorkingText );

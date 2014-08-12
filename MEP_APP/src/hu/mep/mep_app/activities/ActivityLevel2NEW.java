@@ -78,7 +78,7 @@ public class ActivityLevel2NEW extends ActionBarActivity implements
 	protected void onPause() {
 		super.onPause();
 		Session.stopContactRefresherThread();
-		Session.stopNotWorkingPlacesRefresherThread();
+		//Session.stopNotWorkingPlacesRefresherThread();
 	}
 
 	@Override
@@ -87,7 +87,7 @@ public class ActivityLevel2NEW extends ActionBarActivity implements
 		Session.getInstance(this);
 		Session.dismissAndMakeNullProgressDialog();
 		Session.startContactRefresherThread();
-		Session.startNotWorkingPlacesRefresherThread();
+		//Session.startNotWorkingPlacesRefresherThread();
 	}
 
 	private void addTabsForActionBar() {

@@ -71,9 +71,9 @@ public class Session {
 	private static ChatContact actualChatPartner;
 	private static volatile ChatMessagesList chatMessagesList;
 
-	private static List<ChartName> allChartNames;
+	private static List<ChartName> allChartNames = new ArrayList<ChartName>();
 	private static ChartName actualChartName;
-	private static List<Chart> allCharts;
+	private static List<Chart> allCharts = new ArrayList<Chart>();
 	private static Chart actualChart;
 	
 	private static GetNotWorkingPlacesListRunnable notWorkingPlacesRefresherRunnable = new GetNotWorkingPlacesListRunnable();
@@ -180,11 +180,15 @@ public class Session {
 
 		setActualChartName(null);
 
-		setAllChartNames(null);
+		allChartNames.clear();
+		
+		//setAllChartNames(null);
 
 		setActualTopic(null);
 
-		setAllTopicsList(null);
+		allTopicsList.clear();
+		
+		//setAllTopicsList(null);
 
 		emptyChatMessagesList();
 
@@ -196,6 +200,8 @@ public class Session {
 			}
 		}
 
+		//actualChatContactList.contacts.clear();
+		
 		setActualChatContactList(null);
 
 		setActualRemoteMonitoring(null);

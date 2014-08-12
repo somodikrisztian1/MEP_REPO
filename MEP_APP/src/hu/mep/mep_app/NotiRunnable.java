@@ -3,9 +3,11 @@ package hu.mep.mep_app;
 import hu.mep.datamodells.Place;
 import hu.mep.datamodells.Session;
 import hu.mep.mep_app.activities.ActivityLevel1;
+import hu.mep.utils.deserializers.NotWorkingPlacesDeserializer;
 
 import java.io.IOException;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.Iterator;
 
 import org.apache.http.HttpEntity;
@@ -17,6 +19,9 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -168,7 +173,15 @@ public class NotiRunnable implements Runnable {
 	// van-e a rossz távf.
 	public Boolean gotWrongRemotes() {
 		Log.e(TAG, responseFromWrongRemotes);
-		/*
+		GsonBuilder gsonBuilder = new GsonBuilder();
+		gsonBuilder.registerTypeAdapter( HashMap.class, new NotWorkingPlacesDeserializer());
+		Gson gson = gsonBuilder.create();
+		HashMap<String, String> container = gson.fromJson(responseFromWrongRemotes, HashMap.class);
+		if(container.size() > 0) {
+			return true;
+		}
+		return false;
+		/*int counter = 0;
 		 try {
 			if (responseFromWrongRemotes.compareTo("[]") != 0) {
 				JSONObject json = new JSONObject(
@@ -181,7 +194,7 @@ public class NotiRunnable implements Runnable {
 					if (json.get(key) instanceof JSONObject) {
 						if (((JSONObject) json.get(key)).get("notify")
 								.toString().compareTo("1") == 0) {
-							count++;
+							counter++;
 						}
 					}
 
@@ -191,17 +204,21 @@ public class NotiRunnable implements Runnable {
 			e.printStackTrace();
 			Log.e(TAG, "gotWrongRemotes catch: " + e.toString());
 		}
-		 */
+		if(counter > 0) {
+			return true;
+		}
+		*/
+		/*
 		// Log.e(TAG, "gotWrongRemotes: " + Integer.toString(count));
 
-		if(Session.getActualUser().getUsersPlaces().getPlaces() != null)
+		if(Session.getActualUser().getUsersPlaces() != null)
 		for (Place actPlace : Session.getActualUser().getUsersPlaces().getPlaces()) {
 			if(actPlace.isNotify()) {
 				Log.e(TAG, "TALÁLTUNK EGY NEM MŰKÖDŐ HELYET!!!!");
 				return true;
 			}
 		}
-		return false;
+		return false;*/
 	}
 	
 	// olvasatlan üzenetek lekérése
