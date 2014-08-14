@@ -2,6 +2,8 @@
 <resources>
 
     <string name="app_name">MEP</string>
+    <string name="demo_view_alert_dialog_text">Önnek nincs távfelügyelete, és nem része a MEKUT kutató csoportnak. Egy demo nézeten keresztül ismerkedhet az alkalmazás nem elérhető részeivel.</string>
+    
     <string name="fragment_firstlevel_mainscreen_welcome_title">Üdvözöljük a Megújuló Energiapark alkalmazásában!</string>
     <string name="fragment_firstlevel_mainscreen_welcome_text">Az alkalmazás használatával tájékozódhat a Megújuló Energiaparkról, és amennyiben Ön regisztrált felhasználó, megfelelő jogosultságokkal megtekintheti a megújuló energiaforrásokkal kapcsolatos kutatási eredményeinket, illetve gyorsan és egyszerűen kezelheti távfelügyeleteit.</string>
     <string name="fragment_firstlevel_representation_park_page_title">Bemutatópark</string>
@@ -46,6 +48,9 @@
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
 
+    <string name="back">Vissza</string>
+    <string name="ok">Rendben</string>
+    
     <string-array name="activity_level1_drawer_items_list">
         <item>Bemutatópark</item>
         <item>Galéria</item>

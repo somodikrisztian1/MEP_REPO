@@ -1,6 +1,7 @@
 package hu.mep.communication;
 
 import hu.mep.datamodells.Session;
+import hu.mep.mep_app.R;
 import hu.mep.utils.others.AlertDialogFactory;
 import hu.mep.utils.others.MD5Encoder;
 
@@ -94,7 +95,8 @@ public class RegistrationAssyncTask extends AsyncTask<Void, Void, HashMap<String
 			Session.getActualCommunicationInterface().authenticateUser(activity, postDatas.get("username"), postDatas.get("notEncodedPassword"));
 		}
 		else if(result.get(STATUS_TAG).equals(UNSUCCESS)) {
-			Session.setAlertDialog(AlertDialogFactory.prepareAlertDialogWithText(activity, result.get(MESSAGE_TAG)));
+			Session.setAlertDialog(AlertDialogFactory.prepareAlertDialogWithText(activity, result.get(MESSAGE_TAG),
+					activity.getResources().getString(R.string.back)));
 			Session.showAlertDialog();
 		}
 	}

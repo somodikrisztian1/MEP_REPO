@@ -16,6 +16,10 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.CheckedTextView;
 import android.widget.TextView;
 
+/**
+ * @author MEP_Machine
+ *
+ */
 public class TopicsExpandableListAdapter extends BaseExpandableListAdapter {
 
 	private final List<TopicCategory> groups;

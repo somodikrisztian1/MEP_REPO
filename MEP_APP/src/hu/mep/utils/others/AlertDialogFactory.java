@@ -166,11 +166,11 @@ public class AlertDialogFactory {
 		return adb.create();
 	}
 	
-	public static AlertDialog prepareAlertDialogWithText(final Activity act, String text) {
+	public static AlertDialog prepareAlertDialogWithText(final Activity act, String text, String buttonText) {
 		AlertDialog.Builder adb = new AlertDialog.Builder(act);
 		adb.setCancelable(true)
 				.setMessage(text)				
-				.setNegativeButton("Vissza",
+				.setNegativeButton(buttonText,
 						new DialogInterface.OnClickListener() {
 
 							@Override

@@ -22,8 +22,7 @@ public class GetTopicListAsyncTask extends AsyncTask<Void, Void, Void> {
 	protected void onPreExecute() {
 		super.onPreExecute();
 		if(!Session.getActualUser().isMekut() && Session.getActualUser().getUsersPlaces() == null) {
-			resourceURI = "ios_getTemakorok.php?userId=" + Session.getActualUser().getMepID() +
-					"&demo=1";
+			resourceURI = "ios_getTemakorok.php?userId=" + Session.getActualUser().getMepID() +	"&demo=1";
 		} else {
 			resourceURI = "ios_getTemakorok.php?userId=" + Session.getActualUser().getMepID();
 		}

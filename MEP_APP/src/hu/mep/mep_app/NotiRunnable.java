@@ -1,10 +1,12 @@
 package hu.mep.mep_app;
 
 import hu.mep.communication.GetNotWorkingPlacesListAsyncTask;
+import hu.mep.communication.RealCommunicator;
 import hu.mep.datamodells.Place;
 import hu.mep.datamodells.Session;
 import hu.mep.mep_app.activities.ActivityLevel1;
-import hu.mep.utils.deserializers.NotWorkingPlacesDeserializer;
+import hu.mep.utils.deserializers.NotWorkingPlacesLastWorkDeserializer;
+import hu.mep.utils.deserializers.NotWorkingPlacesNotifyDeserializer;
 
 import java.io.IOException;
 import java.util.Calendar;
@@ -24,6 +26,7 @@ import org.json.JSONObject;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
 
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -89,8 +92,7 @@ public class NotiRunnable implements Runnable {
 	
 					Log.e(TAG, "remoteNoti, user logged in, mepId: " + mepId);
 	
-					/*getRemotes(Integer.toString(mepId));*/
-	
+					getRemotes(Integer.toString(mepId));
 					if (gotWrongRemotes()) {
 						try {
 							createNotification(
@@ -140,8 +142,8 @@ public class NotiRunnable implements Runnable {
 	// rossz távf. lekérése
 	private void getRemotes(String dataToSend) {
 		
-		
-		
+		responseFromWrongRemotes = RealCommunicator.dohttpGet("ios_getHibasTf.php?userId="+ dataToSend + "&type=daily");
+		Log.e(TAG, "getRemotes() --> response:" + responseFromWrongRemotes);
 		/*
 		Log.e(TAG, "getRemotes, userId:  " + dataToSend);
 		HttpClient httpClient = new DefaultHttpClient();
@@ -180,23 +182,19 @@ public class NotiRunnable implements Runnable {
 
 	// van-e a rossz távf.
 	public Boolean gotWrongRemotes() {
-		Log.e(TAG, responseFromWrongRemotes);
-		
-		/*
+		Log.e(TAG, "gotWrongRemotes() --> response:" + responseFromWrongRemotes);
 		
 		GsonBuilder gsonBuilder = new GsonBuilder();
-		gsonBuilder.registerTypeAdapter( HashMap.class, new NotWorkingPlacesDeserializer());
+		gsonBuilder.registerTypeAdapter( Integer.class, new NotWorkingPlacesNotifyDeserializer());
 		Gson gson = gsonBuilder.create();
-		HashMap<String, String> container = gson.fromJson(responseFromWrongRemotes, HashMap.class);
-		if(container.size() > 0) {
-			return true;
-		}
-		return false; */
-		/*int counter = 0;
-		 try {
-			if (responseFromWrongRemotes.compareTo("[]") != 0) {
-				JSONObject json = new JSONObject(
-						responseFromWrongRemotes.trim());
+		int result = gson.fromJson(responseFromWrongRemotes, Integer.class);
+		return result > 0;
+		
+		/*
+		int counter = 0;
+		try {
+			if (!responseFromWrongRemotes.equals("[]")) {
+				JSONObject json = new JSONObject(responseFromWrongRemotes.trim());
 				Iterator<?> keys = json.keys();
 
 				while (keys.hasNext()) {
@@ -218,10 +216,10 @@ public class NotiRunnable implements Runnable {
 		if(counter > 0) {
 			return true;
 		}
+		return false;
 		*/
-		
 		// Log.e(TAG, "gotWrongRemotes: " + Integer.toString(count));
-
+		/*
 		GetNotWorkingPlacesListAsyncTask at = new GetNotWorkingPlacesListAsyncTask();
 		try {
 			at.execute().get();
@@ -237,7 +235,7 @@ public class NotiRunnable implements Runnable {
 				return true;
 			}
 		}
-		return false;
+		return false;*/ 
 	}
 	
 	// olvasatlan üzenetek lekérése
@@ -309,26 +307,21 @@ public class NotiRunnable implements Runnable {
 			return false;
 	}
 
-	public void createNotification(long when, String notificationTitle,
-			String notificationContent, String notificationUrl, Context ctx,
-			int notificationID) {
+	public void createNotification(long when, String notificationTitle,	String notificationContent, String notificationUrl, Context ctx, int notificationID) {
 		try {
 			Intent notificationIntent;
 			if ("".equals(notificationTitle)) {
-				notificationTitle = ctx.getResources().getString(
-						R.string.app_name);
+				notificationTitle = ctx.getResources().getString(R.string.app_name);
 			}
 			/* large icon for notification,normally use App icon */
-			Bitmap largeIcon = BitmapFactory.decodeResource(ctx.getResources(),
-					R.drawable.mep_logo);
+			Bitmap largeIcon = BitmapFactory.decodeResource(ctx.getResources(), R.drawable.mep_logo);
 			int smalIcon = R.drawable.mep_logo;
 			/*
 			 * create intent for show notification details when user clicks
 			 * notification
 			 */
 			if (!"".equals(notificationUrl)) {
-				notificationIntent = new Intent(Intent.ACTION_VIEW,
-						Uri.parse(notificationUrl));
+				notificationIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(notificationUrl));
 			} else {
 				// Intent to load Pin.class
 				notificationIntent = new Intent(ctx, ActivityLevel1.class);
@@ -337,26 +330,23 @@ public class NotiRunnable implements Runnable {
 			 * create new task for each notification with pending intent so we
 			 * set Intent.FLAG_ACTIVITY_NEW_TASK
 			 */
-			PendingIntent pendingIntent = PendingIntent.getActivity(ctx, 0,
-					notificationIntent, Intent.FLAG_ACTIVITY_NEW_TASK);
+			PendingIntent pendingIntent = PendingIntent.getActivity(ctx, 0,	notificationIntent, Intent.FLAG_ACTIVITY_NEW_TASK);
 
 			/*
 			 * get the system service that manage notification
 			 * NotificationManager
 			 */
-			NotificationManager notificationManager = (NotificationManager) ctx
-					.getSystemService(Context.NOTIFICATION_SERVICE);
+			NotificationManager notificationManager = (NotificationManager) ctx.getSystemService(Context.NOTIFICATION_SERVICE);
 
 			/* build the notification */
-			NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(
-					ctx)
-			.setWhen(when)
-			.setContentText(notificationContent)
-			.setContentTitle(notificationTitle)
-			.setSmallIcon(smalIcon)
-			.setAutoCancel(true)
-			.setLargeIcon(largeIcon)
-			.setContentIntent(pendingIntent);
+			NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(ctx)
+				.setWhen(when)
+				.setContentText(notificationContent)
+				.setContentTitle(notificationTitle)
+				.setSmallIcon(smalIcon)
+				.setAutoCancel(true)
+				.setLargeIcon(largeIcon)
+				.setContentIntent(pendingIntent);
 
 			/*
 			 * sending notification to system.Here we use unique id (when)for
@@ -364,21 +354,17 @@ public class NotiRunnable implements Runnable {
 			 * notification replace by the last notification
 			 */
 
-			notificationManager.notify(notificationID,
-					notificationBuilder.build());
+			notificationManager.notify(notificationID, notificationBuilder.build());
 			
-			Log.e(TAG, "noti created");
+			Log.e(TAG, "Notification successfully created.");
 		} catch (Exception e) {
-			Log.e(TAG,
-					"NotificationManager ==> createNotification::"
-							+ e.getMessage());
+			Log.e(TAG, "Exception during the creation of notification:" + e.getMessage());
 		}
 	}
 
 	private boolean isNotificationVisible(int id) {
 		Intent notificationIntent = new Intent(context, ActivityLevel1.class);
-		PendingIntent test = PendingIntent.getActivity(context, id,
-				notificationIntent, PendingIntent.FLAG_NO_CREATE);
+		PendingIntent test = PendingIntent.getActivity(context, id,	notificationIntent, PendingIntent.FLAG_NO_CREATE);
 
 		// if (test != null) {
 		// Log.e(TAG, "test != null");

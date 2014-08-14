@@ -1,5 +1,6 @@
 package hu.mep.mep_app.activities;
 
+import hu.mep.communication.NetThread;
 import hu.mep.datamodells.Place;
 import hu.mep.datamodells.Session;
 import hu.mep.datamodells.Topic;
@@ -42,7 +43,6 @@ public class ActivityLevel2NEW extends ActionBarActivity implements
 		if (android.os.Build.VERSION.SDK_INT <= android.os.Build.VERSION_CODES.GINGERBREAD_MR1 || 
 				android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
 			startService(new Intent(this, NotificationService.class).putExtra("mepId", Session.getActualUser().getMepID()));
-			/*Log.e("Noti activitiben", "Noti started, mepId: " + Session.getActualUser().getMepID());*/
 		}
 
 		if (Session.getInstance(this).isTablet()) {
@@ -58,8 +58,7 @@ public class ActivityLevel2NEW extends ActionBarActivity implements
 		mViewPager = (ViewPager) findViewById(R.id.activity_secondlevel_pager);
 		mViewPager.setAdapter(mSectionsPagerAdapter);
 		mViewPager.setOffscreenPageLimit(2);
-		mViewPager
-				.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+		mViewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
 					@Override
 					public void onPageSelected(int position) {
 						mActionBar.setSelectedNavigationItem(position);
@@ -78,7 +77,7 @@ public class ActivityLevel2NEW extends ActionBarActivity implements
 	protected void onPause() {
 		super.onPause();
 		Session.stopContactRefresherThread();
-		//Session.stopNotWorkingPlacesRefresherThread();
+		Session.stopNotWorkingPlacesRefresherThread();
 	}
 
 	@Override
@@ -87,7 +86,12 @@ public class ActivityLevel2NEW extends ActionBarActivity implements
 		Session.getInstance(this);
 		Session.dismissAndMakeNullProgressDialog();
 		Session.startContactRefresherThread();
-		//Session.startNotWorkingPlacesRefresherThread();
+		Session.startNotWorkingPlacesRefresherThread();
+		if(!Session.getActualUser().isMekut() && Session.getActualUser().getUsersPlaces() == null ) {
+			String text = getResources().getString(R.string.demo_view_alert_dialog_text);
+			Session.setAlertDialog(AlertDialogFactory.prepareAlertDialogWithText(this, text, getResources().getString(R.string.ok)));
+			Session.showAlertDialog();
+		}
 	}
 
 	private void addTabsForActionBar() {
@@ -129,8 +133,7 @@ public class ActivityLevel2NEW extends ActionBarActivity implements
 	public boolean onOptionsItemSelected(MenuItem item) {
 		if (item.getItemId() == R.id.action_logoff) {
 			Session.setAnyUserLoggedIn(false);
-
-			// noti service elindítása
+			
 			stopService(new Intent(this, NotificationService.class));
 
 			NavUtils.navigateUpFromSameTask(this);
@@ -144,23 +147,34 @@ public class ActivityLevel2NEW extends ActionBarActivity implements
 
 	@Override
 	public void onTopicSelected(Topic selectedTopic) {
-		Session.setActualTopic(selectedTopic);
-		Session.getActualCommunicationInterface().getChartNames(this, false);
+		if (NetThread.isOnline(this)) {
+			Session.setActualTopic(selectedTopic);
+			Session.getActualCommunicationInterface().getChartNames(this, false);
+		} else {
+			Session.setAlertDialog(AlertDialogFactory.prepareAlertDialogForNoConnection(ActivityLevel2NEW.this));
+			Session.showAlertDialog();
+		}
+		
 	}
 
 	@Override
 	public void onRemoteMonitoringSelected(Place selectedPlace) {
 		Session.setActualRemoteMonitoring(selectedPlace);
-		if(selectedPlace.isWorkingProperly()) {
-			if (selectedPlace.isSolarPanel()) {
-				Session.getActualCommunicationInterface().getSolarPanelJson(this, null, null);
+		if (NetThread.isOnline(this)) {
+			if(selectedPlace.isWorkingProperly()) {
+				if (selectedPlace.isSolarPanel()) {
+					Session.getActualCommunicationInterface().getSolarPanelJson(this, null, null);
+				} else {
+					Session.getActualCommunicationInterface().getChartNames(this, true);
+				}
 			} else {
-				Session.getActualCommunicationInterface().getChartNames(this, true);
+				Session.getInstance(this).setAlertDialog(AlertDialogFactory.prepareAlertDialogWithText(this, selectedPlace.getLastWorkingText(), getResources().getString(R.string.back)));
+				Session.showAlertDialog();
 			}
 		} else {
-			//Toast.makeText(this, selectedPlace.getLastWorkingText(), Toast.LENGTH_LONG).show();
-			Session.getInstance(this).setAlertDialog(AlertDialogFactory.prepareAlertDialogWithText(this, selectedPlace.getLastWorkingText()));
+			Session.setAlertDialog(AlertDialogFactory.prepareAlertDialogForNoConnection(ActivityLevel2NEW.this));
 			Session.showAlertDialog();
 		}
+		
 	}
 }

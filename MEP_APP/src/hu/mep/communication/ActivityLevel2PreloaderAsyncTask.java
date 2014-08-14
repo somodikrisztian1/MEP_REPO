@@ -50,8 +50,9 @@ public class ActivityLevel2PreloaderAsyncTask extends AsyncTask<Void, Void, Void
 			e.printStackTrace();
 		}
 		
-		if (Session.getActualUser().isMekut()) {
-			GetTopicListAsyncTask getTopicListAsyncTask = new GetTopicListAsyncTask();		
+		if (Session.getActualUser().isMekut() ||
+				(!Session.getActualUser().isMekut() && Session.getActualUser().getUsersPlaces() == null )) {
+			GetTopicListAsyncTask getTopicListAsyncTask = new GetTopicListAsyncTask();
 			
 			try {
 				/** Ez ezért kell, mert az AsyncTask által indított AsyncTask e verzió fölött nem jól működik!!!!! */

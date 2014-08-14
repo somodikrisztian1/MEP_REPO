@@ -3,7 +3,7 @@ package hu.mep.communication;
 import hu.mep.datamodells.Place;
 import hu.mep.datamodells.Session;
 import hu.mep.mep_app.FragmentLevel2RemoteMonitorings;
-import hu.mep.utils.deserializers.NotWorkingPlacesDeserializer;
+import hu.mep.utils.deserializers.NotWorkingPlacesLastWorkDeserializer;
 
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
@@ -36,7 +36,7 @@ public class GetNotWorkingPlacesListAsyncTask extends AsyncTask<Void, Void, Void
 		String response = "";
 		response = RealCommunicator.dohttpGet(resourceURI);
 		GsonBuilder gsonBuilder = new GsonBuilder();
-		gsonBuilder.registerTypeAdapter( HashMap.class, new NotWorkingPlacesDeserializer());
+		gsonBuilder.registerTypeAdapter( HashMap.class, new NotWorkingPlacesLastWorkDeserializer());
 		Gson gson = gsonBuilder.create();
 		HashMap<String, String> container = gson.fromJson(response, HashMap.class);
 		
@@ -45,23 +45,15 @@ public class GetNotWorkingPlacesListAsyncTask extends AsyncTask<Void, Void, Void
 		}
 		for (Entry<String, String> act : container.entrySet()) {
 			Session.getActualUser().getUsersPlaces().findPlaceByID(act.getKey()).setWorkingProperly(false);
-			if(act.getValue().equals("null")) {
-				Session.getActualUser().getUsersPlaces().findPlaceByID(act.getKey()).setLastWorkingText(
-						"A rendszer több mint 1 hónapja nem elérhető!");
-				Log.e(TAG, "A rendszer több mint 1 hónapja nem elérhető!");
-			} else {
-				Session.getActualUser().getUsersPlaces().findPlaceByID(act.getKey()).setLastWorkingText(
-					"A rendszer legutóbb ekkor volt elérhető: " + act.getValue());
-				Log.e(TAG, "A rendszer legutóbb ekkor volt elérhető: " + act.getValue());
-			}
-		}		
+			Session.getActualUser().getUsersPlaces().findPlaceByID(act.getKey()).setLastWorkingText(act.getValue());
+		}
 		return null;
 	}
 	
 	@Override
 	protected void onPostExecute(Void result) {
 		super.onPostExecute(result);
-		//FragmentLevel2RemoteMonitorings.placeAdapter.notifyDataSetChanged();
+		FragmentLevel2RemoteMonitorings.placeAdapter.notifyDataSetChanged();
 	}
 	
 }

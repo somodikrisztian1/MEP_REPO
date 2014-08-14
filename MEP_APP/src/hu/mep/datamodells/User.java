@@ -3,13 +3,12 @@ package hu.mep.datamodells;
 import java.net.URL;
 
 import android.graphics.Bitmap;
-import android.util.Log;
 
 import com.google.gson.annotations.SerializedName;
 
 public class User {
 
-	private static final String TAG = "User";
+	//private static final String TAG = "User";
 
 	public static final String mepIDTag = "mep_id";
 	public static final String nameTag = "nev";
@@ -81,7 +80,7 @@ public class User {
 		this.moderator = moderator;
 		this.usersPlaces = usersPlaces;
 
-		Log.e(TAG, "New User Has Been Created With The Following Values!");
+		/*Log.e(TAG, "New User Has Been Created With The Following Values!");
 		Log.e(TAG, "mepID=" + mepID);
 		Log.e(TAG, "fullName=" + fullName);
 		Log.e(TAG, "imageURL=" + imageURL);
@@ -93,7 +92,7 @@ public class User {
 		}
 		else {
 			Log.d(TAG, "usersPlaces is null");
-		}
+		}*/
 	}
 
 }
