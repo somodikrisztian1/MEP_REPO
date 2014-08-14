@@ -106,12 +106,16 @@ public class ActivityLevel1 extends ActionBarActivity implements
 				} else {
 					invalidateOptionsMenu();
 				}
+				if( (actualFragmentNumber > -1) && (actualFragmentNumber < 5)) {
+						String[] titles = getResources().getStringArray(R.array.activity_level1_drawer_items_list);
+						setTitle(titles[actualFragmentNumber]);
+				}
 			}
 
 			/** Called when a drawer has settled in a completely open state. */
 			public void onDrawerOpened(View drawerView) {
 				super.onDrawerOpened(drawerView);
-				getSupportActionBar().setTitle(drawerTitle);
+				setTitle(drawerTitle);
 				if(Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
 					supportInvalidateOptionsMenu();
 				} else {
@@ -163,7 +167,7 @@ public class ActivityLevel1 extends ActionBarActivity implements
 	}
 
 	private void handleDrawerClick(int position) {
-		
+		int previousFragmentNumber = actualFragmentNumber;
 		actualFragmentNumber = position;
 		Fragment newFragment = null;
 		FragmentTransaction ft = fragmentManager.beginTransaction();
@@ -176,12 +180,14 @@ public class ActivityLevel1 extends ActionBarActivity implements
 			readyForFragmentLoading = true;
 			break;
 		case DRAWER_LIST_GALLERY_NUMBER:
+			actualFragmentNumber = previousFragmentNumber;
 			if (NetThread.isOnline(this)) {
 				Session.getActualCommunicationInterface().getGalleryURLsAndPictures(this);
 			} else {
 				Session.setAlertDialog(AlertDialogFactory.prepareAlertDialogForNoConnection(ActivityLevel1.this));
 				Session.showAlertDialog();
 			}
+			
 			break;
 		case DRAWER_LIST_RESEARCH_CENTER_NUMBER:
 			newFragment = new FragmentLevel1ResearchCenterScreen();

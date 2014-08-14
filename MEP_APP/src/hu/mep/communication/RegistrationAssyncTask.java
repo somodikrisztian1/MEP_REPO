@@ -2,6 +2,7 @@ package hu.mep.communication;
 
 import hu.mep.datamodells.Session;
 import hu.mep.utils.others.AlertDialogFactory;
+import hu.mep.utils.others.MD5Encoder;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -26,6 +27,8 @@ public class RegistrationAssyncTask extends AsyncTask<Void, Void, HashMap<String
 	private static final String SUCCESS = "successful_registration";
 	private static final String UNSUCCESS = "unsuccessful_registration";
 	
+	private static final String TAG = "RegistrationAssyncTask";
+	
 	
 	public RegistrationAssyncTask(Activity activity, HashMap<String, String> postDatas) {
 		this.activity = activity;
@@ -49,6 +52,11 @@ public class RegistrationAssyncTask extends AsyncTask<Void, Void, HashMap<String
 		
 		HashMap<String, String> result = new HashMap<String, String>();
 		String response = "";
+		String notEncodedPassword = postDatas.get("password");
+		postDatas.put("password", MD5Encoder.encodePasswordWithMD5(notEncodedPassword));
+		
+		Log.e(TAG, "not encoded: " + notEncodedPassword);
+		Log.e(TAG, "encoded: " + postDatas.get("password"));
 		
 		try {
 			response = RealCommunicator.httpPost(resourceURI, postDatas);
@@ -73,7 +81,7 @@ public class RegistrationAssyncTask extends AsyncTask<Void, Void, HashMap<String
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
-		
+		postDatas.put("notEncodedPassword", notEncodedPassword);
 		return result;
 	}
 	
@@ -83,12 +91,10 @@ public class RegistrationAssyncTask extends AsyncTask<Void, Void, HashMap<String
 		Session.dismissAndMakeNullProgressDialog();
 
 		if(result.get(STATUS_TAG).equals(SUCCESS)) {
-			Session.getActualCommunicationInterface().authenticateUser(
-					activity, postDatas.get("username"), postDatas.get("password"));
+			Session.getActualCommunicationInterface().authenticateUser(activity, postDatas.get("username"), postDatas.get("notEncodedPassword"));
 		}
 		else if(result.get(STATUS_TAG).equals(UNSUCCESS)) {
-			Session.setAlertDialog(AlertDialogFactory.prepareAlertDialogWithText(
-					activity, result.get(MESSAGE_TAG)));
+			Session.setAlertDialog(AlertDialogFactory.prepareAlertDialogWithText(activity, result.get(MESSAGE_TAG)));
 			Session.showAlertDialog();
 		}
 	}

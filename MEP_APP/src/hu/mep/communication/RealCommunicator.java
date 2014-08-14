@@ -4,6 +4,7 @@ import hu.mep.communication.charts.GetChartNamesAsyncTask;
 import hu.mep.communication.charts.GetChartsAsyncTask;
 import hu.mep.communication.charts.GetSolarPanelJsonAsyncTask;
 import hu.mep.datamodells.Session;
+import hu.mep.utils.others.MD5Encoder;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -106,8 +107,7 @@ public class RealCommunicator implements ICommunicator {
 	}
 	
 	@Override
-	public void registrateUser(Activity activity, String fullName, String email, String userName, String password)
-	{
+	public void registrateUser(Activity activity, String fullName, String email, String userName, String password) {
 		HashMap<String, String> postDatas = new HashMap<String, String>();
 		
 		postDatas.put("name", "" + fullName);

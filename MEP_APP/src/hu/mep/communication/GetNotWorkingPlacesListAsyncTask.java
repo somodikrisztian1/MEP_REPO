@@ -61,7 +61,7 @@ public class GetNotWorkingPlacesListAsyncTask extends AsyncTask<Void, Void, Void
 	@Override
 	protected void onPostExecute(Void result) {
 		super.onPostExecute(result);
-		FragmentLevel2RemoteMonitorings.placeAdapter.notifyDataSetChanged();
+		//FragmentLevel2RemoteMonitorings.placeAdapter.notifyDataSetChanged();
 	}
 	
 }

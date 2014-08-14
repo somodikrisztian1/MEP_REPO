@@ -29,7 +29,7 @@ public class NotWorkingPlacesDeserializer implements JsonDeserializer<HashMap<St
 			JsonDeserializationContext context) throws JsonParseException {
 		
 		HashMap<String, String> result = new HashMap<String, String>();
-		
+		if(Session.getActualUser().getUsersPlaces() != null) {
 		if(element.isJsonObject()) {
 			JsonObject root = element.getAsJsonObject();
 			
@@ -61,7 +61,7 @@ public class NotWorkingPlacesDeserializer implements JsonDeserializer<HashMap<St
 				result.put(tsz1_id, lastWorkingText);
 				Log.e(TAG,"tsz1_id=" + tsz1_id + " " + lastWorkingText );
 			}
-		}
+		}}
 		
 		return result;
 	}

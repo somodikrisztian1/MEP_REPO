@@ -1,5 +1,6 @@
 package hu.mep.mep_app.activities;
 
+import hu.mep.communication.NetThread;
 import hu.mep.datamodells.Session;
 import hu.mep.mep_app.R;
 import hu.mep.utils.others.AlertDialogFactory;
@@ -91,46 +92,50 @@ public class ActivityLevel1Registration extends ActionBarActivity implements
 	@Override
 	public void onClick(View v) {
 		if (v.getId() == R.id.registrate_button) {
-			String fullName = fullNameEdittext.getText().toString();
-			String userName = userNameEdittext.getText().toString();
-			String password = passwordEdittext.getText().toString();
-			String passwordAgain = passwordAgainEdittext.getText().toString();
-			String email = emailEdittext.getText().toString();
-			String trimmedPassword = password.trim();
-			String trimmedPasswordAgain = passwordAgain.trim();
-			
-			if( fullName.length() == 0 ||
-				userName.length() == 0 ||
-				password.length() == 0 ||
-				passwordAgain.length() == 0) {
-				Session.setAlertDialog(AlertDialogFactory.prepareAlertDialogForNoFullyLoadedCells(
-						ActivityLevel1Registration.this));
+			if(NetThread.isOnline(this)) {
+				String fullName = fullNameEdittext.getText().toString();
+				String userName = userNameEdittext.getText().toString();
+				String password = passwordEdittext.getText().toString();
+				String passwordAgain = passwordAgainEdittext.getText().toString();
+				String email = emailEdittext.getText().toString();
+				String trimmedPassword = password.trim();
+				String trimmedPasswordAgain = passwordAgain.trim();
+				
+				if( fullName.length() == 0 ||
+					userName.length() == 0 ||
+					password.length() == 0 ||
+					passwordAgain.length() == 0) {
+					Session.setAlertDialog(AlertDialogFactory.prepareAlertDialogForNoFullyLoadedCells(
+							ActivityLevel1Registration.this));
+					Session.showAlertDialog();
+				}
+				else if(userName.trim().equals("")) {
+					Session.setAlertDialog(AlertDialogFactory.prepareAlertDialogForBadUsername(
+							ActivityLevel1Registration.this));
+					Session.showAlertDialog();
+				}
+				else if(!password.equals(passwordAgain)) {
+					Session.setAlertDialog(AlertDialogFactory.prepareAlertDialogForNoMatchingPasswords(
+							ActivityLevel1Registration.this));
+					Session.showAlertDialog();
+				}
+				else if(trimmedPassword.equals("")) {
+					Session.setAlertDialog(AlertDialogFactory.prepareAlertDialogForBadPasswords(
+							ActivityLevel1Registration.this));
+					Session.showAlertDialog();
+				}
+				else if(!password.equals(trimmedPassword)) {
+					Session.setAlertDialog(AlertDialogFactory.prepareAlertDialogForTrimmedPasswords(
+							ActivityLevel1Registration.this, userName, trimmedPassword, email, fullName));
+					Session.showAlertDialog();
+				}
+				else if(trimmedPassword.equals(trimmedPasswordAgain)) {
+					Session.getActualCommunicationInterface().registrateUser(this, fullName, email, userName, trimmedPassword);
+				}
+			} else {
+				Session.setAlertDialog(AlertDialogFactory.prepareAlertDialogForNoConnection(ActivityLevel1Registration.this));
 				Session.showAlertDialog();
-			}
-			else if(userName.trim().equals("")) {
-				Session.setAlertDialog(AlertDialogFactory.prepareAlertDialogForBadUsername(
-						ActivityLevel1Registration.this));
-				Session.showAlertDialog();
-			}
-			else if(!password.equals(passwordAgain)) {
-				Session.setAlertDialog(AlertDialogFactory.prepareAlertDialogForNoMatchingPasswords(
-						ActivityLevel1Registration.this));
-				Session.showAlertDialog();
-			}
-			else if(trimmedPassword.equals("")) {
-				Session.setAlertDialog(AlertDialogFactory.prepareAlertDialogForBadPasswords(
-						ActivityLevel1Registration.this));
-				Session.showAlertDialog();
-			}
-			else if(!password.equals(trimmedPassword)) {
-				Session.setAlertDialog(AlertDialogFactory.prepareAlertDialogForTrimmedPasswords(
-						ActivityLevel1Registration.this, userName, trimmedPassword, email, fullName));
-				Session.showAlertDialog();
-			}
-			else if(trimmedPassword.equals(trimmedPasswordAgain)) {
-				Session.getActualCommunicationInterface().registrateUser(this, fullName, email, userName, trimmedPassword);
 			}
 		}
 	}
-	
 }

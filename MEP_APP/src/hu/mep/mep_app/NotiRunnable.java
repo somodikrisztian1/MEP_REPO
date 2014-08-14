@@ -1,5 +1,6 @@
 package hu.mep.mep_app;
 
+import hu.mep.communication.GetNotWorkingPlacesListAsyncTask;
 import hu.mep.datamodells.Place;
 import hu.mep.datamodells.Session;
 import hu.mep.mep_app.activities.ActivityLevel1;
@@ -9,6 +10,7 @@ import java.io.IOException;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.concurrent.ExecutionException;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -72,69 +74,75 @@ public class NotiRunnable implements Runnable {
 
 	@Override
 	public void run() {
-		while (this.running == true) {
-			calendar = Calendar.getInstance();
-			Log.e(TAG, "__________NotiRunnable.run() ==> true__________");
-			// Log.e(TAG,
-			// "calendar, day (int): "
-			// + calendar.get(Calendar.DAY_OF_MONTH));
-			// Log.e(TAG, "today (int): " + today);
-
-			// távfelügyeletekre:
-			if (this.mepId != 0 && today != calendar.get(Calendar.DAY_OF_MONTH)
-					&& !isNotificationVisible(remoteNotificationID)) {
-
-				Log.e(TAG, "remoteNoti, user logged in, mepId: " + mepId);
-
-				getRemotes(Integer.toString(mepId));
-
-				if (gotWrongRemotes()) {
-					try {
-						createNotification(
-								Calendar.getInstance().getTimeInMillis(),
-								"Távfelügyelet",
-								"Jelenleg nincs internet kapcsolata a távfelügyeleti rendszernek. Kérjük a részletekért lépjen be az alkalmazásba.",
-								"", context, remoteNotificationID);
-					} catch (Exception e) {
-						Log.e(TAG, e.toString());
+		while (true) {
+			if(this.running) {
+				calendar = Calendar.getInstance();
+				Log.e(TAG, "__________NotiRunnable.run() ==> true__________");
+				// Log.e(TAG,
+				// "calendar, day (int): "
+				// + calendar.get(Calendar.DAY_OF_MONTH));
+				// Log.e(TAG, "today (int): " + today);
+	
+				// távfelügyeletekre:
+				if (this.mepId != 0 && today != calendar.get(Calendar.DAY_OF_MONTH)
+						&& !isNotificationVisible(remoteNotificationID)) {
+	
+					Log.e(TAG, "remoteNoti, user logged in, mepId: " + mepId);
+	
+					/*getRemotes(Integer.toString(mepId));*/
+	
+					if (gotWrongRemotes()) {
+						try {
+							createNotification(
+									Calendar.getInstance().getTimeInMillis(),
+									"Távfelügyelet",
+									"Jelenleg nincs internet kapcsolata a távfelügyeleti rendszernek. Kérjük, a részletekért lépjen be az alkalmazásba!",
+									"", context, remoteNotificationID);
+						} catch (Exception e) {
+							Log.e(TAG, e.toString());
+						}
+	
 					}
-
+	
+					today = calendar.get(Calendar.DAY_OF_MONTH);
 				}
-
-				today = calendar.get(Calendar.DAY_OF_MONTH);
-			}
-
-			// üzenetekre:
-			if (this.mepId != 0
-					&& !isNotificationVisible(gotNewMessageNotificationID)) {
-
-				Log.e(TAG, "messageNoti, user logged in, mepId: " + mepId);
-
-				getUnreadMessages(Integer.toString(mepId));
-
-				if (gotUnreadMsg()) {
-					try {
-						createNotification(Calendar.getInstance()
-								.getTimeInMillis(), "Új üzenet",
-								"Új üzenete érkezett.", "", context,
-								gotNewMessageNotificationID);
-					} catch (Exception e) {
-						Log.e(TAG, e.toString());
+	
+				// üzenetekre:
+				if (this.mepId != 0
+						&& !isNotificationVisible(gotNewMessageNotificationID)) {
+	
+					Log.e(TAG, "messageNoti, user logged in, mepId: " + mepId);
+	
+					getUnreadMessages(Integer.toString(mepId));
+	
+					if (gotUnreadMsg()) {
+						try {
+							createNotification(Calendar.getInstance()
+									.getTimeInMillis(), "Új üzenet",
+									"Új üzenete érkezett.", "", context,
+									gotNewMessageNotificationID);
+						} catch (Exception e) {
+							Log.e(TAG, e.toString());
+						}
+	
 					}
-
 				}
-			}
-
-			try {
-				Thread.sleep(WAIT_TIME);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
+	
+				try {
+					Thread.sleep(WAIT_TIME);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
 			}
 		}
 	}
 
 	// rossz távf. lekérése
 	private void getRemotes(String dataToSend) {
+		
+		
+		
+		/*
 		Log.e(TAG, "getRemotes, userId:  " + dataToSend);
 		HttpClient httpClient = new DefaultHttpClient();
 		HttpPost httpPost = new HttpPost(
@@ -167,12 +175,15 @@ public class NotiRunnable implements Runnable {
 
 		// Log.e(TAG, "response: " + responseFromWrongRemotes.toString());
 
-		// return responseFromUnreadMessagesPHP;
+		// return responseFromUnreadMessagesPHP;*/
 	}
 
 	// van-e a rossz távf.
 	public Boolean gotWrongRemotes() {
 		Log.e(TAG, responseFromWrongRemotes);
+		
+		/*
+		
 		GsonBuilder gsonBuilder = new GsonBuilder();
 		gsonBuilder.registerTypeAdapter( HashMap.class, new NotWorkingPlacesDeserializer());
 		Gson gson = gsonBuilder.create();
@@ -180,7 +191,7 @@ public class NotiRunnable implements Runnable {
 		if(container.size() > 0) {
 			return true;
 		}
-		return false;
+		return false; */
 		/*int counter = 0;
 		 try {
 			if (responseFromWrongRemotes.compareTo("[]") != 0) {
@@ -208,17 +219,25 @@ public class NotiRunnable implements Runnable {
 			return true;
 		}
 		*/
-		/*
+		
 		// Log.e(TAG, "gotWrongRemotes: " + Integer.toString(count));
 
-		if(Session.getActualUser().getUsersPlaces() != null)
+		GetNotWorkingPlacesListAsyncTask at = new GetNotWorkingPlacesListAsyncTask();
+		try {
+			at.execute().get();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		} catch (ExecutionException e) {
+			e.printStackTrace();
+		}
+		
 		for (Place actPlace : Session.getActualUser().getUsersPlaces().getPlaces()) {
 			if(actPlace.isNotify()) {
 				Log.e(TAG, "TALÁLTUNK EGY NEM MŰKÖDŐ HELYET!!!!");
 				return true;
 			}
 		}
-		return false;*/
+		return false;
 	}
 	
 	// olvasatlan üzenetek lekérése

@@ -153,15 +153,14 @@ public class ActivityLevel2NEW extends ActionBarActivity implements
 		Session.setActualRemoteMonitoring(selectedPlace);
 		if(selectedPlace.isWorkingProperly()) {
 			if (selectedPlace.isSolarPanel()) {
-				Session.getActualCommunicationInterface().getSolarPanelJson(this,
-						null, null);
+				Session.getActualCommunicationInterface().getSolarPanelJson(this, null, null);
 			} else {
 				Session.getActualCommunicationInterface().getChartNames(this, true);
 			}
 		} else {
-			
-			Session.getInstance(this).setAlertDialog(AlertDialogFactory.prepareAlertDialogWithText(this,
-					selectedPlace.getLastWorkingText()));
+			//Toast.makeText(this, selectedPlace.getLastWorkingText(), Toast.LENGTH_LONG).show();
+			Session.getInstance(this).setAlertDialog(AlertDialogFactory.prepareAlertDialogWithText(this, selectedPlace.getLastWorkingText()));
+			Session.showAlertDialog();
 		}
 	}
 }
