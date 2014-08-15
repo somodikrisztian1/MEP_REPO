@@ -35,9 +35,9 @@ public class ActivityLevel2PreloaderAsyncTask extends AsyncTask<Void, Void, Void
 	
 	@Override
 	protected Void doInBackground(Void... params) {
-		GetContactListAsyncTaskPRELOAD getContactListAsyncTask = new GetContactListAsyncTaskPRELOAD(activity);
+		/*GetContactListAsyncTaskPRELOAD getContactListAsyncTask = new GetContactListAsyncTaskPRELOAD(activity);
 		try {
-			/** Ez ezért kell, mert az AsyncTask által indított AsyncTask e verzió fölött nem jól működik!!!!! */
+			// Ez ezért kell, mert az AsyncTask által indított AsyncTask e verzió fölött nem jól működik!!!!!
 			if(Build.VERSION.SDK_INT <= Build.VERSION_CODES.HONEYCOMB_MR1) {
 				getContactListAsyncTask.execute().get();
 			} else {
@@ -49,7 +49,7 @@ public class ActivityLevel2PreloaderAsyncTask extends AsyncTask<Void, Void, Void
 		} catch (ExecutionException e) {
 			e.printStackTrace();
 		}
-		
+		*/
 		if (Session.getActualUser().isMekut() ||
 				(!Session.getActualUser().isMekut() && Session.getActualUser().getUsersPlaces() == null )) {
 			GetTopicListAsyncTask getTopicListAsyncTask = new GetTopicListAsyncTask();

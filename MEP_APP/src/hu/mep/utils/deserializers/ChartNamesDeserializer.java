@@ -23,7 +23,7 @@ public class ChartNamesDeserializer implements
 
 		List<ChartName> allChartInfoContainer = new ArrayList<ChartName>();
 		
-		if (!element.isJsonArray()) {
+		if (element.isJsonObject()) {
 			JsonObject jsonObject = element.getAsJsonObject();
 
 			for (Map.Entry<String, JsonElement> entry : jsonObject.entrySet()) {

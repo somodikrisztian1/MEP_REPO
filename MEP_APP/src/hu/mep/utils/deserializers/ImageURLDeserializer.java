@@ -15,8 +15,7 @@ import com.google.gson.JsonParseException;
 public class ImageURLDeserializer implements JsonDeserializer<ImageURLList> {
 
 	@Override
-	public ImageURLList deserialize(JsonElement element, Type arg1,
-			JsonDeserializationContext arg2) throws JsonParseException {
+	public ImageURLList deserialize(JsonElement element, Type arg1,	JsonDeserializationContext arg2) throws JsonParseException {
 		List<String> result = new ArrayList<String>();
 		if (element.isJsonObject()) {
 			for (Map.Entry<String, JsonElement> actualPictureURL : element.getAsJsonObject().entrySet()) {

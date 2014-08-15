@@ -19,11 +19,15 @@ public class ChatContactListDeserializer implements JsonDeserializer<ChatContact
 
 	@Override
 	public ChatContactList deserialize(JsonElement element, Type type, JsonDeserializationContext context) throws JsonParseException {
-		JsonObject jsonObject = element.getAsJsonObject();
 		List<ChatContact> contacts = new ArrayList<ChatContact>();
-		for(Map.Entry<String, JsonElement> entry : jsonObject.entrySet()) {
-			ChatContact contact = context.deserialize(entry.getValue(), ChatContact.class);
-			contacts.add(contact);
+		
+		if(element.isJsonObject()) {
+			JsonObject jsonObject = element.getAsJsonObject();
+			
+			for(Map.Entry<String, JsonElement> entry : jsonObject.entrySet()) {
+				ChatContact contact = context.deserialize(entry.getValue(), ChatContact.class);
+				contacts.add(contact);
+			}
 		}
 		return new ChatContactList(contacts);
 

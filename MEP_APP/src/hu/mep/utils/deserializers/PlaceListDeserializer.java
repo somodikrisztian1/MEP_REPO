@@ -19,11 +19,15 @@ public class PlaceListDeserializer implements JsonDeserializer<PlaceList> {
 	@Override
 	public PlaceList deserialize(JsonElement element, Type type, JsonDeserializationContext context)
 			throws JsonParseException {
-		JsonObject jsonObject = element.getAsJsonObject();
 		List<Place> places = new ArrayList<Place>();
-		for(Map.Entry<String, JsonElement> entry : jsonObject.entrySet()) {
-			Place place = context.deserialize(entry.getValue(), Place.class);
-			places.add(place);
+		
+		if(element.isJsonObject()) {
+			JsonObject jsonObject = element.getAsJsonObject();
+			
+			for(Map.Entry<String, JsonElement> entry : jsonObject.entrySet()) {
+				Place place = context.deserialize(entry.getValue(), Place.class);
+				places.add(place);
+			}
 		}
 		return new PlaceList(places);
 	}

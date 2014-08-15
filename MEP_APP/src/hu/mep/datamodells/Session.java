@@ -67,7 +67,7 @@ public class Session {
 	
 	private static OneLineAndTwoBarChartContainer actualLineAndBarChartContainer;
 
-	private static volatile ChatContactList actualChatContactList;
+	private static volatile ChatContactList actualChatContactList = new ChatContactList(new ArrayList<ChatContact>());
 	private static ChatContact actualChatPartner;
 	private static volatile ChatMessagesList chatMessagesList;
 

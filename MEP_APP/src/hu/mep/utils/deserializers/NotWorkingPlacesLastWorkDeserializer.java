@@ -24,37 +24,37 @@ public class NotWorkingPlacesLastWorkDeserializer implements JsonDeserializer<Ha
 	private static final String TAG = "NotWorkingPlacesLastWorkDeserializer";
 
 	@Override
-	public HashMap<String, String> deserialize(JsonElement element, Type type,
-			JsonDeserializationContext context) throws JsonParseException {
+	public HashMap<String, String> deserialize(JsonElement element, Type type, JsonDeserializationContext context) throws JsonParseException {
 		
 		HashMap<String, String> result = new HashMap<String, String>();
 		if(Session.getActualUser().getUsersPlaces() != null) {
-		if(element.isJsonObject()) {
-			JsonObject root = element.getAsJsonObject();
-			
-			for (Entry<String, JsonElement> placeRoot : root.entrySet()) {
+			if(element.isJsonObject()) {
+				JsonObject root = element.getAsJsonObject();
 				
-				JsonObject place = placeRoot.getValue().getAsJsonObject();
-				
-				Calendar lastWorkingDate = Calendar.getInstance();
-				String tsz1_id = place.get("tsz1_id").getAsString();
-				String lastWorkingText = null;
-				try {
-					String dateString = place.get("last_working_date").getAsString();
-					if(!dateString.equals("null")) {
-						lastWorkingDate.setTime(formatter.parse(dateString));
-						lastWorkingText = "A rendszer legutóbb ekkor volt elérhető: " + logFormatter.format(lastWorkingDate.getTime());
-					} else {
-						lastWorkingText = "A rendszer több mint egy hónapja nem elérhető.";
+				for (Entry<String, JsonElement> placeRoot : root.entrySet()) {
+					
+					JsonObject place = placeRoot.getValue().getAsJsonObject();
+					
+					Calendar lastWorkingDate = Calendar.getInstance();
+					String tsz1_id = place.get("tsz1_id").getAsString();
+					String lastWorkingText = null;
+					try {
+						String dateString = place.get("last_working_date").getAsString();
+						if(!dateString.equals("null")) {
+							lastWorkingDate.setTime(formatter.parse(dateString));
+							lastWorkingText = "A rendszer legutóbb ekkor volt elérhető: " + logFormatter.format(lastWorkingDate.getTime());
+						} else {
+							lastWorkingText = "A rendszer több mint egy hónapja nem elérhető.";
+						}
+					} catch (ParseException e) {
+						e.printStackTrace();
 					}
-				} catch (ParseException e) {
-					e.printStackTrace();
+	
+					result.put(tsz1_id, lastWorkingText);
+					Log.e(TAG,"tsz1_id=" + tsz1_id + " " + lastWorkingText );
 				}
-
-				result.put(tsz1_id, lastWorkingText);
-				Log.e(TAG,"tsz1_id=" + tsz1_id + " " + lastWorkingText );
 			}
-		}}
+		}
 		
 		return result;
 	}

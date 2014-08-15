@@ -101,7 +101,6 @@ public class SettingsDeserializer implements JsonDeserializer<Settings> {
 				String name = actFunctionJson.get("name").getAsString();
 				String label = actFunctionJson.get("label").getAsString();
 
-				/*Log.e(TAG, "FUNCTION name - value: " + name + " - " + (status ? "on" : "off"));*/
 				Function newFunction = new Function(serialNumber, status, name, label);
 				functions.add(newFunction);
 			}

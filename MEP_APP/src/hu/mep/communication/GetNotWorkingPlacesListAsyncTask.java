@@ -28,6 +28,7 @@ public class GetNotWorkingPlacesListAsyncTask extends AsyncTask<Void, Void, Void
 	protected void onPreExecute() {
 		super.onPreExecute();
 		this.resourceURI = "ios_getHibasTf.php?userId=" + Session.getActualUser().getMepID();
+		Log.e(TAG, RealCommunicator.MainURL + resourceURI);
 	}
 	
 	@Override

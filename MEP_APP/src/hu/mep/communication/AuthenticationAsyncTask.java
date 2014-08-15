@@ -74,8 +74,7 @@ public class AuthenticationAsyncTask extends AsyncTask<Void, Void, Boolean> {
 	private void downloadProfilePictureForActualUser() {
 		try {
 
-			HttpURLConnection connection = (HttpURLConnection) Session
-					.getActualUser().getImageURL().openConnection();
+			HttpURLConnection connection = (HttpURLConnection) Session.getActualUser().getImageURL().openConnection();
 			connection.setDoInput(true);
 			connection.connect();
 			InputStream input = connection.getInputStream();

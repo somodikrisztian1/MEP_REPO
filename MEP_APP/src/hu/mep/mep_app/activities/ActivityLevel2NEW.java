@@ -71,6 +71,8 @@ public class ActivityLevel2NEW extends ActionBarActivity implements
 		mActionBar.setDisplayShowTitleEnabled(false);
 		mActionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 		addTabsForActionBar();
+		
+		Session.getActualCommunicationInterface().getCharPartnersImages();
 	}
 
 	@Override

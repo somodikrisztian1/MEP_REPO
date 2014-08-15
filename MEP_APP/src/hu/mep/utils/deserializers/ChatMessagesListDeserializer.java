@@ -20,17 +20,17 @@ public class ChatMessagesListDeserializer implements
 	@Override
 	public ChatMessagesList deserialize(JsonElement element, Type type,
 			JsonDeserializationContext context) throws JsonParseException {
-		if (!element.isJsonArray()) {
+		List<ChatMessage> messages = new ArrayList<ChatMessage>();
+		
+		if (element.isJsonObject()) {
 			JsonObject jsonObject = element.getAsJsonObject();
-			List<ChatMessage> messages = new ArrayList<ChatMessage>();
+			
 			for (Map.Entry<String, JsonElement> entry : jsonObject.entrySet()) {
-				ChatMessage message = context.deserialize(entry.getValue(),
-						ChatMessage.class);
+				ChatMessage message = context.deserialize(entry.getValue(),	ChatMessage.class);
 				messages.add(message);
 			}
-			return new ChatMessagesList(messages);
 		}
-		return new ChatMessagesList(new ArrayList<ChatMessage>());
+		return new ChatMessagesList(messages);
 	}
 
 }
