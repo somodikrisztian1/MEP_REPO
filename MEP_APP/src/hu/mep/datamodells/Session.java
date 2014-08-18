@@ -9,10 +9,7 @@ import hu.mep.datamodells.charts.Chart;
 import hu.mep.datamodells.charts.ChartName;
 import hu.mep.datamodells.charts.OneLineAndTwoBarChartContainer;
 import hu.mep.datamodells.charts.SubChart;
-import hu.mep.datamodells.settings.Function;
-import hu.mep.datamodells.settings.Relay;
 import hu.mep.datamodells.settings.Settings;
-import hu.mep.datamodells.settings.Slider;
 import hu.mep.mep_app.NotificationService;
 import hu.mep.mep_app.R;
 
@@ -35,14 +32,13 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.util.Log;
 
 public class Session {
 
 	public static final String USERNAME_TAG = "username";
 	public static final String PASSWORD_TAG = "password";
 	
-	private static final String TAG = "Session";
+	//private static final String TAG = "Session";
 	private static volatile Session instance;
 	
 	private static volatile Context context;
@@ -195,9 +191,7 @@ public class Session {
 		setActualChatPartner(null);
 		
 		if(actualChatContactList != null) {
-			for (ChatContact actualContact : Session.getActualChatContactList().contacts) {
-				actualContact.getProfilePicture().recycle();
-			}
+			actualChatContactList.contacts.clear();
 		}
 
 		//actualChatContactList.contacts.clear();
@@ -274,7 +268,7 @@ public class Session {
 				String s = "id=" + actChartInfoContainer.getId() + "\n";
 				s += "name=" + actChartInfoContainer.getName() + "\n";
 				s += "ssz=" + actChartInfoContainer.getSerialNumber() + "\n";
-				Log.e("Session.logAllChartInfoContainer()", s);
+				//// // Log.e("Session.logAllChartInfoContainer()", s);
 			}
 		}
 	}
@@ -283,12 +277,12 @@ public class Session {
 	// ACTUAL REMOTE MONITORING + SETTINGS
 	// ==============================================================================
 	public static Place getActualRemoteMonitoring() {
-		Log.e(TAG, "getActualRemoteMonitoring");
+		//// Log.e(TAG, "getActualRemoteMonitoring");
 		return actualRemoteMonitoring;
 	}
 
 	public static void setActualRemoteMonitoring(Place actualRemoteMonitoring) {
-		Log.e(TAG, "setActualRemoteMonitoring");
+		// Log.e(TAG, "setActualRemoteMonitoring");
 		Session.actualRemoteMonitoring = actualRemoteMonitoring;
 	}
 
@@ -319,7 +313,7 @@ public class Session {
 	}
 
 	public static void startNotWorkingPlacesRefresherThread() {
-		Log.e(TAG, "startNotWorkingPlacesRefresherThread");
+		// Log.e(TAG, "startNotWorkingPlacesRefresherThread");
 		if (notWorkingPlacesRefresherThread.getState().equals(Thread.State.NEW)) {
 			notWorkingPlacesRefresherThread.start();
 		}
@@ -327,7 +321,7 @@ public class Session {
 	}
 	
 	public static void stopNotWorkingPlacesRefresherThread() {
-		Log.e(TAG, "stopNotWorkingPlacesRefresherThread");
+		// Log.e(TAG, "stopNotWorkingPlacesRefresherThread");
 		notWorkingPlacesRefresherRunnable.pause();;
 	}
 	
@@ -366,7 +360,7 @@ public class Session {
 	 * contacts will be not mixed.
 	 */
 	public static void setActualChatPartner(ChatContact newPartner) {
-		Log.e(TAG, "setActualChatPartner");
+		// Log.e(TAG, "setActualChatPartner");
 		if (actualChatPartner != null) {
 			if (!(actualChatPartner.equals(newPartner))) {
 				emptyChatMessagesList();
@@ -409,7 +403,7 @@ public class Session {
 	 * the order value of the ChatMessages objects.
 	 */
 	public static void setChatMessagesList(ChatMessagesList newChatMessagesList) {
-		Log.e(TAG, "setChatMessagesList()");
+		// Log.e(TAG, "setChatMessagesList()");
 		if(chatMessagesList == null) {
 			if(newChatMessagesList == null) {
 				chatMessagesList = new ChatMessagesList(new ArrayList<ChatMessage>());
@@ -429,7 +423,7 @@ public class Session {
 	 * actualChatPartner choosed.
 	 */
 	public static void emptyChatMessagesList() {
-		Log.e(TAG, "emptyChatMessagesList");
+		// Log.e(TAG, "emptyChatMessagesList");
 		if (chatMessagesList == null) {
 			chatMessagesList = new ChatMessagesList(new ArrayList<ChatMessage>());
 		} else if ((chatMessagesList != null) && !(chatMessagesList.chatMessagesList.isEmpty())) {
@@ -438,32 +432,32 @@ public class Session {
 	}
 
 	public static void sortChatMessagesList() {
-		Log.e("Session", "sortChatMessagesList()");
+		// Log.e("Session", "sortChatMessagesList()");
 		if (Session.chatMessagesList != null) {
 			/* Egy kis hack. Kézi duplikáció kiszűrés... */
 			Set<ChatMessage> tempSet = new LinkedHashSet<ChatMessage>(
 					chatMessagesList.getChatMessagesList());
 			Session.chatMessagesList.getChatMessagesList().clear();
 
-			Log.d(TAG, "after Clear");
+			// Log.d(TAG, "after Clear");
 			for (ChatMessage actMessage : chatMessagesList
 					.getChatMessagesList()) {
-				Log.d(TAG, actMessage.toString());
+				// Log.d(TAG, actMessage.toString());
 			}
 
 			Session.chatMessagesList.getChatMessagesList().addAll(tempSet);
 
-			Log.i(TAG, "after addAll from set");
+			// Log.i(TAG, "after addAll from set");
 			for (ChatMessage actMessage : chatMessagesList
 					.getChatMessagesList()) {
-				Log.i(TAG, actMessage.toString());
+				// Log.i(TAG, actMessage.toString());
 			}
 
 			Collections.sort(Session.chatMessagesList.chatMessagesList);
-			Log.e(TAG, "after sorting");
+			// Log.e(TAG, "after sorting");
 			for (ChatMessage actMessage : chatMessagesList
 					.getChatMessagesList()) {
-				Log.e(TAG, actMessage.toString());
+				// Log.e(TAG, actMessage.toString());
 			}
 		}
 	}
@@ -473,17 +467,13 @@ public class Session {
 	 * from chatMessagesList or zero if the chatMessagesList is empty.
 	 */
 	public synchronized static int getLastChatMessageOrder() {
-		Log.e(TAG, "getLastChatMessageOrder");
+		// Log.e(TAG, "getLastChatMessageOrder");
 		if (chatMessagesList == null
 				|| chatMessagesList.chatMessagesList.isEmpty()) {
-			Log.e("LastChatMessageOrder=", "" + 0);
+			// Log.e("LastChatMessageOrder=", "" + 0);
 			return 0;
 		}
-		Log.e("LastChatMessageOrder=",
-				""
-						+ chatMessagesList.getChatMessagesList()
-								.get(chatMessagesList.getChatMessagesList()
-										.size() - 1).order);
+		// Log.e("LastChatMessageOrder=", "" + chatMessagesList.getChatMessagesList().get(chatMessagesList.getChatMessagesList().size() - 1).order);
 		return chatMessagesList.getChatMessagesList().get(
 				chatMessagesList.getChatMessagesList().size() - 1).order;
 	}
@@ -492,12 +482,12 @@ public class Session {
 	// ACTUAL CHART + CHART INTERVALS
 	// ==============================================================================
 	public static Chart getActualChart() {
-		Log.e(TAG, "getActualChart");
+		// Log.e(TAG, "getActualChart");
 		return actualChart;
 	}
 
 	public static void setActualChart(Chart actualChart) {
-		Log.e(TAG, "setActualChart");
+		// Log.e(TAG, "setActualChart");
 		Session.actualChart = actualChart;
 		refreshChartIntervals();
 	}
@@ -561,10 +551,10 @@ public class Session {
 					maximalChartValue = maxValue;
 					minimalChartValue = minValue;
 					SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm");
-					Log.d("maximalChartDate", "" + formatter.format(endChartDate.getTime()));
-					Log.d("minimalChartDate", "" + formatter.format(beginChartDate.getTime()));
-					Log.d("maximalChartValue", "" + maximalChartValue);
-					Log.d("minimalChartValue", "" + minimalChartValue);
+					// Log.d("maximalChartDate", "" + formatter.format(endChartDate.getTime()));
+					// Log.d("minimalChartDate", "" + formatter.format(beginChartDate.getTime()));
+					// Log.d("maximalChartValue", "" + maximalChartValue);
+					// Log.d("minimalChartValue", "" + minimalChartValue);
 				}
 			}
 		}
@@ -575,7 +565,7 @@ public class Session {
 	// ==============================================================================
 	public static void setProgressDialog(ProgressDialog p_ProgressDialog) {
 		if (progressDialog != null) {
-			Log.e(TAG, "setProgressDialog");
+			// Log.e(TAG, "setProgressDialog");
 			dismissAndMakeNullProgressDialog();
 		}
 		Session.progressDialog = p_ProgressDialog;
@@ -584,14 +574,14 @@ public class Session {
 
 	public static void showProgressDialog() {
 		if (progressDialog != null) {
-			Log.e(TAG, "showProgressDialog");
+			// Log.e(TAG, "showProgressDialog");
 			progressDialog.show();
 		}
 	}
 
 	public static void dismissAndMakeNullProgressDialog() {
 		if (progressDialog != null) {
-			Log.e(TAG, "Dismiss progress dialog");
+			// Log.e(TAG, "Dismiss progress dialog");
 			progressDialog.dismiss();
 			progressDialog = null;
 		}
@@ -599,18 +589,18 @@ public class Session {
 	}
 
 	public static void setAlertDialog(AlertDialog ad) {
-		Log.e(TAG, "setAlertDialog");
+		// Log.e(TAG, "setAlertDialog");
 		Session.alertDialog = ad;
 	}
 
 	public static void showAlertDialog() {
-		Log.e(TAG, "showAlertDialog");
+		// Log.e(TAG, "showAlertDialog");
 		alertDialog.show();
 	}
 
 	public static void dismissAndMakeNullAlertDialog() {
 		if (alertDialog != null) {
-			Log.d(TAG, "Dismiss alert dialog");
+			// Log.d(TAG, "Dismiss alert dialog");
 			alertDialog.dismiss();
 			alertDialog = null;
 		}

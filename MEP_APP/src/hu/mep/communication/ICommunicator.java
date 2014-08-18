@@ -31,5 +31,7 @@ public interface ICommunicator {
 	public void sendChatMessage(String text);
 	
 	public void sendSettings(Activity activity, int option);
+
+	public void getCharPartnersImages();
 	
 }

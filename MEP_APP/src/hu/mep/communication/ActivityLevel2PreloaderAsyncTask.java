@@ -15,7 +15,6 @@ public class ActivityLevel2PreloaderAsyncTask extends AsyncTask<Void, Void, Void
 
 	//private static final String TAG = "ActivityLevel2PreloaderAsyncTask";
 	private Activity activity;
-	private String hostURI = "http://www.megujuloenergiapark.hu/";
 	private ProgressDialog pd;
 	
 	public ActivityLevel2PreloaderAsyncTask(Activity activity) {
@@ -35,21 +34,7 @@ public class ActivityLevel2PreloaderAsyncTask extends AsyncTask<Void, Void, Void
 	
 	@Override
 	protected Void doInBackground(Void... params) {
-		/*GetContactListAsyncTaskPRELOAD getContactListAsyncTask = new GetContactListAsyncTaskPRELOAD(activity);
-		try {
-			// Ez ezért kell, mert az AsyncTask által indított AsyncTask e verzió fölött nem jól működik!!!!!
-			if(Build.VERSION.SDK_INT <= Build.VERSION_CODES.HONEYCOMB_MR1) {
-				getContactListAsyncTask.execute().get();
-			} else {
-				getContactListAsyncTask.executeOnExecutor(THREAD_POOL_EXECUTOR).get();
-			}
-			
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		} catch (ExecutionException e) {
-			e.printStackTrace();
-		}
-		*/
+		
 		if (Session.getActualUser().isMekut() ||
 				(!Session.getActualUser().isMekut() && Session.getActualUser().getUsersPlaces() == null )) {
 			GetTopicListAsyncTask getTopicListAsyncTask = new GetTopicListAsyncTask();

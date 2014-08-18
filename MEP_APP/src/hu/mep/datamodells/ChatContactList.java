@@ -41,7 +41,7 @@ public class ChatContactList {
 				return result;
 			}
 		}
-		return result;
+		return Session.getEmptyProfilePicture();
 	}
 
 	@Override

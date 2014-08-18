@@ -4,37 +4,38 @@
     android:layout_height="match_parent"
     android:layout_gravity="center"
     android:orientation="horizontal"
-    android:paddingTop="1dp"
-    android:paddingBottom="1dp">
-    
+    android:paddingBottom="1dp"
+    android:paddingTop="1dp" >
+
     <ImageView
         android:id="@+id/activity_secondlevel_chat_imageview_for_profile_picture"
         android:layout_width="60dp"
         android:layout_height="60dp"
-        android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
-        android:paddingLeft="5dp"
+        android:layout_alignParentTop="true"
         android:layout_gravity="center_vertical"
- 	/>
+        android:paddingLeft="5dp" />
+
     <TextView
         android:id="@+id/activity_secondlevel_chat_textview_for_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="10dp"
         android:layout_centerVertical="true"
         android:layout_toRightOf="@+id/activity_secondlevel_chat_imageview_for_profile_picture"
-        android:textColor="#000000"
+        android:paddingLeft="10dp"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textSize="20sp"/>
+        android:textColor="#000000"
+        android:textSize="20sp" />
 
     <ImageView
         android:id="@+id/activity_secondlevel_chat_imageview_for_state"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
         android:layout_centerVertical="true"
         android:paddingRight="10dp"
-		/>
+        android:src="@drawable/state_picture_online"
+        android:visibility="invisible" />
 
 </RelativeLayout>

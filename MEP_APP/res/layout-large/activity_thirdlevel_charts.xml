@@ -4,5 +4,5 @@
     android:id="@+id/activity_thirdlevel_charts_pager"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="hu.mep.mep_app.activities.ActivityLevel3ShowTopic"
-    android:background="#FFFFFF"/>
+    android:background="#FFFFFF"
+    tools:context="hu.mep.mep_app.activities.ActivityLevel3ShowTopic" />

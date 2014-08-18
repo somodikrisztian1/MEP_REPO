@@ -1,18 +1,12 @@
 package hu.mep.mep_app;
 
-import hu.mep.communication.GetNotWorkingPlacesListAsyncTask;
 import hu.mep.communication.RealCommunicator;
-import hu.mep.datamodells.Place;
-import hu.mep.datamodells.Session;
 import hu.mep.mep_app.activities.ActivityLevel1;
-import hu.mep.utils.deserializers.NotWorkingPlacesLastWorkDeserializer;
 import hu.mep.utils.deserializers.NotWorkingPlacesNotifyDeserializer;
 
 import java.io.IOException;
 import java.util.Calendar;
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.concurrent.ExecutionException;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -24,10 +18,6 @@ import org.apache.http.util.EntityUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonElement;
-
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -36,14 +26,16 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
-import android.util.Log;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 public class NotiRunnable implements Runnable {
-	private String TAG = "NotiRunnable";
+	//private String TAG = "NotiRunnable";
 
 	private Context context;
 	private Boolean running = true;
-	private long WAIT_TIME = 60000L;
+	private long WAIT_TIME = 300000L;
 
 	private int mepId = 0;
 
@@ -57,7 +49,7 @@ public class NotiRunnable implements Runnable {
 	private String responseFromWrongRemotes = "";
 
 	public void stop() {
-		Log.e(TAG, "stop()");
+		//Log.e(TAG, "stop()");
 		this.running = false;
 	}
 
@@ -80,17 +72,15 @@ public class NotiRunnable implements Runnable {
 		while (true) {
 			if(this.running) {
 				calendar = Calendar.getInstance();
-				Log.e(TAG, "__________NotiRunnable.run() ==> true__________");
-				// Log.e(TAG,
-				// "calendar, day (int): "
-				// + calendar.get(Calendar.DAY_OF_MONTH));
+				//Log.e(TAG, "__________NotiRunnable.run() ==> true__________");
+				// Log.e(TAG, "calendar, day (int): " + calendar.get(Calendar.DAY_OF_MONTH));
 				// Log.e(TAG, "today (int): " + today);
 	
 				// távfelügyeletekre:
 				if (this.mepId != 0 && today != calendar.get(Calendar.DAY_OF_MONTH)
 						&& !isNotificationVisible(remoteNotificationID)) {
-	
-					Log.e(TAG, "remoteNoti, user logged in, mepId: " + mepId);
+
+					//Log.e(TAG, "remoteNoti, user logged in, mepId: " + mepId);
 	
 					getRemotes(Integer.toString(mepId));
 					if (gotWrongRemotes()) {
@@ -101,7 +91,7 @@ public class NotiRunnable implements Runnable {
 									"Jelenleg nincs internet kapcsolata a távfelügyeleti rendszernek. Kérjük, a részletekért lépjen be az alkalmazásba!",
 									"", context, remoteNotificationID);
 						} catch (Exception e) {
-							Log.e(TAG, e.toString());
+							//Log.e(TAG, e.toString());
 						}
 	
 					}
@@ -113,7 +103,7 @@ public class NotiRunnable implements Runnable {
 				if (this.mepId != 0
 						&& !isNotificationVisible(gotNewMessageNotificationID)) {
 	
-					Log.e(TAG, "messageNoti, user logged in, mepId: " + mepId);
+					//Log.e(TAG, "messageNoti, user logged in, mepId: " + mepId);
 	
 					getUnreadMessages(Integer.toString(mepId));
 	
@@ -124,7 +114,7 @@ public class NotiRunnable implements Runnable {
 									"Új üzenete érkezett.", "", context,
 									gotNewMessageNotificationID);
 						} catch (Exception e) {
-							Log.e(TAG, e.toString());
+							//Log.e(TAG, e.toString());
 						}
 	
 					}
@@ -143,104 +133,23 @@ public class NotiRunnable implements Runnable {
 	private void getRemotes(String dataToSend) {
 		
 		responseFromWrongRemotes = RealCommunicator.dohttpGet("ios_getHibasTf.php?userId="+ dataToSend + "&type=daily");
-		Log.e(TAG, "getRemotes() --> response:" + responseFromWrongRemotes);
-		/*
-		Log.e(TAG, "getRemotes, userId:  " + dataToSend);
-		HttpClient httpClient = new DefaultHttpClient();
-		HttpPost httpPost = new HttpPost(
-				"http://www.megujuloenergiapark.hu/ios_getHibasTf.php?userId="
-						+ dataToSend + "&type=daily");
-
-		try {
-			// httpPost.setEntity(new StringEntity(dataToSend, "UTF-8"));
-
-			// Set up the header types needed to properly transfer JSON
-			httpPost.setHeader("Content-Type", "application/json");
-			httpPost.setHeader("Accept-Encoding", "application/json");
-			httpPost.setHeader("Accept-Language", "en-US");
-
-			// Execute POST
-			HttpResponse httpResponse = httpClient.execute(httpPost);
-			HttpEntity responseEntity = httpResponse.getEntity();
-			if (responseEntity != null) {
-				responseFromWrongRemotes = EntityUtils.toString(responseEntity);
-			} else {
-				responseFromWrongRemotes = "{\"NO DATA:\"NO DATA\"}";
-			}
-		} catch (ClientProtocolException e) {
-			responseFromWrongRemotes = "{\"ERROR\":"
-					+ e.getMessage().toString() + "}";
-		} catch (IOException e) {
-			responseFromWrongRemotes = "{\"ERROR\":"
-					+ e.getMessage().toString() + "}";
-		}
-
-		// Log.e(TAG, "response: " + responseFromWrongRemotes.toString());
-
-		// return responseFromUnreadMessagesPHP;*/
+		//Log.e(TAG, "getRemotes() --> response:" + responseFromWrongRemotes);
 	}
 
 	// van-e a rossz távf.
 	public Boolean gotWrongRemotes() {
-		Log.e(TAG, "gotWrongRemotes() --> response:" + responseFromWrongRemotes);
+		//Log.e(TAG, "gotWrongRemotes() --> response:" + responseFromWrongRemotes);
 		
 		GsonBuilder gsonBuilder = new GsonBuilder();
 		gsonBuilder.registerTypeAdapter( Integer.class, new NotWorkingPlacesNotifyDeserializer());
 		Gson gson = gsonBuilder.create();
 		int result = gson.fromJson(responseFromWrongRemotes, Integer.class);
 		return result > 0;
-		
-		/*
-		int counter = 0;
-		try {
-			if (!responseFromWrongRemotes.equals("[]")) {
-				JSONObject json = new JSONObject(responseFromWrongRemotes.trim());
-				Iterator<?> keys = json.keys();
-
-				while (keys.hasNext()) {
-					String key = (String) keys.next();
-
-					if (json.get(key) instanceof JSONObject) {
-						if (((JSONObject) json.get(key)).get("notify")
-								.toString().compareTo("1") == 0) {
-							counter++;
-						}
-					}
-
-				}
-			}
-		} catch (JSONException e) {
-			e.printStackTrace();
-			Log.e(TAG, "gotWrongRemotes catch: " + e.toString());
-		}
-		if(counter > 0) {
-			return true;
-		}
-		return false;
-		*/
-		// Log.e(TAG, "gotWrongRemotes: " + Integer.toString(count));
-		/*
-		GetNotWorkingPlacesListAsyncTask at = new GetNotWorkingPlacesListAsyncTask();
-		try {
-			at.execute().get();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		} catch (ExecutionException e) {
-			e.printStackTrace();
-		}
-		
-		for (Place actPlace : Session.getActualUser().getUsersPlaces().getPlaces()) {
-			if(actPlace.isNotify()) {
-				Log.e(TAG, "TALÁLTUNK EGY NEM MŰKÖDŐ HELYET!!!!");
-				return true;
-			}
-		}
-		return false;*/ 
 	}
 	
 	// olvasatlan üzenetek lekérése
 	private void getUnreadMessages(String dataToSend) {
-		Log.e(TAG, "getUnreadMessages, userId:  " + dataToSend);
+		//Log.e(TAG, "getUnreadMessages, userId:  " + dataToSend);
 
 		HttpClient httpClient = new DefaultHttpClient();
 		HttpPost httpPost = new HttpPost(
@@ -356,9 +265,9 @@ public class NotiRunnable implements Runnable {
 
 			notificationManager.notify(notificationID, notificationBuilder.build());
 			
-			Log.e(TAG, "Notification successfully created.");
+			//Log.e(TAG, "Notification successfully created.");
 		} catch (Exception e) {
-			Log.e(TAG, "Exception during the creation of notification:" + e.getMessage());
+			//Log.e(TAG, "Exception during the creation of notification:" + e.getMessage());
 		}
 	}
 

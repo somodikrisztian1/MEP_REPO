@@ -28,12 +28,12 @@ public class GetNotWorkingPlacesListAsyncTask extends AsyncTask<Void, Void, Void
 	protected void onPreExecute() {
 		super.onPreExecute();
 		this.resourceURI = "ios_getHibasTf.php?userId=" + Session.getActualUser().getMepID();
-		Log.e(TAG, RealCommunicator.MainURL + resourceURI);
+		//Log.e(TAG, RealCommunicator.MainURL + resourceURI);
 	}
 	
 	@Override
 	protected Void doInBackground(Void... params) {
-		Log.e(TAG, "doinbackground...");
+		//Log.e(TAG, "doinbackground...");
 		String response = "";
 		response = RealCommunicator.dohttpGet(resourceURI);
 		GsonBuilder gsonBuilder = new GsonBuilder();

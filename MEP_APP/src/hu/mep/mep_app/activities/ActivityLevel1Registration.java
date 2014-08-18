@@ -4,6 +4,7 @@ import hu.mep.communication.NetThread;
 import hu.mep.datamodells.Session;
 import hu.mep.mep_app.R;
 import hu.mep.utils.others.AlertDialogFactory;
+import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
@@ -13,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.inputmethod.InputMethodManager;
 import android.webkit.WebSettings;
 import android.webkit.WebSettings.LayoutAlgorithm;
 import android.webkit.WebView;
@@ -41,7 +43,7 @@ public class ActivityLevel1Registration extends ActionBarActivity implements
 			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 		}
 		
-		setContentView(R.layout.activity_level1_registration);
+		setContentView(R.layout.activity_firstlevel_registration);
 		setTitle("Regisztráció");
 		
 		fullNameEdittext = (EditText) findViewById(R.id.reg_fullname);
@@ -100,7 +102,8 @@ public class ActivityLevel1Registration extends ActionBarActivity implements
 				String email = emailEdittext.getText().toString();
 				String trimmedPassword = password.trim();
 				String trimmedPasswordAgain = passwordAgain.trim();
-				
+				InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+				imm.hideSoftInputFromWindow(passwordAgainEdittext.getWindowToken(), 0);
 				if( fullName.length() == 0 ||
 					userName.length() == 0 ||
 					password.length() == 0 ||

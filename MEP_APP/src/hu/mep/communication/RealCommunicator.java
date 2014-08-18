@@ -3,8 +3,8 @@ package hu.mep.communication;
 import hu.mep.communication.charts.GetChartNamesAsyncTask;
 import hu.mep.communication.charts.GetChartsAsyncTask;
 import hu.mep.communication.charts.GetSolarPanelJsonAsyncTask;
+import hu.mep.datamodells.ChatContact;
 import hu.mep.datamodells.Session;
-import hu.mep.utils.others.MD5Encoder;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -31,10 +31,11 @@ import org.apache.http.message.BasicNameValuePair;
 
 import android.app.Activity;
 import android.content.Context;
+import android.util.Log;
 
 public class RealCommunicator implements ICommunicator {
 
-	//private static final String TAG = "RealCommunicator";
+	private static final String TAG = "RealCommunicator";
 	private static HttpClient httpclient = new DefaultHttpClient();
 	Context context;
 	final static String MainURL = "http://www.megujuloenergiapark.hu/";
@@ -116,14 +117,7 @@ public class RealCommunicator implements ICommunicator {
 		postDatas.put("email", email);
 
 		RegistrationAssyncTask sendRegistration = new RegistrationAssyncTask(activity, postDatas);
-		try {
-			sendRegistration.execute().get();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		} catch (ExecutionException e) {
-			e.printStackTrace();
-		}
-		
+		sendRegistration.execute();
 		return;
 	}
 	
@@ -219,6 +213,28 @@ public class RealCommunicator implements ICommunicator {
 	public void sendSettings(Activity activity, int option) {
 		SendSettingsAsyncTask settingsSender = new SendSettingsAsyncTask(activity, option);
 		settingsSender.execute();
+	}
+
+	@Override
+	public void getCharPartnersImages() {
+		if(Session.getActualChatContactList().getContacts() != null) {
+			//Log.e(TAG, "download another chat partner's image");
+			
+			for (ChatContact actContact : Session.getActualChatContactList().getContacts()) {
+				if(actContact.getProfilePicture() == null) {
+					actContact.setProfilePicture(Session.getEmptyProfilePicture());
+				}
+			}
+			/*
+			ChatContact[] contactsArray = new ChatContact[Session.getActualChatContactList().getContacts().size()];
+			int ind = 0;
+			for (ChatContact chatContact : Session.getActualChatContactList().getContacts()) {
+				contactsArray[ind++] = chatContact;
+			}*/
+			
+			GetChatContactProfileImageAsyncTask imageGetter = new GetChatContactProfileImageAsyncTask();		
+			imageGetter.execute();
+		}
 	}
 
 }

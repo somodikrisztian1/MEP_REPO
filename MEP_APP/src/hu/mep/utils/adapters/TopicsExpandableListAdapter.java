@@ -16,10 +16,6 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.CheckedTextView;
 import android.widget.TextView;
 
-/**
- * @author MEP_Machine
- *
- */
 public class TopicsExpandableListAdapter extends BaseExpandableListAdapter {
 
 	private final List<TopicCategory> groups;
@@ -49,7 +45,7 @@ public class TopicsExpandableListAdapter extends BaseExpandableListAdapter {
 		final Topic children = (Topic) getChild(groupPosition, childPosition);
 		TextView text = null;
 		if (convertView == null) {
-			convertView = inflater.inflate(R.layout.topics_listitem_detail,	parent, false);
+			convertView = inflater.inflate(R.layout.listitem_topics_detail,	parent, false);
 		}
 		text = (TextView) convertView.findViewById(R.id.textView1);
 		text.setText(children.getTopicName());
@@ -98,7 +94,7 @@ public class TopicsExpandableListAdapter extends BaseExpandableListAdapter {
 			View convertView, ViewGroup parent) {
 		TopicCategory group = (TopicCategory) getGroup(groupPosition);
 		if (convertView == null) {
-		      convertView = inflater.inflate(R.layout.topics_listitem_group, parent, false);
+		      convertView = inflater.inflate(R.layout.listitem_topics_group, parent, false);
 		    }
 		((CheckedTextView) convertView).setText(group.getCategoryName());
 		((CheckedTextView) convertView).setChecked(isExpanded);

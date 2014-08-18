@@ -7,7 +7,7 @@
     <TextView 
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Az adott idő intervallumon belül nem áll rendelkezésre adat."/>
+        android:text="@string/fragment_thirdlevel_no_chart_data_text"/>
     
 
 </RelativeLayout>

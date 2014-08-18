@@ -3,6 +3,7 @@ package hu.mep.mep_app;
 import hu.mep.mep_app.activities.ActivityLevel1Registration;
 import hu.mep.utils.others.FragmentLevel1EventHandler;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -11,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -51,19 +53,19 @@ public class FragmentLevel1LoginScreen extends Fragment implements
 		loginButton.setOnClickListener(this);
 		regButton.setOnClickListener(this);
 
-		passwordEdittext
-				.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+		passwordEdittext.setOnEditorActionListener(new TextView.OnEditorActionListener() {
 
 					@Override
-					public boolean onEditorAction(TextView v, int actionId,
-							KeyEvent event) {
+					public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
 						/* Talán szebb lenne a billentyűzetet is eltűntetni, de egyenlőre jó így... :D */
+						
+						InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+						imm.hideSoftInputFromWindow(loginButton.getWindowToken(), 0);
+						
 						loginButton.performClick();
 						return true;
 					}
 				});
-		
-		// getActivity().getSupportFragmentManager().popBackStack();
 		return rootView;
 	}
 
@@ -73,8 +75,7 @@ public class FragmentLevel1LoginScreen extends Fragment implements
 		try {
 			fragmentEventHandler = (FragmentLevel1EventHandler) activity;
 		} catch (ClassCastException e) {
-			throw new ClassCastException(activity.toString()
-					+ " must implement FragmentEventHandler interface...");
+			throw new ClassCastException(activity.toString() + " must implement FragmentEventHandler interface...");
 		}
 	}
 
@@ -85,8 +86,10 @@ public class FragmentLevel1LoginScreen extends Fragment implements
 			
 			String username_for_send = usernameEdittext.getText().toString();
 			String password_for_send = passwordEdittext.getText().toString();
-			fragmentEventHandler.onLoginButtonPressed(username_for_send,
-					password_for_send);
+			InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+			imm.hideSoftInputFromWindow(loginButton.getWindowToken(), 0);
+			
+			fragmentEventHandler.onLoginButtonPressed(username_for_send, password_for_send);
 			break;
 		case R.id.fragment_login_screen_registration_button:
 			Intent myIntent = new Intent(getActivity(), ActivityLevel1Registration.class);

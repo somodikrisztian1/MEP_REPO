@@ -9,8 +9,6 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
-import android.util.Log;
-
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
@@ -21,7 +19,7 @@ public class NotWorkingPlacesLastWorkDeserializer implements JsonDeserializer<Ha
 	
 	private static final SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	private static final SimpleDateFormat logFormatter = new SimpleDateFormat("yyyy.MM.dd. HH:mm");
-	private static final String TAG = "NotWorkingPlacesLastWorkDeserializer";
+	//private static final String TAG = "NotWorkingPlacesLastWorkDeserializer";
 
 	@Override
 	public HashMap<String, String> deserialize(JsonElement element, Type type, JsonDeserializationContext context) throws JsonParseException {
@@ -51,7 +49,7 @@ public class NotWorkingPlacesLastWorkDeserializer implements JsonDeserializer<Ha
 					}
 	
 					result.put(tsz1_id, lastWorkingText);
-					Log.e(TAG,"tsz1_id=" + tsz1_id + " " + lastWorkingText );
+					//Log.e(TAG,"tsz1_id=" + tsz1_id + " " + lastWorkingText );
 				}
 			}
 		}

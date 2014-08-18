@@ -86,7 +86,7 @@ public class ActivityLevel1 extends ActionBarActivity implements
 				R.array.activity_level1_drawer_items_list);
 
 		drawerAdapter = new ArrayAdapter<String>(this,
-				R.layout.drawer_list_item, firstActivityDrawerStrings);
+				R.layout.listitem_drawer, firstActivityDrawerStrings);
 		firstActivityDrawerListView.setAdapter(drawerAdapter);
 
 		firstActivityDrawerListView
@@ -264,7 +264,7 @@ public class ActivityLevel1 extends ActionBarActivity implements
 			}
 
 			if (Session.getActualUser() == null) {
-				menu.findItem(R.id.action_login).setVisible(false);
+				/*menu.findItem(R.id.action_login).setVisible(false);*/
 				
 				Fragment newFragment = null;
 				Bundle args;

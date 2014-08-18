@@ -36,12 +36,12 @@ public class ChatMessagesListAdapter extends ArrayAdapter<ChatMessage> {
 			holder = new ViewHolder();
 			
 			if(getItemViewType(position) == OWN_MESSAGE) {
-				convertView = inflater.inflate(R.layout.chat_listitem_own_message, parent, false);
+				convertView = inflater.inflate(R.layout.listitem_chat_message_own, parent, false);
 				holder.messageTextview = (TextView) convertView.findViewById(R.id.chat_listitem_textview);	
 				holder.profilePictureImageview = (ImageView) convertView.findViewById(R.id.chat_listitem_imageview);
 				} 
 			else if (getItemViewType(position) == OTHERS_MESSAGE) {
-				convertView = inflater.inflate(R.layout.chat_listitem_others_message, parent, false);
+				convertView = inflater.inflate(R.layout.listitem_chat_message_others, parent, false);
 				holder.messageTextview  = (TextView) convertView.findViewById(R.id.chat_listitem_textview);	
 				holder.profilePictureImageview = (ImageView) convertView.findViewById(R.id.chat_listitem_imageview);
 			}

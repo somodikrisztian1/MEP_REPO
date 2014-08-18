@@ -24,7 +24,7 @@ import android.widget.TextView;
 
 public class SettingsExpandableListAdapter extends BaseExpandableListAdapter {
 
-	private static final String TAG = "SettingsExpandableListAdapter";
+	//private static final String TAG = "SettingsExpandableListAdapter";
 	private final String[] titles = { "Beállítások", "Relék", "Funkciók" };
 	public LayoutInflater inflater;
 	private Activity activity;
@@ -55,7 +55,7 @@ public class SettingsExpandableListAdapter extends BaseExpandableListAdapter {
 			boolean isLastChild, View convertView, ViewGroup parent) {
 		
 		if(groupPosition == 0) {
-			convertView = inflater.inflate(R.layout.settings_listitem_slider, parent, false);
+			convertView = inflater.inflate(R.layout.listitem_settings_slider, parent, false);
 			//Log.e(TAG, "findViews...");
 			TextView nameTextView = (TextView)convertView.findViewById(R.id.fragment_thirdlevel_setting_slider_name);
 			final TextView valueTextView = (TextView)convertView.findViewById(R.id.fragment_thirdlevel_setting_slider_value);
@@ -96,7 +96,7 @@ public class SettingsExpandableListAdapter extends BaseExpandableListAdapter {
 			});
 			
 		} else if(groupPosition == 1) {
-			convertView = inflater.inflate(R.layout.settings_listitem_relay, parent, false);
+			convertView = inflater.inflate(R.layout.listitem_settings_relay, parent, false);
 			TextView nameTextView = (TextView) convertView.findViewById(R.id.fragment_thirdlevel_setting_relay_name);
 			TextView statusTextView = (TextView) convertView.findViewById(R.id.fragment_thirdlevel_setting_relay_status);
 			nameTextView.setText(Session.getActualSettings().getRelays().get(childPosition).name);
@@ -110,7 +110,7 @@ public class SettingsExpandableListAdapter extends BaseExpandableListAdapter {
 			statusTextView.setText(statusText);
 		}
 		else {
-			convertView = inflater.inflate(R.layout.settings_listitem_function, parent, false);
+			convertView = inflater.inflate(R.layout.listitem_settings_function, parent, false);
 			TextView nameTextView = (TextView) convertView.findViewById(R.id.settings_listitem_function_name_textview);
 			ToggleButton onOffButton = (ToggleButton) convertView.findViewById(R.id.settings_listitem_function_value_switch);
 			nameTextView.setText(Session.getActualSettings().getFunctions().get(childPosition).label);
@@ -174,7 +174,7 @@ public class SettingsExpandableListAdapter extends BaseExpandableListAdapter {
 			View convertView, ViewGroup parent) {
 
 		if (convertView == null) {
-		      convertView = inflater.inflate(R.layout.settings_listitem_group, parent, false);
+		      convertView = inflater.inflate(R.layout.listitem_settings_group, parent, false);
 		}
 		((CheckedTextView) convertView).setText(titles[groupPosition]);
 		((CheckedTextView) convertView).setChecked(isExpanded);

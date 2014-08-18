@@ -19,27 +19,23 @@ import android.widget.TextView;
 public class ChatContactListAdapter extends ArrayAdapter<ChatContact> {
 
 	//private static final String TAG = "ChatContactListAdapter";
-	private Context context;
 	private LayoutInflater inflater;
 	
-	public ChatContactListAdapter(Context context, int listviewID,
-			List<ChatContact> listOfContacts) {
+	public ChatContactListAdapter(Context context, int listviewID, List<ChatContact> listOfContacts) {
 		super(context, listviewID, listOfContacts);
-		this.context = context;
-		
+
 		inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		HashMap<String, Integer> mIDMap = new HashMap<String, Integer>();
 	}
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		View newRow = inflater.inflate(R.layout.activity_secondlevel_list_item_picture_and_textview, parent, false);
+		View newRow = inflater.inflate(R.layout.listitem_chatcontacts, parent, false);
 		TextView textview = (TextView) newRow.findViewById(R.id.activity_secondlevel_chat_textview_for_name);
 		textview.setText(Session.getActualChatContactList().getContacts().get(position).getName());
 		if(Session.getActualChatContactList().getContacts().get(position).getUnreadedMessageNumber() != 0 ) {
 			textview.setTypeface(null, Typeface.BOLD);
-		}
-		else {
+		} else {
 			textview.setTypeface(null, Typeface.NORMAL);
 		}		
 		
@@ -47,11 +43,9 @@ public class ChatContactListAdapter extends ArrayAdapter<ChatContact> {
 		profilePictureView.setImageBitmap(Session.getActualChatContactList().getContacts().get(position).getProfilePicture());
 		
 		ImageView statePictureView = (ImageView) newRow.findViewById(R.id.activity_secondlevel_chat_imageview_for_state);
-		statePictureView.setImageResource(R.drawable.state_picture_online);
 		if(Session.getActualChatContactList().getContacts().get(position).isOnline() != 0) {
 			statePictureView.setVisibility(View.VISIBLE);
-		}
-		else {
+		} else {
 			statePictureView.setVisibility(View.INVISIBLE);
 		}
 	return newRow;

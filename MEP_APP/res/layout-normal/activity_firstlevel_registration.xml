@@ -22,7 +22,7 @@
             android:layout_alignParentTop="true"
             android:ems="30"
             android:hint="@string/hint_for_reg_activity_fullname_textview"
-            android:inputType="textPersonName" >
+            android:inputType="textCapWords" >
         </EditText>
 
         <EditText
