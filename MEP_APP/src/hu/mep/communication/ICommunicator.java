@@ -14,7 +14,7 @@ public interface ICommunicator {
 	
 	public void getNotWorkingPlacesList();
 
-	public void getTopicList();
+	public void getTopicList(Activity activity);
 
 	public void getChartNames(Activity activity, boolean forRemoteMonitoring);
 
@@ -25,6 +25,10 @@ public interface ICommunicator {
 	public void getSolarPanelJson(Activity activity, Calendar beginDate, Calendar endDate);
 	
 	public void getChatPartners();
+	
+	public void getChatPartners(Activity activity);
+	
+	public void getCharPartnersImages();
 
 	public void getChatMessages();
 
@@ -32,6 +36,5 @@ public interface ICommunicator {
 	
 	public void sendSettings(Activity activity, int option);
 
-	public void getCharPartnersImages();
 	
 }

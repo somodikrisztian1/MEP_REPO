@@ -28,18 +28,17 @@ public class FragmentLevel2Chat extends Fragment implements OnItemClickListener 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
+
+		//Session.getActualCommunicationInterface().getChatPartners(true);
 		
 		View v = inflater.inflate(R.layout.fragment_secondlevel_chat, container, false);
-		contactAdapter = new ChatContactListAdapter(getActivity(),
-				R.id.fragment_chat_listview, Session.getActualChatContactList().getContacts());
+		contactAdapter = new ChatContactListAdapter(getActivity(), R.id.fragment_chat_listview, Session.getActualChatContactList().getContacts());
 
 		listview = (ListView) v.findViewById(R.id.fragment_chat_listview);
 		listview.setAdapter(contactAdapter);
 		listview.setOnItemClickListener(this);
-		
-		Session.getActualCommunicationInterface().getChatPartners();
 
-		Session.getActualCommunicationInterface().getCharPartnersImages();
+		//Session.getActualCommunicationInterface().getCharPartnersImages();
 		
 		return v;
 	}

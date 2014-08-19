@@ -152,16 +152,44 @@ public class RealCommunicator implements ICommunicator {
 	}
 
 	@Override
-	public void getTopicList() {
-		GetTopicListAsyncTask getTopicListAsyncTask = new GetTopicListAsyncTask();
+	public void getTopicList(Activity activity) {
+		GetTopicListAsyncTask getTopicListAsyncTask = new GetTopicListAsyncTask(activity);
 		getTopicListAsyncTask.execute();
 
 	}
 
 	@Override
 	public void getChatPartners() {
-		GetContactListAsyncTask getContactListAsyncTask = new GetContactListAsyncTask(context);
+		GetContactListAsyncTask getContactListAsyncTask = new GetContactListAsyncTask();
 		getContactListAsyncTask.execute();
+	}
+	
+	public void getChatPartners(Activity activity) {
+		GetContactListAsyncTask getContactListAsyncTask = new GetContactListAsyncTask(activity);
+		getContactListAsyncTask.execute();
+	}
+	
+	@Override
+	public void getCharPartnersImages() {
+		if(Session.getActualChatContactList().getContacts() != null) {
+			//Log.e(TAG, "download another chat partner's image");
+			
+			for (ChatContact actContact : Session.getActualChatContactList().getContacts()) {
+				if(actContact.getProfilePicture() == null) {
+					Log.e(TAG, "initialize with empty.jpg");
+					actContact.setProfilePicture(Session.getEmptyProfilePicture());
+				}
+			}
+			/*
+			ChatContact[] contactsArray = new ChatContact[Session.getActualChatContactList().getContacts().size()];
+			int ind = 0;
+			for (ChatContact chatContact : Session.getActualChatContactList().getContacts()) {
+				contactsArray[ind++] = chatContact;
+			}*/
+			
+			GetChatContactProfileImageAsyncTask imageGetter = new GetChatContactProfileImageAsyncTask();
+			imageGetter.execute();
+		}
 	}
 
 	@Override
@@ -215,26 +243,6 @@ public class RealCommunicator implements ICommunicator {
 		settingsSender.execute();
 	}
 
-	@Override
-	public void getCharPartnersImages() {
-		if(Session.getActualChatContactList().getContacts() != null) {
-			//Log.e(TAG, "download another chat partner's image");
-			
-			for (ChatContact actContact : Session.getActualChatContactList().getContacts()) {
-				if(actContact.getProfilePicture() == null) {
-					actContact.setProfilePicture(Session.getEmptyProfilePicture());
-				}
-			}
-			/*
-			ChatContact[] contactsArray = new ChatContact[Session.getActualChatContactList().getContacts().size()];
-			int ind = 0;
-			for (ChatContact chatContact : Session.getActualChatContactList().getContacts()) {
-				contactsArray[ind++] = chatContact;
-			}*/
-			
-			GetChatContactProfileImageAsyncTask imageGetter = new GetChatContactProfileImageAsyncTask();		
-			imageGetter.execute();
-		}
-	}
+
 
 }

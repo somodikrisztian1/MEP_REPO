@@ -23,9 +23,7 @@ public class ChatContactListAdapter extends ArrayAdapter<ChatContact> {
 	
 	public ChatContactListAdapter(Context context, int listviewID, List<ChatContact> listOfContacts) {
 		super(context, listviewID, listOfContacts);
-
 		inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		HashMap<String, Integer> mIDMap = new HashMap<String, Integer>();
 	}
 
 	@Override

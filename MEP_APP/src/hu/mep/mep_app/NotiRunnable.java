@@ -1,7 +1,10 @@
 package hu.mep.mep_app;
 
 import hu.mep.communication.RealCommunicator;
+import hu.mep.datamodells.ChatContact;
+import hu.mep.datamodells.ChatContactList;
 import hu.mep.mep_app.activities.ActivityLevel1;
+import hu.mep.utils.deserializers.ChatContactListDeserializer;
 import hu.mep.utils.deserializers.NotWorkingPlacesNotifyDeserializer;
 
 import java.io.IOException;
@@ -144,17 +147,18 @@ public class NotiRunnable implements Runnable {
 		gsonBuilder.registerTypeAdapter( Integer.class, new NotWorkingPlacesNotifyDeserializer());
 		Gson gson = gsonBuilder.create();
 		int result = gson.fromJson(responseFromWrongRemotes, Integer.class);
-		return result > 0;
+		return (result > 0);
 	}
 	
 	// olvasatlan üzenetek lekérése
 	private void getUnreadMessages(String dataToSend) {
 		//Log.e(TAG, "getUnreadMessages, userId:  " + dataToSend);
 
+		responseFromUnreadMessagesPHP = RealCommunicator.dohttpGet("ios_getContactList.php?userId=" + dataToSend);
+		
+		/*
 		HttpClient httpClient = new DefaultHttpClient();
-		HttpPost httpPost = new HttpPost(
-				"http://www.megujuloenergiapark.hu/ios_getContactList.php?userId="
-						+ dataToSend);
+		HttpPost httpPost = new HttpPost("http://www.megujuloenergiapark.hu/ios_getContactList.php?userId=" + dataToSend);
 
 		try {
 			// httpPost.setEntity(new StringEntity(dataToSend, "UTF-8"));
@@ -168,8 +172,7 @@ public class NotiRunnable implements Runnable {
 			HttpResponse httpResponse = httpClient.execute(httpPost);
 			HttpEntity responseEntity = httpResponse.getEntity();
 			if (responseEntity != null) {
-				responseFromUnreadMessagesPHP = EntityUtils
-						.toString(responseEntity);
+				responseFromUnreadMessagesPHP = EntityUtils.toString(responseEntity);
 			} else {
 				responseFromUnreadMessagesPHP = "{\"NO DATA:\"NO DATA\"}";
 			}
@@ -179,14 +182,14 @@ public class NotiRunnable implements Runnable {
 		} catch (IOException e) {
 			responseFromUnreadMessagesPHP = "{\"ERROR\":"
 					+ e.getMessage().toString() + "}";
-		}
+		}*/
 
 		// Log.e(TAG, "response: " + responseFromUnreadMessagesPHP.toString());
 	}
 
 	// van-e olvasatlan üzenet
 	private Boolean gotUnreadMsg() {
-		int count = 0;
+		/*int count = 0;
 		try {
 			if (responseFromUnreadMessagesPHP.compareTo("[]") != 0) {
 				JSONObject json = new JSONObject(
@@ -213,7 +216,21 @@ public class NotiRunnable implements Runnable {
 		if (count > 0)
 			return true;
 		else
-			return false;
+			return false;*/
+		
+		GsonBuilder gsonBuilder = new GsonBuilder();
+		gsonBuilder.registerTypeAdapter(ChatContactList.class, new ChatContactListDeserializer());
+		Gson gson = gsonBuilder.create();
+		
+		ChatContactList result = gson.fromJson(responseFromUnreadMessagesPHP, ChatContactList.class);
+		
+		int counter = 0;
+		for (ChatContact actContact : result.getContacts()) {
+			if(actContact.getUnreadedMessageNumber() > 0) {
+				++counter;
+			}
+		}
+		return (counter > 0);
 	}
 
 	public void createNotification(long when, String notificationTitle,	String notificationContent, String notificationUrl, Context ctx, int notificationID) {

@@ -10,6 +10,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
@@ -18,20 +19,20 @@ import android.util.Log;
 public class GetChatContactProfileImageAsyncTask extends AsyncTask<Void, Void, Void> {
 	
 	private static final String TAG = "GetChatContactProfileImageAsyncTask";
-	private boolean online = false;
 	
 	public GetChatContactProfileImageAsyncTask() {
+	}
+	
+	@Override
+	protected void onPreExecute() {
+		super.onPreExecute();
 	}
 	
 	@Override
 	protected Void doInBackground(Void... params) {
 	
 		for (ChatContact contact : Session.getActualChatContactList().getContacts()) {
-			
-			if(!online) {
-				return null;
-			}
-			
+						
 			Bitmap bmp;
 			URL imgURL = null;
 			if (contact.getImageURL().toUpperCase().endsWith(".JPG")
@@ -45,48 +46,51 @@ public class GetChatContactProfileImageAsyncTask extends AsyncTask<Void, Void, V
 					e1.printStackTrace();
 				}
 				if(contact.getImageURL().equals("http://megujuloenergiapark.hu/images/avatar/empty.jpg")) {
-					Log.e(TAG, "skip downloading empty image...");
+					//Log.e(TAG, "skip downloading empty image...");
 					continue;
 				}
-				Log.e(TAG, "downloading from " + contact.getImageURL());
-				HttpURLConnection connection = null; 
-				try {
-					connection = (HttpURLConnection) imgURL.openConnection();
-					connection.setDoInput(true);
-					connection.connect();
-					InputStream input = connection.getInputStream();
-					bmp = BitmapFactory.decodeStream(input);
-					// Megnézzük, álló vagy fekvő tájolású-e.
-					int fixSize = (bmp.getWidth() < bmp.getHeight() ? bmp.getWidth() : bmp.getHeight());
-					// A rövidebb oldal szerint vágunk egy nagy négyzetre.
-					bmp = Bitmap.createBitmap(bmp, 0, 0, fixSize, fixSize);
-					// Skálázás 200×200-as négyzetre.
-					bmp = Bitmap.createScaledBitmap(bmp, 250, 250, true);
-					contact.setProfilePicture(bmp);
-					publishProgress();
-				} catch (IOException e) {
-					e.printStackTrace();
-					return null;
+				if(contact.getProfilePicture().sameAs(Session.getEmptyProfilePicture()) && 
+						!contact.getImageURL().equals("http://megujuloenergiapark.hu/images/avatar/empty.jpg")) {
+					Log.e(TAG, "downloading from " + contact.getImageURL());
+					HttpURLConnection connection = null; 
+					try {
+						connection = (HttpURLConnection) imgURL.openConnection();
+						connection.setDoInput(true);
+						connection.connect();
+						InputStream input = connection.getInputStream();
+						bmp = BitmapFactory.decodeStream(input);
+						// Megnézzük, álló vagy fekvő tájolású-e.
+						int fixSize = (bmp.getWidth() < bmp.getHeight() ? bmp.getWidth() : bmp.getHeight());
+						// A rövidebb oldal szerint vágunk egy nagy négyzetre.
+						bmp = Bitmap.createBitmap(bmp, 0, 0, fixSize, fixSize);
+						// Skálázás 200×200-as négyzetre.
+						bmp = Bitmap.createScaledBitmap(bmp, 250, 250, true);
+						contact.setProfilePicture(bmp);
+						//publishProgress();
+					} catch (IOException e) {
+						e.printStackTrace();
+						return null;
+					}
 				}
 			}
 		}
 
 		return null;
 	}
-	
+	/*
 	@Override
 	protected void onProgressUpdate(Void... values) {
 		super.onProgressUpdate(values);
 		Log.e(TAG, "publishprogress... contactAdapter.notifyDataSetChanged()");
 		FragmentLevel2Chat.contactAdapter.notifyDataSetChanged();
-	}
+	}*/
 	
-	/*
+	
 	@Override
 	protected void onPostExecute(Void result) {
 		super.onPostExecute(result);
-		Log.e(TAG, "contactAdapter.notifyDataSetChanged()");
+		Log.e(TAG, "onpostexecute....contactAdapter.notifyDataSetChanged()");
 		FragmentLevel2Chat.contactAdapter.notifyDataSetChanged();
 	}
-	*/
+	
 }

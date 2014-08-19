@@ -29,8 +29,7 @@ public class AuthenticationAsyncTask extends AsyncTask<Void, Void, Boolean> {
 
 	private ProgressDialog pd;
 
-	public AuthenticationAsyncTask(Activity activity, String username,
-			String password) {
+	public AuthenticationAsyncTask(Activity activity, String username, String password) {
 		this.activity = activity;
 		this.username = username;
 		this.password = password;
@@ -47,8 +46,7 @@ public class AuthenticationAsyncTask extends AsyncTask<Void, Void, Boolean> {
 		Session.setProgressDialog(pd);
 		Session.showProgressDialog();
 
-		resourceURI = "iphonelogin_do.php?username=" + username + "&password="
-				+ MD5Encoder.encodePasswordWithMD5(password);
+		resourceURI = "iphonelogin_do.php?username=" + username + "&password=" + MD5Encoder.encodePasswordWithMD5(password);
 	}
 	
 	@Override
@@ -93,7 +91,7 @@ public class AuthenticationAsyncTask extends AsyncTask<Void, Void, Boolean> {
 		
 		if(result) {
 			Session.dismissAndMakeNullProgressDialog();
-			ActivityLevel2PreloaderAsyncTask at = new ActivityLevel2PreloaderAsyncTask(activity);
+			GetTopicListAsyncTask at = new GetTopicListAsyncTask(activity);
 			at.execute();
 		} else {
 			Session.dismissAndMakeNullProgressDialog();
