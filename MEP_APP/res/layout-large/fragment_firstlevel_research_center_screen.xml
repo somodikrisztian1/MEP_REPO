@@ -4,77 +4,93 @@
     android:layout_height="match_parent"
     android:background="#FFFFFF" >
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="15dp"
-        android:paddingRight="15dp" >
+        android:orientation="vertical"
+        android:paddingBottom="15dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:paddingTop="15dp" >
 
         <bluejamesbond.textviewjustifier.TextViewEx
             android:id="@+id/fragment_firstlevel_research_center_textview_content_0"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
             android:layout_marginTop="10dp" />
 
         <ImageView
             android:id="@+id/fragment_firstlevel_research_center_imageview_1"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/fragment_firstlevel_research_center_textview_content_0"
             android:layout_marginBottom="8dp"
             android:layout_marginTop="8dp"
             android:adjustViewBounds="true"
             android:src="@drawable/kutat2" />
 
-        <bluejamesbond.textviewjustifier.TextViewEx
-            android:id="@+id/fragment_firstlevel_research_center_textview_content_1"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/fragment_firstlevel_research_center_imageview_1" />
+            android:orientation="horizontal" >
 
-        <ImageView
-            android:id="@+id/fragment_firstlevel_research_center_imageview_2"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/fragment_firstlevel_research_center_textview_content_1"
-            android:layout_marginBottom="8dp"
-            android:layout_marginTop="8dp"
-            android:adjustViewBounds="true"
-            android:src="@drawable/kutat3" />
+            <bluejamesbond.textviewjustifier.TextViewEx
+                android:id="@+id/fragment_firstlevel_research_center_textview_content_1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="4" />
 
-        <bluejamesbond.textviewjustifier.TextViewEx
-            android:id="@+id/fragment_firstlevel_research_center_textview_content_2"
+            <ImageView
+                android:id="@+id/fragment_firstlevel_research_center_imageview_2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="6"
+                android:layout_marginLeft="15dp"
+                
+                android:adjustViewBounds="true"
+                android:src="@drawable/kutat3" />
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/fragment_firstlevel_research_center_imageview_2" />
+            android:orientation="horizontal" >
 
-        <ImageView
-            android:id="@+id/fragment_firstlevel_research_center_imageview_3"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/fragment_firstlevel_research_center_textview_content_2"
-            android:layout_marginBottom="8dp"
-            android:layout_marginTop="8dp"
-            android:adjustViewBounds="true"
-            android:src="@drawable/kutat4" />
+            <bluejamesbond.textviewjustifier.TextViewEx
+                android:id="@+id/fragment_firstlevel_research_center_textview_content_2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:paddingLeft="15dp"
+                android:layout_weight="1" />
 
-        <bluejamesbond.textviewjustifier.TextViewEx
-            android:id="@+id/fragment_firstlevel_research_center_textview_content_3"
+            <bluejamesbond.textviewjustifier.TextViewEx
+                android:id="@+id/fragment_firstlevel_research_center_textview_content_3"
+                android:layout_width="0dp"
+				android:layout_marginLeft="10dp"
+                android:paddingRight="15dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/fragment_firstlevel_research_center_imageview_3" />
+            android:orientation="horizontal" >
 
-        <ImageView
-            android:id="@+id/fragment_firstlevel_research_center_imageview_4"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/fragment_firstlevel_research_center_textview_content_3"
-            android:layout_marginBottom="20dp"
-            android:layout_marginTop="10dp"
-            android:adjustViewBounds="true"
-            android:paddingBottom="10dp"
-            android:src="@drawable/kutat5" />
-    </RelativeLayout>
+            <ImageView
+                android:id="@+id/fragment_firstlevel_research_center_imageview_3"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:src="@drawable/kutat4" />
+
+            <ImageView
+                android:id="@+id/fragment_firstlevel_research_center_imageview_4"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:src="@drawable/kutat5" />
+        </LinearLayout>
+    </LinearLayout>
 
 </ScrollView>
