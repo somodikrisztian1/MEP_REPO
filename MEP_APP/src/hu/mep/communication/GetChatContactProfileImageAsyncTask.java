@@ -14,11 +14,11 @@ import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
-import android.util.Log;
+//import android.util.Log;
 
 public class GetChatContactProfileImageAsyncTask extends AsyncTask<Void, Void, Void> {
 	
-	private static final String TAG = "GetChatContactProfileImageAsyncTask";
+	//private static final String TAG = "GetChatContactProfileImageAsyncTask";
 	
 	public GetChatContactProfileImageAsyncTask() {
 	}
@@ -51,7 +51,7 @@ public class GetChatContactProfileImageAsyncTask extends AsyncTask<Void, Void, V
 				}
 				if(contact.getProfilePicture().sameAs(Session.getEmptyProfilePicture()) && 
 						!contact.getImageURL().equals("http://megujuloenergiapark.hu/images/avatar/empty.jpg")) {
-					Log.e(TAG, "downloading from " + contact.getImageURL());
+					//Log.e(TAG, "downloading from " + contact.getImageURL());
 					HttpURLConnection connection = null; 
 					try {
 						connection = (HttpURLConnection) imgURL.openConnection();
@@ -66,7 +66,6 @@ public class GetChatContactProfileImageAsyncTask extends AsyncTask<Void, Void, V
 						// Skálázás 200×200-as négyzetre.
 						bmp = Bitmap.createScaledBitmap(bmp, 250, 250, true);
 						contact.setProfilePicture(bmp);
-						//publishProgress();
 					} catch (IOException e) {
 						e.printStackTrace();
 						return null;
@@ -77,19 +76,13 @@ public class GetChatContactProfileImageAsyncTask extends AsyncTask<Void, Void, V
 
 		return null;
 	}
-	/*
-	@Override
-	protected void onProgressUpdate(Void... values) {
-		super.onProgressUpdate(values);
-		Log.e(TAG, "publishprogress... contactAdapter.notifyDataSetChanged()");
-		FragmentLevel2Chat.contactAdapter.notifyDataSetChanged();
-	}*/
+
 	
 	
 	@Override
 	protected void onPostExecute(Void result) {
 		super.onPostExecute(result);
-		Log.e(TAG, "onpostexecute....contactAdapter.notifyDataSetChanged()");
+		//Log.e(TAG, "onpostexecute....contactAdapter.notifyDataSetChanged()");
 		FragmentLevel2Chat.contactAdapter.notifyDataSetChanged();
 	}
 	

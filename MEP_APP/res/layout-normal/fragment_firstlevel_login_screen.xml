@@ -16,7 +16,6 @@
         android:inputType="textVisiblePassword"
         android:imeOptions="actionNext"
         android:nextFocusDown="@+id/fragment_login_screen_password_edittext"
-        android:text="nadas"
 		/>
 
     <EditText
@@ -32,7 +31,6 @@
         android:hint="@string/hint_for_login_activity_password_textview"
         android:imeOptions="actionDone"
         android:inputType="textPassword"
-        android:text="panzio"
         />
 
     <Button

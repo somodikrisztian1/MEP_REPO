@@ -10,14 +10,13 @@ import java.util.HashMap;
 import java.util.Map.Entry;
 
 import android.os.AsyncTask;
-import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 public class GetNotWorkingPlacesListAsyncTask extends AsyncTask<Void, Void, Void> {
 
-	private static final String TAG = "GetNotWorkingPlacesListAsyncTask";
+	//private static final String TAG = "GetNotWorkingPlacesListAsyncTask";
 	SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	String resourceURI;
 	

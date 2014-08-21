@@ -7,19 +7,7 @@ import hu.mep.mep_app.activities.ActivityLevel1;
 import hu.mep.utils.deserializers.ChatContactListDeserializer;
 import hu.mep.utils.deserializers.NotWorkingPlacesNotifyDeserializer;
 
-import java.io.IOException;
 import java.util.Calendar;
-import java.util.Iterator;
-
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.util.EntityUtils;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -134,14 +122,11 @@ public class NotiRunnable implements Runnable {
 
 	// rossz távf. lekérése
 	private void getRemotes(String dataToSend) {
-		
 		responseFromWrongRemotes = RealCommunicator.dohttpGet("ios_getHibasTf.php?userId="+ dataToSend + "&type=daily");
-		//Log.e(TAG, "getRemotes() --> response:" + responseFromWrongRemotes);
 	}
 
 	// van-e a rossz távf.
 	public Boolean gotWrongRemotes() {
-		//Log.e(TAG, "gotWrongRemotes() --> response:" + responseFromWrongRemotes);
 		
 		GsonBuilder gsonBuilder = new GsonBuilder();
 		gsonBuilder.registerTypeAdapter( Integer.class, new NotWorkingPlacesNotifyDeserializer());
@@ -152,71 +137,11 @@ public class NotiRunnable implements Runnable {
 	
 	// olvasatlan üzenetek lekérése
 	private void getUnreadMessages(String dataToSend) {
-		//Log.e(TAG, "getUnreadMessages, userId:  " + dataToSend);
-
 		responseFromUnreadMessagesPHP = RealCommunicator.dohttpGet("ios_getContactList.php?userId=" + dataToSend);
-		
-		/*
-		HttpClient httpClient = new DefaultHttpClient();
-		HttpPost httpPost = new HttpPost("http://www.megujuloenergiapark.hu/ios_getContactList.php?userId=" + dataToSend);
-
-		try {
-			// httpPost.setEntity(new StringEntity(dataToSend, "UTF-8"));
-
-			// Set up the header types needed to properly transfer JSON
-			httpPost.setHeader("Content-Type", "application/json");
-			httpPost.setHeader("Accept-Encoding", "application/json");
-			httpPost.setHeader("Accept-Language", "en-US");
-
-			// Execute POST
-			HttpResponse httpResponse = httpClient.execute(httpPost);
-			HttpEntity responseEntity = httpResponse.getEntity();
-			if (responseEntity != null) {
-				responseFromUnreadMessagesPHP = EntityUtils.toString(responseEntity);
-			} else {
-				responseFromUnreadMessagesPHP = "{\"NO DATA:\"NO DATA\"}";
-			}
-		} catch (ClientProtocolException e) {
-			responseFromUnreadMessagesPHP = "{\"ERROR\":"
-					+ e.getMessage().toString() + "}";
-		} catch (IOException e) {
-			responseFromUnreadMessagesPHP = "{\"ERROR\":"
-					+ e.getMessage().toString() + "}";
-		}*/
-
-		// Log.e(TAG, "response: " + responseFromUnreadMessagesPHP.toString());
 	}
 
 	// van-e olvasatlan üzenet
 	private Boolean gotUnreadMsg() {
-		/*int count = 0;
-		try {
-			if (responseFromUnreadMessagesPHP.compareTo("[]") != 0) {
-				JSONObject json = new JSONObject(
-						responseFromUnreadMessagesPHP.trim());
-				Iterator<?> keys = json.keys();
-
-				while (keys.hasNext()) {
-					String key = (String) keys.next();
-
-					if (json.get(key) instanceof JSONObject) {
-						if (((JSONObject) json.get(key))
-								.get("vanOlvasatlanTole").toString()
-								.compareTo("1") == 0) {
-							count++;
-						}
-					}
-				}
-			}
-		} catch (JSONException e) {
-			e.printStackTrace();
-			// Log.e(TAG, "gotUnreadMsg catch: " + e.toString());
-		}
-
-		if (count > 0)
-			return true;
-		else
-			return false;*/
 		
 		GsonBuilder gsonBuilder = new GsonBuilder();
 		gsonBuilder.registerTypeAdapter(ChatContactList.class, new ChatContactListDeserializer());
@@ -291,12 +216,6 @@ public class NotiRunnable implements Runnable {
 	private boolean isNotificationVisible(int id) {
 		Intent notificationIntent = new Intent(context, ActivityLevel1.class);
 		PendingIntent test = PendingIntent.getActivity(context, id,	notificationIntent, PendingIntent.FLAG_NO_CREATE);
-
-		// if (test != null) {
-		// Log.e(TAG, "test != null");
-		// } else {
-		// Log.e(TAG, "test == null");
-		// }
 
 		return test != null;
 	}

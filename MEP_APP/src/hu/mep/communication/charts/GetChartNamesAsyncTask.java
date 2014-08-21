@@ -3,9 +3,12 @@ package hu.mep.communication.charts;
 import hu.mep.communication.RealCommunicator;
 import hu.mep.datamodells.Session;
 import hu.mep.datamodells.charts.AllChartNames;
+import hu.mep.datamodells.charts.ChartName;
 import hu.mep.utils.deserializers.ChartNamesDeserializer;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -20,6 +23,7 @@ public class GetChartNamesAsyncTask extends	AsyncTask<Void, Void, Void> {
 	private String resourceURI;
 	private boolean forRemoteMonitoring;
 	private ProgressDialog pd;
+	//private static final String TAG = "GetChartNamesAsyncTask";
 
 	public GetChartNamesAsyncTask(Activity activity, boolean forRemoteMonitoring) {
 		super();
@@ -67,12 +71,19 @@ public class GetChartNamesAsyncTask extends	AsyncTask<Void, Void, Void> {
 	protected Void doInBackground(Void... params) {
 		String response = "";
 		response = RealCommunicator.dohttpGet(resourceURI);
-
-		GsonBuilder gsonBuilder = new GsonBuilder();
-		gsonBuilder.registerTypeAdapter(AllChartNames.class, new ChartNamesDeserializer());
-		Gson gson = gsonBuilder.create();
-		AllChartNames allChartInfo = gson.fromJson(response, AllChartNames.class);
-		Session.setAllChartNames(allChartInfo.getAllChartNames());
+		//Log.e(TAG, "getChartNames response: " + response);
+		
+		if(response.equals("null")) {
+			List<ChartName> allChartInfoContainer = new ArrayList<ChartName>();
+			Session.setAllChartNames(allChartInfoContainer);
+		} else {
+			GsonBuilder gsonBuilder = new GsonBuilder();
+			gsonBuilder.registerTypeAdapter(AllChartNames.class, new ChartNamesDeserializer());
+			Gson gson = gsonBuilder.create();
+			AllChartNames allChartInfo = gson.fromJson(response, AllChartNames.class);
+			Session.setAllChartNames(allChartInfo.getAllChartNames());
+		}
+		
 		return null;
 	}
 	

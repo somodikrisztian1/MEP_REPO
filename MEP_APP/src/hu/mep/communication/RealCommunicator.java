@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
+import org.apache.http.Header;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
@@ -31,11 +32,10 @@ import org.apache.http.message.BasicNameValuePair;
 
 import android.app.Activity;
 import android.content.Context;
-import android.util.Log;
 
 public class RealCommunicator implements ICommunicator {
 
-	private static final String TAG = "RealCommunicator";
+	//private static final String TAG = "RealCommunicator";
 	private static HttpClient httpclient = new DefaultHttpClient();
 	Context context;
 	final static String MainURL = "http://www.megujuloenergiapark.hu/";
@@ -172,20 +172,12 @@ public class RealCommunicator implements ICommunicator {
 	@Override
 	public void getCharPartnersImages() {
 		if(Session.getActualChatContactList().getContacts() != null) {
-			//Log.e(TAG, "download another chat partner's image");
 			
 			for (ChatContact actContact : Session.getActualChatContactList().getContacts()) {
 				if(actContact.getProfilePicture() == null) {
-					Log.e(TAG, "initialize with empty.jpg");
 					actContact.setProfilePicture(Session.getEmptyProfilePicture());
 				}
 			}
-			/*
-			ChatContact[] contactsArray = new ChatContact[Session.getActualChatContactList().getContacts().size()];
-			int ind = 0;
-			for (ChatContact chatContact : Session.getActualChatContactList().getContacts()) {
-				contactsArray[ind++] = chatContact;
-			}*/
 			
 			GetChatContactProfileImageAsyncTask imageGetter = new GetChatContactProfileImageAsyncTask();
 			imageGetter.execute();

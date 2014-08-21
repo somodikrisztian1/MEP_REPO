@@ -16,16 +16,16 @@ import com.google.gson.JsonParseException;
 
 public class ChartNamesDeserializer implements
 		JsonDeserializer<AllChartNames> {
+	
+	//private static final String TAG = "ChartNamesDeserializer";
 
 	@Override
 	public AllChartNames deserialize(JsonElement element, Type type,
 			JsonDeserializationContext context) throws JsonParseException {
 
 		List<ChartName> allChartInfoContainer = new ArrayList<ChartName>();
-		
 		if (element.isJsonObject()) {
 			JsonObject jsonObject = element.getAsJsonObject();
-
 			for (Map.Entry<String, JsonElement> entry : jsonObject.entrySet()) {
 				allChartInfoContainer.add((ChartName) context.deserialize(entry.getValue(), ChartName.class));
 			}

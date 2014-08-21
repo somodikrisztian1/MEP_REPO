@@ -56,8 +56,8 @@ public class RegistrationAssyncTask extends AsyncTask<Void, Void, HashMap<String
 		String notEncodedPassword = postDatas.get("password");
 		postDatas.put("password", MD5Encoder.encodePasswordWithMD5(notEncodedPassword));
 		
-		Log.e(TAG, "not encoded: " + notEncodedPassword);
-		Log.e(TAG, "encoded: " + postDatas.get("password"));
+		//Log.e(TAG, "not encoded: " + notEncodedPassword);
+		//Log.e(TAG, "encoded: " + postDatas.get("password"));
 		
 		try {
 			response = RealCommunicator.httpPost(resourceURI, postDatas);
@@ -68,13 +68,15 @@ public class RegistrationAssyncTask extends AsyncTask<Void, Void, HashMap<String
 		}
 
 		try {
-			Log.e("RESPONSE FOR REGISTRATION:", response);
+			//Log.e("RESPONSE FOR REGISTRATION:", response);
 			JSONObject jsonObject = new JSONObject(response);
 			JSONObject root =  jsonObject.getJSONObject("reg_status");
 			if(root.getInt("status") == 1 ) {
+				//Log.e(TAG, "success");
 				result.put(STATUS_TAG, SUCCESS);
 			}
 			else {
+				//Log.e(TAG, "unsuccess");
 				String errorMessage = root.getString("error");
 				result.put(STATUS_TAG, UNSUCCESS);
 				result.put(MESSAGE_TAG, errorMessage);

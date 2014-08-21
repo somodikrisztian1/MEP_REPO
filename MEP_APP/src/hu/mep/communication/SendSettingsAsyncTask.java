@@ -16,7 +16,7 @@ import android.util.Log;
 
 public class SendSettingsAsyncTask extends AsyncTask<Void, Void, Void> {
 
-	private static final String TAG = "SendSettingsAsyncTask";
+	// private static final String TAG = "SendSettingsAsyncTask";
 	
 	public static final int OPTION_ONLY_THERMOSTATS = 0;
 	public static final int OPTION_ONLY_TANKS = 1;
@@ -41,7 +41,7 @@ public class SendSettingsAsyncTask extends AsyncTask<Void, Void, Void> {
 	protected Void doInBackground(Void... params) {
 		
 		try {
-		logPostDatas(preparePostDatas());
+		//logPostDatas(preparePostDatas());
 		RealCommunicator.httpPost(resourceURI, preparePostDatas());
 		} catch (ClientProtocolException e) {
 			e.printStackTrace();
@@ -87,11 +87,12 @@ public class SendSettingsAsyncTask extends AsyncTask<Void, Void, Void> {
 		return postDatas;
 	}
 	
+	/*
 	private void logPostDatas(HashMap<String, String> postDatas) {
 		Log.e(TAG, "Logging post datas!!!");
 		for (Entry<String, String> act : postDatas.entrySet()) {
 			Log.e(TAG, act.getKey() + ":" + act.getValue());
 		}
 	}
-
+	 */
 }
