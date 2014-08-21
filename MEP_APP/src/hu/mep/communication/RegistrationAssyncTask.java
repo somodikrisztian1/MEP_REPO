@@ -15,7 +15,6 @@ import org.json.JSONObject;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
-import android.util.Log;
 
 public class RegistrationAssyncTask extends AsyncTask<Void, Void, HashMap<String, String>> {
 

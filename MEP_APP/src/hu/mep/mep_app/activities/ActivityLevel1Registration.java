@@ -35,7 +35,7 @@ public class ActivityLevel1Registration extends ActionBarActivity implements
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
+		Log.e("","");
 		if (Session.getInstance(this).isTablet()) {
 			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE); 
 		}

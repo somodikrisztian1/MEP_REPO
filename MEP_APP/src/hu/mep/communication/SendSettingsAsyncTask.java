@@ -6,13 +6,12 @@ import hu.mep.datamodells.settings.Slider;
 
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.Map.Entry;
 
 import org.apache.http.client.ClientProtocolException;
 
 import android.app.Activity;
 import android.os.AsyncTask;
-import android.util.Log;
+
 
 public class SendSettingsAsyncTask extends AsyncTask<Void, Void, Void> {
 
