@@ -65,7 +65,7 @@ public class ActivityLevel3ShowRemoteMonitoring extends ActionBarActivity
 
 		mViewPager = (ViewPager) findViewById(R.id.activity_thirdlevel_charts_pager);
 		mViewPager.setAdapter(mSectionsPagerAdapter);
-
+		mViewPager.setOffscreenPageLimit(100);
 		mViewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
 					@Override
 					public void onPageSelected(int position) {
@@ -330,14 +330,11 @@ public class ActivityLevel3ShowRemoteMonitoring extends ActionBarActivity
 		
 			if (Session.getActualRemoteMonitoring().isSolarPanel()) {
 				if (position == 0) {
-					return new FragmentLevel3ShowTopic(Session
-							.getActualLineAndBarChartContainer().getLineChart(), true);
+					return new FragmentLevel3ShowTopic(Session.getActualLineAndBarChartContainer().getLineChart(), true);
 				} else if (position == 1) {
-					return new FragmentLevel3ShowBarChart(Session
-							.getActualLineAndBarChartContainer().getMonthly(), true);
+					return new FragmentLevel3ShowBarChart(Session.getActualLineAndBarChartContainer().getMonthly(), true);
 				} else {
-					return new FragmentLevel3ShowBarChart(Session
-							.getActualLineAndBarChartContainer().getAnnually(), true);
+					return new FragmentLevel3ShowBarChart(Session.getActualLineAndBarChartContainer().getAnnually(), true);
 				}
 			} else {
 				if (getPageTitle(position).equals("Rendszerállapot")) {
@@ -345,7 +342,6 @@ public class ActivityLevel3ShowRemoteMonitoring extends ActionBarActivity
 				} else {
 					Session.setActualChart(Session.getAllCharts().get(position));
 					return new FragmentLevel3ShowTopic(Session.getActualChart(), true);
-
 				}
 			}
 		}

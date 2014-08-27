@@ -41,9 +41,15 @@ public class GetNotWorkingPlacesListAsyncTask extends AsyncTask<Void, Void, Void
 		HashMap<String, String> container = gson.fromJson(response, HashMap.class);
 		
 		for (Place act : Session.getActualUser().getUsersPlaces().getPlaces()) {
+			if(!Session.isAnyUserLoggedIn()) {
+				return null;
+			}
 			act.setWorkingProperly(true);
 		}
 		for (Entry<String, String> act : container.entrySet()) {
+			if(!Session.isAnyUserLoggedIn()) {
+				return null;
+			}
 			Session.getActualUser().getUsersPlaces().findPlaceByID(act.getKey()).setWorkingProperly(false);
 			Session.getActualUser().getUsersPlaces().findPlaceByID(act.getKey()).setLastWorkingText(act.getValue());
 		}

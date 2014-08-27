@@ -294,8 +294,7 @@ public class Session {
 		if(actualSettings != null) {
 			Session.actualSettings = newActualSettings;
 		} else {
-			Session.actualSettings = new Settings(newActualSettings.getSliders(), newActualSettings.getRelays(),
-					newActualSettings.getFunctions());
+			Session.actualSettings = new Settings(newActualSettings.getSliders(), newActualSettings.getRelays(), newActualSettings.getFunctions());
 		}
 	}
 

@@ -28,7 +28,7 @@
             android:text="19 C°" />
     </LinearLayout>
 
-    <SeekBar
+    <hu.mep.utils.others.Slider
         android:id="@+id/fragment_thirdlevel_settings_slider_seekbar"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

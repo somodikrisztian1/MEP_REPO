@@ -69,6 +69,14 @@ public class User {
 		return teacher;
 	}
 
+	public String getFullName() {
+		return fullName;
+	}
+
+	public boolean isModerator() {
+		return moderator;
+	}
+
 	public User(int mepID, String fullName, URL imageURL, boolean mekut,
 			boolean teacher, boolean moderator, PlaceList usersPlaces) {
 		super();

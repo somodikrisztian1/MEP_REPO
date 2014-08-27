@@ -11,6 +11,7 @@ import hu.mep.mep_app.FragmentLevel1ResearchCenterScreen;
 import hu.mep.mep_app.R;
 import hu.mep.utils.others.AlertDialogFactory;
 import hu.mep.utils.others.FragmentLevel1EventHandler;
+import hu.mep.utils.others.TagHolder;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
@@ -280,7 +281,22 @@ public class ActivityLevel1 extends ActionBarActivity implements
 				ft.addToBackStack("addLogin");
 				ft.commit();
 			} else {
+				/*Bundle bundle = new Bundle();
+				bundle.putInt(TagHolder.userMepIDTAG, Session.getActualUser().getMepID());
+				bundle.putString(TagHolder.userNameTAG, Session.getActualUser().getFullName());
+				bundle.putBoolean(TagHolder.userIsTeacherTag, Session.getActualUser().isTeacher());
+				
+				bundle.putBoolean(TagHolder.userIsMekutTag, Session.getActualUser().isMekut());
+				bundle.putBoolean(TagHolder.userIsModeratorTag, Session.getActualUser().isModerator());
+				bundle.putString(TagHolder.userImageURLTag, Session.getActualUser().getImageURL().toString());
+				
+				if(Session.getActualUser().getUsersPlaces() != null) {
+					bundle.putBoolean(TagHolder.userHasAnyPlacesTag, (Session.getActualUser().getUsersPlaces().getPlaces().size() > 0 ? true : false));
+				} else {
+					bundle.putBoolean(TagHolder.userHasAnyPlacesTag, false);
+				}*/
 				Intent i = new Intent(this, ActivityLevel2NEW.class);
+				//i.putExtras(bundle);
 				startActivity(i);
 			}
 			break;

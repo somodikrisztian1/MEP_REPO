@@ -38,7 +38,11 @@ public class ActivityLevel2NEW extends ActionBarActivity implements
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
+/*
+		if(savedInstanceState != null) {
+			// TODO!!!
+		}
+	*/	
 		// noti service elindítása
 		if (android.os.Build.VERSION.SDK_INT <= android.os.Build.VERSION_CODES.GINGERBREAD_MR1 || 
 				android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.ICE_CREAM_SANDWICH) {

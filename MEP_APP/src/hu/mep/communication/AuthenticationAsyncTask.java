@@ -86,10 +86,11 @@ public class AuthenticationAsyncTask extends AsyncTask<Void, Void, Boolean> {
 	}
 
 	@Override
-	protected void onPostExecute(Boolean result) {
+	protected void onPostExecute(Boolean result) { 
 		super.onPostExecute(result);
 		
 		if(result) {
+			Session.setAnyUserLoggedIn(true);
 			Session.dismissAndMakeNullProgressDialog();
 			GetTopicListAsyncTask at = new GetTopicListAsyncTask(activity);
 			at.execute();

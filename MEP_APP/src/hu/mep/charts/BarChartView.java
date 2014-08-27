@@ -107,7 +107,8 @@ public class BarChartView extends DemoView {
         renderer.setSeriesPaintType(0, gp0);
      
         CategoryAxis domainAxis = plot.getDomainAxis();
-        domainAxis.setCategoryLabelPositions(CategoryLabelPositions.createUpRotationLabelPositions(Math.PI / 6.0));
+        
+        domainAxis.setCategoryLabelPositions(CategoryLabelPositions.createUpRotationLabelPositions(Math.PI / 4.0f));
         // OPTIONAL CUSTOMISATION COMPLETED.
         
         return chart;

@@ -7,6 +7,7 @@ import hu.mep.mep_app.R;
 import java.util.List;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,12 +35,16 @@ public class PlaceListAdapter extends ArrayAdapter<Place> {
 	
 		View newRow = inflater.inflate(R.layout.listitem_remote_monitorings, parent, false);
 		TextView textview = (TextView) newRow.findViewById(R.id.remote_monitorings_listitem_textview_for_name);
-		textview.setText(Session.getActualUser().getUsersPlaces().getPlaces().get(position).getName());
+		String text = Session.getActualUser().getUsersPlaces().getPlaces().get(position).getName();
+		textview.setText(text);
+		textview.setSelected(true);
 		
 		ImageView imageView = (ImageView) newRow.findViewById(R.id.remote_monitorings_listitem_imageview_for_status);
 		if( Session.getActualUser().getUsersPlaces().getPlaces().get(position).isWorkingProperly() ) {
+			textview.setPadding(textview.getPaddingLeft(), textview.getPaddingTop(), 10, textview.getPaddingBottom());
 			imageView.setVisibility(View.INVISIBLE);
 		} else {
+			textview.setPadding(textview.getPaddingLeft(), textview.getPaddingTop(), 50, textview.getPaddingBottom());
 			imageView.setVisibility(View.VISIBLE);
 		}
 		return newRow;

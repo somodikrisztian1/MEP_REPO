@@ -1,6 +1,7 @@
 package hu.mep.communication;
 
 import hu.mep.datamodells.ChatContact;
+import hu.mep.datamodells.ChatContactList;
 import hu.mep.datamodells.Session;
 import hu.mep.mep_app.FragmentLevel2Chat;
 
@@ -10,7 +11,6 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
@@ -19,6 +19,7 @@ import android.os.AsyncTask;
 public class GetChatContactProfileImageAsyncTask extends AsyncTask<Void, Void, Void> {
 	
 	//private static final String TAG = "GetChatContactProfileImageAsyncTask";
+	private ChatContactList temp;
 	
 	public GetChatContactProfileImageAsyncTask() {
 	}
@@ -26,13 +27,18 @@ public class GetChatContactProfileImageAsyncTask extends AsyncTask<Void, Void, V
 	@Override
 	protected void onPreExecute() {
 		super.onPreExecute();
+		temp = Session.getActualChatContactList();
 	}
 	
 	@Override
 	protected Void doInBackground(Void... params) {
 	
-		for (ChatContact contact : Session.getActualChatContactList().getContacts()) {
-						
+		for (ChatContact contact : temp.getContacts()) {
+			
+			if(!Session.isAnyUserLoggedIn()) {
+				return null;
+			}
+			
 			Bitmap bmp;
 			URL imgURL = null;
 			if (contact.getImageURL().toUpperCase().endsWith(".JPG")

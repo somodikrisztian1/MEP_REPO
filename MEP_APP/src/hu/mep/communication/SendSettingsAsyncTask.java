@@ -6,16 +6,19 @@ import hu.mep.datamodells.settings.Slider;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Locale;
+//import java.util.Map.Entry;
 
 import org.apache.http.client.ClientProtocolException;
 
 import android.app.Activity;
 import android.os.AsyncTask;
+//import android.util.Log;
 
 
 public class SendSettingsAsyncTask extends AsyncTask<Void, Void, Void> {
 
-	// private static final String TAG = "SendSettingsAsyncTask";
+	//private static final String TAG = "SendSettingsAsyncTask";
 	
 	public static final int OPTION_ONLY_THERMOSTATS = 0;
 	public static final int OPTION_ONLY_TANKS = 1;
@@ -64,14 +67,14 @@ public class SendSettingsAsyncTask extends AsyncTask<Void, Void, Void> {
 		case OPTION_ONLY_THERMOSTATS:
 			for(Slider actSlider : Session.getTempSettings().getSliders()) {
 				if(!(actSlider.name.equals("th1_temp")) && !(actSlider.name.equals("tp1_temp"))) {
-					postDatas.put(actSlider.name, String.format("%.2f", actSlider.value));
+					postDatas.put(actSlider.name, String.format(Locale.US, "%.1f", actSlider.value));
 				}
 			}
 			break;
 		case OPTION_ONLY_TANKS:
 			for(Slider actSlider : Session.getTempSettings().getSliders()) {
 				if(actSlider.name.equals("th1_temp") || actSlider.name.equals("tp1_temp")) {
-					postDatas.put(actSlider.name, String.format("%.2f", actSlider.value));
+					postDatas.put(actSlider.name, String.format(Locale.US, "%.1f", actSlider.value));
 				}
 			}
 			break;
@@ -93,5 +96,5 @@ public class SendSettingsAsyncTask extends AsyncTask<Void, Void, Void> {
 			Log.e(TAG, act.getKey() + ":" + act.getValue());
 		}
 	}
-	 */
+	*/
 }

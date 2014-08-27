@@ -5,6 +5,7 @@ import hu.mep.datamodells.Session;
 import hu.mep.datamodells.charts.Chart;
 import hu.mep.datamodells.charts.ChartName;
 import hu.mep.mep_app.activities.ActivityLevel2NEW;
+import hu.mep.mep_app.activities.ActivityLevel3ShowRemoteMonitoring;
 import hu.mep.mep_app.activities.ActivityLevel3ShowTopic;
 import hu.mep.utils.deserializers.ChartDeserializer;
 
@@ -48,7 +49,7 @@ public class GetChartsAsyncTask extends AsyncTask<Void, Void, Void> {
 		this.pd.setCancelable(false);
 		
 		if(this.forRemoteMonitoring) {
-			this.pd.setMessage("Távfelügyelet betöltése...");
+			this.pd.setMessage("Logolási adatok letöltése...");
 		} else {
 			this.pd.setMessage("Témakör betöltése...");
 		}
@@ -108,18 +109,19 @@ public class GetChartsAsyncTask extends AsyncTask<Void, Void, Void> {
 	@Override
 	protected void onPostExecute(Void result) {
 		super.onPostExecute(result);
+		Session.dismissAndMakeNullProgressDialog();
 		
-		if(forRemoteMonitoring) {
-			Session.getActualCommunicationInterface().getActualRemoteMonitoringSettings(activity);
-		} else {
-			Session.dismissAndMakeNullProgressDialog();
-			
-			if (activity instanceof ActivityLevel3ShowTopic) {
-				((ActivityLevel3ShowTopic)activity).mSectionsPagerAdapter.notifyDataSetChanged();
-			} else if (activity instanceof ActivityLevel2NEW) {
+		if(activity instanceof ActivityLevel2NEW) {
+			if(!forRemoteMonitoring) {
 				Intent intent = new Intent(activity, ActivityLevel3ShowTopic.class);
 				activity.startActivity(intent);
+			} else {
+				Session.getActualCommunicationInterface().getActualRemoteMonitoringSettings(activity);
 			}
+		} else if(activity instanceof ActivityLevel3ShowRemoteMonitoring) {
+			((ActivityLevel3ShowRemoteMonitoring)activity).mSectionsPagerAdapter.notifyDataSetChanged();
+		} else if(activity instanceof ActivityLevel3ShowTopic) {
+			((ActivityLevel3ShowTopic)activity).mSectionsPagerAdapter.notifyDataSetChanged();
 		}
 	}
 

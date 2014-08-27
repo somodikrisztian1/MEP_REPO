@@ -1,6 +1,7 @@
 package hu.mep.utils.adapters;
 
 import java.util.List;
+import java.util.Locale;
 
 import hu.mep.communication.SendSettingsAsyncTask;
 import hu.mep.datamodells.Session;
@@ -10,8 +11,10 @@ import hu.mep.datamodells.settings.Slider;
 import hu.mep.mep_app.R;
 import android.app.Activity;
 import android.graphics.Color;
+//import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.CheckedTextView;
@@ -24,7 +27,7 @@ import android.widget.TextView;
 
 public class SettingsExpandableListAdapter extends BaseExpandableListAdapter {
 
-	//private static final String TAG = "SettingsExpandableListAdapter";
+	// private static final String TAG = "SettingsExpandableListAdapter";
 	private final String[] titles = { "Beállítások", "Relék", "Funkciók" };
 	public LayoutInflater inflater;
 	private Activity activity;
@@ -51,33 +54,35 @@ public class SettingsExpandableListAdapter extends BaseExpandableListAdapter {
 	}
 
 	@Override
-	public View getChildView(final int groupPosition, final int childPosition,
-			boolean isLastChild, View convertView, ViewGroup parent) {
+	public View getChildView(final int groupPosition, final int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
 		
 		if(groupPosition == 0) {
 			convertView = inflater.inflate(R.layout.listitem_settings_slider, parent, false);
 			//Log.e(TAG, "findViews...");
 			TextView nameTextView = (TextView)convertView.findViewById(R.id.fragment_thirdlevel_setting_slider_name);
 			final TextView valueTextView = (TextView)convertView.findViewById(R.id.fragment_thirdlevel_setting_slider_value);
-			SeekBar valueSeekBar = (SeekBar)convertView.findViewById(R.id.fragment_thirdlevel_settings_slider_seekbar);
+			hu.mep.utils.others.Slider valueSlider = (hu.mep.utils.others.Slider)convertView.findViewById(R.id.fragment_thirdlevel_settings_slider_seekbar);
 			//Log.e(TAG, "set values...");
 			nameTextView.setText(Session.getActualSettings().getSliders().get(childPosition).label);
-			valueTextView.setText(Session.getActualSettings().getSliders().get(childPosition).value + " C°");
-			final int lowerBound = (int)Session.getActualSettings().getSliders().get(childPosition).minValue;
-			final int upperBound = (int)Session.getActualSettings().getSliders().get(childPosition).maxValue;
-			int initProgressValues = (int)Session.getActualSettings().getSliders().get(childPosition).value;
-			valueSeekBar.setMax(upperBound-lowerBound);
-			valueSeekBar.setProgress(initProgressValues - lowerBound);
-			valueSeekBar.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
+			String temperatureValueText = String.format(Locale.US, "%.1f C°", Session.getActualSettings().getSliders().get(childPosition).value);
+			valueTextView.setText(temperatureValueText);
+			final int lowerBound = ((int)Session.getActualSettings().getSliders().get(childPosition).minValue) * 2;
+			final int upperBound = ((int)Session.getActualSettings().getSliders().get(childPosition).maxValue) * 2;
+			int initProgressValues = ((int)Session.getActualSettings().getSliders().get(childPosition).value) * 2;
+			valueSlider.setMax(upperBound-lowerBound);
+			valueSlider.setProgress(initProgressValues - lowerBound);
+			valueSlider.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
 				
 				private int lastValue;
 				
 				@Override
 				public void onStopTrackingTouch(SeekBar seekBar) {	
-					Session.getTempSettings().getSliders().get(childPosition).value = lastValue;
+					//Log.e(TAG, "value:" + String.format(Locale.US, "%.1f C°", lastValue / 2.0f));
+					Session.getTempSettings().getSliders().get(childPosition).value = lastValue / 2.0f;
 					if(Session.getTempSettings().getSliders().get(childPosition).name.equals("th1_temp") ||
-						Session.getTempSettings().getSliders().get(childPosition).name.equals("tp1_temp"))
-					Session.getActualCommunicationInterface().sendSettings(activity, SendSettingsAsyncTask.OPTION_ONLY_TANKS);
+						Session.getTempSettings().getSliders().get(childPosition).name.equals("tp1_temp")) {
+						Session.getActualCommunicationInterface().sendSettings(activity, SendSettingsAsyncTask.OPTION_ONLY_TANKS);
+					}
 					else {
 						Session.getActualCommunicationInterface().sendSettings(activity, SendSettingsAsyncTask.OPTION_ONLY_THERMOSTATS);
 					}
@@ -91,7 +96,7 @@ public class SettingsExpandableListAdapter extends BaseExpandableListAdapter {
 				@Override
 				public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
 					lastValue = progress + lowerBound;
-					valueTextView.setText(lastValue + " C°");
+					valueTextView.setText(String.format(Locale.US, "%.1f", lastValue / 2.0f) + " C°");
 				}
 			});
 			
@@ -101,7 +106,7 @@ public class SettingsExpandableListAdapter extends BaseExpandableListAdapter {
 			TextView statusTextView = (TextView) convertView.findViewById(R.id.fragment_thirdlevel_setting_relay_status);
 			nameTextView.setText(Session.getActualSettings().getRelays().get(childPosition).name);
 			boolean on = Session.getActualSettings().getRelays().get(childPosition).status;
-			String statusText = ( on ? "on" : "off");
+			String statusText = ( on ? "be" : "ki");
 			if(on) {
 				statusTextView.setTextColor(Color.rgb(0, 0, 0));
 			} else {

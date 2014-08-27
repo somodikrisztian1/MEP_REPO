@@ -59,7 +59,7 @@ public class GetTopicListAsyncTask extends AsyncTask<Void, Void, Void> {
 	protected void onPostExecute(Void result) {
 		super.onPostExecute(result);
 	
-		Session.dismissAndMakeNullProgressDialog();
+		//Session.dismissAndMakeNullProgressDialog();
 		Session.setAnyUserLoggedIn(true);
 		
 		Session.getActualCommunicationInterface().getChatPartners(activity);	

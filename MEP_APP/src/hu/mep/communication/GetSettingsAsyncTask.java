@@ -2,8 +2,10 @@ package hu.mep.communication;
 
 import hu.mep.datamodells.Session;
 import hu.mep.datamodells.settings.Settings;
+import hu.mep.mep_app.FragmentLevel3ShowSettings;
 import hu.mep.mep_app.activities.ActivityLevel2NEW;
 import hu.mep.mep_app.activities.ActivityLevel3ShowRemoteMonitoring;
+import hu.mep.mep_app.FragmentLevel3ShowSettings;
 import hu.mep.utils.deserializers.SettingsDeserializer;
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -19,14 +21,19 @@ public class GetSettingsAsyncTask extends AsyncTask<Void, Void, Void> {
 
 	private Activity activity;
 	private String resourceURI;
-	private ProgressDialog pd;
+	private ProgressDialog pdForRefresh;
+	private ProgressDialog pdForFirstLoad;
 	
 	public GetSettingsAsyncTask(Activity activity, String hostURI) {
 		this.activity = activity;
 		
-		this.pd = new ProgressDialog(activity);
-		this.pd.setMessage("Frissítés...");
-		this.pd.setCancelable(false);
+		this.pdForRefresh = new ProgressDialog(activity);
+		this.pdForRefresh.setMessage("Frissítés...");
+		this.pdForRefresh.setCancelable(false);
+		
+		this.pdForFirstLoad = new ProgressDialog(activity);
+		this.pdForFirstLoad.setMessage("Rendszerállapot letöltése...");
+		this.pdForFirstLoad.setCancelable(false);
 	}
 	
 	@Override
@@ -34,7 +41,10 @@ public class GetSettingsAsyncTask extends AsyncTask<Void, Void, Void> {
 		super.onPreExecute();
 		
 		if(activity instanceof ActivityLevel3ShowRemoteMonitoring) {
-			Session.setProgressDialog(pd);
+			Session.setProgressDialog(pdForRefresh);
+			Session.showProgressDialog();
+		} else if (activity instanceof ActivityLevel2NEW) {
+			Session.setProgressDialog(pdForFirstLoad);
 			Session.showProgressDialog();
 		}
 		
@@ -62,7 +72,9 @@ public class GetSettingsAsyncTask extends AsyncTask<Void, Void, Void> {
 		Session.dismissAndMakeNullProgressDialog();
 		
 		if (activity instanceof ActivityLevel3ShowRemoteMonitoring) {
-			((ActivityLevel3ShowRemoteMonitoring)activity).mSectionsPagerAdapter.notifyDataSetChanged();
+			// ((ActivityLevel3ShowRemoteMonitoring)activity).mSectionsPagerAdapter.notifyDataSetChanged();
+			int lastFragmentnumber = ((ActivityLevel3ShowRemoteMonitoring)activity).mSectionsPagerAdapter.getCount() -1;
+			((FragmentLevel3ShowSettings)((ActivityLevel3ShowRemoteMonitoring)activity).mSectionsPagerAdapter.getItem(lastFragmentnumber)).adapter.notifyDataSetChanged();;
 		} else if (activity instanceof ActivityLevel2NEW) {
 			Intent intent = new Intent(activity, ActivityLevel3ShowRemoteMonitoring.class);
 			activity.startActivity(intent);

@@ -3,38 +3,38 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="center_vertical"
-    android:orientation="horizontal"
+    android:layout_marginBottom="2dp"
+    android:layout_marginTop="2dp"
+    android:orientation="vertical"
     android:paddingLeft="40dp" >
 
-    <LinearLayout
-        android:layout_width="wrap_content"
+    <TextView
+        android:id="@+id/fragment_thirdlevel_setting_slider_name"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:orientation="vertical" >
+        android:layout_marginTop="4dp"
+        android:text="Szobatermosztát" />
 
-        <TextView
-            android:id="@+id/fragment_thirdlevel_setting_slider_name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="2dp"
-            android:text="Valami tartály..." />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
 
         <TextView
             android:id="@+id/fragment_thirdlevel_setting_slider_value"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_marginBottom="2dp"
             android:text="19 C°" />
-    </LinearLayout>
 
-    <SeekBar
-        android:id="@+id/fragment_thirdlevel_settings_slider_seekbar"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="10dp"
-        android:layout_weight="9" />
+        <hu.mep.utils.others.Slider
+            android:id="@+id/fragment_thirdlevel_settings_slider_seekbar"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_weight="9"/>
+    </LinearLayout>
 
 </LinearLayout>

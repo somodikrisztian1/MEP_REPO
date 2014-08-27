@@ -30,7 +30,7 @@ public class GetContactListAsyncTask extends AsyncTask<Void, Void, Void> {
 	@Override
 	protected void onPreExecute() {
 		super.onPreExecute();
-		// Log.e("ASYNCTASK", "onPreExecute() running");
+		// Log.e("ASYNCTASK", "onPreExecute() running");		
 		resourceURI = "ios_getContactList.php?userId=" + Session.getActualUser().getMepID();
 	}
 
@@ -59,7 +59,7 @@ public class GetContactListAsyncTask extends AsyncTask<Void, Void, Void> {
 	@Override
 	protected void onPostExecute(Void result) {
 		super.onPostExecute(result);
-		
+		Session.dismissAndMakeNullProgressDialog();
 		if(activity != null) {
 			Intent intent = new Intent(activity, ActivityLevel2NEW.class);
 			activity.startActivity(intent);
