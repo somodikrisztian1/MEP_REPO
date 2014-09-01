@@ -1,5 +1,6 @@
 package hu.mep.mep_app;
 
+import hu.mep.mep_app.activities.ActivityLevel1;
 import hu.mep.mep_app.activities.ActivityLevel1Registration;
 import hu.mep.utils.others.FragmentLevel1EventHandler;
 import android.app.Activity;
@@ -7,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,6 +25,8 @@ public class FragmentLevel1LoginScreen extends Fragment implements
 	//private static final String TAG = "FragmentLoginScreen";
 	private FragmentLevel1EventHandler fragmentEventHandler;
 
+	private int previousFragmentNumber;
+	
 	private EditText usernameEdittext;
 	private EditText passwordEdittext;
 	Button loginButton;
@@ -32,19 +36,15 @@ public class FragmentLevel1LoginScreen extends Fragment implements
 	}
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
-		View rootView = inflater.inflate(
-				R.layout.fragment_firstlevel_login_screen, container, false);
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		View rootView = inflater.inflate(R.layout.fragment_firstlevel_login_screen, container, false);
 
+		previousFragmentNumber = ((ActivityLevel1)getActivity()).actualFragmentNumber;
 		getActivity().setTitle(getResources().getString(R.string.login));
 
-		usernameEdittext = (EditText) rootView
-				.findViewById(R.id.fragment_login_screen_username_edittext);
-		passwordEdittext = (EditText) rootView
-				.findViewById(R.id.fragment_login_screen_password_edittext);
-		loginButton = (Button) rootView
-				.findViewById(R.id.fragment_login_screen_login_button);
+		usernameEdittext = (EditText) rootView.findViewById(R.id.fragment_login_screen_username_edittext);
+		passwordEdittext = (EditText) rootView.findViewById(R.id.fragment_login_screen_password_edittext);
+		loginButton = (Button) rootView.findViewById(R.id.fragment_login_screen_login_button);
 		regButton = (Button) rootView.findViewById(R.id.fragment_login_screen_registration_button);
 
 		usernameEdittext.setFocusable(true);
@@ -57,7 +57,6 @@ public class FragmentLevel1LoginScreen extends Fragment implements
 
 					@Override
 					public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-						/* Talán szebb lenne a billentyűzetet is eltűntetni, de egyenlőre jó így... :D */
 						
 						InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
 						imm.hideSoftInputFromWindow(loginButton.getWindowToken(), 0);
@@ -68,6 +67,19 @@ public class FragmentLevel1LoginScreen extends Fragment implements
 				});
 		return rootView;
 	}
+	
+	@Override
+	public void onPause() {
+		super.onPause();
+		Log.e("test", "previousFragmentNumber is " +previousFragmentNumber);
+		if((previousFragmentNumber < 0) || (previousFragmentNumber > 4)) {
+			getActivity().setTitle(getActivity().getResources().getString(R.string.fragment_main_screen_title));
+			//Log.e("Login screen ... onPause", "főképernyőről kerültünk ide..." );
+		} else {
+			getActivity().setTitle(((ActivityLevel1)getActivity()).firstActivityDrawerStrings[previousFragmentNumber]);
+			//Log.e("Login screen ... onPause", ((ActivityLevel1)getActivity()).firstActivityDrawerStrings[previousFragmentNumber]);
+		}
+	};
 
 	@Override
 	public void onAttach(Activity activity) {

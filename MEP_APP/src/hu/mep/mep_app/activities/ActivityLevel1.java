@@ -24,6 +24,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -39,7 +40,7 @@ public class ActivityLevel1 extends ActionBarActivity implements
 
 	// private static final String TAG = "FirstActivity";
 
-	private String[] firstActivityDrawerStrings;
+	public String[] firstActivityDrawerStrings;
 	private DrawerLayout firstActivityDrawerLayout;
 	private ListView firstActivityDrawerListView;
 	private ActionBarDrawerToggle drawerToggle;
@@ -55,7 +56,7 @@ public class ActivityLevel1 extends ActionBarActivity implements
 	private static final int DRAWER_LIST_CONTACTS_NUMBER = 4;
 	private static final int DRAWER_LIST_LOGIN_LOGOUT_NUMBER = 5;
 
-	private int actualFragmentNumber;
+	public int actualFragmentNumber;
 	private FragmentManager fragmentManager;
 	public EditText usernameEdittext;
 	public EditText passwordEdittext;
@@ -83,21 +84,16 @@ public class ActivityLevel1 extends ActionBarActivity implements
 		firstActivityDrawerLayout = (DrawerLayout) findViewById(R.id.first_activity_drawer_layout);
 		firstActivityDrawerListView = (ListView) findViewById(R.id.first_activity_drawer_listview);
 
-		firstActivityDrawerStrings = getResources().getStringArray(
-				R.array.activity_level1_drawer_items_list);
+		firstActivityDrawerStrings = getResources().getStringArray(R.array.activity_level1_drawer_items_list);
 
-		drawerAdapter = new ArrayAdapter<String>(this,
-				R.layout.listitem_drawer, firstActivityDrawerStrings);
+		drawerAdapter = new ArrayAdapter<String>(this, R.layout.listitem_drawer, firstActivityDrawerStrings);
 		firstActivityDrawerListView.setAdapter(drawerAdapter);
 
-		firstActivityDrawerListView
-				.setOnItemClickListener(new DrawerItemClickListener());
+		firstActivityDrawerListView.setOnItemClickListener(new DrawerItemClickListener());
 
 		mActionBar = getSupportActionBar();
 
-		drawerToggle = new ActionBarDrawerToggle(this,
-				firstActivityDrawerLayout, R.drawable.ic_drawer,
-				R.string.drawer_open, R.string.drawer_close) {
+		drawerToggle = new ActionBarDrawerToggle(this, firstActivityDrawerLayout, R.drawable.ic_drawer,	R.string.drawer_open, R.string.drawer_close) {
 
 			/** Called when a drawer has settled in a completely closed state. */
 			public void onDrawerClosed(View view) {
@@ -108,8 +104,9 @@ public class ActivityLevel1 extends ActionBarActivity implements
 					invalidateOptionsMenu();
 				}
 				if( (actualFragmentNumber > -1) && (actualFragmentNumber < 5)) {
-						String[] titles = getResources().getStringArray(R.array.activity_level1_drawer_items_list);
-						setTitle(titles[actualFragmentNumber]);
+						//String[] titles = getResources().getStringArray(R.array.activity_level1_drawer_items_list);
+						//setTitle(titles[actualFragmentNumber]);
+						setTitle(firstActivityDrawerStrings[actualFragmentNumber]);
 				}
 			}
 
@@ -141,8 +138,7 @@ public class ActivityLevel1 extends ActionBarActivity implements
 
 			newFragment = new FragmentLevel1MainScreen();
 			args = new Bundle();
-			args.putInt(FragmentLevel1MainScreen.CLICKED_DRAWER_ITEM_NUMBER,
-					DRAWER_LIST_MAIN_PAGE_NUMBER);
+			args.putInt(FragmentLevel1MainScreen.CLICKED_DRAWER_ITEM_NUMBER, DRAWER_LIST_MAIN_PAGE_NUMBER);
 			newFragment.setArguments(args);
 
 			ft.replace(R.id.first_activity_frame, newFragment);
@@ -246,12 +242,20 @@ public class ActivityLevel1 extends ActionBarActivity implements
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
 		boolean drawerOpen = firstActivityDrawerLayout.isDrawerOpen(firstActivityDrawerListView);
+		Log.e("ActivityLevel1 onPrepareOptionsMenu", getSupportActionBar().getTitle().toString());
 		if(actualFragmentNumber != DRAWER_LIST_LOGIN_LOGOUT_NUMBER) {
 			menu.findItem(R.id.action_login).setVisible(!drawerOpen);
-		} else {
+		} else if(getSupportActionBar().getTitle().toString().equals("Bejelentkezés")) {
+			Log.e("ActivityLevel1 onPrepareOptionsMenu", "ITT VAN A KUTYA! :D");
 			menu.findItem(R.id.action_login).setVisible(false);
 		}
 		return super.onPrepareOptionsMenu(menu);
+	}
+	
+	@Override
+	public void invalidateOptionsMenu() {
+		super.invalidateOptionsMenu();
+		
 	}
 	
 	@Override
@@ -268,14 +272,14 @@ public class ActivityLevel1 extends ActionBarActivity implements
 				/*menu.findItem(R.id.action_login).setVisible(false);*/
 				
 				Fragment newFragment = null;
-				Bundle args;
+				//Bundle args;
 				FragmentTransaction ft = fragmentManager.beginTransaction();
 				newFragment = new FragmentLevel1LoginScreen();
 
-				args = new Bundle();
-				actualFragmentNumber = DRAWER_LIST_LOGIN_LOGOUT_NUMBER;
-				args.putInt(FragmentLevel1MainScreen.CLICKED_DRAWER_ITEM_NUMBER, actualFragmentNumber);
-				newFragment.setArguments(args);
+				//args = new Bundle();
+				//actualFragmentNumber = DRAWER_LIST_LOGIN_LOGOUT_NUMBER;
+				//args.putInt(FragmentLevel1MainScreen.CLICKED_DRAWER_ITEM_NUMBER, actualFragmentNumber);
+				//newFragment.setArguments(args);
 				
 				ft.replace(R.id.first_activity_frame, newFragment);
 				ft.addToBackStack("addLogin");
