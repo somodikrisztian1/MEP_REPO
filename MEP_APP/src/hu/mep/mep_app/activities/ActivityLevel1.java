@@ -1,5 +1,7 @@
 package hu.mep.mep_app.activities;
 
+import java.util.HashMap;
+
 import hu.mep.communication.NetThread;
 import hu.mep.datamodells.Session;
 import hu.mep.mep_app.FragmentLevel1AboutRemoteScreen;
@@ -12,6 +14,7 @@ import hu.mep.mep_app.R;
 import hu.mep.utils.others.AlertDialogFactory;
 import hu.mep.utils.others.FragmentLevel1EventHandler;
 import hu.mep.utils.others.TagHolder;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
@@ -24,7 +27,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
+
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -35,12 +38,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
-public class ActivityLevel1 extends ActionBarActivity implements
+@SuppressLint("NewApi") public class ActivityLevel1 extends ActionBarActivity implements
 		FragmentLevel1EventHandler {
 
 	// private static final String TAG = "FirstActivity";
 
 	public String[] firstActivityDrawerStrings;
+	public static HashMap<Integer, String> titleStrings = new HashMap<Integer, String>();
 	private DrawerLayout firstActivityDrawerLayout;
 	private ListView firstActivityDrawerListView;
 	private ActionBarDrawerToggle drawerToggle;
@@ -48,13 +52,13 @@ public class ActivityLevel1 extends ActionBarActivity implements
 
 	private CharSequence drawerTitle;
 
-	private static final int DRAWER_LIST_MAIN_PAGE_NUMBER = -1;
-	private static final int DRAWER_LIST_PRESENTATION_PARK_NUMBER = 0;
-	private static final int DRAWER_LIST_GALLERY_NUMBER = 1;
-	private static final int DRAWER_LIST_ABOUT_REMOTE_NUMBER = 2;
-	private static final int DRAWER_LIST_RESEARCH_CENTER_NUMBER = 3;
-	private static final int DRAWER_LIST_CONTACTS_NUMBER = 4;
-	private static final int DRAWER_LIST_LOGIN_LOGOUT_NUMBER = 5;
+	public static final int DRAWER_LIST_MAIN_PAGE_NUMBER = -1;
+	public static final int DRAWER_LIST_PRESENTATION_PARK_NUMBER = 0;
+	public static final int DRAWER_LIST_GALLERY_NUMBER = 1;
+	public static final int DRAWER_LIST_ABOUT_REMOTE_NUMBER = 2;
+	public static final int DRAWER_LIST_RESEARCH_CENTER_NUMBER = 3;
+	public static final int DRAWER_LIST_CONTACTS_NUMBER = 4;
+	public static final int DRAWER_LIST_LOGIN_LOGOUT_NUMBER = 5;
 
 	public int actualFragmentNumber;
 	private FragmentManager fragmentManager;
@@ -65,17 +69,24 @@ public class ActivityLevel1 extends ActionBarActivity implements
 	
 	private Menu menu;
 
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
 		if (Session.getInstance(this).isTablet()) {
 			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE); 
-		}
-		else {
+		} else {
 			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 		}
+		
+		firstActivityDrawerStrings = getResources().getStringArray(R.array.activity_level1_drawer_items_list);
+		
+		titleStrings.put(DRAWER_LIST_MAIN_PAGE_NUMBER, getResources().getString(R.string.fragment_main_screen_title));
+		titleStrings.put(DRAWER_LIST_PRESENTATION_PARK_NUMBER, firstActivityDrawerStrings[DRAWER_LIST_PRESENTATION_PARK_NUMBER]);
+		titleStrings.put(DRAWER_LIST_ABOUT_REMOTE_NUMBER, firstActivityDrawerStrings[DRAWER_LIST_ABOUT_REMOTE_NUMBER]);
+		titleStrings.put(DRAWER_LIST_RESEARCH_CENTER_NUMBER, firstActivityDrawerStrings[DRAWER_LIST_RESEARCH_CENTER_NUMBER]);
+		titleStrings.put(DRAWER_LIST_CONTACTS_NUMBER, firstActivityDrawerStrings[DRAWER_LIST_CONTACTS_NUMBER]);
+		titleStrings.put(DRAWER_LIST_LOGIN_LOGOUT_NUMBER, getResources().getString(R.string.login));
 
 		fragmentManager = getSupportFragmentManager();
 		setContentView(R.layout.activity_first);
@@ -83,8 +94,6 @@ public class ActivityLevel1 extends ActionBarActivity implements
 		drawerTitle = getTitle();
 		firstActivityDrawerLayout = (DrawerLayout) findViewById(R.id.first_activity_drawer_layout);
 		firstActivityDrawerListView = (ListView) findViewById(R.id.first_activity_drawer_listview);
-
-		firstActivityDrawerStrings = getResources().getStringArray(R.array.activity_level1_drawer_items_list);
 
 		drawerAdapter = new ArrayAdapter<String>(this, R.layout.listitem_drawer, firstActivityDrawerStrings);
 		firstActivityDrawerListView.setAdapter(drawerAdapter);
@@ -98,27 +107,17 @@ public class ActivityLevel1 extends ActionBarActivity implements
 			/** Called when a drawer has settled in a completely closed state. */
 			public void onDrawerClosed(View view) {
 				super.onDrawerClosed(view);
-				if(Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
-					supportInvalidateOptionsMenu();
-				} else {
-					invalidateOptionsMenu();
+				if(actualFragmentNumber != DRAWER_LIST_GALLERY_NUMBER) {
+					setTitle( titleStrings.get(actualFragmentNumber) );
 				}
-				if( (actualFragmentNumber > -1) && (actualFragmentNumber < 5)) {
-						//String[] titles = getResources().getStringArray(R.array.activity_level1_drawer_items_list);
-						//setTitle(titles[actualFragmentNumber]);
-						setTitle(firstActivityDrawerStrings[actualFragmentNumber]);
-				}
+				invalidateOptionsMenu();
 			}
 
 			/** Called when a drawer has settled in a completely open state. */
 			public void onDrawerOpened(View drawerView) {
 				super.onDrawerOpened(drawerView);
 				setTitle(drawerTitle);
-				if(Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
-					supportInvalidateOptionsMenu();
-				} else {
-					invalidateOptionsMenu();
-				}
+				invalidateOptionsMenu();
 			}
 
 		};
@@ -159,58 +158,55 @@ public class ActivityLevel1 extends ActionBarActivity implements
 	private class DrawerItemClickListener implements ListView.OnItemClickListener {
 		@Override
 		public void onItemClick(AdapterView<?> parent, View view, int position,	long id) {
-			handleDrawerClick(position);
-		}
-	}
-
-	private void handleDrawerClick(int position) {
-		int previousFragmentNumber = actualFragmentNumber;
-		actualFragmentNumber = position;
-		Fragment newFragment = null;
-		FragmentTransaction ft = fragmentManager.beginTransaction();
-		
-		boolean readyForFragmentLoading = false;
-		switch (actualFragmentNumber) {
-
-		case DRAWER_LIST_PRESENTATION_PARK_NUMBER:
-			newFragment = new FragmentLevel1RepresentationParkScreen();
-			readyForFragmentLoading = true;
-			break;
-		case DRAWER_LIST_GALLERY_NUMBER:
-			actualFragmentNumber = previousFragmentNumber;
-			if (NetThread.isOnline(this)) {
-				Session.getActualCommunicationInterface().getGalleryURLsAndPictures(this);
-			} else {
-				Session.setAlertDialog(AlertDialogFactory.prepareAlertDialogForNoConnection(ActivityLevel1.this));
-				Session.showAlertDialog();
-			}
+			int previousFragmentNumber = actualFragmentNumber;
+			actualFragmentNumber = position;
+			Fragment newFragment = null;
+			FragmentTransaction ft = fragmentManager.beginTransaction();
 			
-			break;
-		case DRAWER_LIST_RESEARCH_CENTER_NUMBER:
-			newFragment = new FragmentLevel1ResearchCenterScreen();
-			readyForFragmentLoading = true;
-			break;
-		case DRAWER_LIST_ABOUT_REMOTE_NUMBER:
-			newFragment = new FragmentLevel1AboutRemoteScreen();
-			readyForFragmentLoading = true;
-			break;
-		case DRAWER_LIST_CONTACTS_NUMBER:
-			newFragment = new FragmentLevel1ContactsScreen();
-			readyForFragmentLoading = true;
-			break;
-		default:
-			break;
-		}
-		if (readyForFragmentLoading) {
-			ft.replace(R.id.first_activity_frame, newFragment);
-			ft.commit();
-		}
+			boolean readyForFragmentLoading = false;
+			switch (actualFragmentNumber) {
 
-		if (position > -1 && position != DRAWER_LIST_GALLERY_NUMBER) {
-			firstActivityDrawerListView.setItemChecked(position, true);
-			setTitle(firstActivityDrawerStrings[position]);
+			case DRAWER_LIST_PRESENTATION_PARK_NUMBER:
+				newFragment = new FragmentLevel1RepresentationParkScreen();
+				readyForFragmentLoading = true;
+				break;
+			case DRAWER_LIST_GALLERY_NUMBER:
+				actualFragmentNumber = previousFragmentNumber;
+				if (NetThread.isOnline(ActivityLevel1.this)) {
+					Session.getActualCommunicationInterface().getGalleryURLsAndPictures(ActivityLevel1.this);
+				} else {
+					Session.setAlertDialog(AlertDialogFactory.prepareAlertDialogForNoConnection(ActivityLevel1.this));
+					Session.showAlertDialog();
+				}
+				break;
+			case DRAWER_LIST_RESEARCH_CENTER_NUMBER:
+				newFragment = new FragmentLevel1ResearchCenterScreen();
+				readyForFragmentLoading = true;
+				break;
+			case DRAWER_LIST_ABOUT_REMOTE_NUMBER:
+				newFragment = new FragmentLevel1AboutRemoteScreen();
+				readyForFragmentLoading = true;
+				break;
+			case DRAWER_LIST_CONTACTS_NUMBER:
+				newFragment = new FragmentLevel1ContactsScreen();
+				readyForFragmentLoading = true;
+				break;
+			default:
+				break;
+			}
+			if (readyForFragmentLoading) {
+				ft.replace(R.id.first_activity_frame, newFragment);
+				ft.commit();
+			}
+
+			if (position > -1 && position != DRAWER_LIST_GALLERY_NUMBER) {
+				firstActivityDrawerListView.setItemChecked(position, true);	
+			}
+			if(position != DRAWER_LIST_GALLERY_NUMBER) {
+				setTitle(titleStrings.get(position));
+			}
+			firstActivityDrawerLayout.closeDrawer(firstActivityDrawerListView);
 		}
-		firstActivityDrawerLayout.closeDrawer(firstActivityDrawerListView);
 	}
 
 	@Override
@@ -242,20 +238,12 @@ public class ActivityLevel1 extends ActionBarActivity implements
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
 		boolean drawerOpen = firstActivityDrawerLayout.isDrawerOpen(firstActivityDrawerListView);
-		Log.e("ActivityLevel1 onPrepareOptionsMenu", getSupportActionBar().getTitle().toString());
 		if(actualFragmentNumber != DRAWER_LIST_LOGIN_LOGOUT_NUMBER) {
 			menu.findItem(R.id.action_login).setVisible(!drawerOpen);
-		} else if(getSupportActionBar().getTitle().toString().equals("Bejelentkezés")) {
-			Log.e("ActivityLevel1 onPrepareOptionsMenu", "ITT VAN A KUTYA! :D");
+		} else {
 			menu.findItem(R.id.action_login).setVisible(false);
 		}
 		return super.onPrepareOptionsMenu(menu);
-	}
-	
-	@Override
-	public void invalidateOptionsMenu() {
-		super.invalidateOptionsMenu();
-		
 	}
 	
 	@Override
@@ -269,7 +257,6 @@ public class ActivityLevel1 extends ActionBarActivity implements
 			}
 
 			if (Session.getActualUser() == null) {
-				/*menu.findItem(R.id.action_login).setVisible(false);*/
 				
 				Fragment newFragment = null;
 				//Bundle args;
@@ -281,7 +268,7 @@ public class ActivityLevel1 extends ActionBarActivity implements
 				//args.putInt(FragmentLevel1MainScreen.CLICKED_DRAWER_ITEM_NUMBER, actualFragmentNumber);
 				//newFragment.setArguments(args);
 				
-				ft.replace(R.id.first_activity_frame, newFragment);
+				ft.replace(R.id.first_activity_frame, newFragment, "LOGIN");
 				ft.addToBackStack("addLogin");
 				ft.commit();
 			} else {
@@ -314,6 +301,14 @@ public class ActivityLevel1 extends ActionBarActivity implements
 		return super.onOptionsItemSelected(item);
 	}
 
+	public void invalidateOptionsMenu() {
+		if(Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
+			supportInvalidateOptionsMenu();
+		} else {
+			invalidateOptionsMenu();
+		}
+	}
+	
 	@Override
 	public boolean onLoginButtonPressed(final String username, final String password) {
 		

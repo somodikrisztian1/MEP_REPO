@@ -21,17 +21,14 @@ public class ChatMessageRefresherRunnable implements Runnable {
 
 		while (true) {
 			if (running) {
-				if (!running)
-					continue;
 				if (Session.isAnyUserLoggedIn()) {
 					Session.getActualCommunicationInterface().getChatMessages();
 				}
-
-				try {
-					Thread.sleep(WAIT_TIME);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
+			}
+			try {
+				Thread.sleep(WAIT_TIME);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
 			}
 		}
 	}

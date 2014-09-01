@@ -28,25 +28,27 @@ public class ChatContactListAdapter extends ArrayAdapter<ChatContact> {
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		View newRow = inflater.inflate(R.layout.listitem_chatcontacts, parent, false);
-		TextView textview = (TextView) newRow.findViewById(R.id.activity_secondlevel_chat_textview_for_name);
+		if(convertView == null) {
+			convertView = inflater.inflate(R.layout.listitem_chatcontacts, parent, false);
+		} 
+		TextView textview = (TextView) convertView.findViewById(R.id.activity_secondlevel_chat_textview_for_name);
 		textview.setText(Session.getActualChatContactList().getContacts().get(position).getName());
 		if(Session.getActualChatContactList().getContacts().get(position).getUnreadedMessageNumber() != 0 ) {
 			textview.setTypeface(null, Typeface.BOLD);
 		} else {
 			textview.setTypeface(null, Typeface.NORMAL);
 		}		
-		
-		ImageView profilePictureView = (ImageView) newRow.findViewById(R.id.activity_secondlevel_chat_imageview_for_profile_picture);
+			
+		ImageView profilePictureView = (ImageView) convertView.findViewById(R.id.activity_secondlevel_chat_imageview_for_profile_picture);
 		profilePictureView.setImageBitmap(Session.getActualChatContactList().getContacts().get(position).getProfilePicture());
 		
-		ImageView statePictureView = (ImageView) newRow.findViewById(R.id.activity_secondlevel_chat_imageview_for_state);
+		ImageView statePictureView = (ImageView) convertView.findViewById(R.id.activity_secondlevel_chat_imageview_for_state);
 		if(Session.getActualChatContactList().getContacts().get(position).isOnline() != 0) {
 			statePictureView.setVisibility(View.VISIBLE);
 		} else {
 			statePictureView.setVisibility(View.INVISIBLE);
-		}
-	return newRow;
+		} 
+		return convertView;
 	}
 	
 	@Override

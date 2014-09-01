@@ -3,12 +3,12 @@ package hu.mep.mep_app;
 import hu.mep.mep_app.activities.ActivityLevel1;
 import hu.mep.mep_app.activities.ActivityLevel1Registration;
 import hu.mep.utils.others.FragmentLevel1EventHandler;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,8 +40,7 @@ public class FragmentLevel1LoginScreen extends Fragment implements
 		View rootView = inflater.inflate(R.layout.fragment_firstlevel_login_screen, container, false);
 
 		previousFragmentNumber = ((ActivityLevel1)getActivity()).actualFragmentNumber;
-		getActivity().setTitle(getResources().getString(R.string.login));
-
+		
 		usernameEdittext = (EditText) rootView.findViewById(R.id.fragment_login_screen_username_edittext);
 		passwordEdittext = (EditText) rootView.findViewById(R.id.fragment_login_screen_password_edittext);
 		loginButton = (Button) rootView.findViewById(R.id.fragment_login_screen_login_button);
@@ -68,17 +67,20 @@ public class FragmentLevel1LoginScreen extends Fragment implements
 		return rootView;
 	}
 	
-	@Override
+	@SuppressLint("NewApi") @Override
+	public void onResume() {
+		super.onResume();
+		((ActivityLevel1)getActivity()).actualFragmentNumber = ActivityLevel1.DRAWER_LIST_LOGIN_LOGOUT_NUMBER;
+		((ActivityLevel1)getActivity()).setTitle(ActivityLevel1.titleStrings.get(ActivityLevel1.DRAWER_LIST_LOGIN_LOGOUT_NUMBER));
+		((ActivityLevel1)getActivity()).invalidateOptionsMenu();
+	}
+	
+	@SuppressLint("NewApi") @Override
 	public void onPause() {
 		super.onPause();
-		Log.e("test", "previousFragmentNumber is " +previousFragmentNumber);
-		if((previousFragmentNumber < 0) || (previousFragmentNumber > 4)) {
-			getActivity().setTitle(getActivity().getResources().getString(R.string.fragment_main_screen_title));
-			//Log.e("Login screen ... onPause", "főképernyőről kerültünk ide..." );
-		} else {
-			getActivity().setTitle(((ActivityLevel1)getActivity()).firstActivityDrawerStrings[previousFragmentNumber]);
-			//Log.e("Login screen ... onPause", ((ActivityLevel1)getActivity()).firstActivityDrawerStrings[previousFragmentNumber]);
-		}
+		((ActivityLevel1)getActivity()).actualFragmentNumber = previousFragmentNumber;
+		((ActivityLevel1)getActivity()).setTitle(ActivityLevel1.titleStrings.get(previousFragmentNumber));
+		((ActivityLevel1)getActivity()).invalidateOptionsMenu();
 	};
 
 	@Override

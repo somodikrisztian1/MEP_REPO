@@ -4,7 +4,7 @@ import hu.mep.datamodells.Session;
 
 public class ContactListRefresherRunnable implements Runnable {
 
-	//private static final String TAG = "ContactListRefresherRunnable";
+	// private static final String TAG = "ContactListRefresherRunnable";
 	private static long WAIT_TIME = 5000L;
 	private boolean running = true;
 
@@ -21,18 +21,16 @@ public class ContactListRefresherRunnable implements Runnable {
 
 		while (true) {
 			if (running) {
-				if (!running) continue;
-				if(Session.isAnyUserLoggedIn()) {
+				if (Session.isAnyUserLoggedIn()) {
 					Session.getActualCommunicationInterface().getChatPartners();
 				}
-				
-					try {
-						Thread.sleep(WAIT_TIME);
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
-				}
+			}
+			try {
+				Thread.sleep(WAIT_TIME);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
 			}
 		}
 	}
 
+}
