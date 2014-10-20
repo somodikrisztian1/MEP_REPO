@@ -1,20 +1,23 @@
 package hu.mep.mep_app.activities;
 
-import java.util.HashMap;
-
 import hu.mep.communication.NetThread;
 import hu.mep.datamodells.Session;
 import hu.mep.mep_app.FragmentLevel1AboutRemoteScreen;
 import hu.mep.mep_app.FragmentLevel1ContactsScreen;
 import hu.mep.mep_app.FragmentLevel1LoginScreen;
 import hu.mep.mep_app.FragmentLevel1MainScreen;
+import hu.mep.mep_app.FragmentLevel1MepLiveScreen;
+import hu.mep.mep_app.FragmentLevel1NewsScreen;
 import hu.mep.mep_app.FragmentLevel1RepresentationParkScreen;
 import hu.mep.mep_app.FragmentLevel1ResearchCenterScreen;
 import hu.mep.mep_app.R;
 import hu.mep.utils.others.AlertDialogFactory;
 import hu.mep.utils.others.FragmentLevel1EventHandler;
-import hu.mep.utils.others.TagHolder;
+
+import java.util.HashMap;
+
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
@@ -27,7 +30,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
-
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -57,8 +59,10 @@ import android.widget.ListView;
 	public static final int DRAWER_LIST_GALLERY_NUMBER = 1;
 	public static final int DRAWER_LIST_ABOUT_REMOTE_NUMBER = 2;
 	public static final int DRAWER_LIST_RESEARCH_CENTER_NUMBER = 3;
-	public static final int DRAWER_LIST_CONTACTS_NUMBER = 4;
-	public static final int DRAWER_LIST_LOGIN_LOGOUT_NUMBER = 5;
+	public static final int DRAWER_LIST_NEWS_NUMBER = 4;
+	public static final int DRAWER_LIST_MEP_LIVE_NUMBER = 5;
+	public static final int DRAWER_LIST_CONTACTS_NUMBER = 6;
+	public static final int DRAWER_LIST_LOGIN_LOGOUT_NUMBER = 7;
 
 	public int actualFragmentNumber;
 	private FragmentManager fragmentManager;
@@ -66,9 +70,8 @@ import android.widget.ListView;
 	public EditText passwordEdittext;
 	public Button loginButton;
 	private ArrayAdapter<String> drawerAdapter;
+	private MenuItem loginMenu;
 	
-	private Menu menu;
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -86,6 +89,8 @@ import android.widget.ListView;
 		titleStrings.put(DRAWER_LIST_ABOUT_REMOTE_NUMBER, firstActivityDrawerStrings[DRAWER_LIST_ABOUT_REMOTE_NUMBER]);
 		titleStrings.put(DRAWER_LIST_RESEARCH_CENTER_NUMBER, firstActivityDrawerStrings[DRAWER_LIST_RESEARCH_CENTER_NUMBER]);
 		titleStrings.put(DRAWER_LIST_CONTACTS_NUMBER, firstActivityDrawerStrings[DRAWER_LIST_CONTACTS_NUMBER]);
+		titleStrings.put(DRAWER_LIST_NEWS_NUMBER, firstActivityDrawerStrings[DRAWER_LIST_NEWS_NUMBER]);
+		titleStrings.put(DRAWER_LIST_MEP_LIVE_NUMBER, firstActivityDrawerStrings[DRAWER_LIST_MEP_LIVE_NUMBER]);
 		titleStrings.put(DRAWER_LIST_LOGIN_LOGOUT_NUMBER, getResources().getString(R.string.login));
 
 		fragmentManager = getSupportFragmentManager();
@@ -191,6 +196,34 @@ import android.widget.ListView;
 				newFragment = new FragmentLevel1ContactsScreen();
 				readyForFragmentLoading = true;
 				break;
+			case DRAWER_LIST_NEWS_NUMBER:
+				if (NetThread.isOnline(ActivityLevel1.this)) {
+					ProgressDialog progressDialog = new ProgressDialog(ActivityLevel1.this);
+					progressDialog.setCancelable(false);
+					progressDialog.setMessage("Kérem várjon...");
+					Session.setProgressDialog(progressDialog);
+					Session.showProgressDialog();
+					newFragment = new FragmentLevel1NewsScreen();
+					readyForFragmentLoading = true;
+				} else {
+					Session.setAlertDialog(AlertDialogFactory.prepareAlertDialogForNoConnection(ActivityLevel1.this));
+					Session.showAlertDialog();
+				}
+				break;
+			case DRAWER_LIST_MEP_LIVE_NUMBER:
+				if (NetThread.isOnline(ActivityLevel1.this)) {
+					ProgressDialog progressDialog = new ProgressDialog(ActivityLevel1.this);
+					progressDialog.setCancelable(false);
+					progressDialog.setMessage("Kérem várjon...");
+					Session.setProgressDialog(progressDialog);
+					Session.showProgressDialog();
+					newFragment = new FragmentLevel1MepLiveScreen();
+					readyForFragmentLoading = true;
+				} else {
+					Session.setAlertDialog(AlertDialogFactory.prepareAlertDialogForNoConnection(ActivityLevel1.this));
+					Session.showAlertDialog();
+				}
+				break;
 			default:
 				break;
 			}
@@ -228,10 +261,9 @@ import android.widget.ListView;
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		this.menu = menu;
-		
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.activity_firstlevel_menu, menu);
+		loginMenu = menu.findItem(R.id.action_login);
 		return super.onCreateOptionsMenu(menu);
 	}
 	
@@ -305,7 +337,15 @@ import android.widget.ListView;
 		if(Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
 			supportInvalidateOptionsMenu();
 		} else {
-			invalidateOptionsMenu();
+			if(loginMenu != null) {
+				boolean drawerOpen = firstActivityDrawerLayout.isDrawerOpen(firstActivityDrawerListView);
+				if(actualFragmentNumber != DRAWER_LIST_LOGIN_LOGOUT_NUMBER) {
+					loginMenu.setVisible(!drawerOpen);
+				} else {
+					loginMenu.setVisible(false);
+				}
+			}
+//			invalidateOptionsMenu(); //TODO
 		}
 	}
 	
