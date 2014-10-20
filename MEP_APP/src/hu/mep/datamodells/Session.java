@@ -11,7 +11,7 @@ import hu.mep.datamodells.charts.OneLineAndTwoBarChartContainer;
 import hu.mep.datamodells.charts.SubChart;
 import hu.mep.datamodells.settings.Settings;
 import hu.mep.mep_app.NotificationService;
-import hu.mep.mep_app.R;
+import hu.alter.mep_app.R;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

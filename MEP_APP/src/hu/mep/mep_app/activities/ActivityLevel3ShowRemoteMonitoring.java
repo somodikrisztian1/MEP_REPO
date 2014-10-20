@@ -4,7 +4,7 @@ import hu.mep.datamodells.Session;
 import hu.mep.mep_app.FragmentLevel3ShowBarChart;
 import hu.mep.mep_app.FragmentLevel3ShowSettings;
 import hu.mep.mep_app.FragmentLevel3ShowTopic;
-import hu.mep.mep_app.R;
+import hu.alter.mep_app.R;
 import hu.mep.utils.others.DatePickerHacker;
 
 import java.text.SimpleDateFormat;

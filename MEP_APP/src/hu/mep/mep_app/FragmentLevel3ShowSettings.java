@@ -1,5 +1,6 @@
 package hu.mep.mep_app;
 
+import hu.alter.mep_app.R;
 import hu.mep.utils.adapters.SettingsExpandableListAdapter;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;

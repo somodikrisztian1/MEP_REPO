@@ -2,7 +2,7 @@ package hu.mep.mep_app.activities;
 
 import hu.mep.datamodells.Session;
 import hu.mep.mep_app.FragmentLevel1GalleryPicture;
-import hu.mep.mep_app.R;
+import hu.alter.mep_app.R;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;

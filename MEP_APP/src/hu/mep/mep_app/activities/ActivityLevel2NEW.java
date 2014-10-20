@@ -6,7 +6,7 @@ import hu.mep.datamodells.Session;
 import hu.mep.datamodells.Topic;
 import hu.mep.mep_app.ActivityLevel2SectionsPagerAdapter;
 import hu.mep.mep_app.NotificationService;
-import hu.mep.mep_app.R;
+import hu.alter.mep_app.R;
 import hu.mep.utils.others.AlertDialogFactory;
 import hu.mep.utils.others.FragmentLevel2EventHandler;
 import android.content.Intent;

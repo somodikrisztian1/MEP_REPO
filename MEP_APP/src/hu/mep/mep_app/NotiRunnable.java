@@ -1,5 +1,6 @@
 package hu.mep.mep_app;
 
+import hu.alter.mep_app.R;
 import hu.mep.communication.RealCommunicator;
 import hu.mep.datamodells.ChatContact;
 import hu.mep.datamodells.ChatContactList;

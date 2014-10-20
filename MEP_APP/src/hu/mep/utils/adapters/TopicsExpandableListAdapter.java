@@ -2,7 +2,7 @@ package hu.mep.utils.adapters;
 
 import hu.mep.datamodells.Topic;
 import hu.mep.datamodells.TopicCategory;
-import hu.mep.mep_app.R;
+import hu.alter.mep_app.R;
 import hu.mep.utils.others.FragmentLevel2EventHandler;
 
 import java.util.List;

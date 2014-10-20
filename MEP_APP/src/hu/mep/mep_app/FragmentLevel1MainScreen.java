@@ -1,6 +1,7 @@
 package hu.mep.mep_app;
 
 import bluejamesbond.textviewjustifier.TextViewEx;
+import hu.alter.mep_app.R;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;

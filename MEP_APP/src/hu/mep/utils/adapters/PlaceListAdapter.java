@@ -2,7 +2,7 @@ package hu.mep.utils.adapters;
 
 import hu.mep.datamodells.Place;
 import hu.mep.datamodells.Session;
-import hu.mep.mep_app.R;
+import hu.alter.mep_app.R;
 
 import java.util.List;
 

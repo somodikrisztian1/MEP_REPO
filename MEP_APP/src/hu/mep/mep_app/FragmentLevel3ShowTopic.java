@@ -1,5 +1,6 @@
 package hu.mep.mep_app;
 
+import hu.alter.mep_app.R;
 import hu.mep.charts.TimeLineChartView;
 import hu.mep.datamodells.charts.Chart;
 import android.os.Bundle;

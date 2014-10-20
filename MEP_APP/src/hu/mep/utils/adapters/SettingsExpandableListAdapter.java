@@ -8,7 +8,7 @@ import hu.mep.datamodells.Session;
 import hu.mep.datamodells.settings.Function;
 import hu.mep.datamodells.settings.Relay;
 import hu.mep.datamodells.settings.Slider;
-import hu.mep.mep_app.R;
+import hu.alter.mep_app.R;
 import android.app.Activity;
 import android.graphics.Color;
 //import android.util.Log;

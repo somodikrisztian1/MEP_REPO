@@ -1,7 +1,7 @@
 package hu.mep.communication;
 
 import hu.mep.datamodells.Session;
-import hu.mep.mep_app.R;
+import hu.alter.mep_app.R;
 import hu.mep.utils.others.AlertDialogFactory;
 import hu.mep.utils.others.MD5Encoder;
 

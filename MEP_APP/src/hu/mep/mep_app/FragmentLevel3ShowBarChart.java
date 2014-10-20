@@ -1,5 +1,6 @@
 package hu.mep.mep_app;
 
+import hu.alter.mep_app.R;
 import hu.mep.charts.BarChartView;
 import hu.mep.datamodells.charts.BarChart;
 import android.os.Bundle;

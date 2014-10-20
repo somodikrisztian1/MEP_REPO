@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import hu.alter.mep_app.R;
 
 public class FragmentLevel1ContactsScreen extends Fragment{
 	//private static final String TAG = "FragmentContactsScreen";

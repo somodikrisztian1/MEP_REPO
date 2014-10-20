@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import bluejamesbond.textviewjustifier.TextViewEx;
+import hu.alter.mep_app.R;
 
 public class FragmentLevel1RepresentationParkScreen extends Fragment {
 	

@@ -2,7 +2,7 @@ package hu.mep.mep_app.activities;
 
 import hu.mep.communication.NetThread;
 import hu.mep.datamodells.Session;
-import hu.mep.mep_app.R;
+import hu.alter.mep_app.R;
 import hu.mep.utils.others.AlertDialogFactory;
 import android.content.Context;
 import android.content.pm.ActivityInfo;

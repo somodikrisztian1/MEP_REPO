@@ -1,5 +1,6 @@
 package hu.mep.mep_app;
 
+import hu.alter.mep_app.R;
 import hu.mep.datamodells.Session;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;

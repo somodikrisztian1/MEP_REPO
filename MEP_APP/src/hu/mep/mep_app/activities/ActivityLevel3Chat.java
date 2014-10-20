@@ -2,7 +2,7 @@ package hu.mep.mep_app.activities;
 
 import hu.mep.datamodells.ChatMessage;
 import hu.mep.datamodells.Session;
-import hu.mep.mep_app.R;
+import hu.alter.mep_app.R;
 import hu.mep.utils.adapters.ChatMessagesListAdapter;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;

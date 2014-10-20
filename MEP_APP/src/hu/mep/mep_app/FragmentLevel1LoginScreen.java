@@ -1,5 +1,6 @@
 package hu.mep.mep_app;
 
+import hu.alter.mep_app.R;
 import hu.mep.mep_app.activities.ActivityLevel1;
 import hu.mep.mep_app.activities.ActivityLevel1Registration;
 import hu.mep.utils.others.FragmentLevel1EventHandler;

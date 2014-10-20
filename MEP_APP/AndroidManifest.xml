@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="hu.mep.mep_app"
-    android:versionCode="1"
-    android:versionName="1.0" >
+    package="hu.alter.mep_app"
+    android:versionCode="2"
+    android:versionName="1.0.1" >
 
     <uses-sdk
         android:minSdkVersion="10"
@@ -10,6 +10,7 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT" />
 
     <application
         android:allowBackup="true"
@@ -17,7 +18,7 @@
         android:label="@string/app_name"
         android:theme="@style/Theme.Meptheme">
         <activity
-            android:name=".activities.ActivityLevel1"
+            android:name="hu.mep.mep_app.activities.ActivityLevel1"
             android:label="@string/app_name"
             android:alwaysRetainTaskState = "true" >
             <intent-filter>
@@ -26,17 +27,17 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.ActivityLevel1Gallery" >
+        <activity android:name="hu.mep.mep_app.activities.ActivityLevel1Gallery" >
         </activity>
         <activity
-            android:name=".activities.ActivityLevel1Registration"
+            android:name="hu.mep.mep_app.activities.ActivityLevel1Registration"
             android:label="@string/title_activity_activity_level1_registration" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.ActivityLevel1" />
         </activity>
         <activity
-            android:name=".activities.ActivityLevel2NEW"
+            android:name="hu.mep.mep_app.activities.ActivityLevel2NEW"
             android:label="@string/app_name"
             android:alwaysRetainTaskState = "true" >
             <meta-data
@@ -44,7 +45,7 @@
                 android:value=".activities.ActivityLevel1" />
         </activity>
         <activity
-            android:name=".activities.ActivityLevel3ShowTopic"
+            android:name="hu.mep.mep_app.activities.ActivityLevel3ShowTopic"
             android:screenOrientation="landscape"
             android:alwaysRetainTaskState = "true" >
             <meta-data
@@ -52,7 +53,7 @@
                 android:value=".activities.ActivityLevel2NEW" />
         </activity>
         <activity
-            android:name=".activities.ActivityLevel3ShowRemoteMonitoring"
+            android:name="hu.mep.mep_app.activities.ActivityLevel3ShowRemoteMonitoring"
             android:label="@string/app_name"
             android:alwaysRetainTaskState = "true" >
             <meta-data
@@ -60,14 +61,14 @@
                 android:value=".activities.ActivityLevel2NEW" />
         </activity>
         <activity
-            android:name=".activities.ActivityLevel3Chat"
+            android:name="hu.mep.mep_app.activities.ActivityLevel3Chat"
             android:label="@string/app_name"
             android:alwaysRetainTaskState = "true" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.ActivityLevel2NEW" />
         </activity>
-        <service android:enabled="true" android:name=".NotificationService" android:process=":remote" />
+        <service android:enabled="true" android:name="hu.mep.mep_app.NotificationService" android:process=":remote" />
     </application>
 
 </manifest>

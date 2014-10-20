@@ -1,5 +1,6 @@
 package hu.mep.mep_app;
 
+import hu.alter.mep_app.R;
 import hu.mep.datamodells.ChatContact;
 import hu.mep.datamodells.Session;
 import hu.mep.mep_app.activities.ActivityLevel3Chat;

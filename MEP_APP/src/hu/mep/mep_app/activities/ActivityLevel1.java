@@ -10,7 +10,7 @@ import hu.mep.mep_app.FragmentLevel1MepLiveScreen;
 import hu.mep.mep_app.FragmentLevel1NewsScreen;
 import hu.mep.mep_app.FragmentLevel1RepresentationParkScreen;
 import hu.mep.mep_app.FragmentLevel1ResearchCenterScreen;
-import hu.mep.mep_app.R;
+import hu.alter.mep_app.R;
 import hu.mep.utils.others.AlertDialogFactory;
 import hu.mep.utils.others.FragmentLevel1EventHandler;
 
