@@ -1,13 +1,14 @@
 package hu.mep.utils.adapters;
 
+import hu.alter.mep_app.R;
 import hu.mep.datamodells.Topic;
 import hu.mep.datamodells.TopicCategory;
-import hu.alter.mep_app.R;
 import hu.mep.utils.others.FragmentLevel2EventHandler;
 
 import java.util.List;
 
 import android.app.Activity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
